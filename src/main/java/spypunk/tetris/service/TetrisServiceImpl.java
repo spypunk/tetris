@@ -151,7 +151,7 @@ public class TetrisServiceImpl implements TetrisService {
 
             tetris.setSpeed(speed - speed / 6);
         } else {
-            tetris.setCompletedRows(completedRows);
+            tetris.setCompletedRows(currentCompletedRows);
         }
     }
 
