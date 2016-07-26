@@ -108,17 +108,17 @@ public class TetrisServiceImpl implements TetrisService {
 
         tetris.setLastMoveTime(System.currentTimeMillis());
 
-        updateStatistics(tetris);
+        updateShapeStatistics(tetris);
     }
 
-    private void updateStatistics(Tetris tetris) {
-        Map<ShapeType, Integer> statistics = tetris.getStatistics();
+    private void updateShapeStatistics(Tetris tetris) {
+        Map<ShapeType, Integer> shapeStatistics = tetris.getShapesStatistics();
 
         ShapeType shapeType = tetris.getCurrentShape().getShapeType();
 
-        Integer count = statistics.get(shapeType);
+        Integer count = shapeStatistics.get(shapeType);
 
-        statistics.put(shapeType, count + 1);
+        shapeStatistics.put(shapeType, count + 1);
     }
 
     private boolean isGameOver(Tetris tetris) {
@@ -152,22 +152,22 @@ public class TetrisServiceImpl implements TetrisService {
 
         int completedRows = completeRows.size();
 
+        tetris.setCompletedRows(tetris.getCompletedRows() + completedRows);
+
         updateScore(tetris, completedRows);
-        updateLevel(tetris, completedRows);
+        updateLevel(tetris);
     }
 
-    private void updateLevel(Tetris tetris, int completedRows) {
-        int currentCompletedRows = tetris.getCompletedRows() + completedRows;
+    private void updateLevel(Tetris tetris) {
+        int completedRows = tetris.getCompletedRows();
+        int nextLevel = tetris.getLevel() + 1;
 
-        if (currentCompletedRows >= TetrisConstants.ROWS_PER_LEVEL) {
-            tetris.setCompletedRows(0);
-            tetris.setLevel(tetris.getLevel() + 1);
+        if (completedRows >= TetrisConstants.ROWS_PER_LEVEL * nextLevel) {
+            tetris.setLevel(nextLevel);
 
             int speed = tetris.getSpeed();
 
             tetris.setSpeed(speed - speed / 6);
-        } else {
-            tetris.setCompletedRows(currentCompletedRows);
         }
     }
 

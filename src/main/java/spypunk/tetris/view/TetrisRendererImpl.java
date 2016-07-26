@@ -32,6 +32,8 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
     private static final String NEXT_SHAPE = "NEXT SHAPE";
 
+    private static final String ROWS = "ROWS";
+
     @Inject
     private TetrisFrame tetrisFrame;
 
@@ -49,6 +51,8 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
     private final Container scoreContainer;
 
+    private final Container rowsContainer;
+
     private final Font defaultFont;
 
     @Inject
@@ -58,6 +62,7 @@ public class TetrisRendererImpl implements TetrisRenderer {
         nextShapeContainer = createNextShapeContainer();
         levelContainer = createLevelContainer();
         scoreContainer = createScoreContainer();
+        rowsContainer = createRowsContainer();
     }
 
     @Override
@@ -74,6 +79,7 @@ public class TetrisRendererImpl implements TetrisRenderer {
         renderTetris(tetris, graphics);
         renderLevel(tetris, graphics);
         renderScore(tetris, graphics);
+        renderRows(tetris, graphics);
         renderNextShape(tetris, graphics);
     }
 
@@ -90,6 +96,11 @@ public class TetrisRendererImpl implements TetrisRenderer {
     private void renderScore(Tetris tetris, Graphics2D graphics) {
         renderContainer(graphics, scoreContainer);
         renderTextInContainer(graphics, String.valueOf(tetris.getScore()), scoreContainer);
+    }
+
+    private void renderRows(Tetris tetris, Graphics2D graphics) {
+        renderContainer(graphics, rowsContainer);
+        renderTextInContainer(graphics, String.valueOf(tetris.getCompletedRows()), rowsContainer);
     }
 
     private void renderLevel(Tetris tetris, Graphics2D graphics) {
@@ -187,7 +198,7 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
     private Container createNextShapeContainer() {
         Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE * (TetrisConstants.WIDTH + 2),
-                8 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 6);
+                11 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 6);
 
         return defaultContainerBuilder(rectangle).setTitle(NEXT_SHAPE).build();
     }
@@ -204,6 +215,13 @@ public class TetrisRendererImpl implements TetrisRenderer {
                 5 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 1);
 
         return defaultContainerBuilder(rectangle).setTitle(SCORE).build();
+    }
+
+    private Container createRowsContainer() {
+        Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE * (TetrisConstants.WIDTH + 2),
+                8 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 1);
+
+        return defaultContainerBuilder(rectangle).setTitle(ROWS).build();
     }
 
     private Builder defaultContainerBuilder(Rectangle rectangle) {
