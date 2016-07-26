@@ -42,11 +42,17 @@ public class TetrisServiceImpl implements TetrisService {
         }
 
         if (tetris.getCurrentShape() == null) {
-            getNextShape(tetris);
-        }
+            if (!isTimeForNextShape(tetris)) {
+                return;
+            }
 
-        if (checkShapeIsLocked(tetris)) {
-            return;
+            clearCompleteRows(tetris);
+
+            getNextShape(tetris);
+
+            if (checkShapeIsLocked(tetris)) {
+                return;
+            }
         }
 
         Optional<Movement> movement = tetris.getMovement();
@@ -57,16 +63,13 @@ public class TetrisServiceImpl implements TetrisService {
 
         if (isTimeToMoveShape(tetris)) {
             moveShape(tetris, Movement.DOWN);
+            tetris.setLastMoveTime(System.currentTimeMillis());
         }
     }
 
     private boolean handleMovement(Tetris tetris, Movement movement) {
         if (Movement.DOWN.equals(movement) || canShapeMove(tetris, movement)) {
-            moveShape(tetris, movement);
-            
-            if (checkShapeIsLocked(tetris)) {
-                return false;
-            }
+            return moveShape(tetris, movement);
         }
 
         return true;
@@ -77,8 +80,8 @@ public class TetrisServiceImpl implements TetrisService {
             if (isGameOver(tetris)) {
                 tetris.setGameOver(true);
             } else {
-                clearCompleteRows(tetris);
                 tetris.setCurrentShape(null);
+                tetris.setLastLockedTime(System.currentTimeMillis());
             }
 
             return true;
@@ -119,13 +122,14 @@ public class TetrisServiceImpl implements TetrisService {
         long currentTime = System.currentTimeMillis();
         long lastMoveTime = tetris.getLastMoveTime();
 
-        if (currentTime - lastMoveTime <= tetris.getSpeed()) {
-            return false;
-        }
+        return currentTime - lastMoveTime > tetris.getSpeed();
+    }
 
-        tetris.setLastMoveTime(currentTime);
+    private boolean isTimeForNextShape(Tetris tetris) {
+        long currentTime = System.currentTimeMillis();
+        long lastLockedTime = tetris.getLastLockedTime();
 
-        return true;
+        return currentTime - lastLockedTime > tetris.getSpeed();
     }
 
     private void clearCompleteRows(Tetris tetris) {
@@ -195,6 +199,10 @@ public class TetrisServiceImpl implements TetrisService {
         newShape.getBlocks().forEach(block -> tetris.getBlocks().put(block.getLocation(), Optional.of(block)));
 
         tetris.setCurrentShape(newShape);
+
+        if (checkShapeIsLocked(tetris)) {
+            return false;
+        }
 
         return true;
     }

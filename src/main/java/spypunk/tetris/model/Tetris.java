@@ -53,6 +53,8 @@ public class Tetris {
 
     private long lastMoveTime;
 
+    private long lastLockedTime;
+
     private Optional<Movement> movement;
 
     private Map<ShapeType, Integer> statistics;
@@ -151,5 +153,13 @@ public class Tetris {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    public long getLastLockedTime() {
+        return lastLockedTime;
+    }
+
+    public void setLastLockedTime(long lastLockedTime) {
+        this.lastLockedTime = lastLockedTime;
     }
 }
