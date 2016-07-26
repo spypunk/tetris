@@ -48,9 +48,9 @@ public class ShapeTypeRepositoryImpl implements ShapeTypeRepository {
     }
 
     private static ShapeType createOShapeType() {
-        return ShapeType.Builder.instance().setId(Id.O).setBoundingBox(new Rectangle(0, 0, 4, 3))
+        return ShapeType.Builder.instance().setId(Id.O).setBoundingBox(new Rectangle(0, 0, 2, 2))
                 .setRotations(
-                    Arrays.asList(Sets.newHashSet(LOCATION_1_0, LOCATION_2_0, LOCATION_1_1, LOCATION_2_1)))
+                    Arrays.asList(Sets.newHashSet(LOCATION_0_0, LOCATION_1_0, LOCATION_0_1, LOCATION_1_1)))
                 .build();
     }
 

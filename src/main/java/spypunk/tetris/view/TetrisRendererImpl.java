@@ -11,6 +11,8 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.google.common.collect.Lists;
+
 import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.factory.BlockImageFactory;
 import spypunk.tetris.factory.FontFactory;
@@ -76,16 +78,17 @@ public class TetrisRendererImpl implements TetrisRenderer {
     }
 
     private void doRender(Tetris tetris, Graphics2D graphics) {
-        renderTetris(tetris, graphics);
+        Lists.newArrayList(tetrisContainer, nextShapeContainer, levelContainer,
+            scoreContainer, rowsContainer).forEach(container -> renderContainer(graphics, container));
+
+        renderBlocks(tetris, graphics);
         renderLevel(tetris, graphics);
         renderScore(tetris, graphics);
         renderRows(tetris, graphics);
         renderNextShape(tetris, graphics);
     }
 
-    private void renderTetris(Tetris tetris, Graphics2D graphics) {
-        renderContainer(graphics, tetrisContainer);
-
+    private void renderBlocks(Tetris tetris, Graphics2D graphics) {
         tetris.getBlocks().values().stream().filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(block -> block.getLocation().y >= 2)
@@ -94,32 +97,28 @@ public class TetrisRendererImpl implements TetrisRenderer {
     }
 
     private void renderScore(Tetris tetris, Graphics2D graphics) {
-        renderContainer(graphics, scoreContainer);
         renderTextInContainer(graphics, String.valueOf(tetris.getScore()), scoreContainer);
     }
 
     private void renderRows(Tetris tetris, Graphics2D graphics) {
-        renderContainer(graphics, rowsContainer);
         renderTextInContainer(graphics, String.valueOf(tetris.getCompletedRows()), rowsContainer);
     }
 
     private void renderLevel(Tetris tetris, Graphics2D graphics) {
-        renderContainer(graphics, levelContainer);
         renderTextInContainer(graphics, String.valueOf(tetris.getLevel()), levelContainer);
     }
 
     private void renderNextShape(Tetris tetris, Graphics2D graphics) {
-        renderContainer(graphics, nextShapeContainer);
-
         Shape nextShape = tetris.getNextShape();
-
         Rectangle containerRectangle = nextShapeContainer.getRectangle();
-
         Rectangle boundingBox = nextShape.getBoundingBox();
 
-        int dx = containerRectangle.x + (containerRectangle.width - boundingBox.width * TetrisConstants.BLOCK_SIZE) / 2;
-        int dy = containerRectangle.y
-                + (containerRectangle.height - boundingBox.height * TetrisConstants.BLOCK_SIZE) / 2;
+        int x = containerRectangle.x * TetrisConstants.BLOCK_SIZE;
+        int y = containerRectangle.y * TetrisConstants.BLOCK_SIZE;
+        int width = containerRectangle.width * TetrisConstants.BLOCK_SIZE;
+        int height = containerRectangle.height * TetrisConstants.BLOCK_SIZE;
+        int dx = x + (width - boundingBox.width * TetrisConstants.BLOCK_SIZE) / 2;
+        int dy = y + (height - boundingBox.height * TetrisConstants.BLOCK_SIZE) / 2;
 
         nextShape.getBlocks().stream().forEach(
             block -> renderBlock(graphics, block, dx, dy));
@@ -131,13 +130,15 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         graphics.setColor(color);
 
-        graphics.drawLine(rectangle.x, rectangle.y, rectangle.x + rectangle.width - 1, rectangle.y);
-        graphics.drawLine(rectangle.x, rectangle.y + rectangle.height - 1, rectangle.x + rectangle.width - 1,
-            rectangle.y + rectangle.height - 1);
+        int x = rectangle.x * TetrisConstants.BLOCK_SIZE;
+        int y = rectangle.y * TetrisConstants.BLOCK_SIZE;
+        int width = rectangle.width * TetrisConstants.BLOCK_SIZE;
+        int height = rectangle.height * TetrisConstants.BLOCK_SIZE;
 
-        graphics.drawLine(rectangle.x, rectangle.y, rectangle.x, rectangle.y + rectangle.height - 1);
-        graphics.drawLine(rectangle.x + rectangle.width - 1, rectangle.y, rectangle.x + rectangle.width - 1,
-            rectangle.y + rectangle.height - 1);
+        graphics.drawLine(x, y, x + width - 1, y);
+        graphics.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
+        graphics.drawLine(x, y, x, y + height - 1);
+        graphics.drawLine(x + width - 1, y, x + width - 1, y + height - 1);
 
         String title = container.getTitle();
 
@@ -150,10 +151,10 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         FontMetrics fontMetrics = graphics.getFontMetrics();
 
-        int height = fontMetrics.getHeight();
-        int width = fontMetrics.stringWidth(title);
-        int textX1 = rectangle.x + (rectangle.width - width) / 2;
-        int textY1 = rectangle.y - (TetrisConstants.BLOCK_SIZE - height);
+        int textHeight = fontMetrics.getHeight();
+        int textWidth = fontMetrics.stringWidth(title);
+        int textX1 = x + (width - textWidth) / 2;
+        int textY1 = y - (TetrisConstants.BLOCK_SIZE - textHeight);
 
         graphics.drawString(title, textX1, textY1);
     }
@@ -178,10 +179,13 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         FontMetrics fontMetrics = graphics.getFontMetrics();
 
-        int height = fontMetrics.getHeight();
-        int width = fontMetrics.stringWidth(text);
-        int x1 = rectangle.x + (rectangle.width - width) / 2;
-        int y1 = rectangle.y + TetrisConstants.BLOCK_SIZE - (TetrisConstants.BLOCK_SIZE - height);
+        int x = rectangle.x * TetrisConstants.BLOCK_SIZE;
+        int y = rectangle.y * TetrisConstants.BLOCK_SIZE;
+        int width = rectangle.width * TetrisConstants.BLOCK_SIZE;
+        int textHeight = fontMetrics.getHeight();
+        int textWidth = fontMetrics.stringWidth(text);
+        int x1 = x + (width - textWidth) / 2;
+        int y1 = y + TetrisConstants.BLOCK_SIZE - (TetrisConstants.BLOCK_SIZE - textHeight);
 
         graphics.setColor(scoreContainer.getFontColor());
         graphics.setFont(scoreContainer.getFont());
@@ -189,39 +193,33 @@ public class TetrisRendererImpl implements TetrisRenderer {
     }
 
     private Container createTetrisContainer() {
-        Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE,
-                TetrisConstants.BLOCK_SIZE * TetrisConstants.WIDTH,
-                TetrisConstants.BLOCK_SIZE * (TetrisConstants.HEIGHT - 2));
+        Rectangle rectangle = new Rectangle(1, 1, TetrisConstants.WIDTH, TetrisConstants.HEIGHT - 2);
 
         return defaultContainerBuilder(rectangle).build();
     }
 
-    private Container createNextShapeContainer() {
-        Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE * (TetrisConstants.WIDTH + 2),
-                11 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 6);
-
-        return defaultContainerBuilder(rectangle).setTitle(NEXT_SHAPE).build();
-    }
-
     private Container createLevelContainer() {
-        Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE * (TetrisConstants.WIDTH + 2),
-                2 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 1);
+        Rectangle rectangle = new Rectangle(TetrisConstants.WIDTH + 2, 2, 6, 1);
 
         return defaultContainerBuilder(rectangle).setTitle(LEVEL).build();
     }
 
     private Container createScoreContainer() {
-        Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE * (TetrisConstants.WIDTH + 2),
-                5 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 1);
+        Rectangle rectangle = new Rectangle(TetrisConstants.WIDTH + 2, 5, 6, 1);
 
         return defaultContainerBuilder(rectangle).setTitle(SCORE).build();
     }
 
     private Container createRowsContainer() {
-        Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE * (TetrisConstants.WIDTH + 2),
-                8 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 1);
+        Rectangle rectangle = new Rectangle(TetrisConstants.WIDTH + 2, 8, 6, 1);
 
         return defaultContainerBuilder(rectangle).setTitle(ROWS).build();
+    }
+
+    private Container createNextShapeContainer() {
+        Rectangle rectangle = new Rectangle(TetrisConstants.WIDTH + 2, 11, 6, 6);
+
+        return defaultContainerBuilder(rectangle).setTitle(NEXT_SHAPE).build();
     }
 
     private Builder defaultContainerBuilder(Rectangle rectangle) {
