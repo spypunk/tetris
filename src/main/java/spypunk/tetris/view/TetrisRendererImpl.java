@@ -130,8 +130,16 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         Shape nextShape = tetris.getNextShape();
 
+        Rectangle containerRectangle = nextShapeContainer.getRectangle();
+        
+        Rectangle boundingBox = nextShape.getBoundingBox();
+
+        int dx = containerRectangle.x + (containerRectangle.width - boundingBox.width * TetrisConstants.BLOCK_SIZE) / 2;
+        int dy = containerRectangle.y
+                + (containerRectangle.height - boundingBox.height * TetrisConstants.BLOCK_SIZE) / 2;
+
         nextShape.getBlocks().stream().forEach(
-            block -> renderBlock(graphics, block, TetrisConstants.BLOCK_SIZE * 13, TetrisConstants.BLOCK_SIZE * 9));
+            block -> renderBlock(graphics, block, dx, dy));
     }
 
     private void renderContainer(Graphics2D graphics, Container container) {
