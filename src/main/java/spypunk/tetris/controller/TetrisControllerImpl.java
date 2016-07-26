@@ -62,7 +62,7 @@ public class TetrisControllerImpl implements TetrisController {
 
     @Override
     public void onWindowClosed() {
-        loopThread.cancel(true);
+        loopThread.cancel(false);
         scheduledExecutorService.shutdownNow();
     }
 
