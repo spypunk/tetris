@@ -3,7 +3,6 @@ package spypunk.tetris.controller;
 import java.awt.event.KeyEvent;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -43,9 +42,6 @@ public class TetrisControllerImpl implements TetrisController {
     private TetrisService tetrisService;
 
     @Inject
-    private ExecutorService executorService;
-
-    @Inject
     private TetrisFactory tetrisFactory;
 
     private volatile boolean newGame = true;
@@ -67,7 +63,6 @@ public class TetrisControllerImpl implements TetrisController {
     @Override
     public void onWindowClosed() {
         loopThread.cancel(true);
-        executorService.shutdownNow();
         scheduledExecutorService.shutdownNow();
     }
 
