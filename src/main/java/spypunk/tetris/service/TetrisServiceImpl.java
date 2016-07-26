@@ -37,34 +37,42 @@ public class TetrisServiceImpl implements TetrisService {
 
     @Override
     public void update(Tetris tetris) {
-        if (tetris.isGameOver()) {
+        if (tetris.isGameOver() || !handleNextShape(tetris) || !handleMovement(tetris) || !isTimeToMoveShape(tetris)) {
             return;
         }
 
-        if (tetris.getCurrentShape() == null) {
-            if (!isTimeForNextShape(tetris)) {
-                return;
-            }
+        handleGravity(tetris);
+    }
 
-            clearCompleteRows(tetris);
-
-            getNextShape(tetris);
-
-            if (checkShapeIsLocked(tetris)) {
-                return;
-            }
+    private boolean handleNextShape(Tetris tetris) {
+        if (tetris.getCurrentShape() != null) {
+            return true;
         }
 
+        if (!isTimeForNextShape(tetris)) {
+            return false;
+        }
+
+        clearCompleteRows(tetris);
+
+        getNextShape(tetris);
+
+        return !checkShapeIsLocked(tetris);
+    }
+
+    private boolean handleMovement(Tetris tetris) {
         Optional<Movement> movement = tetris.getMovement();
 
         if (movement.isPresent() && !handleMovement(tetris, movement.get())) {
-            return;
+            return false;
         }
 
-        if (isTimeToMoveShape(tetris)) {
-            moveShape(tetris, Movement.DOWN);
-            tetris.setLastMoveTime(System.currentTimeMillis());
-        }
+        return true;
+    }
+
+    private void handleGravity(Tetris tetris) {
+        moveShape(tetris, Movement.DOWN);
+        tetris.setLastMoveTime(System.currentTimeMillis());
     }
 
     private boolean handleMovement(Tetris tetris, Movement movement) {
@@ -76,18 +84,18 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private boolean checkShapeIsLocked(Tetris tetris) {
-        if (!canShapeMove(tetris, Movement.DOWN)) {
-            if (isGameOver(tetris)) {
-                tetris.setGameOver(true);
-            } else {
-                tetris.setCurrentShape(null);
-                tetris.setLastLockedTime(System.currentTimeMillis());
-            }
-
-            return true;
+        if (canShapeMove(tetris, Movement.DOWN)) {
+            return false;
         }
 
-        return false;
+        if (isGameOver(tetris)) {
+            tetris.setGameOver(true);
+        } else {
+            tetris.setCurrentShape(null);
+            tetris.setLastLockedTime(System.currentTimeMillis());
+        }
+
+        return true;
     }
 
     private void getNextShape(Tetris tetris) {
