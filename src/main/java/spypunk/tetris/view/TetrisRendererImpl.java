@@ -23,6 +23,8 @@ import spypunk.tetris.util.SwingUtils;
 @Singleton
 public class TetrisRendererImpl implements TetrisRenderer {
 
+    private static final float DEFAULT_FONT_SIZE = 32.0f;
+
     private static final String SCORE = "SCORE";
 
     private static final String LEVEL = "LEVEL";
@@ -50,7 +52,7 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
     @Inject
     public TetrisRendererImpl(FontFactory fontFactory) {
-        defaultFont = fontFactory.createDefaultFont(32.0f);
+        defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
         tetrisContainer = createTetrisContainer();
         nextShapeContainer = createNextShapeContainer();
         levelContainer = createLevelContainer();
@@ -79,7 +81,8 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         tetris.getBlocks().values().stream().filter(Optional::isPresent)
                 .filter(block -> block.get().getLocation().y >= 2)
-                .forEach(block -> renderBlock(graphics, block.get(), 0, -2));
+                .forEach(block -> renderBlock(graphics, block.get(), TetrisConstants.BLOCK_SIZE,
+                    -TetrisConstants.BLOCK_SIZE));
     }
 
     private void renderScore(Tetris tetris, Graphics2D graphics) {
@@ -127,7 +130,8 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         Shape nextShape = tetris.getNextShape();
 
-        nextShape.getBlocks().stream().forEach(block -> renderBlock(graphics, block, 12, 8));
+        nextShape.getBlocks().stream().forEach(
+            block -> renderBlock(graphics, block, TetrisConstants.BLOCK_SIZE * 13, TetrisConstants.BLOCK_SIZE * 9));
     }
 
     private void renderContainer(Graphics2D graphics, Container container) {
@@ -168,11 +172,9 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         Image image = blockImageFactory.createBlockImage(shapeType);
 
-        int dx1 = dx * TetrisConstants.BLOCK_SIZE + block.getLocation().x * TetrisConstants.BLOCK_SIZE
-                + TetrisConstants.BLOCK_SIZE;
+        int dx1 = dx + block.getLocation().x * TetrisConstants.BLOCK_SIZE;
         int dx2 = dx1 + TetrisConstants.BLOCK_SIZE;
-        int dy1 = dy * TetrisConstants.BLOCK_SIZE + block.getLocation().y * TetrisConstants.BLOCK_SIZE
-                + TetrisConstants.BLOCK_SIZE;
+        int dy1 = dy + block.getLocation().y * TetrisConstants.BLOCK_SIZE;
         int dy2 = dy1 + TetrisConstants.BLOCK_SIZE;
         int sx2 = image.getWidth(null);
         int sy2 = image.getHeight(null);
