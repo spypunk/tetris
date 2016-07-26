@@ -17,18 +17,18 @@ import spypunk.tetris.model.ShapeType.Id;
 public class ShapeTypeRepositoryImpl implements ShapeTypeRepository {
 
     private static final Point LOCATION_0_0 = new Point(0, 0);
-    private static final Point LOCATION_1_3 = new Point(1, 3);
-    private static final Point LOCATION_3_2 = new Point(3, 2);
-    private static final Point LOCATION_1_2 = new Point(1, 2);
-    private static final Point LOCATION_0_2 = new Point(0, 2);
-    private static final Point LOCATION_2_3 = new Point(2, 3);
-    private static final Point LOCATION_2_2 = new Point(2, 2);
-    private static final Point LOCATION_3_1 = new Point(3, 1);
     private static final Point LOCATION_0_1 = new Point(0, 1);
-    private static final Point LOCATION_2_1 = new Point(2, 1);
-    private static final Point LOCATION_1_1 = new Point(1, 1);
-    private static final Point LOCATION_2_0 = new Point(2, 0);
+    private static final Point LOCATION_0_2 = new Point(0, 2);
     private static final Point LOCATION_1_0 = new Point(1, 0);
+    private static final Point LOCATION_1_1 = new Point(1, 1);
+    private static final Point LOCATION_1_2 = new Point(1, 2);
+    private static final Point LOCATION_1_3 = new Point(1, 3);
+    private static final Point LOCATION_2_0 = new Point(2, 0);
+    private static final Point LOCATION_2_1 = new Point(2, 1);
+    private static final Point LOCATION_2_2 = new Point(2, 2);
+    private static final Point LOCATION_2_3 = new Point(2, 3);
+    private static final Point LOCATION_3_1 = new Point(3, 1);
+    private static final Point LOCATION_3_2 = new Point(3, 2);
 
     private final List<ShapeType> shapeTypes = Lists.newArrayList();
 

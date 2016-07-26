@@ -23,17 +23,17 @@ import spypunk.tetris.model.Tetris;
 @Singleton
 public class TetrisServiceImpl implements TetrisService {
 
+    private static final Map<Integer, Integer> SCORE_PER_ROWS = Maps.newHashMap();
+
+    static {
+        SCORE_PER_ROWS.put(1, 40);
+        SCORE_PER_ROWS.put(2, 100);
+        SCORE_PER_ROWS.put(3, 300);
+        SCORE_PER_ROWS.put(4, 1200);
+    }
+
     @Inject
     private ShapeFactory shapeFactory;
-
-    private final Map<Integer, Integer> scorePerCompletedRows = Maps.newHashMap();
-
-    public TetrisServiceImpl() {
-        scorePerCompletedRows.put(1, 40);
-        scorePerCompletedRows.put(2, 100);
-        scorePerCompletedRows.put(3, 300);
-        scorePerCompletedRows.put(4, 1200);
-    }
 
     @Override
     public void update(Tetris tetris) {
@@ -172,7 +172,7 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private void updateScore(Tetris tetris, int completedRows) {
-        Integer rowsScore = scorePerCompletedRows.get(completedRows);
+        Integer rowsScore = SCORE_PER_ROWS.get(completedRows);
         int score = tetris.getScore();
         tetris.setScore(score + rowsScore * (tetris.getLevel() + 1));
     }
