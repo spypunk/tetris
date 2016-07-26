@@ -23,218 +23,218 @@ import spypunk.tetris.util.SwingUtils;
 @Singleton
 public class TetrisRendererImpl implements TetrisRenderer {
 
-	private static final String SCORE = "SCORE";
+    private static final String SCORE = "SCORE";
 
-	private static final String LEVEL = "LEVEL";
+    private static final String LEVEL = "LEVEL";
 
-	private static final String NEXT_SHAPE = "NEXT SHAPE";
+    private static final String NEXT_SHAPE = "NEXT SHAPE";
 
-	@Inject
-	private TetrisFrame tetrisFrame;
+    @Inject
+    private TetrisFrame tetrisFrame;
 
-	@Inject
-	private TetrisCanvas tetrisCanvas;
+    @Inject
+    private TetrisCanvas tetrisCanvas;
 
-	@Inject
-	private BlockImageFactory blockImageFactory;
+    @Inject
+    private BlockImageFactory blockImageFactory;
 
-	private final Container tetrisContainer;
+    private final Container tetrisContainer;
 
-	private final Container nextShapeContainer;
+    private final Container nextShapeContainer;
 
-	private final Container levelContainer;
+    private final Container levelContainer;
 
-	private final Container scoreContainer;
+    private final Container scoreContainer;
 
-	private final Font defaultFont;
+    private final Font defaultFont;
 
-	@Inject
-	public TetrisRendererImpl(FontFactory fontFactory) {
-		defaultFont = fontFactory.createDefaultFont(32.0f);
-		tetrisContainer = createTetrisContainer();
-		nextShapeContainer = createNextShapeContainer();
-		levelContainer = createLevelContainer();
-		scoreContainer = createScoreContainer();
-	}
+    @Inject
+    public TetrisRendererImpl(FontFactory fontFactory) {
+        defaultFont = fontFactory.createDefaultFont(32.0f);
+        tetrisContainer = createTetrisContainer();
+        nextShapeContainer = createNextShapeContainer();
+        levelContainer = createLevelContainer();
+        scoreContainer = createScoreContainer();
+    }
 
-	@Override
-	public void start() {
-		SwingUtils.doInAWTThread(() -> tetrisFrame.setVisible(true), true);
-	}
+    @Override
+    public void start() {
+        SwingUtils.doInAWTThread(() -> tetrisFrame.setVisible(true), true);
+    }
 
-	@Override
-	public void render(Tetris tetris) {
-		SwingUtils.doInAWTThread(() -> tetrisCanvas.render(graphics -> doRender(tetris, graphics)), true);
-	}
+    @Override
+    public void render(Tetris tetris) {
+        SwingUtils.doInAWTThread(() -> tetrisCanvas.render(graphics -> doRender(tetris, graphics)), true);
+    }
 
-	private void doRender(Tetris tetris, Graphics2D graphics) {
-		renderTetris(tetris, graphics);
-		renderLevel(tetris, graphics);
-		renderScore(tetris, graphics);
-		renderNextShape(tetris, graphics);
-	}
+    private void doRender(Tetris tetris, Graphics2D graphics) {
+        renderTetris(tetris, graphics);
+        renderLevel(tetris, graphics);
+        renderScore(tetris, graphics);
+        renderNextShape(tetris, graphics);
+    }
 
-	private void renderTetris(Tetris tetris, Graphics2D graphics) {
-		renderContainer(graphics, tetrisContainer);
+    private void renderTetris(Tetris tetris, Graphics2D graphics) {
+        renderContainer(graphics, tetrisContainer);
 
-		tetris.getBlocks().values().stream().filter(Optional::isPresent)
-				.filter(block -> block.get().getLocation().y >= 2)
-				.forEach(block -> renderBlock(graphics, block.get(), 0, -2));
-	}
+        tetris.getBlocks().values().stream().filter(Optional::isPresent)
+                .filter(block -> block.get().getLocation().y >= 2)
+                .forEach(block -> renderBlock(graphics, block.get(), 0, -2));
+    }
 
-	private void renderScore(Tetris tetris, Graphics2D graphics) {
-		renderContainer(graphics, scoreContainer);
+    private void renderScore(Tetris tetris, Graphics2D graphics) {
+        renderContainer(graphics, scoreContainer);
 
-		Rectangle rectangle = scoreContainer.getRectangle();
+        Rectangle rectangle = scoreContainer.getRectangle();
 
-		FontMetrics fontMetrics = graphics.getFontMetrics();
+        FontMetrics fontMetrics = graphics.getFontMetrics();
 
-		String score = String.valueOf(tetris.getScore());
+        String score = String.valueOf(tetris.getScore());
 
-		int height = fontMetrics.getHeight();
-		int width = fontMetrics.stringWidth(score);
-		int textX1 = rectangle.x + (rectangle.width - width) / 2;
-		int textY1 = rectangle.y + TetrisConstants.BLOCK_SIZE - (TetrisConstants.BLOCK_SIZE - height);
+        int height = fontMetrics.getHeight();
+        int width = fontMetrics.stringWidth(score);
+        int textX1 = rectangle.x + (rectangle.width - width) / 2;
+        int textY1 = rectangle.y + TetrisConstants.BLOCK_SIZE - (TetrisConstants.BLOCK_SIZE - height);
 
-		graphics.setColor(scoreContainer.getFontColor());
-		graphics.setFont(scoreContainer.getFont());
+        graphics.setColor(scoreContainer.getFontColor());
+        graphics.setFont(scoreContainer.getFont());
 
-		graphics.drawString(score, textX1, textY1);
-	}
+        graphics.drawString(score, textX1, textY1);
+    }
 
-	private void renderLevel(Tetris tetris, Graphics2D graphics) {
-		renderContainer(graphics, levelContainer);
+    private void renderLevel(Tetris tetris, Graphics2D graphics) {
+        renderContainer(graphics, levelContainer);
 
-		Rectangle rectangle = levelContainer.getRectangle();
+        Rectangle rectangle = levelContainer.getRectangle();
 
-		FontMetrics fontMetrics = graphics.getFontMetrics();
+        FontMetrics fontMetrics = graphics.getFontMetrics();
 
-		String score = String.valueOf(tetris.getLevel());
+        String score = String.valueOf(tetris.getLevel());
 
-		int height = fontMetrics.getHeight();
-		int width = fontMetrics.stringWidth(score);
-		int textX1 = rectangle.x + (rectangle.width - width) / 2;
-		int textY1 = rectangle.y + TetrisConstants.BLOCK_SIZE - (TetrisConstants.BLOCK_SIZE - height);
+        int height = fontMetrics.getHeight();
+        int width = fontMetrics.stringWidth(score);
+        int textX1 = rectangle.x + (rectangle.width - width) / 2;
+        int textY1 = rectangle.y + TetrisConstants.BLOCK_SIZE - (TetrisConstants.BLOCK_SIZE - height);
 
-		graphics.setColor(levelContainer.getFontColor());
-		graphics.setFont(levelContainer.getFont());
+        graphics.setColor(levelContainer.getFontColor());
+        graphics.setFont(levelContainer.getFont());
 
-		graphics.drawString(score, textX1, textY1);
-	}
+        graphics.drawString(score, textX1, textY1);
+    }
 
-	private void renderNextShape(Tetris tetris, Graphics2D graphics) {
-		renderContainer(graphics, nextShapeContainer);
+    private void renderNextShape(Tetris tetris, Graphics2D graphics) {
+        renderContainer(graphics, nextShapeContainer);
 
-		Shape nextShape = tetris.getNextShape();
+        Shape nextShape = tetris.getNextShape();
 
-		nextShape.getBlocks().stream().forEach(block -> renderBlock(graphics, block, 12, 8));
-	}
+        nextShape.getBlocks().stream().forEach(block -> renderBlock(graphics, block, 12, 8));
+    }
 
-	private void renderContainer(Graphics2D graphics, Container container) {
-		Color color = container.getColor();
-		Rectangle rectangle = container.getRectangle();
+    private void renderContainer(Graphics2D graphics, Container container) {
+        Color color = container.getColor();
+        Rectangle rectangle = container.getRectangle();
 
-		graphics.setColor(color);
+        graphics.setColor(color);
 
-		graphics.drawLine(rectangle.x, rectangle.y, rectangle.x + rectangle.width - 1, rectangle.y);
-		graphics.drawLine(rectangle.x, rectangle.y + rectangle.height - 1, rectangle.x + rectangle.width - 1,
-				rectangle.y + rectangle.height - 1);
+        graphics.drawLine(rectangle.x, rectangle.y, rectangle.x + rectangle.width - 1, rectangle.y);
+        graphics.drawLine(rectangle.x, rectangle.y + rectangle.height - 1, rectangle.x + rectangle.width - 1,
+            rectangle.y + rectangle.height - 1);
 
-		graphics.drawLine(rectangle.x, rectangle.y, rectangle.x, rectangle.y + rectangle.height - 1);
-		graphics.drawLine(rectangle.x + rectangle.width - 1, rectangle.y, rectangle.x + rectangle.width - 1,
-				rectangle.y + rectangle.height - 1);
+        graphics.drawLine(rectangle.x, rectangle.y, rectangle.x, rectangle.y + rectangle.height - 1);
+        graphics.drawLine(rectangle.x + rectangle.width - 1, rectangle.y, rectangle.x + rectangle.width - 1,
+            rectangle.y + rectangle.height - 1);
 
-		String title = container.getTitle();
+        String title = container.getTitle();
 
-		if (title == null) {
-			return;
-		}
+        if (title == null) {
+            return;
+        }
 
-		graphics.setColor(container.getFontColor());
-		graphics.setFont(container.getFont());
+        graphics.setColor(container.getFontColor());
+        graphics.setFont(container.getFont());
 
-		FontMetrics fontMetrics = graphics.getFontMetrics();
+        FontMetrics fontMetrics = graphics.getFontMetrics();
 
-		int height = fontMetrics.getHeight();
-		int width = fontMetrics.stringWidth(title);
-		int textX1 = rectangle.x + (rectangle.width - width) / 2;
-		int textY1 = rectangle.y - (TetrisConstants.BLOCK_SIZE - height);
+        int height = fontMetrics.getHeight();
+        int width = fontMetrics.stringWidth(title);
+        int textX1 = rectangle.x + (rectangle.width - width) / 2;
+        int textY1 = rectangle.y - (TetrisConstants.BLOCK_SIZE - height);
 
-		graphics.drawString(title, textX1, textY1);
-	}
+        graphics.drawString(title, textX1, textY1);
+    }
 
-	private void renderBlock(Graphics2D graphics, Block block, int dx, int dy) {
-		ShapeType shapeType = block.getShape().getShapeType();
+    private void renderBlock(Graphics2D graphics, Block block, int dx, int dy) {
+        ShapeType shapeType = block.getShape().getShapeType();
 
-		Image image = blockImageFactory.createBlockImage(shapeType);
+        Image image = blockImageFactory.createBlockImage(shapeType);
 
-		int dx1 = dx * TetrisConstants.BLOCK_SIZE + block.getLocation().x * TetrisConstants.BLOCK_SIZE
-				+ TetrisConstants.BLOCK_SIZE;
-		int dx2 = dx1 + TetrisConstants.BLOCK_SIZE;
-		int dy1 = dy * TetrisConstants.BLOCK_SIZE + block.getLocation().y * TetrisConstants.BLOCK_SIZE
-				+ TetrisConstants.BLOCK_SIZE;
-		int dy2 = dy1 + TetrisConstants.BLOCK_SIZE;
-		int sx2 = image.getWidth(null);
-		int sy2 = image.getHeight(null);
+        int dx1 = dx * TetrisConstants.BLOCK_SIZE + block.getLocation().x * TetrisConstants.BLOCK_SIZE
+                + TetrisConstants.BLOCK_SIZE;
+        int dx2 = dx1 + TetrisConstants.BLOCK_SIZE;
+        int dy1 = dy * TetrisConstants.BLOCK_SIZE + block.getLocation().y * TetrisConstants.BLOCK_SIZE
+                + TetrisConstants.BLOCK_SIZE;
+        int dy2 = dy1 + TetrisConstants.BLOCK_SIZE;
+        int sx2 = image.getWidth(null);
+        int sy2 = image.getHeight(null);
 
-		graphics.drawImage(image, dx1, dy1, dx2, dy2, 0, 0, sx2, sy2, null);
-	}
+        graphics.drawImage(image, dx1, dy1, dx2, dy2, 0, 0, sx2, sy2, null);
+    }
 
-	private static Container createTetrisContainer() {
-		Container container = new Container();
+    private static Container createTetrisContainer() {
+        Container container = new Container();
 
-		Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE,
-				TetrisConstants.BLOCK_SIZE * TetrisConstants.WIDTH,
-				TetrisConstants.BLOCK_SIZE * (TetrisConstants.HEIGHT - 2));
+        Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE,
+                TetrisConstants.BLOCK_SIZE * TetrisConstants.WIDTH,
+                TetrisConstants.BLOCK_SIZE * (TetrisConstants.HEIGHT - 2));
 
-		container.setColor(Color.GRAY);
-		container.setRectangle(rectangle);
+        container.setColor(Color.GRAY);
+        container.setRectangle(rectangle);
 
-		return container;
-	}
+        return container;
+    }
 
-	private Container createNextShapeContainer() {
-		Container container = new Container();
+    private Container createNextShapeContainer() {
+        Container container = new Container();
 
-		Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE * (TetrisConstants.WIDTH + 2),
-				8 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 6);
+        Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE * (TetrisConstants.WIDTH + 2),
+                8 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 6);
 
-		container.setColor(Color.GRAY);
-		container.setRectangle(rectangle);
-		container.setTitle(NEXT_SHAPE);
-		container.setFont(defaultFont);
-		container.setFontColor(Color.LIGHT_GRAY);
+        container.setColor(Color.GRAY);
+        container.setRectangle(rectangle);
+        container.setTitle(NEXT_SHAPE);
+        container.setFont(defaultFont);
+        container.setFontColor(Color.LIGHT_GRAY);
 
-		return container;
-	}
+        return container;
+    }
 
-	private Container createLevelContainer() {
-		Container container = new Container();
+    private Container createLevelContainer() {
+        Container container = new Container();
 
-		Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE * (TetrisConstants.WIDTH + 2),
-				2 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 1);
+        Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE * (TetrisConstants.WIDTH + 2),
+                2 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 1);
 
-		container.setColor(Color.GRAY);
-		container.setRectangle(rectangle);
-		container.setTitle(LEVEL);
-		container.setFont(defaultFont);
-		container.setFontColor(Color.LIGHT_GRAY);
+        container.setColor(Color.GRAY);
+        container.setRectangle(rectangle);
+        container.setTitle(LEVEL);
+        container.setFont(defaultFont);
+        container.setFontColor(Color.LIGHT_GRAY);
 
-		return container;
-	}
+        return container;
+    }
 
-	private Container createScoreContainer() {
-		Container container = new Container();
+    private Container createScoreContainer() {
+        Container container = new Container();
 
-		Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE * (TetrisConstants.WIDTH + 2),
-				5 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 1);
+        Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE * (TetrisConstants.WIDTH + 2),
+                5 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 1);
 
-		container.setColor(Color.GRAY);
-		container.setRectangle(rectangle);
-		container.setTitle(SCORE);
-		container.setFont(defaultFont);
-		container.setFontColor(Color.LIGHT_GRAY);
+        container.setColor(Color.GRAY);
+        container.setRectangle(rectangle);
+        container.setTitle(SCORE);
+        container.setFont(defaultFont);
+        container.setFontColor(Color.LIGHT_GRAY);
 
-		return container;
-	}
+        return container;
+    }
 }
