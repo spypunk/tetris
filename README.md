@@ -1,6 +1,6 @@
 # tetris
 
-## How it looks like ?
+## How it looks ?
 
 ![alt tag](img/screenshot.png)
 
