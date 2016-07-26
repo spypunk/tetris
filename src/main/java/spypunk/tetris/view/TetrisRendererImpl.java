@@ -19,6 +19,7 @@ import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.util.SwingUtils;
+import spypunk.tetris.view.Container.Builder;
 
 @Singleton
 public class TetrisRendererImpl implements TetrisRenderer {
@@ -80,47 +81,20 @@ public class TetrisRendererImpl implements TetrisRenderer {
         renderContainer(graphics, tetrisContainer);
 
         tetris.getBlocks().values().stream().filter(Optional::isPresent)
-                .filter(block -> block.get().getLocation().y >= 2)
-                .forEach(block -> renderBlock(graphics, block.get(), TetrisConstants.BLOCK_SIZE,
+                .map(Optional::get)
+                .filter(block -> block.getLocation().y >= 2)
+                .forEach(block -> renderBlock(graphics, block, TetrisConstants.BLOCK_SIZE,
                     -TetrisConstants.BLOCK_SIZE));
     }
 
     private void renderScore(Tetris tetris, Graphics2D graphics) {
         renderContainer(graphics, scoreContainer);
-
-        Rectangle rectangle = scoreContainer.getRectangle();
-
-        FontMetrics fontMetrics = graphics.getFontMetrics();
-
-        String score = String.valueOf(tetris.getScore());
-
-        int height = fontMetrics.getHeight();
-        int width = fontMetrics.stringWidth(score);
-        int textX1 = rectangle.x + (rectangle.width - width) / 2;
-        int textY1 = rectangle.y + TetrisConstants.BLOCK_SIZE - (TetrisConstants.BLOCK_SIZE - height);
-
-        graphics.setColor(scoreContainer.getFontColor());
-        graphics.setFont(scoreContainer.getFont());
-        graphics.drawString(score, textX1, textY1);
+        renderTextInContainer(graphics, String.valueOf(tetris.getScore()), scoreContainer);
     }
 
     private void renderLevel(Tetris tetris, Graphics2D graphics) {
         renderContainer(graphics, levelContainer);
-
-        Rectangle rectangle = levelContainer.getRectangle();
-
-        FontMetrics fontMetrics = graphics.getFontMetrics();
-
-        String score = String.valueOf(tetris.getLevel());
-
-        int height = fontMetrics.getHeight();
-        int width = fontMetrics.stringWidth(score);
-        int textX1 = rectangle.x + (rectangle.width - width) / 2;
-        int textY1 = rectangle.y + TetrisConstants.BLOCK_SIZE - (TetrisConstants.BLOCK_SIZE - height);
-
-        graphics.setColor(levelContainer.getFontColor());
-        graphics.setFont(levelContainer.getFont());
-        graphics.drawString(score, textX1, textY1);
+        renderTextInContainer(graphics, String.valueOf(tetris.getLevel()), levelContainer);
     }
 
     private void renderNextShape(Tetris tetris, Graphics2D graphics) {
@@ -129,7 +103,7 @@ public class TetrisRendererImpl implements TetrisRenderer {
         Shape nextShape = tetris.getNextShape();
 
         Rectangle containerRectangle = nextShapeContainer.getRectangle();
-        
+
         Rectangle boundingBox = nextShape.getBoundingBox();
 
         int dx = containerRectangle.x + (containerRectangle.width - boundingBox.width * TetrisConstants.BLOCK_SIZE) / 2;
@@ -188,61 +162,51 @@ public class TetrisRendererImpl implements TetrisRenderer {
         graphics.drawImage(image, dx1, dy1, dx2, dy2, 0, 0, sx2, sy2, null);
     }
 
-    private static Container createTetrisContainer() {
-        Container container = new Container();
+    private void renderTextInContainer(Graphics2D graphics, String text, Container container) {
+        Rectangle rectangle = container.getRectangle();
 
+        FontMetrics fontMetrics = graphics.getFontMetrics();
+
+        int height = fontMetrics.getHeight();
+        int width = fontMetrics.stringWidth(text);
+        int x1 = rectangle.x + (rectangle.width - width) / 2;
+        int y1 = rectangle.y + TetrisConstants.BLOCK_SIZE - (TetrisConstants.BLOCK_SIZE - height);
+
+        graphics.setColor(scoreContainer.getFontColor());
+        graphics.setFont(scoreContainer.getFont());
+        graphics.drawString(text, x1, y1);
+    }
+
+    private Container createTetrisContainer() {
         Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE,
                 TetrisConstants.BLOCK_SIZE * TetrisConstants.WIDTH,
                 TetrisConstants.BLOCK_SIZE * (TetrisConstants.HEIGHT - 2));
 
-        container.setColor(Color.GRAY);
-        container.setRectangle(rectangle);
-
-        return container;
+        return defaultContainerBuilder(rectangle).build();
     }
 
     private Container createNextShapeContainer() {
-        Container container = new Container();
-
         Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE * (TetrisConstants.WIDTH + 2),
                 8 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 6);
 
-        container.setColor(Color.GRAY);
-        container.setRectangle(rectangle);
-        container.setTitle(NEXT_SHAPE);
-        container.setFont(defaultFont);
-        container.setFontColor(Color.LIGHT_GRAY);
-
-        return container;
+        return defaultContainerBuilder(rectangle).setTitle(NEXT_SHAPE).build();
     }
 
     private Container createLevelContainer() {
-        Container container = new Container();
-
         Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE * (TetrisConstants.WIDTH + 2),
                 2 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 1);
 
-        container.setColor(Color.GRAY);
-        container.setRectangle(rectangle);
-        container.setTitle(LEVEL);
-        container.setFont(defaultFont);
-        container.setFontColor(Color.LIGHT_GRAY);
-
-        return container;
+        return defaultContainerBuilder(rectangle).setTitle(LEVEL).build();
     }
 
     private Container createScoreContainer() {
-        Container container = new Container();
-
         Rectangle rectangle = new Rectangle(TetrisConstants.BLOCK_SIZE * (TetrisConstants.WIDTH + 2),
                 5 * TetrisConstants.BLOCK_SIZE, TetrisConstants.BLOCK_SIZE * 6, TetrisConstants.BLOCK_SIZE * 1);
 
-        container.setColor(Color.GRAY);
-        container.setRectangle(rectangle);
-        container.setTitle(SCORE);
-        container.setFont(defaultFont);
-        container.setFontColor(Color.LIGHT_GRAY);
+        return defaultContainerBuilder(rectangle).setTitle(SCORE).build();
+    }
 
-        return container;
+    private Builder defaultContainerBuilder(Rectangle rectangle) {
+        return Container.Builder.instance().setFont(defaultFont).setRectangle(rectangle);
     }
 }
