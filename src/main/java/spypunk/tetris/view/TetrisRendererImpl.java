@@ -101,7 +101,6 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         graphics.setColor(scoreContainer.getFontColor());
         graphics.setFont(scoreContainer.getFont());
-
         graphics.drawString(score, textX1, textY1);
     }
 
@@ -121,7 +120,6 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         graphics.setColor(levelContainer.getFontColor());
         graphics.setFont(levelContainer.getFont());
-
         graphics.drawString(score, textX1, textY1);
     }
 
