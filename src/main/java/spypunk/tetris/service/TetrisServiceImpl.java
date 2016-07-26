@@ -49,15 +49,27 @@ public class TetrisServiceImpl implements TetrisService {
             return;
         }
 
-        handleMovement(tetris);
+        Optional<Movement> movement = tetris.getMovement();
 
-        if (checkShapeIsLocked(tetris)) {
+        if (movement.isPresent() && !handleMovement(tetris, movement.get())) {
             return;
         }
 
         if (isTimeToMoveShape(tetris)) {
             moveShape(tetris, Movement.DOWN);
         }
+    }
+
+    private boolean handleMovement(Tetris tetris, Movement movement) {
+        if (Movement.DOWN.equals(movement) || canShapeMove(tetris, movement)) {
+            moveShape(tetris, movement);
+            
+            if (checkShapeIsLocked(tetris)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private boolean checkShapeIsLocked(Tetris tetris) {
@@ -73,14 +85,6 @@ public class TetrisServiceImpl implements TetrisService {
         }
 
         return false;
-    }
-
-    private void handleMovement(Tetris tetris) {
-        Optional<Movement> movement = tetris.getMovement();
-
-        if (movement.isPresent() && canShapeMove(tetris, movement.get())) {
-            moveShape(tetris, movement.get());
-        }
     }
 
     private void getNextShape(Tetris tetris) {
