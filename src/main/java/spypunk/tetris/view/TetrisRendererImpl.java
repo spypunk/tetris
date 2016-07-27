@@ -1,41 +1,27 @@
 package spypunk.tetris.view;
 
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.google.common.collect.Lists;
-
 import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.factory.BlockImageFactory;
-import spypunk.tetris.factory.FontFactory;
+import spypunk.tetris.factory.ContainerFactory;
 import spypunk.tetris.model.Block;
 import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.util.SwingUtils;
 import spypunk.tetris.view.component.Container;
-import spypunk.tetris.view.component.Container.Builder;
 
 @Singleton
 public class TetrisRendererImpl implements TetrisRenderer {
-
-    private static final float DEFAULT_FONT_SIZE = 32.0f;
-
-    private static final String SCORE = "SCORE";
-
-    private static final String LEVEL = "LEVEL";
-
-    private static final String NEXT_SHAPE = "NEXT SHAPE";
-
-    private static final String ROWS = "ROWS";
 
     @Inject
     private TetrisFrame tetrisFrame;
@@ -46,31 +32,8 @@ public class TetrisRendererImpl implements TetrisRenderer {
     @Inject
     private BlockImageFactory blockImageFactory;
 
-    private final Container tetrisContainer;
-
-    private final Container nextShapeContainer;
-
-    private final Container levelContainer;
-
-    private final Container scoreContainer;
-
-    private final Container rowsContainer;
-
-    private final List<Container> containers;
-
-    private final Font defaultFont;
-
     @Inject
-    public TetrisRendererImpl(FontFactory fontFactory) {
-        defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
-        tetrisContainer = createTetrisContainer();
-        nextShapeContainer = createNextShapeContainer();
-        levelContainer = createLevelContainer();
-        scoreContainer = createScoreContainer();
-        rowsContainer = createRowsContainer();
-        containers = Lists.newArrayList(tetrisContainer, nextShapeContainer, levelContainer,
-            scoreContainer, rowsContainer);
-    }
+    private ContainerFactory containerFactory;
 
     @Override
     public void start() {
@@ -83,7 +46,6 @@ public class TetrisRendererImpl implements TetrisRenderer {
     }
 
     private void doRender(Tetris tetris, Graphics2D graphics) {
-        renderContainers(graphics);
         renderBlocks(tetris, graphics);
         renderLevel(tetris, graphics);
         renderScore(tetris, graphics);
@@ -91,11 +53,9 @@ public class TetrisRendererImpl implements TetrisRenderer {
         renderNextShape(tetris, graphics);
     }
 
-    private void renderContainers(Graphics2D graphics) {
-        containers.forEach(container -> container.render(graphics));
-    }
-
     private void renderBlocks(Tetris tetris, Graphics2D graphics) {
+        containerFactory.createTetrisContainer().render(graphics);
+
         tetris.getBlocks().values().stream().filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(block -> block.getLocation().y >= 2)
@@ -104,18 +64,30 @@ public class TetrisRendererImpl implements TetrisRenderer {
     }
 
     private void renderScore(Tetris tetris, Graphics2D graphics) {
+        Container scoreContainer = containerFactory.createScoreContainer();
+        scoreContainer.render(graphics);
+
         renderTextInContainer(graphics, String.valueOf(tetris.getScore()), scoreContainer);
     }
 
     private void renderRows(Tetris tetris, Graphics2D graphics) {
+        Container rowsContainer = containerFactory.createRowsContainer();
+        rowsContainer.render(graphics);
+
         renderTextInContainer(graphics, String.valueOf(tetris.getCompletedRows()), rowsContainer);
     }
 
     private void renderLevel(Tetris tetris, Graphics2D graphics) {
+        Container levelContainer = containerFactory.createLevelContainer();
+        levelContainer.render(graphics);
+
         renderTextInContainer(graphics, String.valueOf(tetris.getLevel()), levelContainer);
     }
 
     private void renderNextShape(Tetris tetris, Graphics2D graphics) {
+        Container nextShapeContainer = containerFactory.createNextShapeContainer();
+        nextShapeContainer.render(graphics);
+
         Shape nextShape = tetris.getNextShape();
         Rectangle containerRectangle = nextShapeContainer.getRectangle();
         Rectangle boundingBox = nextShape.getBoundingBox();
@@ -149,6 +121,14 @@ public class TetrisRendererImpl implements TetrisRenderer {
     private void renderTextInContainer(Graphics2D graphics, String text, Container container) {
         Rectangle rectangle = container.getRectangle();
 
+        Point location = getCenteredTextLocation(graphics, text, rectangle);
+
+        graphics.setColor(container.getFontColor());
+        graphics.setFont(container.getFont());
+        graphics.drawString(text, location.x, location.y);
+    }
+
+    private Point getCenteredTextLocation(Graphics2D graphics, String text, Rectangle rectangle) {
         FontMetrics fontMetrics = graphics.getFontMetrics();
 
         int x = rectangle.x * TetrisConstants.BLOCK_SIZE;
@@ -156,45 +136,9 @@ public class TetrisRendererImpl implements TetrisRenderer {
         int width = rectangle.width * TetrisConstants.BLOCK_SIZE;
         int textHeight = fontMetrics.getHeight();
         int textWidth = fontMetrics.stringWidth(text);
-        int x1 = x + (width - textWidth) / 2;
-        int y1 = y + TetrisConstants.BLOCK_SIZE - (TetrisConstants.BLOCK_SIZE - textHeight);
+        int centeredX = x + (width - textWidth) / 2;
+        int centeredY = y + TetrisConstants.BLOCK_SIZE - (TetrisConstants.BLOCK_SIZE - textHeight);
 
-        graphics.setColor(scoreContainer.getFontColor());
-        graphics.setFont(scoreContainer.getFont());
-        graphics.drawString(text, x1, y1);
-    }
-
-    private Container createTetrisContainer() {
-        Rectangle rectangle = new Rectangle(1, 1, TetrisConstants.WIDTH, TetrisConstants.HEIGHT - 2);
-
-        return defaultContainerBuilder(rectangle).build();
-    }
-
-    private Container createLevelContainer() {
-        Rectangle rectangle = new Rectangle(TetrisConstants.WIDTH + 2, 2, 6, 1);
-
-        return defaultContainerBuilder(rectangle).setTitle(LEVEL).build();
-    }
-
-    private Container createScoreContainer() {
-        Rectangle rectangle = new Rectangle(TetrisConstants.WIDTH + 2, 5, 6, 1);
-
-        return defaultContainerBuilder(rectangle).setTitle(SCORE).build();
-    }
-
-    private Container createRowsContainer() {
-        Rectangle rectangle = new Rectangle(TetrisConstants.WIDTH + 2, 8, 6, 1);
-
-        return defaultContainerBuilder(rectangle).setTitle(ROWS).build();
-    }
-
-    private Container createNextShapeContainer() {
-        Rectangle rectangle = new Rectangle(TetrisConstants.WIDTH + 2, 11, 6, 6);
-
-        return defaultContainerBuilder(rectangle).setTitle(NEXT_SHAPE).build();
-    }
-
-    private Builder defaultContainerBuilder(Rectangle rectangle) {
-        return Container.Builder.instance().setFont(defaultFont).setRectangle(rectangle);
+        return new Point(centeredX, centeredY);
     }
 }

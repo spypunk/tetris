@@ -36,13 +36,13 @@ public class TetrisCanvasImpl implements TetrisCanvas {
 
     private final TetrisController gameController;
 
-    private final Canvas canvas;
+    private final BufferStrategy bufferStrategy;
 
     @Inject
     public TetrisCanvasImpl(TetrisController gameController, TetrisFrame gameFrame) {
         this.gameController = gameController;
 
-        canvas = new Canvas();
+        Canvas canvas = new Canvas();
 
         canvas.setPreferredSize(DEFAULT_DIMENSION);
         canvas.setIgnoreRepaint(true);
@@ -51,17 +51,14 @@ public class TetrisCanvasImpl implements TetrisCanvas {
 
         gameFrame.getContentPane().add(canvas, BorderLayout.CENTER);
         gameFrame.pack();
+
+        canvas.createBufferStrategy(BUFFER_STATEGIES);
+
+        bufferStrategy = canvas.getBufferStrategy();
     }
 
     @Override
     public void render(Consumer<Graphics2D> consumer) {
-        BufferStrategy bufferStrategy = canvas.getBufferStrategy();
-
-        if (bufferStrategy == null) {
-            canvas.createBufferStrategy(BUFFER_STATEGIES);
-            bufferStrategy = canvas.getBufferStrategy();
-        }
-
         do {
             do {
                 final Graphics2D graphics = (Graphics2D) bufferStrategy.getDrawGraphics();

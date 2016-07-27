@@ -15,6 +15,8 @@ import spypunk.tetris.exception.TetrisException;
 @Singleton
 public class FontFactoryImpl implements FontFactory {
 
+    private static final float DEFAULT_FONT_SIZE = 32.0f;
+
     private static final String DEFAULT_FONT_NAME = "default.ttf";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FontFactoryImpl.class);
@@ -25,7 +27,8 @@ public class FontFactoryImpl implements FontFactory {
 
     public FontFactoryImpl() {
         try {
-            defaultFont = Font.createFont(Font.TRUETYPE_FONT, new File(FONTS_FOLDER, DEFAULT_FONT_NAME));
+            defaultFont = Font.createFont(Font.TRUETYPE_FONT, new File(FONTS_FOLDER, DEFAULT_FONT_NAME))
+                    .deriveFont(DEFAULT_FONT_SIZE);
         } catch (FontFormatException | IOException e) {
             LOGGER.error(e.getMessage(), e);
             throw new TetrisException(e);
@@ -33,7 +36,7 @@ public class FontFactoryImpl implements FontFactory {
     }
 
     @Override
-    public Font createDefaultFont(float size) {
-        return defaultFont.deriveFont(size);
+    public Font createDefaultFont() {
+        return defaultFont;
     }
 }
