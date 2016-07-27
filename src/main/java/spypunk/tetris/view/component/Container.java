@@ -1,8 +1,12 @@
-package spypunk.tetris.view;
+package spypunk.tetris.view.component;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
+
+import spypunk.tetris.constants.TetrisConstants;
 
 public class Container {
 
@@ -56,6 +60,36 @@ public class Container {
     private Font font;
 
     private Color fontColor = Color.LIGHT_GRAY;
+
+    public void render(Graphics2D graphics) {
+        graphics.setColor(color);
+
+        int x = rectangle.x * TetrisConstants.BLOCK_SIZE;
+        int y = rectangle.y * TetrisConstants.BLOCK_SIZE;
+        int width = rectangle.width * TetrisConstants.BLOCK_SIZE;
+        int height = rectangle.height * TetrisConstants.BLOCK_SIZE;
+
+        graphics.drawLine(x, y, x + width - 1, y);
+        graphics.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
+        graphics.drawLine(x, y, x, y + height - 1);
+        graphics.drawLine(x + width - 1, y, x + width - 1, y + height - 1);
+
+        if (title == null) {
+            return;
+        }
+
+        graphics.setColor(fontColor);
+        graphics.setFont(font);
+
+        FontMetrics fontMetrics = graphics.getFontMetrics();
+
+        int textHeight = fontMetrics.getHeight();
+        int textWidth = fontMetrics.stringWidth(title);
+        int textX1 = x + (width - textWidth) / 2;
+        int textY1 = y - (TetrisConstants.BLOCK_SIZE - textHeight);
+
+        graphics.drawString(title, textX1, textY1);
+    }
 
     public Rectangle getRectangle() {
         return rectangle;

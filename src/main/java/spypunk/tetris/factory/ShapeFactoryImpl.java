@@ -13,7 +13,6 @@ import javax.inject.Singleton;
 import spypunk.tetris.model.Block;
 import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
-import spypunk.tetris.repository.ShapeTypeRepository;
 
 @Singleton
 public class ShapeFactoryImpl implements ShapeFactory {
@@ -23,8 +22,8 @@ public class ShapeFactoryImpl implements ShapeFactory {
     private final List<ShapeType> shapeTypes;
 
     @Inject
-    public ShapeFactoryImpl(ShapeTypeRepository shapeTypeRepository) {
-        shapeTypes = shapeTypeRepository.findAll();
+    public ShapeFactoryImpl(ShapeTypeFactory shapeTypeFactory) {
+        shapeTypes = shapeTypeFactory.createAll();
     }
 
     @Override

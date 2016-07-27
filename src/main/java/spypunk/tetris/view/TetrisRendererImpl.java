@@ -1,11 +1,11 @@
 package spypunk.tetris.view;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -21,7 +21,8 @@ import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.util.SwingUtils;
-import spypunk.tetris.view.Container.Builder;
+import spypunk.tetris.view.component.Container;
+import spypunk.tetris.view.component.Container.Builder;
 
 @Singleton
 public class TetrisRendererImpl implements TetrisRenderer {
@@ -55,6 +56,8 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
     private final Container rowsContainer;
 
+    private final List<Container> containers;
+
     private final Font defaultFont;
 
     @Inject
@@ -65,6 +68,8 @@ public class TetrisRendererImpl implements TetrisRenderer {
         levelContainer = createLevelContainer();
         scoreContainer = createScoreContainer();
         rowsContainer = createRowsContainer();
+        containers = Lists.newArrayList(tetrisContainer, nextShapeContainer, levelContainer,
+            scoreContainer, rowsContainer);
     }
 
     @Override
@@ -78,14 +83,16 @@ public class TetrisRendererImpl implements TetrisRenderer {
     }
 
     private void doRender(Tetris tetris, Graphics2D graphics) {
-        Lists.newArrayList(tetrisContainer, nextShapeContainer, levelContainer,
-            scoreContainer, rowsContainer).forEach(container -> renderContainer(graphics, container));
-
+        renderContainers(graphics);
         renderBlocks(tetris, graphics);
         renderLevel(tetris, graphics);
         renderScore(tetris, graphics);
         renderRows(tetris, graphics);
         renderNextShape(tetris, graphics);
+    }
+
+    private void renderContainers(Graphics2D graphics) {
+        containers.forEach(container -> container.render(graphics));
     }
 
     private void renderBlocks(Tetris tetris, Graphics2D graphics) {
@@ -122,41 +129,6 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         nextShape.getBlocks().stream().forEach(
             block -> renderBlock(graphics, block, dx, dy));
-    }
-
-    private void renderContainer(Graphics2D graphics, Container container) {
-        Color color = container.getColor();
-        Rectangle rectangle = container.getRectangle();
-
-        graphics.setColor(color);
-
-        int x = rectangle.x * TetrisConstants.BLOCK_SIZE;
-        int y = rectangle.y * TetrisConstants.BLOCK_SIZE;
-        int width = rectangle.width * TetrisConstants.BLOCK_SIZE;
-        int height = rectangle.height * TetrisConstants.BLOCK_SIZE;
-
-        graphics.drawLine(x, y, x + width - 1, y);
-        graphics.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
-        graphics.drawLine(x, y, x, y + height - 1);
-        graphics.drawLine(x + width - 1, y, x + width - 1, y + height - 1);
-
-        String title = container.getTitle();
-
-        if (title == null) {
-            return;
-        }
-
-        graphics.setColor(container.getFontColor());
-        graphics.setFont(container.getFont());
-
-        FontMetrics fontMetrics = graphics.getFontMetrics();
-
-        int textHeight = fontMetrics.getHeight();
-        int textWidth = fontMetrics.stringWidth(title);
-        int textX1 = x + (width - textWidth) / 2;
-        int textY1 = y - (TetrisConstants.BLOCK_SIZE - textHeight);
-
-        graphics.drawString(title, textX1, textY1);
     }
 
     private void renderBlock(Graphics2D graphics, Block block, int dx, int dy) {

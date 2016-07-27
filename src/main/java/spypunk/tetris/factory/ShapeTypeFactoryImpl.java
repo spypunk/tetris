@@ -1,4 +1,4 @@
-package spypunk.tetris.repository;
+package spypunk.tetris.factory;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -14,7 +14,7 @@ import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.ShapeType.Id;
 
 @Singleton
-public class ShapeTypeRepositoryImpl implements ShapeTypeRepository {
+public class ShapeTypeFactoryImpl implements ShapeTypeFactory {
 
     private static final Point LOCATION_0_0 = new Point(0, 0);
     private static final Point LOCATION_0_1 = new Point(0, 1);
@@ -32,7 +32,7 @@ public class ShapeTypeRepositoryImpl implements ShapeTypeRepository {
 
     private final List<ShapeType> shapeTypes = Lists.newArrayList();
 
-    public ShapeTypeRepositoryImpl() {
+    public ShapeTypeFactoryImpl() {
         shapeTypes.add(createOShapeType());
         shapeTypes.add(createIShapeType());
         shapeTypes.add(createJShapeType());
@@ -43,7 +43,7 @@ public class ShapeTypeRepositoryImpl implements ShapeTypeRepository {
     }
 
     @Override
-    public List<ShapeType> findAll() {
+    public List<ShapeType> createAll() {
         return shapeTypes;
     }
 

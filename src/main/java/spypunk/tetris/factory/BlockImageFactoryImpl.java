@@ -16,7 +16,6 @@ import com.google.common.collect.Maps;
 
 import spypunk.tetris.exception.TetrisException;
 import spypunk.tetris.model.ShapeType;
-import spypunk.tetris.repository.ShapeTypeRepository;
 
 @Singleton
 public class BlockImageFactoryImpl implements BlockImageFactory {
@@ -28,8 +27,8 @@ public class BlockImageFactoryImpl implements BlockImageFactory {
     private final Map<ShapeType, Image> imagesCache = Maps.newHashMap();
 
     @Inject
-    public BlockImageFactoryImpl(ImageFactory imageFactory, ShapeTypeRepository shapeTypeRepository) {
-        List<ShapeType> shapeTypes = shapeTypeRepository.findAll();
+    public BlockImageFactoryImpl(ImageFactory imageFactory, ShapeTypeFactory shapeTypeFactory) {
+        List<ShapeType> shapeTypes = shapeTypeFactory.createAll();
 
         try {
             for (ShapeType shapeType : shapeTypes) {

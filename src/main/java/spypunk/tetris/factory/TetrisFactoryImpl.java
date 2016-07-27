@@ -16,7 +16,6 @@ import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.model.Block;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
-import spypunk.tetris.repository.ShapeTypeRepository;
 
 @Singleton
 public class TetrisFactoryImpl implements TetrisFactory {
@@ -25,7 +24,7 @@ public class TetrisFactoryImpl implements TetrisFactory {
     private ShapeFactory shapeFactory;
 
     @Inject
-    private ShapeTypeRepository shapeTypeRepository;
+    private ShapeTypeFactory shapeTypeFactory;
 
     @Override
     public Tetris createTetris() {
@@ -34,7 +33,7 @@ public class TetrisFactoryImpl implements TetrisFactory {
         IntStream.range(0, TetrisConstants.WIDTH).forEach(x -> IntStream.range(0, TetrisConstants.HEIGHT)
                 .forEach(y -> blocks.put(new Point(x, y), Optional.empty())));
 
-        List<ShapeType> shapeTypes = shapeTypeRepository.findAll();
+        List<ShapeType> shapeTypes = shapeTypeFactory.createAll();
 
         Map<ShapeType, Integer> shapesStatistics = shapeTypes.stream()
                 .collect(Collectors.toMap(shapeType -> shapeType, shapeType -> 0));
