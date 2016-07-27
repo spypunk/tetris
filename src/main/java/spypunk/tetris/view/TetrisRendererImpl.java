@@ -1,6 +1,5 @@
 package spypunk.tetris.view;
 
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
@@ -119,26 +118,13 @@ public class TetrisRendererImpl implements TetrisRenderer {
     }
 
     private void renderTextInContainer(Graphics2D graphics, String text, Container container) {
-        Rectangle rectangle = container.getRectangle();
-
-        Point location = getCenteredTextLocation(graphics, text, rectangle);
-
         graphics.setColor(container.getFontColor());
         graphics.setFont(container.getFont());
+
+        Rectangle rectangle = container.getRectangle();
+
+        Point location = SwingUtils.getCenteredTextLocation(graphics, text, rectangle);
+
         graphics.drawString(text, location.x, location.y);
-    }
-
-    private Point getCenteredTextLocation(Graphics2D graphics, String text, Rectangle rectangle) {
-        FontMetrics fontMetrics = graphics.getFontMetrics();
-
-        int x = rectangle.x * TetrisConstants.BLOCK_SIZE;
-        int y = rectangle.y * TetrisConstants.BLOCK_SIZE;
-        int width = rectangle.width * TetrisConstants.BLOCK_SIZE;
-        int textHeight = fontMetrics.getHeight();
-        int textWidth = fontMetrics.stringWidth(text);
-        int centeredX = x + (width - textWidth) / 2;
-        int centeredY = y + TetrisConstants.BLOCK_SIZE - (TetrisConstants.BLOCK_SIZE - textHeight);
-
-        return new Point(centeredX, centeredY);
     }
 }

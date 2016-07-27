@@ -15,7 +15,7 @@ import spypunk.tetris.exception.TetrisException;
 @Singleton
 public class FontFactoryImpl implements FontFactory {
 
-    private static final float DEFAULT_FONT_SIZE = 32.0f;
+    private static final float DEFAULT_FONT_SIZE = 32F;
 
     private static final String DEFAULT_FONT_NAME = "default.ttf";
 

@@ -2,11 +2,12 @@ package spypunk.tetris.view.component;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import spypunk.tetris.constants.TetrisConstants;
+import spypunk.tetris.util.SwingUtils;
 
 public class Container {
 
@@ -81,14 +82,10 @@ public class Container {
         graphics.setColor(fontColor);
         graphics.setFont(font);
 
-        FontMetrics fontMetrics = graphics.getFontMetrics();
+        Point location = SwingUtils.getCenteredTextLocation(graphics, title,
+            new Rectangle(rectangle.x, rectangle.y - 1, rectangle.width, 1));
 
-        int textHeight = fontMetrics.getHeight();
-        int textWidth = fontMetrics.stringWidth(title);
-        int textX1 = x + (width - textWidth) / 2;
-        int textY1 = y - (TetrisConstants.BLOCK_SIZE - textHeight);
-
-        graphics.drawString(title, textX1, textY1);
+        graphics.drawString(title, location.x, location.y);
     }
 
     public Rectangle getRectangle() {
