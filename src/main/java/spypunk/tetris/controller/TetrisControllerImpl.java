@@ -57,7 +57,7 @@ public class TetrisControllerImpl implements TetrisController {
         tetrisRenderer.start();
 
         loopThread = scheduledExecutorService.scheduleAtFixedRate(() -> onGameLoop(), 0, RENDER_PERIOD,
-                TimeUnit.MILLISECONDS);
+            TimeUnit.MILLISECONDS);
     }
 
     @Override
