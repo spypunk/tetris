@@ -125,7 +125,8 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         Rectangle rectangle = container.getRectangle();
 
-        Point location = SwingUtils.getCenteredTextLocation(graphics, text, rectangle);
+        Point location = SwingUtils.getCenteredTextLocation(graphics, text, new Rectangle(rectangle.x * BLOCK_SIZE,
+                rectangle.y * BLOCK_SIZE, rectangle.width * BLOCK_SIZE, rectangle.height * BLOCK_SIZE));
 
         graphics.drawString(text, location.x, location.y);
     }
@@ -155,7 +156,7 @@ public class TetrisRendererImpl implements TetrisRenderer {
         graphics.setFont(container.getFont());
 
         Point location = SwingUtils.getCenteredTextLocation(graphics, title,
-            new Rectangle(rectangle.x, rectangle.y - 1, rectangle.width, 1));
+            new Rectangle(x, y - BLOCK_SIZE, width, BLOCK_SIZE));
 
         graphics.drawString(title, location.x, location.y);
     }
