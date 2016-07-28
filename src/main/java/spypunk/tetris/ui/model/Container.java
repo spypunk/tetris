@@ -2,7 +2,10 @@ package spypunk.tetris.ui.model;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Arrays;
+import java.util.List;
 
 public class Container {
 
@@ -57,12 +60,28 @@ public class Container {
 
     private Color fontColor = Color.LIGHT_GRAY;
 
+    private List<Line> lines;
+
     public Rectangle getRectangle() {
         return rectangle;
     }
 
     public void setRectangle(Rectangle rectangle) {
         this.rectangle = rectangle;
+
+        int x = rectangle.x;
+        int y = rectangle.y;
+        int width = rectangle.width;
+        int height = rectangle.height;
+
+        lines = Arrays.asList(Line.Builder.instance().setStartLocation(new Point(x, y))
+                .setEndLocation(new Point(x + width - 1, y)).build(),
+            Line.Builder.instance().setStartLocation(new Point(x, y + height - 1))
+                    .setEndLocation(new Point(x + width - 1, y + height - 1)).build(),
+            Line.Builder.instance().setStartLocation(new Point(x, y))
+                    .setEndLocation(new Point(x, y + height - 1)).build(),
+            Line.Builder.instance().setStartLocation(new Point(x + width - 1, y))
+                    .setEndLocation(new Point(x + width - 1, y + height - 1)).build());
     }
 
     public Color getColor() {
@@ -95,5 +114,9 @@ public class Container {
 
     public void setFontColor(Color fontColor) {
         this.fontColor = fontColor;
+    }
+
+    public List<Line> getLines() {
+        return lines;
     }
 }

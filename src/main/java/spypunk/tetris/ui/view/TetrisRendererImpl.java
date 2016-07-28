@@ -18,6 +18,7 @@ import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.factory.BlockImageFactory;
 import spypunk.tetris.ui.factory.ContainerFactory;
 import spypunk.tetris.ui.model.Container;
+import spypunk.tetris.ui.model.Line;
 import spypunk.tetris.ui.util.SwingUtils;
 
 @Singleton
@@ -135,15 +136,7 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         Rectangle rectangle = container.getRectangle();
 
-        int x = rectangle.x;
-        int y = rectangle.y;
-        int width = rectangle.width;
-        int height = rectangle.height;
-
-        graphics.drawLine(x, y, x + width - 1, y);
-        graphics.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
-        graphics.drawLine(x, y, x, y + height - 1);
-        graphics.drawLine(x + width - 1, y, x + width - 1, y + height - 1);
+        container.getLines().forEach(line -> renderLine(graphics, line));
 
         String title = container.getTitle();
 
@@ -155,8 +148,15 @@ public class TetrisRendererImpl implements TetrisRenderer {
         graphics.setFont(container.getFont());
 
         Point location = SwingUtils.getCenteredTextLocation(graphics, title,
-            new Rectangle(x, y - BLOCK_SIZE, width, BLOCK_SIZE));
+            new Rectangle(rectangle.x, rectangle.y - BLOCK_SIZE, rectangle.width, BLOCK_SIZE));
 
         graphics.drawString(title, location.x, location.y);
+    }
+
+    private void renderLine(Graphics2D graphics, Line line) {
+        Point startLocation = line.getStartLocation();
+        Point endLocation = line.getEndLocation();
+
+        graphics.drawLine(startLocation.x, startLocation.y, endLocation.x, endLocation.y);
     }
 }
