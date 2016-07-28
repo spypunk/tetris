@@ -53,7 +53,7 @@ public class TetrisRendererImpl implements TetrisRenderer {
     }
 
     private void renderBlocks(Tetris tetris, Graphics2D graphics) {
-        containerFactory.createTetrisContainer().render(graphics);
+        renderContainer(graphics, containerFactory.createTetrisContainer());
 
         tetris.getBlocks().values().stream().filter(Optional::isPresent)
                 .map(Optional::get)
@@ -64,28 +64,29 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
     private void renderScore(Tetris tetris, Graphics2D graphics) {
         Container scoreContainer = containerFactory.createScoreContainer();
-        scoreContainer.render(graphics);
 
+        renderContainer(graphics, scoreContainer);
         renderTextInContainer(graphics, String.valueOf(tetris.getScore()), scoreContainer);
     }
 
     private void renderRows(Tetris tetris, Graphics2D graphics) {
         Container rowsContainer = containerFactory.createRowsContainer();
-        rowsContainer.render(graphics);
 
+        renderContainer(graphics, rowsContainer);
         renderTextInContainer(graphics, String.valueOf(tetris.getCompletedRows()), rowsContainer);
     }
 
     private void renderLevel(Tetris tetris, Graphics2D graphics) {
         Container levelContainer = containerFactory.createLevelContainer();
-        levelContainer.render(graphics);
 
+        renderContainer(graphics, levelContainer);
         renderTextInContainer(graphics, String.valueOf(tetris.getLevel()), levelContainer);
     }
 
     private void renderNextShape(Tetris tetris, Graphics2D graphics) {
         Container nextShapeContainer = containerFactory.createNextShapeContainer();
-        nextShapeContainer.render(graphics);
+
+        renderContainer(graphics, nextShapeContainer);
 
         Shape nextShape = tetris.getNextShape();
         Rectangle containerRectangle = nextShapeContainer.getRectangle();
@@ -126,5 +127,35 @@ public class TetrisRendererImpl implements TetrisRenderer {
         Point location = SwingUtils.getCenteredTextLocation(graphics, text, rectangle);
 
         graphics.drawString(text, location.x, location.y);
+    }
+
+    public void renderContainer(Graphics2D graphics, Container container) {
+        graphics.setColor(container.getColor());
+
+        Rectangle rectangle = container.getRectangle();
+
+        int x = rectangle.x * TetrisConstants.BLOCK_SIZE;
+        int y = rectangle.y * TetrisConstants.BLOCK_SIZE;
+        int width = rectangle.width * TetrisConstants.BLOCK_SIZE;
+        int height = rectangle.height * TetrisConstants.BLOCK_SIZE;
+
+        graphics.drawLine(x, y, x + width - 1, y);
+        graphics.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
+        graphics.drawLine(x, y, x, y + height - 1);
+        graphics.drawLine(x + width - 1, y, x + width - 1, y + height - 1);
+
+        String title = container.getTitle();
+
+        if (title == null) {
+            return;
+        }
+
+        graphics.setColor(container.getFontColor());
+        graphics.setFont(container.getFont());
+
+        Point location = SwingUtils.getCenteredTextLocation(graphics, title,
+            new Rectangle(rectangle.x, rectangle.y - 1, rectangle.width, 1));
+
+        graphics.drawString(title, location.x, location.y);
     }
 }

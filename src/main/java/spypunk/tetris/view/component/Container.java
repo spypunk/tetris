@@ -2,12 +2,7 @@ package spypunk.tetris.view.component;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
-
-import spypunk.tetris.constants.TetrisConstants;
-import spypunk.tetris.util.SwingUtils;
 
 public class Container {
 
@@ -61,32 +56,6 @@ public class Container {
     private Font font;
 
     private Color fontColor = Color.LIGHT_GRAY;
-
-    public void render(Graphics2D graphics) {
-        graphics.setColor(color);
-
-        int x = rectangle.x * TetrisConstants.BLOCK_SIZE;
-        int y = rectangle.y * TetrisConstants.BLOCK_SIZE;
-        int width = rectangle.width * TetrisConstants.BLOCK_SIZE;
-        int height = rectangle.height * TetrisConstants.BLOCK_SIZE;
-
-        graphics.drawLine(x, y, x + width - 1, y);
-        graphics.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
-        graphics.drawLine(x, y, x, y + height - 1);
-        graphics.drawLine(x + width - 1, y, x + width - 1, y + height - 1);
-
-        if (title == null) {
-            return;
-        }
-
-        graphics.setColor(fontColor);
-        graphics.setFont(font);
-
-        Point location = SwingUtils.getCenteredTextLocation(graphics, title,
-            new Rectangle(rectangle.x, rectangle.y - 1, rectangle.width, 1));
-
-        graphics.drawString(title, location.x, location.y);
-    }
 
     public Rectangle getRectangle() {
         return rectangle;
