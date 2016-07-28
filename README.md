@@ -3,6 +3,7 @@
 ## How it looks ?
 
 ![alt tag](img/screenshot.png)
+![alt tag](img/screenshot_gameover.png)
 
 ## How to build it ?
 

@@ -1,7 +1,6 @@
 package spypunk.tetris.service;
 
 import static spypunk.tetris.constants.TetrisConstants.HEIGHT;
-import static spypunk.tetris.constants.TetrisConstants.ROWS_PER_LEVEL;
 import static spypunk.tetris.constants.TetrisConstants.WIDTH;
 
 import java.awt.Point;
@@ -25,6 +24,8 @@ import spypunk.tetris.model.Tetris;
 
 @Singleton
 public class TetrisServiceImpl implements TetrisService {
+
+    private static final int ROWS_PER_LEVEL = 10;
 
     private static final Map<Integer, Integer> SCORE_PER_ROWS = Maps.newHashMap();
 
