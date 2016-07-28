@@ -6,6 +6,8 @@ import java.util.Optional;
 
 public class Tetris {
 
+    private static final int INITIAL_SPEED = 1000;
+
     public static class Builder {
 
         private final Tetris tetris = new Tetris();
@@ -29,11 +31,6 @@ public class Tetris {
 
         public Builder setShapesStatistics(Map<ShapeType, Integer> shapesStatistics) {
             tetris.setShapesStatistics(shapesStatistics);
-            return this;
-        }
-
-        public Builder setSpeed(int speed) {
-            tetris.setSpeed(speed);
             return this;
         }
 
@@ -65,7 +62,7 @@ public class Tetris {
 
     private int completedRows;
 
-    private int speed;
+    private int speed = INITIAL_SPEED;
 
     public Map<Point, Optional<Block>> getBlocks() {
         return blocks;

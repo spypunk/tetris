@@ -41,6 +41,6 @@ public class TetrisFactoryImpl implements TetrisFactory {
                 .collect(Collectors.toMap(shapeType -> shapeType, shapeType -> 0));
 
         return Tetris.Builder.instance().setBlocks(blocks).setNextShape(shapeFactory.createRandomShape())
-                .setShapesStatistics(shapesStatistics).setSpeed(1000).build();
+                .setShapesStatistics(shapesStatistics).build();
     }
 }

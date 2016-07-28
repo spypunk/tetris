@@ -93,10 +93,10 @@ public class TetrisRendererImpl implements TetrisRenderer {
         Rectangle containerRectangle = nextShapeContainer.getRectangle();
         Rectangle boundingBox = nextShape.getBoundingBox();
 
-        int x = containerRectangle.x * BLOCK_SIZE;
-        int y = containerRectangle.y * BLOCK_SIZE;
-        int width = containerRectangle.width * BLOCK_SIZE;
-        int height = containerRectangle.height * BLOCK_SIZE;
+        int x = containerRectangle.x;
+        int y = containerRectangle.y;
+        int width = containerRectangle.width;
+        int height = containerRectangle.height;
         int dx = x + (width - boundingBox.width * BLOCK_SIZE) / 2;
         int dy = y + (height - boundingBox.height * BLOCK_SIZE) / 2;
 
@@ -125,8 +125,7 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         Rectangle rectangle = container.getRectangle();
 
-        Point location = SwingUtils.getCenteredTextLocation(graphics, text, new Rectangle(rectangle.x * BLOCK_SIZE,
-                rectangle.y * BLOCK_SIZE, rectangle.width * BLOCK_SIZE, rectangle.height * BLOCK_SIZE));
+        Point location = SwingUtils.getCenteredTextLocation(graphics, text, rectangle);
 
         graphics.drawString(text, location.x, location.y);
     }
@@ -136,10 +135,10 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         Rectangle rectangle = container.getRectangle();
 
-        int x = rectangle.x * BLOCK_SIZE;
-        int y = rectangle.y * BLOCK_SIZE;
-        int width = rectangle.width * BLOCK_SIZE;
-        int height = rectangle.height * BLOCK_SIZE;
+        int x = rectangle.x;
+        int y = rectangle.y;
+        int width = rectangle.width;
+        int height = rectangle.height;
 
         graphics.drawLine(x, y, x + width - 1, y);
         graphics.drawLine(x, y + height - 1, x + width - 1, y + height - 1);
