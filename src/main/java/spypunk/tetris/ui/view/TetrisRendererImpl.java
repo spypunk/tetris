@@ -21,15 +21,22 @@ import spypunk.tetris.ui.factory.BlockImageFactory;
 import spypunk.tetris.ui.factory.ContainerFactory;
 import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.model.Container;
-import spypunk.tetris.ui.model.Line;
 import spypunk.tetris.ui.util.SwingUtils;
 
 @Singleton
 public class TetrisRendererImpl implements TetrisRenderer {
 
-    private static final Color FONT_COLOR = Color.LIGHT_GRAY;
+    private static final float DEFAULT_FONT_SIZE = 32F;
 
-    private static final Color CONTAINER_COLOR = Color.GRAY;
+    private static final float GAME_OVER_FONT_SIZE = 42F;
+
+    private static final Color GAME_OVER_FG_COLOR = new Color(30, 30, 30, 150);
+
+    private static final String GAME_OVER = "GAME OVER";
+
+    private static final Color DEFAULT_FONT_COLOR = Color.LIGHT_GRAY;
+
+    private static final Color DEFAULT_CONTAINER_COLOR = Color.GRAY;
 
     @Inject
     private TetrisFrame tetrisFrame;
@@ -43,11 +50,14 @@ public class TetrisRendererImpl implements TetrisRenderer {
     @Inject
     private ContainerFactory containerFactory;
 
-    private final Font defaulFont;
+    private final Font defaultFont;
+
+    private final Font gameOverFont;
 
     @Inject
     public TetrisRendererImpl(FontFactory fontFactory) {
-        defaulFont = fontFactory.createDefaultFont();
+        defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
+        gameOverFont = fontFactory.createDefaultFont(GAME_OVER_FONT_SIZE);
     }
 
     @Override
@@ -69,34 +79,34 @@ public class TetrisRendererImpl implements TetrisRenderer {
     }
 
     private void renderBlocks(Tetris tetris, Graphics2D graphics) {
-        renderContainer(graphics, containerFactory.createTetrisContainer());
+        Container container = containerFactory.createTetrisContainer();
+
+        renderContainer(graphics, container);
 
         tetris.getBlocks().values().stream().filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(block -> block.getLocation().y >= 2)
                 .forEach(block -> renderBlock(graphics, block, BLOCK_SIZE + 1,
                     -BLOCK_SIZE + 1));
-    }
 
-    private void renderScore(Tetris tetris, Graphics2D graphics) {
-        Container scoreContainer = containerFactory.createScoreContainer();
-
-        renderContainer(graphics, scoreContainer);
-        renderTextCentered(graphics, String.valueOf(tetris.getScore()), scoreContainer.getRectangle());
-    }
-
-    private void renderRows(Tetris tetris, Graphics2D graphics) {
-        Container rowsContainer = containerFactory.createRowsContainer();
-
-        renderContainer(graphics, rowsContainer);
-        renderTextCentered(graphics, String.valueOf(tetris.getCompletedRows()), rowsContainer.getRectangle());
+        if (tetris.isGameOver()) {
+            renderGameOver(graphics, container);
+        }
     }
 
     private void renderLevel(Tetris tetris, Graphics2D graphics) {
         Container levelContainer = containerFactory.createLevelContainer();
+        renderInfo(graphics, levelContainer, String.valueOf(tetris.getLevel()));
+    }
 
-        renderContainer(graphics, levelContainer);
-        renderTextCentered(graphics, String.valueOf(tetris.getLevel()), levelContainer.getRectangle());
+    private void renderScore(Tetris tetris, Graphics2D graphics) {
+        Container scoreContainer = containerFactory.createScoreContainer();
+        renderInfo(graphics, scoreContainer, String.valueOf(tetris.getScore()));
+    }
+
+    private void renderRows(Tetris tetris, Graphics2D graphics) {
+        Container rowsContainer = containerFactory.createRowsContainer();
+        renderInfo(graphics, rowsContainer, String.valueOf(tetris.getCompletedRows()));
     }
 
     private void renderNextShape(Tetris tetris, Graphics2D graphics) {
@@ -108,12 +118,10 @@ public class TetrisRendererImpl implements TetrisRenderer {
         Rectangle containerRectangle = nextShapeContainer.getRectangle();
         Rectangle boundingBox = nextShape.getBoundingBox();
 
-        int x = containerRectangle.x;
-        int y = containerRectangle.y;
         int width = containerRectangle.width;
         int height = containerRectangle.height;
-        int dx = x + (width - boundingBox.width * BLOCK_SIZE) / 2;
-        int dy = y + (height - boundingBox.height * BLOCK_SIZE) / 2;
+        int dx = containerRectangle.x + (width - boundingBox.width * BLOCK_SIZE) / 2;
+        int dy = containerRectangle.y + (height - boundingBox.height * BLOCK_SIZE) / 2;
 
         nextShape.getBlocks().stream().forEach(
             block -> renderBlock(graphics, block, dx, dy));
@@ -128,25 +136,21 @@ public class TetrisRendererImpl implements TetrisRenderer {
         int dx2 = dx1 + BLOCK_SIZE;
         int dy1 = dy + block.getLocation().y * BLOCK_SIZE;
         int dy2 = dy1 + BLOCK_SIZE;
-        int sx2 = image.getWidth(null);
-        int sy2 = image.getHeight(null);
 
-        graphics.drawImage(image, dx1, dy1, dx2, dy2, 0, 0, sx2, sy2, null);
+        graphics.drawImage(image, dx1, dy1, dx2, dy2, 0, 0, image.getWidth(null), image.getHeight(null), null);
     }
 
-    private void renderTextCentered(Graphics2D graphics, String text, Rectangle rectangle) {
-        graphics.setColor(FONT_COLOR);
-        graphics.setFont(defaulFont);
-
-        Point location = SwingUtils.getCenteredTextLocation(graphics, text, rectangle);
-
-        graphics.drawString(text, location.x, location.y);
+    private void renderInfo(Graphics2D graphics, Container container, String info) {
+        renderContainer(graphics, container);
+        renderTextCentered(graphics, info, container.getRectangle(), defaultFont);
     }
 
     public void renderContainer(Graphics2D graphics, Container container) {
-        graphics.setColor(CONTAINER_COLOR);
+        graphics.setColor(DEFAULT_CONTAINER_COLOR);
 
-        container.getLines().forEach(line -> renderLine(graphics, line));
+        Rectangle rectangle = container.getRectangle();
+
+        graphics.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 
         String title = container.getTitle();
 
@@ -154,21 +158,24 @@ public class TetrisRendererImpl implements TetrisRenderer {
             return;
         }
 
-        graphics.setColor(FONT_COLOR);
-        graphics.setFont(defaulFont);
-
-        Rectangle rectangle = container.getRectangle();
-
-        Point location = SwingUtils.getCenteredTextLocation(graphics, title,
-            new Rectangle(rectangle.x, rectangle.y - BLOCK_SIZE, rectangle.width, BLOCK_SIZE));
-
-        graphics.drawString(title, location.x, location.y);
+        renderTextCentered(graphics, title,
+            new Rectangle(rectangle.x, rectangle.y - BLOCK_SIZE, rectangle.width, BLOCK_SIZE), defaultFont);
     }
 
-    private void renderLine(Graphics2D graphics, Line line) {
-        Point startLocation = line.getStartLocation();
-        Point endLocation = line.getEndLocation();
+    private void renderTextCentered(Graphics2D graphics, String text, Rectangle rectangle, Font font) {
+        graphics.setColor(DEFAULT_FONT_COLOR);
+        graphics.setFont(font);
 
-        graphics.drawLine(startLocation.x, startLocation.y, endLocation.x, endLocation.y);
+        Point location = SwingUtils.getCenteredTextLocation(graphics, text, rectangle);
+        graphics.drawString(text, location.x, location.y);
+    }
+
+    private void renderGameOver(Graphics2D graphics, Container container) {
+        Rectangle rectangle = container.getRectangle();
+
+        graphics.setColor(GAME_OVER_FG_COLOR);
+        graphics.fillRect(rectangle.x + 1, rectangle.y + 1, rectangle.width - 1, rectangle.height - 1);
+
+        renderTextCentered(graphics, GAME_OVER, rectangle, gameOverFont);
     }
 }

@@ -14,6 +14,12 @@ import spypunk.tetris.ui.model.Container;
 @Singleton
 public class ContainerFactoryImpl implements ContainerFactory {
 
+    private static final int INFO_CONTAINERS_WIDTH = BLOCK_SIZE * 6;
+
+    private static final int TETRIS_CONTAINER_WIDTH = 1 + BLOCK_SIZE * WIDTH;
+
+    private static final int INFO_CONTAINERS_X = TETRIS_CONTAINER_WIDTH + 2 * BLOCK_SIZE;
+
     private static final String SCORE = "SCORE";
 
     private static final String LEVEL = "LEVEL";
@@ -67,24 +73,24 @@ public class ContainerFactoryImpl implements ContainerFactory {
     }
 
     private Container initializeTetrisContainer() {
-        return initializeContainer(BLOCK_SIZE, BLOCK_SIZE, 2 + BLOCK_SIZE * WIDTH,
-            2 + BLOCK_SIZE * (HEIGHT - 2));
+        return initializeContainer(BLOCK_SIZE, BLOCK_SIZE, TETRIS_CONTAINER_WIDTH,
+            1 + BLOCK_SIZE * (HEIGHT - 2));
     }
 
     private Container initializeLevelContainer() {
-        return initializeContainer(BLOCK_SIZE * (WIDTH + 2), BLOCK_SIZE * 2, BLOCK_SIZE * 6, BLOCK_SIZE, LEVEL);
+        return initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 2, INFO_CONTAINERS_WIDTH, BLOCK_SIZE, LEVEL);
     }
 
     private Container initializeScoreContainer() {
-        return initializeContainer(BLOCK_SIZE * (WIDTH + 2), BLOCK_SIZE * 5, BLOCK_SIZE * 6, BLOCK_SIZE, SCORE);
+        return initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 5, INFO_CONTAINERS_WIDTH, BLOCK_SIZE, SCORE);
     }
 
     private Container initializeRowsContainer() {
-        return initializeContainer(BLOCK_SIZE * (WIDTH + 2), BLOCK_SIZE * 8, BLOCK_SIZE * 6, BLOCK_SIZE, ROWS);
+        return initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 8, INFO_CONTAINERS_WIDTH, BLOCK_SIZE, ROWS);
     }
 
     private Container initializeNextShapeContainer() {
-        return initializeContainer(BLOCK_SIZE * (WIDTH + 2), BLOCK_SIZE * 11, BLOCK_SIZE * 6, BLOCK_SIZE * 6,
+        return initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 11, INFO_CONTAINERS_WIDTH, INFO_CONTAINERS_WIDTH,
             NEXT_SHAPE);
     }
 
