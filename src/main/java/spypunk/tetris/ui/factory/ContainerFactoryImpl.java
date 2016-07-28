@@ -4,14 +4,12 @@ import static spypunk.tetris.constants.TetrisConstants.HEIGHT;
 import static spypunk.tetris.constants.TetrisConstants.WIDTH;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 
-import java.awt.Font;
 import java.awt.Rectangle;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import spypunk.tetris.ui.model.Container;
-import spypunk.tetris.ui.model.Container.Builder;
 
 @Singleton
 public class ContainerFactoryImpl implements ContainerFactory {
@@ -34,11 +32,8 @@ public class ContainerFactoryImpl implements ContainerFactory {
 
     private final Container rowsContainer;
 
-    private final Font defaultFont;
-
     @Inject
     public ContainerFactoryImpl(FontFactory fontFactory) {
-        defaultFont = fontFactory.createDefaultFont();
         tetrisContainer = initializeTetrisContainer();
         nextShapeContainer = initializeNextShapeContainer();
         levelContainer = initializeLevelContainer();
@@ -72,37 +67,35 @@ public class ContainerFactoryImpl implements ContainerFactory {
     }
 
     private Container initializeTetrisContainer() {
-        Rectangle rectangle = new Rectangle(BLOCK_SIZE, BLOCK_SIZE, 2 + BLOCK_SIZE * WIDTH,
-                2 + BLOCK_SIZE * (HEIGHT - 2));
-
-        return defaultContainerBuilder(rectangle).build();
+        return initializeContainer(BLOCK_SIZE, BLOCK_SIZE, 2 + BLOCK_SIZE * WIDTH,
+            2 + BLOCK_SIZE * (HEIGHT - 2));
     }
 
     private Container initializeLevelContainer() {
-        Rectangle rectangle = new Rectangle(BLOCK_SIZE * (WIDTH + 2), BLOCK_SIZE * 2, BLOCK_SIZE * 6, BLOCK_SIZE);
-
-        return defaultContainerBuilder(rectangle).setTitle(LEVEL).build();
+        return initializeContainer(BLOCK_SIZE * (WIDTH + 2), BLOCK_SIZE * 2, BLOCK_SIZE * 6, BLOCK_SIZE, LEVEL);
     }
 
     private Container initializeScoreContainer() {
-        Rectangle rectangle = new Rectangle(BLOCK_SIZE * (WIDTH + 2), BLOCK_SIZE * 5, BLOCK_SIZE * 6, BLOCK_SIZE);
-
-        return defaultContainerBuilder(rectangle).setTitle(SCORE).build();
+        return initializeContainer(BLOCK_SIZE * (WIDTH + 2), BLOCK_SIZE * 5, BLOCK_SIZE * 6, BLOCK_SIZE, SCORE);
     }
 
     private Container initializeRowsContainer() {
-        Rectangle rectangle = new Rectangle(BLOCK_SIZE * (WIDTH + 2), BLOCK_SIZE * 8, BLOCK_SIZE * 6, BLOCK_SIZE);
-
-        return defaultContainerBuilder(rectangle).setTitle(ROWS).build();
+        return initializeContainer(BLOCK_SIZE * (WIDTH + 2), BLOCK_SIZE * 8, BLOCK_SIZE * 6, BLOCK_SIZE, ROWS);
     }
 
     private Container initializeNextShapeContainer() {
-        Rectangle rectangle = new Rectangle(BLOCK_SIZE * (WIDTH + 2), BLOCK_SIZE * 11, BLOCK_SIZE * 6, BLOCK_SIZE * 6);
-
-        return defaultContainerBuilder(rectangle).setTitle(NEXT_SHAPE).build();
+        return initializeContainer(BLOCK_SIZE * (WIDTH + 2), BLOCK_SIZE * 11, BLOCK_SIZE * 6, BLOCK_SIZE * 6,
+            NEXT_SHAPE);
     }
 
-    private Builder defaultContainerBuilder(Rectangle rectangle) {
-        return Container.Builder.instance().setFont(defaultFont).setRectangle(rectangle);
+    private Container initializeContainer(int x, int y, int width, int height, String title) {
+        return Container.Builder.instance()
+                .setRectangle(new Rectangle(x, y, width, height))
+                .setTitle(title)
+                .build();
+    }
+
+    private Container initializeContainer(int x, int y, int width, int height) {
+        return initializeContainer(x, y, width, height, null);
     }
 }

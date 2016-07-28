@@ -25,7 +25,7 @@ public class BlockImageFactoryImpl implements BlockImageFactory {
 
     private static final File BLOCKS_FOLDER = new File("src/main/resources/img/blocks");
 
-    private final Map<ShapeType, Image> imagesCache = Maps.newHashMap();
+    private final Map<ShapeType, Image> images = Maps.newHashMap();
 
     @Inject
     public BlockImageFactoryImpl(ImageFactory imageFactory, ShapeTypeFactory shapeTypeFactory) {
@@ -35,7 +35,7 @@ public class BlockImageFactoryImpl implements BlockImageFactory {
             for (ShapeType shapeType : shapeTypes) {
                 String fileName = String.format("%s.png", shapeType.getId());
                 Image image = imageFactory.createImage(new File(BLOCKS_FOLDER, fileName));
-                imagesCache.put(shapeType, image);
+                images.put(shapeType, image);
             }
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
@@ -45,7 +45,7 @@ public class BlockImageFactoryImpl implements BlockImageFactory {
 
     @Override
     public Image createBlockImage(ShapeType shapeType) {
-        return imagesCache.get(shapeType);
+        return images.get(shapeType);
     }
 
 }

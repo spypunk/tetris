@@ -2,6 +2,8 @@ package spypunk.tetris.ui.view;
 
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
@@ -17,12 +19,17 @@ import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.factory.BlockImageFactory;
 import spypunk.tetris.ui.factory.ContainerFactory;
+import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.model.Container;
 import spypunk.tetris.ui.model.Line;
 import spypunk.tetris.ui.util.SwingUtils;
 
 @Singleton
 public class TetrisRendererImpl implements TetrisRenderer {
+
+    private static final Color FONT_COLOR = Color.LIGHT_GRAY;
+
+    private static final Color CONTAINER_COLOR = Color.GRAY;
 
     @Inject
     private TetrisFrame tetrisFrame;
@@ -35,6 +42,13 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
     @Inject
     private ContainerFactory containerFactory;
+
+    private final Font defaulFont;
+
+    @Inject
+    public TetrisRendererImpl(FontFactory fontFactory) {
+        defaulFont = fontFactory.createDefaultFont();
+    }
 
     @Override
     public void start() {
@@ -68,21 +82,21 @@ public class TetrisRendererImpl implements TetrisRenderer {
         Container scoreContainer = containerFactory.createScoreContainer();
 
         renderContainer(graphics, scoreContainer);
-        renderTextInContainer(graphics, String.valueOf(tetris.getScore()), scoreContainer);
+        renderTextCentered(graphics, String.valueOf(tetris.getScore()), scoreContainer.getRectangle());
     }
 
     private void renderRows(Tetris tetris, Graphics2D graphics) {
         Container rowsContainer = containerFactory.createRowsContainer();
 
         renderContainer(graphics, rowsContainer);
-        renderTextInContainer(graphics, String.valueOf(tetris.getCompletedRows()), rowsContainer);
+        renderTextCentered(graphics, String.valueOf(tetris.getCompletedRows()), rowsContainer.getRectangle());
     }
 
     private void renderLevel(Tetris tetris, Graphics2D graphics) {
         Container levelContainer = containerFactory.createLevelContainer();
 
         renderContainer(graphics, levelContainer);
-        renderTextInContainer(graphics, String.valueOf(tetris.getLevel()), levelContainer);
+        renderTextCentered(graphics, String.valueOf(tetris.getLevel()), levelContainer.getRectangle());
     }
 
     private void renderNextShape(Tetris tetris, Graphics2D graphics) {
@@ -120,11 +134,9 @@ public class TetrisRendererImpl implements TetrisRenderer {
         graphics.drawImage(image, dx1, dy1, dx2, dy2, 0, 0, sx2, sy2, null);
     }
 
-    private void renderTextInContainer(Graphics2D graphics, String text, Container container) {
-        graphics.setColor(container.getFontColor());
-        graphics.setFont(container.getFont());
-
-        Rectangle rectangle = container.getRectangle();
+    private void renderTextCentered(Graphics2D graphics, String text, Rectangle rectangle) {
+        graphics.setColor(FONT_COLOR);
+        graphics.setFont(defaulFont);
 
         Point location = SwingUtils.getCenteredTextLocation(graphics, text, rectangle);
 
@@ -132,9 +144,7 @@ public class TetrisRendererImpl implements TetrisRenderer {
     }
 
     public void renderContainer(Graphics2D graphics, Container container) {
-        graphics.setColor(container.getColor());
-
-        Rectangle rectangle = container.getRectangle();
+        graphics.setColor(CONTAINER_COLOR);
 
         container.getLines().forEach(line -> renderLine(graphics, line));
 
@@ -144,8 +154,10 @@ public class TetrisRendererImpl implements TetrisRenderer {
             return;
         }
 
-        graphics.setColor(container.getFontColor());
-        graphics.setFont(container.getFont());
+        graphics.setColor(FONT_COLOR);
+        graphics.setFont(defaulFont);
+
+        Rectangle rectangle = container.getRectangle();
 
         Point location = SwingUtils.getCenteredTextLocation(graphics, title,
             new Rectangle(rectangle.x, rectangle.y - BLOCK_SIZE, rectangle.width, BLOCK_SIZE));

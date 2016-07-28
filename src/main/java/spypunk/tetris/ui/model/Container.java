@@ -1,7 +1,5 @@
 package spypunk.tetris.ui.model;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Arrays;
@@ -25,23 +23,8 @@ public class Container {
             return this;
         }
 
-        public Builder setColor(Color color) {
-            container.setColor(color);
-            return this;
-        }
-
         public Builder setTitle(String title) {
             container.setTitle(title);
-            return this;
-        }
-
-        public Builder setFont(Font font) {
-            container.setFont(font);
-            return this;
-        }
-
-        public Builder setFontColor(Color fontColor) {
-            container.setFontColor(fontColor);
             return this;
         }
 
@@ -52,13 +35,7 @@ public class Container {
 
     private Rectangle rectangle;
 
-    private Color color = Color.GRAY;
-
     private String title;
-
-    private Font font;
-
-    private Color fontColor = Color.LIGHT_GRAY;
 
     private List<Line> lines;
 
@@ -84,36 +61,12 @@ public class Container {
                     .setEndLocation(new Point(x + width, y + height)).build());
     }
 
-    public Color getColor() {
-        return color;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Font getFont() {
-        return font;
-    }
-
-    public void setFont(Font font) {
-        this.font = font;
-    }
-
-    public Color getFontColor() {
-        return fontColor;
-    }
-
-    public void setFontColor(Color fontColor) {
-        this.fontColor = fontColor;
     }
 
     public List<Line> getLines() {
