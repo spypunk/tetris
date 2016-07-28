@@ -60,8 +60,8 @@ public class TetrisRendererImpl implements TetrisRenderer {
         tetris.getBlocks().values().stream().filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(block -> block.getLocation().y >= 2)
-                .forEach(block -> renderBlock(graphics, block, BLOCK_SIZE,
-                    -BLOCK_SIZE));
+                .forEach(block -> renderBlock(graphics, block, BLOCK_SIZE + 1,
+                    -BLOCK_SIZE + 1));
     }
 
     private void renderScore(Tetris tetris, Graphics2D graphics) {

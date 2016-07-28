@@ -72,7 +72,8 @@ public class ContainerFactoryImpl implements ContainerFactory {
     }
 
     private Container initializeTetrisContainer() {
-        Rectangle rectangle = new Rectangle(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE * WIDTH, BLOCK_SIZE * (HEIGHT - 2));
+        Rectangle rectangle = new Rectangle(BLOCK_SIZE, BLOCK_SIZE, 2 + BLOCK_SIZE * WIDTH,
+                2 + BLOCK_SIZE * (HEIGHT - 2));
 
         return defaultContainerBuilder(rectangle).build();
     }

@@ -71,17 +71,17 @@ public class Container {
 
         int x = rectangle.x;
         int y = rectangle.y;
-        int width = rectangle.width;
-        int height = rectangle.height;
+        int width = rectangle.width - 1;
+        int height = rectangle.height - 1;
 
         lines = Arrays.asList(Line.Builder.instance().setStartLocation(new Point(x, y))
-                .setEndLocation(new Point(x + width - 1, y)).build(),
-            Line.Builder.instance().setStartLocation(new Point(x, y + height - 1))
-                    .setEndLocation(new Point(x + width - 1, y + height - 1)).build(),
+                .setEndLocation(new Point(x + width, y)).build(),
+            Line.Builder.instance().setStartLocation(new Point(x, y + height))
+                    .setEndLocation(new Point(x + width, y + height)).build(),
             Line.Builder.instance().setStartLocation(new Point(x, y))
-                    .setEndLocation(new Point(x, y + height - 1)).build(),
-            Line.Builder.instance().setStartLocation(new Point(x + width - 1, y))
-                    .setEndLocation(new Point(x + width - 1, y + height - 1)).build());
+                    .setEndLocation(new Point(x, y + height)).build(),
+            Line.Builder.instance().setStartLocation(new Point(x + width, y))
+                    .setEndLocation(new Point(x + width, y + height)).build());
     }
 
     public Color getColor() {
