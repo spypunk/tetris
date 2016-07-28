@@ -27,14 +27,8 @@ public class ShapeFactoryImpl implements ShapeFactory {
     }
 
     @Override
-    public Shape createRandomShape() {
-        ShapeType shapeType = getRandomShapeType();
-
-        List<Set<Point>> rotations = shapeType.getRotations();
-
-        int rotationIndex = random.nextInt(rotations.size());
-
-        Set<Point> rotation = rotations.get(rotationIndex);
+    public Shape createShape(ShapeType shapeType, int rotationIndex) {
+        Set<Point> rotation = shapeType.getRotations().get(rotationIndex);
 
         Rectangle boundingBox = new Rectangle(shapeType.getBoundingBox());
 
@@ -48,6 +42,17 @@ public class ShapeFactoryImpl implements ShapeFactory {
         shape.setBlocks(blocks);
 
         return shape;
+    }
+
+    @Override
+    public Shape createRandomShape() {
+        ShapeType shapeType = getRandomShapeType();
+
+        List<Set<Point>> rotations = shapeType.getRotations();
+
+        int rotationIndex = random.nextInt(rotations.size());
+
+        return createShape(shapeType, rotationIndex);
     }
 
     private ShapeType getRandomShapeType() {

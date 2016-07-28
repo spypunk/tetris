@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -25,9 +26,13 @@ import spypunk.tetris.model.Tetris;
 @Singleton
 public class TetrisServiceImpl implements TetrisService {
 
+    private static final int MAX_START_X = 7;
+
     private static final int ROWS_PER_LEVEL = 10;
 
     private static final Map<Integer, Integer> SCORE_PER_ROWS = Maps.newHashMap();
+
+    private final Random random = new Random();
 
     static {
         SCORE_PER_ROWS.put(1, 40);
@@ -76,7 +81,7 @@ public class TetrisServiceImpl implements TetrisService {
 
     private void handleGravity(Tetris tetris) {
         moveShape(tetris, Movement.DOWN);
-        tetris.setLastMoveTime(System.currentTimeMillis());
+        tetris.setLastMoveTime(now());
     }
 
     private boolean handleMovement(Tetris tetris, Movement movement) {
@@ -96,7 +101,7 @@ public class TetrisServiceImpl implements TetrisService {
             tetris.setGameOver(true);
         } else {
             tetris.setCurrentShape(null);
-            tetris.setLastLockedTime(System.currentTimeMillis());
+            tetris.setLastLockedTime(now());
         }
 
         return true;
@@ -105,12 +110,21 @@ public class TetrisServiceImpl implements TetrisService {
     private void getNextShape(Tetris tetris) {
         tetris.setCurrentShape(tetris.getNextShape());
 
-        tetris.setNextShape(shapeFactory.createRandomShape());
+        Shape nextShape = shapeFactory.createRandomShape();
 
-        tetris.getCurrentShape().getBlocks()
+        int dx = random.nextInt(MAX_START_X);
+
+        List<Block> currentShapeBlocks = tetris.getCurrentShape().getBlocks();
+
+        currentShapeBlocks
+                .forEach(block -> block.getLocation().x += dx);
+
+        tetris.setNextShape(nextShape);
+
+        currentShapeBlocks
                 .forEach(block -> tetris.getBlocks().put(block.getLocation(), Optional.of(block)));
 
-        tetris.setLastMoveTime(System.currentTimeMillis());
+        tetris.setLastMoveTime(now());
 
         updateShapeStatistics(tetris);
     }
@@ -131,17 +145,16 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private boolean isTimeToMoveShape(Tetris tetris) {
-        long currentTime = System.currentTimeMillis();
-        long lastMoveTime = tetris.getLastMoveTime();
-
-        return currentTime - lastMoveTime > tetris.getSpeed();
+        return isTimeFor(tetris, tetris.getLastMoveTime());
     }
 
     private boolean isTimeForNextShape(Tetris tetris) {
-        long currentTime = System.currentTimeMillis();
-        long lastLockedTime = tetris.getLastLockedTime();
+        return isTimeFor(tetris, tetris.getLastLockedTime());
+    }
 
-        return currentTime - lastLockedTime > tetris.getSpeed();
+    private boolean isTimeFor(Tetris tetris, long lastTime) {
+        long currentTime = now();
+        return currentTime - lastTime > tetris.getSpeed();
     }
 
     private void clearCompleteRows(Tetris tetris) {
@@ -249,5 +262,9 @@ public class TetrisServiceImpl implements TetrisService {
         }
 
         return true;
+    }
+
+    private long now() {
+        return System.currentTimeMillis();
     }
 }

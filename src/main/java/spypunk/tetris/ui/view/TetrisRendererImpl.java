@@ -13,6 +13,7 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.model.Block;
 import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
@@ -30,7 +31,7 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
     private static final float GAME_OVER_FONT_SIZE = 42F;
 
-    private static final Color GAME_OVER_FG_COLOR = new Color(30, 30, 30, 150);
+    private static final Color GAME_OVER_FG_COLOR = new Color(30, 30, 30, 200);
 
     private static final String GAME_OVER = "GAME OVER";
 
@@ -49,6 +50,9 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
     @Inject
     private ContainerFactory containerFactory;
+
+    @Inject
+    private ShapeFactory shapeFactory;
 
     private final Font defaultFont;
 
@@ -115,15 +119,16 @@ public class TetrisRendererImpl implements TetrisRenderer {
         renderContainer(graphics, nextShapeContainer);
 
         Shape nextShape = tetris.getNextShape();
+        Shape previewShape = shapeFactory.createShape(nextShape.getShapeType(), nextShape.getCurrentRotation());
+        Rectangle boundingBox = previewShape.getBoundingBox();
         Rectangle containerRectangle = nextShapeContainer.getRectangle();
-        Rectangle boundingBox = nextShape.getBoundingBox();
 
         int width = containerRectangle.width;
         int height = containerRectangle.height;
         int dx = containerRectangle.x + (width - boundingBox.width * BLOCK_SIZE) / 2;
         int dy = containerRectangle.y + (height - boundingBox.height * BLOCK_SIZE) / 2;
 
-        nextShape.getBlocks().stream().forEach(
+        previewShape.getBlocks().stream().forEach(
             block -> renderBlock(graphics, block, dx, dy));
     }
 
