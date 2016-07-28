@@ -9,6 +9,14 @@
 
 You will need a Java JDK 8+ and maven 3.0.5+.
 
+## How to play ?
+
+### Controls
+
+LEFT - Move the current shape to the left
+RIGHT - Move the current shape to the right
+DOWN - Move the current shape down
+SPACE - Start a new game
 
 ## What about license ?
 
