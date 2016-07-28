@@ -3,8 +3,8 @@ package spypunk.tetris;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-import spypunk.tetris.controller.TetrisController;
 import spypunk.tetris.guice.TetrisModule;
+import spypunk.tetris.ui.controller.TetrisController;
 
 public class Main {
 

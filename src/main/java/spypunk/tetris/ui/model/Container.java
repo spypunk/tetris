@@ -1,4 +1,4 @@
-package spypunk.tetris.view.component;
+package spypunk.tetris.ui.model;
 
 import java.awt.Color;
 import java.awt.Font;

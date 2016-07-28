@@ -1,4 +1,4 @@
-package spypunk.tetris.factory;
+package spypunk.tetris.ui.factory;
 
 import java.awt.Image;
 import java.io.File;
@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Maps;
 
 import spypunk.tetris.exception.TetrisException;
+import spypunk.tetris.factory.ShapeTypeFactory;
 import spypunk.tetris.model.ShapeType;
 
 @Singleton

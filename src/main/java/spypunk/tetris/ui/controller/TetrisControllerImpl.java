@@ -1,4 +1,4 @@
-package spypunk.tetris.controller;
+package spypunk.tetris.ui.controller;
 
 import java.awt.event.KeyEvent;
 import java.util.Map;
@@ -16,7 +16,7 @@ import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.model.Movement;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.service.TetrisService;
-import spypunk.tetris.view.TetrisRenderer;
+import spypunk.tetris.ui.view.TetrisRenderer;
 
 @Singleton
 public class TetrisControllerImpl implements TetrisController {

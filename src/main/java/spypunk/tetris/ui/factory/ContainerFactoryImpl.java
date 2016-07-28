@@ -1,4 +1,4 @@
-package spypunk.tetris.factory;
+package spypunk.tetris.ui.factory;
 
 import java.awt.Font;
 import java.awt.Rectangle;
@@ -7,8 +7,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import spypunk.tetris.constants.TetrisConstants;
-import spypunk.tetris.view.component.Container;
-import spypunk.tetris.view.component.Container.Builder;
+import spypunk.tetris.ui.model.Container;
+import spypunk.tetris.ui.model.Container.Builder;
 
 @Singleton
 public class ContainerFactoryImpl implements ContainerFactory {

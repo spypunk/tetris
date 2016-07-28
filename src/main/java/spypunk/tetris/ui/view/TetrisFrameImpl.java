@@ -1,4 +1,4 @@
-package spypunk.tetris.view;
+package spypunk.tetris.ui.view;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -10,7 +10,7 @@ import javax.inject.Singleton;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
-import spypunk.tetris.controller.TetrisController;
+import spypunk.tetris.ui.controller.TetrisController;
 
 @Singleton
 public class TetrisFrameImpl implements TetrisFrame {

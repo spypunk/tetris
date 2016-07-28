@@ -1,4 +1,4 @@
-package spypunk.tetris.controller;
+package spypunk.tetris.ui.controller;
 
 public interface TetrisController {
 

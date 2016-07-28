@@ -1,6 +1,6 @@
-package spypunk.tetris.factory;
+package spypunk.tetris.ui.factory;
 
-import spypunk.tetris.view.component.Container;
+import spypunk.tetris.ui.model.Container;
 
 public interface ContainerFactory {
 

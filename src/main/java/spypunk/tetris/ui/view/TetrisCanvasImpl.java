@@ -1,4 +1,4 @@
-package spypunk.tetris.view;
+package spypunk.tetris.ui.view;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -15,7 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import spypunk.tetris.constants.TetrisConstants;
-import spypunk.tetris.controller.TetrisController;
+import spypunk.tetris.ui.controller.TetrisController;
 
 @Singleton
 public class TetrisCanvasImpl implements TetrisCanvas {

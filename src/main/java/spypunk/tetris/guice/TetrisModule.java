@@ -5,16 +5,6 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import com.google.inject.AbstractModule;
 
-import spypunk.tetris.controller.TetrisController;
-import spypunk.tetris.controller.TetrisControllerImpl;
-import spypunk.tetris.factory.BlockImageFactory;
-import spypunk.tetris.factory.BlockImageFactoryImpl;
-import spypunk.tetris.factory.ContainerFactory;
-import spypunk.tetris.factory.ContainerFactoryImpl;
-import spypunk.tetris.factory.FontFactory;
-import spypunk.tetris.factory.FontFactoryImpl;
-import spypunk.tetris.factory.ImageFactory;
-import spypunk.tetris.factory.ImageFactoryImpl;
 import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.factory.ShapeFactoryImpl;
 import spypunk.tetris.factory.ShapeTypeFactory;
@@ -23,12 +13,22 @@ import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.factory.TetrisFactoryImpl;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.service.TetrisServiceImpl;
-import spypunk.tetris.view.TetrisCanvas;
-import spypunk.tetris.view.TetrisCanvasImpl;
-import spypunk.tetris.view.TetrisFrame;
-import spypunk.tetris.view.TetrisFrameImpl;
-import spypunk.tetris.view.TetrisRenderer;
-import spypunk.tetris.view.TetrisRendererImpl;
+import spypunk.tetris.ui.controller.TetrisController;
+import spypunk.tetris.ui.controller.TetrisControllerImpl;
+import spypunk.tetris.ui.factory.BlockImageFactory;
+import spypunk.tetris.ui.factory.BlockImageFactoryImpl;
+import spypunk.tetris.ui.factory.ContainerFactory;
+import spypunk.tetris.ui.factory.ContainerFactoryImpl;
+import spypunk.tetris.ui.factory.FontFactory;
+import spypunk.tetris.ui.factory.FontFactoryImpl;
+import spypunk.tetris.ui.factory.ImageFactory;
+import spypunk.tetris.ui.factory.ImageFactoryImpl;
+import spypunk.tetris.ui.view.TetrisCanvas;
+import spypunk.tetris.ui.view.TetrisCanvasImpl;
+import spypunk.tetris.ui.view.TetrisFrame;
+import spypunk.tetris.ui.view.TetrisFrameImpl;
+import spypunk.tetris.ui.view.TetrisRenderer;
+import spypunk.tetris.ui.view.TetrisRendererImpl;
 
 public class TetrisModule extends AbstractModule {
 

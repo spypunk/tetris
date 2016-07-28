@@ -1,4 +1,4 @@
-package spypunk.tetris.view;
+package spypunk.tetris.ui.view;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -10,14 +10,14 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import spypunk.tetris.constants.TetrisConstants;
-import spypunk.tetris.factory.BlockImageFactory;
-import spypunk.tetris.factory.ContainerFactory;
 import spypunk.tetris.model.Block;
 import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
-import spypunk.tetris.util.SwingUtils;
-import spypunk.tetris.view.component.Container;
+import spypunk.tetris.ui.factory.BlockImageFactory;
+import spypunk.tetris.ui.factory.ContainerFactory;
+import spypunk.tetris.ui.model.Container;
+import spypunk.tetris.ui.util.SwingUtils;
 
 @Singleton
 public class TetrisRendererImpl implements TetrisRenderer {

@@ -1,4 +1,4 @@
-package spypunk.tetris.factory;
+package spypunk.tetris.ui.factory;
 
 import java.awt.Image;
 import java.io.File;

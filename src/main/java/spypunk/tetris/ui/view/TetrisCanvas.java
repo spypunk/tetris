@@ -1,4 +1,4 @@
-package spypunk.tetris.view;
+package spypunk.tetris.ui.view;
 
 import java.awt.Graphics2D;
 import java.util.function.Consumer;
