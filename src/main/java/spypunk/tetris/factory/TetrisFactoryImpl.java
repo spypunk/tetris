@@ -1,5 +1,8 @@
 package spypunk.tetris.factory;
 
+import static spypunk.tetris.constants.TetrisConstants.HEIGHT;
+import static spypunk.tetris.constants.TetrisConstants.WIDTH;
+
 import java.awt.Point;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +15,6 @@ import javax.inject.Singleton;
 
 import com.google.common.collect.Maps;
 
-import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.model.Block;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
@@ -30,7 +32,7 @@ public class TetrisFactoryImpl implements TetrisFactory {
     public Tetris createTetris() {
         Map<Point, Optional<Block>> blocks = Maps.newHashMap();
 
-        IntStream.range(0, TetrisConstants.WIDTH).forEach(x -> IntStream.range(0, TetrisConstants.HEIGHT)
+        IntStream.range(0, WIDTH).forEach(x -> IntStream.range(0, HEIGHT)
                 .forEach(y -> blocks.put(new Point(x, y), Optional.empty())));
 
         List<ShapeType> shapeTypes = shapeTypeFactory.createAll();

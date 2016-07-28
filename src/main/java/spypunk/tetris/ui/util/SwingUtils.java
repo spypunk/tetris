@@ -1,5 +1,7 @@
 package spypunk.tetris.ui.util;
 
+import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
+
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -11,8 +13,6 @@ import javax.swing.SwingUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import spypunk.tetris.constants.TetrisConstants;
 
 public class SwingUtils {
 
@@ -42,10 +42,10 @@ public class SwingUtils {
     }
 
     public static Point getCenteredTextLocation(Graphics2D graphics, String text, Rectangle rectangle) {
-        int x = rectangle.x * TetrisConstants.BLOCK_SIZE;
-        int y = rectangle.y * TetrisConstants.BLOCK_SIZE;
-        int width = rectangle.width * TetrisConstants.BLOCK_SIZE;
-        int height = rectangle.height * TetrisConstants.BLOCK_SIZE;
+        int x = rectangle.x * BLOCK_SIZE;
+        int y = rectangle.y * BLOCK_SIZE;
+        int width = rectangle.width * BLOCK_SIZE;
+        int height = rectangle.height * BLOCK_SIZE;
 
         FontRenderContext frc = graphics.getFontRenderContext();
         GlyphVector gv = graphics.getFont().createGlyphVector(frc, text);

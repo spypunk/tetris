@@ -1,12 +1,14 @@
 package spypunk.tetris.ui.factory;
 
+import static spypunk.tetris.constants.TetrisConstants.HEIGHT;
+import static spypunk.tetris.constants.TetrisConstants.WIDTH;
+
 import java.awt.Font;
 import java.awt.Rectangle;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.ui.model.Container;
 import spypunk.tetris.ui.model.Container.Builder;
 
@@ -69,31 +71,31 @@ public class ContainerFactoryImpl implements ContainerFactory {
     }
 
     private Container initializeTetrisContainer() {
-        Rectangle rectangle = new Rectangle(1, 1, TetrisConstants.WIDTH, TetrisConstants.HEIGHT - 2);
+        Rectangle rectangle = new Rectangle(1, 1, WIDTH, HEIGHT - 2);
 
         return defaultContainerBuilder(rectangle).build();
     }
 
     private Container initializeLevelContainer() {
-        Rectangle rectangle = new Rectangle(TetrisConstants.WIDTH + 2, 2, 6, 1);
+        Rectangle rectangle = new Rectangle(WIDTH + 2, 2, 6, 1);
 
         return defaultContainerBuilder(rectangle).setTitle(LEVEL).build();
     }
 
     private Container initializeScoreContainer() {
-        Rectangle rectangle = new Rectangle(TetrisConstants.WIDTH + 2, 5, 6, 1);
+        Rectangle rectangle = new Rectangle(WIDTH + 2, 5, 6, 1);
 
         return defaultContainerBuilder(rectangle).setTitle(SCORE).build();
     }
 
     private Container initializeRowsContainer() {
-        Rectangle rectangle = new Rectangle(TetrisConstants.WIDTH + 2, 8, 6, 1);
+        Rectangle rectangle = new Rectangle(WIDTH + 2, 8, 6, 1);
 
         return defaultContainerBuilder(rectangle).setTitle(ROWS).build();
     }
 
     private Container initializeNextShapeContainer() {
-        Rectangle rectangle = new Rectangle(TetrisConstants.WIDTH + 2, 11, 6, 6);
+        Rectangle rectangle = new Rectangle(WIDTH + 2, 11, 6, 6);
 
         return defaultContainerBuilder(rectangle).setTitle(NEXT_SHAPE).build();
     }

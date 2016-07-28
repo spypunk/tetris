@@ -1,5 +1,9 @@
 package spypunk.tetris.service;
 
+import static spypunk.tetris.constants.TetrisConstants.HEIGHT;
+import static spypunk.tetris.constants.TetrisConstants.ROWS_PER_LEVEL;
+import static spypunk.tetris.constants.TetrisConstants.WIDTH;
+
 import java.awt.Point;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +16,6 @@ import javax.inject.Singleton;
 
 import com.google.common.collect.Maps;
 
-import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.model.Block;
 import spypunk.tetris.model.Movement;
@@ -141,7 +144,7 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private void clearCompleteRows(Tetris tetris) {
-        List<Integer> completeRows = IntStream.range(2, TetrisConstants.HEIGHT)
+        List<Integer> completeRows = IntStream.range(2, HEIGHT)
                 .filter(row -> isRowComplete(tetris, row)).boxed().collect(Collectors.toList());
 
         if (completeRows.isEmpty()) {
@@ -162,7 +165,7 @@ public class TetrisServiceImpl implements TetrisService {
         int completedRows = tetris.getCompletedRows();
         int nextLevel = tetris.getLevel() + 1;
 
-        if (completedRows >= TetrisConstants.ROWS_PER_LEVEL * nextLevel) {
+        if (completedRows >= ROWS_PER_LEVEL * nextLevel) {
             tetris.setLevel(nextLevel);
 
             int speed = tetris.getSpeed();
@@ -180,7 +183,7 @@ public class TetrisServiceImpl implements TetrisService {
     private void clearCompleteRow(Tetris tetris, Integer row) {
         Map<Point, Optional<Block>> blocks = tetris.getBlocks();
 
-        IntStream.range(0, TetrisConstants.WIDTH)
+        IntStream.range(0, WIDTH)
                 .forEach(column -> blocks.put(new Point(column, row), Optional.empty()));
 
         List<Block> blocksToMoveDown = blocks.values().stream()
@@ -194,7 +197,7 @@ public class TetrisServiceImpl implements TetrisService {
     private boolean isRowComplete(Tetris tetris, int row) {
         Map<Point, Optional<Block>> blocks = tetris.getBlocks();
 
-        return IntStream.range(0, TetrisConstants.WIDTH).mapToObj(column -> blocks.get(new Point(column, row)))
+        return IntStream.range(0, WIDTH).mapToObj(column -> blocks.get(new Point(column, row)))
                 .allMatch(Optional::isPresent);
     }
 
@@ -234,7 +237,7 @@ public class TetrisServiceImpl implements TetrisService {
     private boolean canBlockMove(Tetris tetris, Block block) {
         Point location = block.getLocation();
 
-        if (location.x < 0 || location.x == TetrisConstants.WIDTH || location.y == TetrisConstants.HEIGHT) {
+        if (location.x < 0 || location.x == WIDTH || location.y == HEIGHT) {
             return false;
         }
 

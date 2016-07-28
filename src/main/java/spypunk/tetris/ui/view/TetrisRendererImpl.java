@@ -1,5 +1,7 @@
 package spypunk.tetris.ui.view;
 
+import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
+
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
@@ -9,7 +11,6 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.model.Block;
 import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
@@ -58,8 +59,8 @@ public class TetrisRendererImpl implements TetrisRenderer {
         tetris.getBlocks().values().stream().filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(block -> block.getLocation().y >= 2)
-                .forEach(block -> renderBlock(graphics, block, TetrisConstants.BLOCK_SIZE,
-                    -TetrisConstants.BLOCK_SIZE));
+                .forEach(block -> renderBlock(graphics, block, BLOCK_SIZE,
+                    -BLOCK_SIZE));
     }
 
     private void renderScore(Tetris tetris, Graphics2D graphics) {
@@ -92,12 +93,12 @@ public class TetrisRendererImpl implements TetrisRenderer {
         Rectangle containerRectangle = nextShapeContainer.getRectangle();
         Rectangle boundingBox = nextShape.getBoundingBox();
 
-        int x = containerRectangle.x * TetrisConstants.BLOCK_SIZE;
-        int y = containerRectangle.y * TetrisConstants.BLOCK_SIZE;
-        int width = containerRectangle.width * TetrisConstants.BLOCK_SIZE;
-        int height = containerRectangle.height * TetrisConstants.BLOCK_SIZE;
-        int dx = x + (width - boundingBox.width * TetrisConstants.BLOCK_SIZE) / 2;
-        int dy = y + (height - boundingBox.height * TetrisConstants.BLOCK_SIZE) / 2;
+        int x = containerRectangle.x * BLOCK_SIZE;
+        int y = containerRectangle.y * BLOCK_SIZE;
+        int width = containerRectangle.width * BLOCK_SIZE;
+        int height = containerRectangle.height * BLOCK_SIZE;
+        int dx = x + (width - boundingBox.width * BLOCK_SIZE) / 2;
+        int dy = y + (height - boundingBox.height * BLOCK_SIZE) / 2;
 
         nextShape.getBlocks().stream().forEach(
             block -> renderBlock(graphics, block, dx, dy));
@@ -108,10 +109,10 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         Image image = blockImageFactory.createBlockImage(shapeType);
 
-        int dx1 = dx + block.getLocation().x * TetrisConstants.BLOCK_SIZE;
-        int dx2 = dx1 + TetrisConstants.BLOCK_SIZE;
-        int dy1 = dy + block.getLocation().y * TetrisConstants.BLOCK_SIZE;
-        int dy2 = dy1 + TetrisConstants.BLOCK_SIZE;
+        int dx1 = dx + block.getLocation().x * BLOCK_SIZE;
+        int dx2 = dx1 + BLOCK_SIZE;
+        int dy1 = dy + block.getLocation().y * BLOCK_SIZE;
+        int dy2 = dy1 + BLOCK_SIZE;
         int sx2 = image.getWidth(null);
         int sy2 = image.getHeight(null);
 
@@ -134,10 +135,10 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         Rectangle rectangle = container.getRectangle();
 
-        int x = rectangle.x * TetrisConstants.BLOCK_SIZE;
-        int y = rectangle.y * TetrisConstants.BLOCK_SIZE;
-        int width = rectangle.width * TetrisConstants.BLOCK_SIZE;
-        int height = rectangle.height * TetrisConstants.BLOCK_SIZE;
+        int x = rectangle.x * BLOCK_SIZE;
+        int y = rectangle.y * BLOCK_SIZE;
+        int width = rectangle.width * BLOCK_SIZE;
+        int height = rectangle.height * BLOCK_SIZE;
 
         graphics.drawLine(x, y, x + width - 1, y);
         graphics.drawLine(x, y + height - 1, x + width - 1, y + height - 1);

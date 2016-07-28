@@ -1,5 +1,9 @@
 package spypunk.tetris.ui.view;
 
+import static spypunk.tetris.constants.TetrisConstants.HEIGHT;
+import static spypunk.tetris.constants.TetrisConstants.WIDTH;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
+
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -14,7 +18,6 @@ import java.util.function.Consumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.ui.controller.TetrisController;
 
 @Singleton
@@ -23,8 +26,8 @@ public class TetrisCanvasImpl implements TetrisCanvas {
     private static final int BUFFER_STATEGIES = 3;
 
     private static final Dimension DEFAULT_DIMENSION = new Dimension(
-            TetrisConstants.WIDTH * TetrisConstants.BLOCK_SIZE + 9 * TetrisConstants.BLOCK_SIZE,
-            (TetrisConstants.HEIGHT - 2) * TetrisConstants.BLOCK_SIZE + 2 * TetrisConstants.BLOCK_SIZE);
+            WIDTH * BLOCK_SIZE + 9 * BLOCK_SIZE,
+            (HEIGHT - 2) * BLOCK_SIZE + 2 * BLOCK_SIZE);
 
     private final class GameCanvasKeyAdapter extends KeyAdapter {
 
