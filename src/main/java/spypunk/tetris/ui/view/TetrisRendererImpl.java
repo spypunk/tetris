@@ -109,18 +109,15 @@ public class TetrisRendererImpl implements TetrisRenderer {
     }
 
     private void renderLevel(Tetris tetris, Graphics2D graphics) {
-        Container levelContainer = containerFactory.createLevelContainer();
-        renderInfo(graphics, levelContainer, String.valueOf(tetris.getLevel()));
+        renderInfo(graphics, containerFactory.createLevelContainer(), String.valueOf(tetris.getLevel()));
     }
 
     private void renderScore(Tetris tetris, Graphics2D graphics) {
-        Container scoreContainer = containerFactory.createScoreContainer();
-        renderInfo(graphics, scoreContainer, String.valueOf(tetris.getScore()));
+        renderInfo(graphics, containerFactory.createScoreContainer(), String.valueOf(tetris.getScore()));
     }
 
     private void renderRows(Tetris tetris, Graphics2D graphics) {
-        Container rowsContainer = containerFactory.createRowsContainer();
-        renderInfo(graphics, rowsContainer, String.valueOf(tetris.getCompletedRows()));
+        renderInfo(graphics, containerFactory.createRowsContainer(), String.valueOf(tetris.getCompletedRows()));
     }
 
     private void renderNextShape(Tetris tetris, Graphics2D graphics) {
@@ -169,12 +166,10 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
         String title = container.getTitle();
 
-        if (title == null) {
-            return;
+        if (title != null) {
+            renderTextCentered(graphics, title,
+                new Rectangle(rectangle.x, rectangle.y - BLOCK_SIZE, rectangle.width, BLOCK_SIZE), defaultFont);
         }
-
-        renderTextCentered(graphics, title,
-            new Rectangle(rectangle.x, rectangle.y - BLOCK_SIZE, rectangle.width, BLOCK_SIZE), defaultFont);
     }
 
     private void renderTextCentered(Graphics2D graphics, String text, Rectangle rectangle, Font font) {
@@ -182,6 +177,7 @@ public class TetrisRendererImpl implements TetrisRenderer {
         graphics.setFont(font);
 
         Point location = SwingUtils.getCenteredTextLocation(graphics, text, rectangle);
+
         graphics.drawString(text, location.x, location.y);
     }
 
