@@ -10,7 +10,7 @@
 
 ## How to build it ?
 
-You will need a Java JDK 8+ and maven 3.0.5+.
+You will need a Java JDK 8+ and maven 3+.
 
 ## How to play ?
 
