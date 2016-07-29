@@ -5,6 +5,7 @@
 ## How it looks ?
 
 ![alt tag](img/screenshot.png)
+![alt tag](img/screenshot_pause.png)
 ![alt tag](img/screenshot_gameover.png)
 
 ## How to build it ?
@@ -22,6 +23,8 @@ RIGHT - Move the current shape to the right
 DOWN - Move the current shape down
 
 SPACE - Start a new game
+
+P - Pause the current game
 
 ## What about license ?
 

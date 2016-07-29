@@ -1,6 +1,6 @@
 /*
  * Copyright © 2016 spypunk <spypunk@gmail.com>
- * 
+ *
  * This work is free. You can redistribute it and/or modify it under the
  * terms of the Do What The Fuck You Want To Public License, Version 2,
  * as published by Sam Hocevar. See the COPYING file for more details.
@@ -37,11 +37,13 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
     private static final float DEFAULT_FONT_SIZE = 32F;
 
-    private static final float GAME_OVER_FONT_SIZE = 42F;
+    private static final float TETRIS_FROZEN_FONT_SIZE = 42F;
 
-    private static final Color GAME_OVER_FG_COLOR = new Color(30, 30, 30, 200);
+    private static final Color TETRIS_FROZEN_FG_COLOR = new Color(30, 30, 30, 150);
 
     private static final String GAME_OVER = "GAME OVER";
+
+    private static final String PAUSE = "PAUSE";
 
     private static final Color DEFAULT_FONT_COLOR = Color.LIGHT_GRAY;
 
@@ -64,12 +66,12 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
     private final Font defaultFont;
 
-    private final Font gameOverFont;
+    private final Font frozenTetrisFont;
 
     @Inject
     public TetrisRendererImpl(FontFactory fontFactory) {
         defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
-        gameOverFont = fontFactory.createDefaultFont(GAME_OVER_FONT_SIZE);
+        frozenTetrisFont = fontFactory.createDefaultFont(TETRIS_FROZEN_FONT_SIZE);
     }
 
     @Override
@@ -101,8 +103,8 @@ public class TetrisRendererImpl implements TetrisRenderer {
                 .forEach(block -> renderBlock(graphics, block, BLOCK_SIZE + 1,
                     -BLOCK_SIZE + 1));
 
-        if (tetris.isGameOver()) {
-            renderGameOver(graphics, container);
+        if (tetris.isOver() || tetris.isPaused()) {
+            renderTetrisFrozen(graphics, container, tetris);
         }
     }
 
@@ -158,7 +160,7 @@ public class TetrisRendererImpl implements TetrisRenderer {
         renderTextCentered(graphics, info, container.getRectangle(), defaultFont);
     }
 
-    public void renderContainer(Graphics2D graphics, Container container) {
+    private void renderContainer(Graphics2D graphics, Container container) {
         graphics.setColor(DEFAULT_CONTAINER_COLOR);
 
         Rectangle rectangle = container.getRectangle();
@@ -183,12 +185,12 @@ public class TetrisRendererImpl implements TetrisRenderer {
         graphics.drawString(text, location.x, location.y);
     }
 
-    private void renderGameOver(Graphics2D graphics, Container container) {
+    private void renderTetrisFrozen(Graphics2D graphics, Container container, Tetris tetris) {
         Rectangle rectangle = container.getRectangle();
 
-        graphics.setColor(GAME_OVER_FG_COLOR);
+        graphics.setColor(TETRIS_FROZEN_FG_COLOR);
         graphics.fillRect(rectangle.x + 1, rectangle.y + 1, rectangle.width - 1, rectangle.height - 1);
 
-        renderTextCentered(graphics, GAME_OVER, rectangle, gameOverFont);
+        renderTextCentered(graphics, tetris.isOver() ? GAME_OVER : PAUSE, rectangle, frozenTetrisFont);
     }
 }

@@ -1,6 +1,6 @@
 /*
  * Copyright © 2016 spypunk <spypunk@gmail.com>
- * 
+ *
  * This work is free. You can redistribute it and/or modify it under the
  * terms of the Do What The Fuck You Want To Public License, Version 2,
  * as published by Sam Hocevar. See the COPYING file for more details.
@@ -54,7 +54,7 @@ public class Tetris {
 
     private Shape nextShape;
 
-    private boolean gameOver;
+    private boolean over;
 
     private long lastMoveTime;
 
@@ -71,6 +71,8 @@ public class Tetris {
     private int completedRows;
 
     private int speed = INITIAL_SPEED;
+
+    private boolean paused;
 
     public Map<Point, Optional<Block>> getBlocks() {
         return blocks;
@@ -96,12 +98,12 @@ public class Tetris {
         this.nextShape = nextShape;
     }
 
-    public boolean isGameOver() {
-        return gameOver;
+    public boolean isOver() {
+        return over;
     }
 
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
+    public void setOver(boolean over) {
+        this.over = over;
     }
 
     public long getLastMoveTime() {
@@ -166,5 +168,13 @@ public class Tetris {
 
     public void setLastLockedTime(long lastLockedTime) {
         this.lastLockedTime = lastLockedTime;
+    }
+
+    public boolean isPaused() {
+        return paused;
+    }
+
+    public void setPaused(boolean paused) {
+        this.paused = paused;
     }
 }

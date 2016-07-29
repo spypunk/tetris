@@ -1,6 +1,6 @@
 /*
  * Copyright © 2016 spypunk <spypunk@gmail.com>
- * 
+ *
  * This work is free. You can redistribute it and/or modify it under the
  * terms of the Do What The Fuck You Want To Public License, Version 2,
  * as published by Sam Hocevar. See the COPYING file for more details.
@@ -55,11 +55,16 @@ public class TetrisServiceImpl implements TetrisService {
 
     @Override
     public void update(Tetris tetris) {
-        if (tetris.isGameOver() || !handleNextShape(tetris) || !handleMovement(tetris) || !isTimeToMoveShape(tetris)) {
+        if (isTetrisOverOrPaused(tetris) || !handleNextShape(tetris) || !handleMovement(tetris)
+                || !isTimeToMoveShape(tetris)) {
             return;
         }
 
         handleGravity(tetris);
+    }
+
+    private boolean isTetrisOverOrPaused(Tetris tetris) {
+        return tetris.isOver() || tetris.isPaused();
     }
 
     private boolean handleNextShape(Tetris tetris) {
@@ -102,7 +107,7 @@ public class TetrisServiceImpl implements TetrisService {
         }
 
         if (isGameOver(tetris)) {
-            tetris.setGameOver(true);
+            tetris.setOver(true);
         } else {
             tetris.setCurrentShape(null);
             tetris.setLastLockedTime(now());

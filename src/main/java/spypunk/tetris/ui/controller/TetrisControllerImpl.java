@@ -1,6 +1,6 @@
 /*
  * Copyright © 2016 spypunk <spypunk@gmail.com>
- * 
+ *
  * This work is free. You can redistribute it and/or modify it under the
  * terms of the Do What The Fuck You Want To Public License, Version 2,
  * as published by Sam Hocevar. See the COPYING file for more details.
@@ -56,6 +56,8 @@ public class TetrisControllerImpl implements TetrisController {
 
     private volatile Movement movement;
 
+    private volatile boolean pauseTriggered;
+
     private Future<?> loopThread;
 
     private Tetris tetris;
@@ -78,7 +80,8 @@ public class TetrisControllerImpl implements TetrisController {
     public void onKeyPressed(int keyCode) {
         if (KeyEvent.VK_SPACE == keyCode) {
             newGame = true;
-            return;
+        } else if (KeyEvent.VK_P == keyCode) {
+            pauseTriggered = true;
         }
 
         movement = MOVEMENTS.get(keyCode);
@@ -86,18 +89,33 @@ public class TetrisControllerImpl implements TetrisController {
 
     private void onGameLoop() {
         if (newGame) {
-            tetris = tetrisFactory.createTetris();
-            newGame = false;
+            handleNewGame();
         } else if (tetris == null) {
             return;
         } else {
-            tetris.setMovement(Optional.ofNullable(movement));
-
-            movement = null;
+            handleMovement();
+            handlePause();
 
             tetrisService.update(tetris);
         }
 
         tetrisRenderer.render(tetris);
+    }
+
+    private void handleNewGame() {
+        tetris = tetrisFactory.createTetris();
+        newGame = false;
+    }
+
+    private void handleMovement() {
+        tetris.setMovement(Optional.ofNullable(movement));
+        movement = null;
+    }
+
+    private void handlePause() {
+        if (pauseTriggered) {
+            tetris.setPaused(!tetris.isPaused());
+            pauseTriggered = false;
+        }
     }
 }
