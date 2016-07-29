@@ -10,7 +10,6 @@ package spypunk.tetris.ui.factory;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.io.File;
 import java.io.IOException;
 
 import javax.inject.Singleton;
@@ -27,13 +26,14 @@ public class FontFactoryImpl implements FontFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FontFactoryImpl.class);
 
-    private static final File FONTS_FOLDER = new File("src/main/resources/font");
+    private static final String FONTS_FOLDER = "/font/";
 
     private final Font defaultFont;
 
     public FontFactoryImpl() {
         try {
-            defaultFont = Font.createFont(Font.TRUETYPE_FONT, new File(FONTS_FOLDER, DEFAULT_FONT_NAME));
+            String resourceName = String.format("%s%s", FONTS_FOLDER, DEFAULT_FONT_NAME);
+            defaultFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream(resourceName));
         } catch (FontFormatException | IOException e) {
             LOGGER.error(e.getMessage(), e);
             throw new TetrisException(e);

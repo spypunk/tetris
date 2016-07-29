@@ -9,11 +9,11 @@
 package spypunk.tetris.ui.factory;
 
 import java.awt.Image;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 @FunctionalInterface
 public interface ImageFactory {
 
-    public Image createImage(File imageFile) throws IOException;
+    public Image createImage(InputStream inputStream) throws IOException;
 }
