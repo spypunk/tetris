@@ -4,6 +4,7 @@ import static spypunk.tetris.constants.TetrisConstants.HEIGHT;
 import static spypunk.tetris.constants.TetrisConstants.WIDTH;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -110,23 +111,31 @@ public class TetrisServiceImpl implements TetrisService {
     private void getNextShape(Tetris tetris) {
         tetris.setCurrentShape(tetris.getNextShape());
 
-        Shape nextShape = shapeFactory.createRandomShape();
+        Shape currentShape = tetris.getCurrentShape();
 
-        int dx = random.nextInt(MAX_START_X);
+        randomizeShapeStartX(currentShape);
 
-        List<Block> currentShapeBlocks = tetris.getCurrentShape().getBlocks();
-
-        currentShapeBlocks
-                .forEach(block -> block.getLocation().x += dx);
-
-        tetris.setNextShape(nextShape);
-
-        currentShapeBlocks
+        currentShape.getBlocks()
                 .forEach(block -> tetris.getBlocks().put(block.getLocation(), Optional.of(block)));
 
+        tetris.setNextShape(shapeFactory.createRandomShape());
         tetris.setLastMoveTime(now());
 
         updateShapeStatistics(tetris);
+    }
+
+    private List<Block> randomizeShapeStartX(Shape shape) {
+        List<Block> currentShapeBlocks = shape.getBlocks();
+
+        int dx = random.nextInt(MAX_START_X);
+
+        Rectangle boundingBox = shape.getBoundingBox();
+
+        boundingBox.x += dx;
+
+        currentShapeBlocks
+                .forEach(block -> block.getLocation().x += dx);
+        return currentShapeBlocks;
     }
 
     private void updateShapeStatistics(Tetris tetris) {
