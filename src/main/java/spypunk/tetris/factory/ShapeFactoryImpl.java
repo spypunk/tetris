@@ -28,12 +28,12 @@ public class ShapeFactoryImpl implements ShapeFactory {
 
     @Override
     public Shape createShape(ShapeType shapeType, int rotationIndex) {
-        Set<Point> rotation = shapeType.getRotations().get(rotationIndex);
-
         Rectangle boundingBox = new Rectangle(shapeType.getBoundingBox());
 
         Shape shape = Shape.Builder.instance().setBoundingBox(boundingBox).setCurrentRotation(rotationIndex)
                 .setShapeType(shapeType).build();
+
+        Set<Point> rotation = shapeType.getRotations().get(rotationIndex);
 
         List<Block> blocks = rotation.stream().map(location -> new Point(location.x, location.y))
                 .map(location -> Block.Builder.instance().setLocation(location).setShape(shape).build())

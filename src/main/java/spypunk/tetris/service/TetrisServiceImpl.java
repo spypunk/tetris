@@ -72,12 +72,7 @@ public class TetrisServiceImpl implements TetrisService {
 
     private boolean handleMovement(Tetris tetris) {
         Optional<Movement> movement = tetris.getMovement();
-
-        if (movement.isPresent() && !handleMovement(tetris, movement.get())) {
-            return false;
-        }
-
-        return true;
+        return !movement.isPresent() || handleMovement(tetris, movement.get());
     }
 
     private void handleGravity(Tetris tetris) {
