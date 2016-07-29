@@ -1,4 +1,4 @@
-# Just another tetris™ clone
+# Just another Tetris™ clone
 
 [![Build Status](https://travis-ci.org/spypunk/tetris.svg?branch=master)](https://travis-ci.org/spypunk/tetris)
 
