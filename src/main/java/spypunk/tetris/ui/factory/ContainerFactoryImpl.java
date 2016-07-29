@@ -40,11 +40,16 @@ public class ContainerFactoryImpl implements ContainerFactory {
 
     @Inject
     public ContainerFactoryImpl(FontFactory fontFactory) {
-        tetrisContainer = initializeTetrisContainer();
-        nextShapeContainer = initializeNextShapeContainer();
-        levelContainer = initializeLevelContainer();
-        scoreContainer = initializeScoreContainer();
-        rowsContainer = initializeRowsContainer();
+        tetrisContainer = initializeContainer(BLOCK_SIZE, BLOCK_SIZE, TETRIS_CONTAINER_WIDTH,
+            1 + BLOCK_SIZE * (HEIGHT - 2));
+        nextShapeContainer = initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 11, INFO_CONTAINERS_WIDTH,
+            INFO_CONTAINERS_WIDTH,
+            NEXT_SHAPE);
+        levelContainer = initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 2, INFO_CONTAINERS_WIDTH, BLOCK_SIZE,
+            LEVEL);
+        scoreContainer = initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 5, INFO_CONTAINERS_WIDTH, BLOCK_SIZE,
+            SCORE);
+        rowsContainer = initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 8, INFO_CONTAINERS_WIDTH, BLOCK_SIZE, ROWS);
     }
 
     @Override
@@ -70,28 +75,6 @@ public class ContainerFactoryImpl implements ContainerFactory {
     @Override
     public Container createNextShapeContainer() {
         return nextShapeContainer;
-    }
-
-    private Container initializeTetrisContainer() {
-        return initializeContainer(BLOCK_SIZE, BLOCK_SIZE, TETRIS_CONTAINER_WIDTH,
-            1 + BLOCK_SIZE * (HEIGHT - 2));
-    }
-
-    private Container initializeLevelContainer() {
-        return initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 2, INFO_CONTAINERS_WIDTH, BLOCK_SIZE, LEVEL);
-    }
-
-    private Container initializeScoreContainer() {
-        return initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 5, INFO_CONTAINERS_WIDTH, BLOCK_SIZE, SCORE);
-    }
-
-    private Container initializeRowsContainer() {
-        return initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 8, INFO_CONTAINERS_WIDTH, BLOCK_SIZE, ROWS);
-    }
-
-    private Container initializeNextShapeContainer() {
-        return initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 11, INFO_CONTAINERS_WIDTH, INFO_CONTAINERS_WIDTH,
-            NEXT_SHAPE);
     }
 
     private Container initializeContainer(int x, int y, int width, int height, String title) {
