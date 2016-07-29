@@ -124,7 +124,7 @@ public class TetrisServiceImpl implements TetrisService {
         updateShapeStatistics(tetris);
     }
 
-    private List<Block> randomizeShapeStartX(Shape shape) {
+    private void randomizeShapeStartX(Shape shape) {
         List<Block> currentShapeBlocks = shape.getBlocks();
 
         int dx = random.nextInt(MAX_START_X);
@@ -134,8 +134,10 @@ public class TetrisServiceImpl implements TetrisService {
         boundingBox.x += dx;
 
         currentShapeBlocks
-                .forEach(block -> block.getLocation().x += dx);
-        return currentShapeBlocks;
+                .forEach(block -> {
+                    Point location = block.getLocation();
+                    location.x += dx;
+                });
     }
 
     private void updateShapeStatistics(Tetris tetris) {
