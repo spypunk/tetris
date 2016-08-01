@@ -22,11 +22,11 @@ import spypunk.tetris.exception.TetrisException;
 @Singleton
 public class FontFactoryImpl implements FontFactory {
 
-    private static final String DEFAULT_FONT_NAME = "default.ttf";
-
     private static final Logger LOGGER = LoggerFactory.getLogger(FontFactoryImpl.class);
 
     private static final String FONTS_FOLDER = "/font/";
+
+    private static final String DEFAULT_FONT_NAME = "default.ttf";
 
     private final Font defaultFont;
 

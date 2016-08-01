@@ -56,7 +56,7 @@ public class TetrisServiceImpl implements TetrisService {
     @Override
     public void update(Tetris tetris) {
         if (isTetrisOverOrPaused(tetris) || !handleNextShape(tetris) || !handleMovement(tetris)
-                || !isTimeToMoveShape(tetris)) {
+                || !isTimeToHandleGravity(tetris)) {
             return;
         }
 
@@ -163,15 +163,15 @@ public class TetrisServiceImpl implements TetrisService {
                 .anyMatch(block -> block.isPresent() && block.get().getLocation().y == 2);
     }
 
-    private boolean isTimeToMoveShape(Tetris tetris) {
-        return isTimeFor(tetris, tetris.getLastMoveTime());
+    private boolean isTimeToHandleGravity(Tetris tetris) {
+        return isTimeTo(tetris, tetris.getLastMoveTime());
     }
 
     private boolean isTimeForNextShape(Tetris tetris) {
-        return isTimeFor(tetris, tetris.getLastLockedTime());
+        return isTimeTo(tetris, tetris.getLastLockedTime());
     }
 
-    private boolean isTimeFor(Tetris tetris, long lastTime) {
+    private boolean isTimeTo(Tetris tetris, long lastTime) {
         long currentTime = now();
         return currentTime - lastTime > tetris.getSpeed();
     }
