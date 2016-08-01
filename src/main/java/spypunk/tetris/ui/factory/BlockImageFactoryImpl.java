@@ -10,6 +10,7 @@ package spypunk.tetris.ui.factory;
 
 import java.awt.Image;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -40,9 +41,7 @@ public class BlockImageFactoryImpl implements BlockImageFactory {
 
         try {
             for (ShapeType shapeType : shapeTypes) {
-                String resourceName = String.format("%s%s.png", BLOCKS_FOLDER, shapeType.getId());
-                Image image = imageFactory.createImage(getClass().getResourceAsStream(resourceName));
-                images.put(shapeType, image);
+                loadShapeTypeBlockImage(imageFactory, shapeType);
             }
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
@@ -55,4 +54,12 @@ public class BlockImageFactoryImpl implements BlockImageFactory {
         return images.get(shapeType);
     }
 
+    private void loadShapeTypeBlockImage(ImageFactory imageFactory, ShapeType shapeType) throws IOException {
+        String resourceName = String.format("%s%s.png", BLOCKS_FOLDER, shapeType.getId());
+
+        try (InputStream inputStream = getClass().getResourceAsStream(resourceName)) {
+            Image image = imageFactory.createImage(getClass().getResourceAsStream(resourceName));
+            images.put(shapeType, image);
+        }
+    }
 }

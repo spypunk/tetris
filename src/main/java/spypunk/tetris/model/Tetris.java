@@ -14,6 +14,12 @@ import java.util.Optional;
 
 public class Tetris {
 
+    public enum State {
+        RUNNING,
+        PAUSED,
+        GAME_OVER;
+    }
+
     public static class Builder {
 
         private final Tetris tetris = new Tetris();
@@ -40,6 +46,11 @@ public class Tetris {
             return this;
         }
 
+        public Builder setState(State state) {
+            tetris.setState(state);
+            return this;
+        }
+
         public Tetris build() {
             return tetris;
         }
@@ -54,13 +65,11 @@ public class Tetris {
 
     private Shape nextShape;
 
-    private boolean over;
-
     private long lastMoveTime;
 
     private long lastLockedTime;
 
-    private Optional<Movement> movement;
+    private Optional<Movement> movement = Optional.empty();
 
     private Map<ShapeType, Integer> shapesStatistics;
 
@@ -72,7 +81,7 @@ public class Tetris {
 
     private int speed = INITIAL_SPEED;
 
-    private boolean paused;
+    private State state;
 
     public Map<Point, Optional<Block>> getBlocks() {
         return blocks;
@@ -96,14 +105,6 @@ public class Tetris {
 
     public void setNextShape(Shape nextShape) {
         this.nextShape = nextShape;
-    }
-
-    public boolean isOver() {
-        return over;
-    }
-
-    public void setOver(boolean over) {
-        this.over = over;
     }
 
     public long getLastMoveTime() {
@@ -170,11 +171,11 @@ public class Tetris {
         this.lastLockedTime = lastLockedTime;
     }
 
-    public boolean isPaused() {
-        return paused;
+    public State getState() {
+        return state;
     }
 
-    public void setPaused(boolean paused) {
-        this.paused = paused;
+    public void setState(State state) {
+        this.state = state;
     }
 }

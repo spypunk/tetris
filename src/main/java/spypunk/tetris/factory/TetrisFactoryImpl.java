@@ -26,6 +26,7 @@ import com.google.common.collect.Maps;
 import spypunk.tetris.model.Block;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.model.Tetris.State;
 
 @Singleton
 public class TetrisFactoryImpl implements TetrisFactory {
@@ -49,6 +50,6 @@ public class TetrisFactoryImpl implements TetrisFactory {
                 .collect(Collectors.toMap(shapeType -> shapeType, shapeType -> 0));
 
         return Tetris.Builder.instance().setBlocks(blocks).setNextShape(shapeFactory.createRandomShape())
-                .setShapesStatistics(shapesStatistics).build();
+                .setShapesStatistics(shapesStatistics).setState(State.RUNNING).build();
     }
 }

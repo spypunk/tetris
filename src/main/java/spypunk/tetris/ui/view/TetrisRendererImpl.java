@@ -26,6 +26,7 @@ import spypunk.tetris.model.Block;
 import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.ui.factory.BlockImageFactory;
 import spypunk.tetris.ui.factory.ContainerFactory;
 import spypunk.tetris.ui.factory.FontFactory;
@@ -100,8 +101,10 @@ public class TetrisRendererImpl implements TetrisRenderer {
                 .forEach(block -> renderBlock(graphics, block, BLOCK_SIZE + 1,
                     -BLOCK_SIZE + 1));
 
-        if (tetris.isOver() || tetris.isPaused()) {
-            renderTetrisFrozen(graphics, container, tetris);
+        State state = tetris.getState();
+
+        if (!State.RUNNING.equals(state)) {
+            renderTetrisFrozen(graphics, container, state);
         }
     }
 
@@ -178,12 +181,13 @@ public class TetrisRendererImpl implements TetrisRenderer {
         graphics.drawString(text, location.x, location.y);
     }
 
-    private void renderTetrisFrozen(Graphics2D graphics, Container container, Tetris tetris) {
+    private void renderTetrisFrozen(Graphics2D graphics, Container container, State state) {
         Rectangle rectangle = container.getRectangle();
 
         graphics.setColor(TETRIS_FROZEN_FG_COLOR);
         graphics.fillRect(rectangle.x + 1, rectangle.y + 1, rectangle.width - 1, rectangle.height - 1);
 
-        renderTextCentered(graphics, tetris.isOver() ? GAME_OVER : PAUSE, rectangle, frozenTetrisFont);
+        renderTextCentered(graphics, State.GAME_OVER.equals(state) ? GAME_OVER : PAUSE, rectangle,
+            frozenTetrisFont);
     }
 }

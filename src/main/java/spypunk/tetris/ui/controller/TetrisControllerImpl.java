@@ -10,7 +10,6 @@ package spypunk.tetris.ui.controller;
 
 import java.awt.event.KeyEvent;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -82,9 +81,9 @@ public class TetrisControllerImpl implements TetrisController {
             newGame = true;
         } else if (KeyEvent.VK_P == keyCode) {
             pauseTriggered = true;
+        } else if (MOVEMENTS.containsKey(keyCode)) {
+            movement = MOVEMENTS.get(keyCode);
         }
-
-        movement = MOVEMENTS.get(keyCode);
     }
 
     private void onGameLoop() {
@@ -102,20 +101,24 @@ public class TetrisControllerImpl implements TetrisController {
         tetrisRenderer.render(tetris);
     }
 
-    private void handleNewGame() {
-        tetris = tetrisFactory.createTetris();
-        newGame = false;
+    private void handlePause() {
+        if (pauseTriggered) {
+            tetrisService.pause(tetris);
+            pauseTriggered = false;
+        }
     }
 
     private void handleMovement() {
-        tetris.setMovement(Optional.ofNullable(movement));
-        movement = null;
+        if (movement != null) {
+            tetrisService.move(tetris, movement);
+            movement = null;
+        } else {
+            tetrisService.stopMove(tetris);
+        }
     }
 
-    private void handlePause() {
-        if (pauseTriggered) {
-            tetris.setPaused(!tetris.isPaused());
-            pauseTriggered = false;
-        }
+    private void handleNewGame() {
+        tetris = tetrisFactory.createTetris();
+        newGame = false;
     }
 }

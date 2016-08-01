@@ -31,6 +31,7 @@ import spypunk.tetris.model.Movement;
 import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.model.Tetris.State;
 
 @Singleton
 public class TetrisServiceImpl implements TetrisService {
@@ -55,7 +56,7 @@ public class TetrisServiceImpl implements TetrisService {
 
     @Override
     public void update(Tetris tetris) {
-        if (isTetrisOverOrPaused(tetris) || !handleNextShape(tetris) || !handleMovement(tetris)
+        if (!isTetrisRunning(tetris) || !handleNextShape(tetris) || !handleMovement(tetris)
                 || !isTimeToHandleGravity(tetris)) {
             return;
         }
@@ -63,8 +64,27 @@ public class TetrisServiceImpl implements TetrisService {
         handleGravity(tetris);
     }
 
-    private boolean isTetrisOverOrPaused(Tetris tetris) {
-        return tetris.isOver() || tetris.isPaused();
+    @Override
+    public void pause(Tetris tetris) {
+        if (isTetrisRunning(tetris)) {
+            tetris.setState(State.PAUSED);
+        } else if (isTetrisPaused(tetris)) {
+            tetris.setState(State.RUNNING);
+        }
+    }
+
+    @Override
+    public void move(Tetris tetris, Movement movement) {
+        if (isTetrisRunning(tetris)) {
+            tetris.setMovement(Optional.of(movement));
+        }
+    }
+
+    @Override
+    public void stopMove(Tetris tetris) {
+        if (isTetrisRunning(tetris)) {
+            tetris.setMovement(Optional.empty());
+        }
     }
 
     private boolean handleNextShape(Tetris tetris) {
@@ -85,12 +105,8 @@ public class TetrisServiceImpl implements TetrisService {
 
     private boolean handleMovement(Tetris tetris) {
         Optional<Movement> movement = tetris.getMovement();
-        return !movement.isPresent() || handleMovement(tetris, movement.get());
-    }
 
-    private void handleGravity(Tetris tetris) {
-        moveShape(tetris, Movement.DOWN);
-        tetris.setLastMoveTime(now());
+        return !movement.isPresent() || handleMovement(tetris, movement.get());
     }
 
     private boolean handleMovement(Tetris tetris, Movement movement) {
@@ -101,13 +117,18 @@ public class TetrisServiceImpl implements TetrisService {
         return true;
     }
 
+    private void handleGravity(Tetris tetris) {
+        moveShape(tetris, Movement.DOWN);
+        tetris.setLastMoveTime(now());
+    }
+
     private boolean checkShapeIsLocked(Tetris tetris) {
         if (canShapeMove(tetris, Movement.DOWN)) {
             return false;
         }
 
         if (isGameOver(tetris)) {
-            tetris.setOver(true);
+            tetris.setState(State.GAME_OVER);
         } else {
             tetris.setCurrentShape(null);
             tetris.setLastLockedTime(now());
@@ -285,5 +306,17 @@ public class TetrisServiceImpl implements TetrisService {
 
     private long now() {
         return System.currentTimeMillis();
+    }
+
+    private boolean isTetrisRunning(Tetris tetris) {
+        return isTetris(tetris, State.RUNNING);
+    }
+
+    private boolean isTetrisPaused(Tetris tetris) {
+        return isTetris(tetris, State.PAUSED);
+    }
+
+    private boolean isTetris(Tetris tetris, State state) {
+        return state.equals(tetris.getState());
     }
 }

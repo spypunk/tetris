@@ -8,10 +8,16 @@
 
 package spypunk.tetris.service;
 
+import spypunk.tetris.model.Movement;
 import spypunk.tetris.model.Tetris;
 
-@FunctionalInterface
 public interface TetrisService {
 
     void update(Tetris tetris);
+
+    void pause(Tetris tetris);
+
+    void move(Tetris tetris, Movement movement);
+
+    void stopMove(Tetris tetris);
 }
