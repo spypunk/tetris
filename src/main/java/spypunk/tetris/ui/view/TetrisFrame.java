@@ -8,13 +8,12 @@
 
 package spypunk.tetris.ui.view;
 
-import java.awt.Container;
+import java.awt.Graphics2D;
+import java.util.function.Consumer;
 
 public interface TetrisFrame {
 
-    Container getContentPane();
-
-    void pack();
-
     void setVisible(boolean visible);
+
+    void render(Consumer<Graphics2D> consumer);
 }

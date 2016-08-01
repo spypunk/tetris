@@ -14,8 +14,6 @@ import java.util.Optional;
 
 public class Tetris {
 
-    private static final int INITIAL_SPEED = 1000;
-
     public static class Builder {
 
         private final Tetris tetris = new Tetris();
@@ -47,6 +45,8 @@ public class Tetris {
         }
 
     }
+
+    private static final int INITIAL_SPEED = 1000;
 
     private Map<Point, Optional<Block>> blocks;
 

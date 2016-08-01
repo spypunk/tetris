@@ -53,9 +53,6 @@ public class TetrisRendererImpl implements TetrisRenderer {
     private TetrisFrame tetrisFrame;
 
     @Inject
-    private TetrisCanvas tetrisCanvas;
-
-    @Inject
     private BlockImageFactory blockImageFactory;
 
     @Inject
@@ -81,7 +78,7 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
     @Override
     public void render(Tetris tetris) {
-        SwingUtils.doInAWTThread(() -> tetrisCanvas.render(graphics -> doRender(tetris, graphics)), true);
+        SwingUtils.doInAWTThread(() -> tetrisFrame.render(graphics -> doRender(tetris, graphics)), true);
     }
 
     private void doRender(Tetris tetris, Graphics2D graphics) {
