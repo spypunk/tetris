@@ -35,7 +35,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
 
-import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.model.Block;
 import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
@@ -110,9 +109,6 @@ public class TetrisViewImpl implements TetrisView {
 
     @Inject
     private ContainerFactory containerFactory;
-
-    @Inject
-    private ShapeFactory shapeFactory;
 
     @Inject
     public TetrisViewImpl(FontFactory fontFactory) {
@@ -209,16 +205,15 @@ public class TetrisViewImpl implements TetrisView {
         renderContainer(graphics, nextShapeContainer);
 
         Shape nextShape = tetris.getNextShape();
-        Shape previewShape = shapeFactory.createShape(nextShape.getShapeType(), nextShape.getCurrentRotation());
-        Rectangle boundingBox = previewShape.getBoundingBox();
         Rectangle containerRectangle = nextShapeContainer.getRectangle();
+        Rectangle boundingBox = nextShape.getBoundingBox();
 
         int width = containerRectangle.width;
         int height = containerRectangle.height;
-        int dx = containerRectangle.x + (width - boundingBox.width * BLOCK_SIZE) / 2;
-        int dy = containerRectangle.y + (height - boundingBox.height * BLOCK_SIZE) / 2;
+        int dx = containerRectangle.x - boundingBox.x + (width - boundingBox.width * BLOCK_SIZE) / 2;
+        int dy = containerRectangle.y - boundingBox.y + (height - boundingBox.height * BLOCK_SIZE) / 2;
 
-        previewShape.getBlocks().stream().forEach(
+        nextShape.getBlocks().stream().forEach(
             block -> renderBlock(graphics, block, dx, dy));
     }
 
