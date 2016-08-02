@@ -8,18 +8,32 @@
 
 package spypunk.tetris.ui.view;
 
+import static spypunk.tetris.constants.TetrisConstants.HEIGHT;
+import static spypunk.tetris.constants.TetrisConstants.WIDTH;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.WindowConstants;
 
 import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.model.Block;
@@ -27,6 +41,7 @@ import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
+import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.factory.BlockImageFactory;
 import spypunk.tetris.ui.factory.ContainerFactory;
 import spypunk.tetris.ui.factory.FontFactory;
@@ -34,7 +49,34 @@ import spypunk.tetris.ui.model.Container;
 import spypunk.tetris.ui.util.SwingUtils;
 
 @Singleton
-public class TetrisRendererImpl implements TetrisRenderer {
+public class TetrisViewImpl implements TetrisView {
+
+    private final class TetrisWindowListener extends WindowAdapter {
+
+        @Override
+        public void windowClosed(WindowEvent e) {
+            tetrisController.onWindowClosed();
+        }
+    }
+
+    private final class TetrisKeyAdapter extends KeyAdapter {
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            tetrisController.onKeyPressed(e.getKeyCode());
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            tetrisController.onKeyReleased(e.getKeyCode());
+        }
+    }
+
+    private static final String TITLE = "Tetris";
+
+    private static final Dimension DEFAULT_DIMENSION = new Dimension(
+            WIDTH * BLOCK_SIZE + 9 * BLOCK_SIZE,
+            (HEIGHT - 2) * BLOCK_SIZE + 2 * BLOCK_SIZE);
 
     private static final float DEFAULT_FONT_SIZE = 32F;
 
@@ -50,8 +92,18 @@ public class TetrisRendererImpl implements TetrisRenderer {
 
     private static final Color DEFAULT_CONTAINER_COLOR = Color.GRAY;
 
+    private final Font defaultFont;
+
+    private final Font frozenTetrisFont;
+
+    private final JFrame frame;
+
+    private final JLabel label;
+
+    private final BufferedImage image;
+
     @Inject
-    private TetrisFrame tetrisFrame;
+    private TetrisController tetrisController;
 
     @Inject
     private BlockImageFactory blockImageFactory;
@@ -62,32 +114,63 @@ public class TetrisRendererImpl implements TetrisRenderer {
     @Inject
     private ShapeFactory shapeFactory;
 
-    private final Font defaultFont;
-
-    private final Font frozenTetrisFont;
-
     @Inject
-    public TetrisRendererImpl(FontFactory fontFactory) {
+    public TetrisViewImpl(FontFactory fontFactory) {
         defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
         frozenTetrisFont = fontFactory.createDefaultFont(TETRIS_FROZEN_FONT_SIZE);
+
+        frame = new JFrame(TITLE);
+
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frame.setFocusable(false);
+        frame.getContentPane().setLayout(new BorderLayout(0, 0));
+        frame.setResizable(false);
+        frame.addWindowListener(new TetrisWindowListener());
+
+        image = new BufferedImage(DEFAULT_DIMENSION.width, DEFAULT_DIMENSION.height, BufferedImage.TYPE_INT_ARGB);
+
+        label = new JLabel(new ImageIcon(image));
+        label.setFocusable(true);
+        label.addKeyListener(new TetrisKeyAdapter());
+
+        frame.getContentPane().add(label, BorderLayout.CENTER);
+        frame.pack();
+
+        frame.setLocationRelativeTo(null);
     }
 
     @Override
-    public void start() {
-        SwingUtils.doInAWTThread(() -> tetrisFrame.setVisible(true), true);
+    public void setVisible(boolean visible) {
+        SwingUtils.doInAWTThread(() -> frame.setVisible(visible), true);
     }
 
     @Override
-    public void render(Tetris tetris) {
-        SwingUtils.doInAWTThread(() -> tetrisFrame.render(graphics -> doRender(tetris, graphics)), true);
+    public void update(Tetris tetris) {
+        SwingUtils.doInAWTThread(() -> doUpdate(tetris), true);
     }
 
-    private void doRender(Tetris tetris, Graphics2D graphics) {
+    private void doUpdate(Tetris tetris) {
+        Graphics2D graphics = initializeGraphics();
+
         renderBlocks(tetris, graphics);
         renderLevel(tetris, graphics);
         renderScore(tetris, graphics);
         renderRows(tetris, graphics);
         renderNextShape(tetris, graphics);
+
+        graphics.dispose();
+
+        label.repaint();
+    }
+
+    private Graphics2D initializeGraphics() {
+        Graphics2D graphics = image.createGraphics();
+
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, 0, DEFAULT_DIMENSION.width, DEFAULT_DIMENSION.height);
+        return graphics;
     }
 
     private void renderBlocks(Tetris tetris, Graphics2D graphics) {
@@ -142,14 +225,15 @@ public class TetrisRendererImpl implements TetrisRenderer {
     private void renderBlock(Graphics2D graphics, Block block, int dx, int dy) {
         ShapeType shapeType = block.getShape().getShapeType();
 
-        Image image = blockImageFactory.createBlockImage(shapeType);
+        Image blockImage = blockImageFactory.createBlockImage(shapeType);
 
         int dx1 = dx + block.getLocation().x * BLOCK_SIZE;
         int dx2 = dx1 + BLOCK_SIZE;
         int dy1 = dy + block.getLocation().y * BLOCK_SIZE;
         int dy2 = dy1 + BLOCK_SIZE;
 
-        graphics.drawImage(image, dx1, dy1, dx2, dy2, 0, 0, image.getWidth(null), image.getHeight(null), null);
+        graphics.drawImage(blockImage, dx1, dy1, dx2, dy2, 0, 0, blockImage.getWidth(null), blockImage.getHeight(null),
+            null);
     }
 
     private void renderInfo(Graphics2D graphics, Container container, String info) {

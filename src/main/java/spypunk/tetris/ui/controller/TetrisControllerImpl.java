@@ -24,7 +24,7 @@ import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.model.Movement;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.service.TetrisService;
-import spypunk.tetris.ui.view.TetrisRenderer;
+import spypunk.tetris.ui.view.TetrisView;
 
 @Singleton
 public class TetrisControllerImpl implements TetrisController {
@@ -43,7 +43,7 @@ public class TetrisControllerImpl implements TetrisController {
     private ScheduledExecutorService scheduledExecutorService;
 
     @Inject
-    private TetrisRenderer tetrisRenderer;
+    private TetrisView tetrisView;
 
     @Inject
     private TetrisService tetrisService;
@@ -63,7 +63,7 @@ public class TetrisControllerImpl implements TetrisController {
 
     @Override
     public void start() {
-        tetrisRenderer.start();
+        tetrisView.setVisible(true);
 
         loopThread = scheduledExecutorService.scheduleAtFixedRate(() -> onGameLoop(), 0, RENDER_PERIOD,
             TimeUnit.MILLISECONDS);
@@ -103,7 +103,7 @@ public class TetrisControllerImpl implements TetrisController {
             tetrisService.update(tetris);
         }
 
-        tetrisRenderer.render(tetris);
+        tetrisView.update(tetris);
     }
 
     private void handlePause() {

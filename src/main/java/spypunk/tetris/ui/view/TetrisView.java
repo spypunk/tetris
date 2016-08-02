@@ -10,9 +10,9 @@ package spypunk.tetris.ui.view;
 
 import spypunk.tetris.model.Tetris;
 
-public interface TetrisRenderer {
+public interface TetrisView {
 
-    void start();
+    void setVisible(boolean visible);
 
-    void render(Tetris tetris);
+    void update(Tetris tetris);
 }
