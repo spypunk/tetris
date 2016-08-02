@@ -41,8 +41,8 @@ public class Tetris {
             return this;
         }
 
-        public Builder setShapesStatistics(Map<ShapeType, Integer> shapesStatistics) {
-            tetris.setShapesStatistics(shapesStatistics);
+        public Builder setStatistics(Map<ShapeType, Integer> statistics) {
+            tetris.setStatistics(statistics);
             return this;
         }
 
@@ -71,7 +71,7 @@ public class Tetris {
 
     private Optional<Movement> movement = Optional.empty();
 
-    private Map<ShapeType, Integer> shapesStatistics;
+    private Map<ShapeType, Integer> statistics;
 
     private int level;
 
@@ -123,12 +123,12 @@ public class Tetris {
         this.movement = movement;
     }
 
-    public Map<ShapeType, Integer> getShapesStatistics() {
-        return shapesStatistics;
+    public Map<ShapeType, Integer> getStatistics() {
+        return statistics;
     }
 
-    public void setShapesStatistics(Map<ShapeType, Integer> shapesStatistics) {
-        this.shapesStatistics = shapesStatistics;
+    public void setStatistics(Map<ShapeType, Integer> statistics) {
+        this.statistics = statistics;
     }
 
     public int getLevel() {

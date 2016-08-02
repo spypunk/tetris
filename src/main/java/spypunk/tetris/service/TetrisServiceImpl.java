@@ -136,7 +136,7 @@ public class TetrisServiceImpl implements TetrisService {
         tetris.setNextShape(shapeFactory.createRandomShape());
         tetris.setLastMoveTime(now());
 
-        updateShapeStatistics(tetris);
+        updateStatistics(tetris);
     }
 
     private void randomizeShapeStartX(Shape shape) {
@@ -155,14 +155,14 @@ public class TetrisServiceImpl implements TetrisService {
                 });
     }
 
-    private void updateShapeStatistics(Tetris tetris) {
-        Map<ShapeType, Integer> shapeStatistics = tetris.getShapesStatistics();
+    private void updateStatistics(Tetris tetris) {
+        Map<ShapeType, Integer> statistics = tetris.getStatistics();
 
         ShapeType shapeType = tetris.getCurrentShape().getShapeType();
 
-        Integer count = shapeStatistics.get(shapeType);
+        Integer count = statistics.get(shapeType);
 
-        shapeStatistics.put(shapeType, count + 1);
+        statistics.put(shapeType, count + 1);
     }
 
     private boolean isGameOver(Tetris tetris) {

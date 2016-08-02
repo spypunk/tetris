@@ -46,10 +46,10 @@ public class TetrisFactoryImpl implements TetrisFactory {
 
         List<ShapeType> shapeTypes = shapeTypeFactory.createAll();
 
-        Map<ShapeType, Integer> shapesStatistics = shapeTypes.stream()
+        Map<ShapeType, Integer> statistics = shapeTypes.stream()
                 .collect(Collectors.toMap(shapeType -> shapeType, shapeType -> 0));
 
         return Tetris.Builder.instance().setBlocks(blocks).setNextShape(shapeFactory.createRandomShape())
-                .setShapesStatistics(shapesStatistics).setState(State.RUNNING).build();
+                .setStatistics(statistics).setState(State.RUNNING).build();
     }
 }
