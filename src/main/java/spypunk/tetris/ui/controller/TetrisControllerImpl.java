@@ -107,7 +107,6 @@ public class TetrisControllerImpl implements TetrisController {
         handlePause();
 
         tetrisService.update(tetris);
-
         tetrisView.update(tetris);
     }
 
