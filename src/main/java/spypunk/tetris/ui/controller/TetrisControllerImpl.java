@@ -31,14 +31,6 @@ public class TetrisControllerImpl implements TetrisController {
 
     private static final int RENDER_PERIOD = 1000 / 60;
 
-    private static final Map<Integer, Movement> MOVEMENTS = Maps.newHashMap();
-
-    static {
-        MOVEMENTS.put(KeyEvent.VK_DOWN, Movement.DOWN);
-        MOVEMENTS.put(KeyEvent.VK_RIGHT, Movement.RIGHT);
-        MOVEMENTS.put(KeyEvent.VK_LEFT, Movement.LEFT);
-    }
-
     @Inject
     private ScheduledExecutorService scheduledExecutorService;
 
@@ -61,6 +53,14 @@ public class TetrisControllerImpl implements TetrisController {
 
     private Tetris tetris;
 
+    private final Map<Integer, Runnable> pressedKeyHandlers = Maps.newHashMap();
+
+    private final Map<Integer, Runnable> releasedKeyHandlers = Maps.newHashMap();
+
+    public TetrisControllerImpl() {
+        initializeKeyHandlers();
+    }
+
     @Override
     public void start() {
         tetrisView.setVisible(true);
@@ -77,31 +77,36 @@ public class TetrisControllerImpl implements TetrisController {
 
     @Override
     public void onKeyPressed(int keyCode) {
-        if (MOVEMENTS.containsKey(keyCode)) {
-            movement = Optional.of(MOVEMENTS.get(keyCode));
-        }
+        onKeyEvent(pressedKeyHandlers, keyCode);
     }
 
     @Override
     public void onKeyReleased(int keyCode) {
-        if (KeyEvent.VK_SPACE == keyCode) {
-            newGame = true;
-        } else if (KeyEvent.VK_P == keyCode) {
-            pause = true;
-        } else if (KeyEvent.VK_UP == keyCode) {
-            movement = Optional.of(Movement.ROTATE_CW);
+        onKeyEvent(releasedKeyHandlers, keyCode);
+    }
+
+    private void initializeKeyHandlers() {
+        pressedKeyHandlers.put(KeyEvent.VK_LEFT, () -> movement = Optional.of(Movement.LEFT));
+        pressedKeyHandlers.put(KeyEvent.VK_RIGHT, () -> movement = Optional.of(Movement.RIGHT));
+        pressedKeyHandlers.put(KeyEvent.VK_DOWN, () -> movement = Optional.of(Movement.DOWN));
+
+        releasedKeyHandlers.put(KeyEvent.VK_SPACE, () -> newGame = true);
+        releasedKeyHandlers.put(KeyEvent.VK_P, () -> pause = true);
+        releasedKeyHandlers.put(KeyEvent.VK_UP, () -> movement = Optional.of(Movement.ROTATE_CW));
+    }
+
+    private void onKeyEvent(Map<Integer, Runnable> keyHandlers, int keyCode) {
+        if (keyHandlers.containsKey(keyCode)) {
+            keyHandlers.get(keyCode).run();
         }
     }
 
     private void onGameLoop() {
-        if (newGame) {
-            handleNewGame();
-        } else {
-            handleMovement();
-            handlePause();
+        handleNewGame();
+        handleMovement();
+        handlePause();
 
-            tetrisService.update(tetris);
-        }
+        tetrisService.update(tetris);
 
         tetrisView.update(tetris);
     }
@@ -119,7 +124,9 @@ public class TetrisControllerImpl implements TetrisController {
     }
 
     private void handleNewGame() {
-        tetris = tetrisFactory.createTetris();
-        newGame = false;
+        if (newGame) {
+            tetris = tetrisFactory.createTetris();
+            newGame = false;
+        }
     }
 }
