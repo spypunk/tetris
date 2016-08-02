@@ -74,16 +74,9 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     @Override
-    public void move(Tetris tetris, Movement movement) {
+    public void updateMovement(Tetris tetris, Optional<Movement> movement) {
         if (isTetrisRunning(tetris)) {
-            tetris.setMovement(Optional.of(movement));
-        }
-    }
-
-    @Override
-    public void stopMove(Tetris tetris) {
-        if (isTetrisRunning(tetris)) {
-            tetris.setMovement(Optional.empty());
+            tetris.setMovement(movement);
         }
     }
 

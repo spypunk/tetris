@@ -50,6 +50,11 @@ public class TetrisFrameImpl implements TetrisFrame {
         public void keyPressed(KeyEvent e) {
             tetrisController.onKeyPressed(e.getKeyCode());
         }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            tetrisController.onKeyReleased(e.getKeyCode());
+        }
     }
 
     private static final String TITLE = "Tetris";

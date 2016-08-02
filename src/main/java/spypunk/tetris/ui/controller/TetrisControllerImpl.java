@@ -10,6 +10,7 @@ package spypunk.tetris.ui.controller;
 
 import java.awt.event.KeyEvent;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -36,7 +37,6 @@ public class TetrisControllerImpl implements TetrisController {
         MOVEMENTS.put(KeyEvent.VK_DOWN, Movement.DOWN);
         MOVEMENTS.put(KeyEvent.VK_RIGHT, Movement.RIGHT);
         MOVEMENTS.put(KeyEvent.VK_LEFT, Movement.LEFT);
-        MOVEMENTS.put(KeyEvent.VK_UP, Movement.ROTATE_CW);
     }
 
     @Inject
@@ -53,9 +53,9 @@ public class TetrisControllerImpl implements TetrisController {
 
     private volatile boolean newGame = true;
 
-    private volatile Movement movement;
+    private volatile Optional<Movement> movement = Optional.empty();
 
-    private volatile boolean pauseTriggered;
+    private volatile boolean pause;
 
     private Future<?> loopThread;
 
@@ -77,12 +77,19 @@ public class TetrisControllerImpl implements TetrisController {
 
     @Override
     public void onKeyPressed(int keyCode) {
+        if (MOVEMENTS.containsKey(keyCode)) {
+            movement = Optional.of(MOVEMENTS.get(keyCode));
+        }
+    }
+
+    @Override
+    public void onKeyReleased(int keyCode) {
         if (KeyEvent.VK_SPACE == keyCode) {
             newGame = true;
         } else if (KeyEvent.VK_P == keyCode) {
-            pauseTriggered = true;
-        } else if (MOVEMENTS.containsKey(keyCode)) {
-            movement = MOVEMENTS.get(keyCode);
+            pause = true;
+        } else if (KeyEvent.VK_UP == keyCode) {
+            movement = Optional.of(Movement.ROTATE_CW);
         }
     }
 
@@ -100,19 +107,15 @@ public class TetrisControllerImpl implements TetrisController {
     }
 
     private void handlePause() {
-        if (pauseTriggered) {
+        if (pause) {
             tetrisService.pause(tetris);
-            pauseTriggered = false;
+            pause = false;
         }
     }
 
     private void handleMovement() {
-        if (movement != null) {
-            tetrisService.move(tetris, movement);
-            movement = null;
-        } else {
-            tetrisService.stopMove(tetris);
-        }
+        tetrisService.updateMovement(tetris, movement);
+        movement = Optional.empty();
     }
 
     private void handleNewGame() {

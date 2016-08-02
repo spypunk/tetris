@@ -8,6 +8,8 @@
 
 package spypunk.tetris.service;
 
+import java.util.Optional;
+
 import spypunk.tetris.model.Movement;
 import spypunk.tetris.model.Tetris;
 
@@ -15,9 +17,7 @@ public interface TetrisService {
 
     void update(Tetris tetris);
 
+    void updateMovement(Tetris tetris, Optional<Movement> movement);
+
     void pause(Tetris tetris);
-
-    void move(Tetris tetris, Movement movement);
-
-    void stopMove(Tetris tetris);
 }

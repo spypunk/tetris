@@ -15,4 +15,6 @@ public interface TetrisController {
     void onWindowClosed();
 
     void onKeyPressed(int keyCode);
+
+    void onKeyReleased(int keyCode);
 }
