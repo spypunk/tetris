@@ -23,7 +23,7 @@ import java.util.stream.IntStream;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.ImmutableMap;
 
 import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.model.Block;
@@ -40,16 +40,9 @@ public class TetrisServiceImpl implements TetrisService {
 
     private static final int ROWS_PER_LEVEL = 10;
 
-    private static final Map<Integer, Integer> SCORE_PER_ROWS = Maps.newHashMap();
+    private static final Map<Integer, Integer> SCORE_PER_ROWS = ImmutableMap.of(1, 40, 2, 100, 3, 300, 4, 1200);
 
     private final Random random = new Random();
-
-    static {
-        SCORE_PER_ROWS.put(1, 40);
-        SCORE_PER_ROWS.put(2, 100);
-        SCORE_PER_ROWS.put(3, 300);
-        SCORE_PER_ROWS.put(4, 1200);
-    }
 
     @Inject
     private ShapeFactory shapeFactory;
