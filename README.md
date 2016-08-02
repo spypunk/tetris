@@ -22,6 +22,8 @@ RIGHT - Move the current shape to the right
 
 DOWN - Move the current shape down
 
+UP - Rotate the current shape clockwise
+
 SPACE - Start a new game
 
 P - Pause the current game
