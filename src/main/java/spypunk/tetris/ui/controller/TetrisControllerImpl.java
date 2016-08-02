@@ -89,8 +89,6 @@ public class TetrisControllerImpl implements TetrisController {
     private void onGameLoop() {
         if (newGame) {
             handleNewGame();
-        } else if (tetris == null) {
-            return;
         } else {
             handleMovement();
             handlePause();
