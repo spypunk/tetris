@@ -8,81 +8,84 @@
 
 package spypunk.tetris.model;
 
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_0_0;
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_0_1;
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_0_2;
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_1_0;
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_1_1;
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_1_2;
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_1_3;
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_2_0;
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_2_1;
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_2_2;
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_2_3;
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_3_1;
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_3_2;
+
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-public class ShapeType {
+import com.google.common.collect.Sets;
 
-    public enum Id {
-        O,
-        I,
-        J,
-        L,
-        S,
-        T,
-        Z
-    }
+public enum ShapeType {
 
-    public static class Builder {
+    O(
+            Arrays.asList(Sets.newHashSet(LOCATION_0_0, LOCATION_1_0, LOCATION_0_1, LOCATION_1_1)),
+            new Rectangle(0, 0, 2, 2)),
+    I(
+            Arrays.asList(Sets.newHashSet(LOCATION_0_1, LOCATION_1_1, LOCATION_2_1, LOCATION_3_1),
+                Sets.newHashSet(LOCATION_2_0, LOCATION_2_1, LOCATION_2_2, LOCATION_2_3),
+                Sets.newHashSet(LOCATION_0_2, LOCATION_1_2, LOCATION_2_2, LOCATION_3_2),
+                Sets.newHashSet(LOCATION_1_0, LOCATION_1_1, LOCATION_1_2, LOCATION_1_3)),
+            new Rectangle(0, 0, 4, 4)),
+    J(
+            Arrays.asList(Sets.newHashSet(LOCATION_0_1, LOCATION_1_1, LOCATION_2_1, LOCATION_2_0),
+                Sets.newHashSet(LOCATION_1_0, LOCATION_1_1, LOCATION_1_2, LOCATION_2_2),
+                Sets.newHashSet(LOCATION_0_1, LOCATION_1_1, LOCATION_2_1, LOCATION_0_2),
+                Sets.newHashSet(LOCATION_0_0, LOCATION_1_0, LOCATION_1_1, LOCATION_1_2)),
+            new Rectangle(0, 0, 3, 3)),
+    L(
+            Arrays.asList(Sets.newHashSet(LOCATION_0_1, LOCATION_1_1, LOCATION_2_1, LOCATION_2_0),
+                Sets.newHashSet(LOCATION_1_0, LOCATION_1_1, LOCATION_1_2, LOCATION_2_2),
+                Sets.newHashSet(LOCATION_0_1, LOCATION_1_1, LOCATION_2_1, LOCATION_0_2),
+                Sets.newHashSet(LOCATION_0_0, LOCATION_1_0, LOCATION_1_1, LOCATION_1_2)),
+            new Rectangle(0, 0, 3, 3)),
+    S(
+            Arrays.asList(Sets.newHashSet(LOCATION_1_0, LOCATION_2_0, LOCATION_0_1, LOCATION_1_1),
+                Sets.newHashSet(LOCATION_1_0, LOCATION_1_1, LOCATION_2_1, LOCATION_2_2),
+                Sets.newHashSet(LOCATION_1_1, LOCATION_2_1, LOCATION_0_2, LOCATION_1_2),
+                Sets.newHashSet(LOCATION_0_0, LOCATION_0_1, LOCATION_1_1, LOCATION_1_2)),
+            new Rectangle(0, 0, 3, 3)),
+    T(
+            Arrays.asList(Sets.newHashSet(LOCATION_1_0, LOCATION_0_1, LOCATION_1_1, LOCATION_2_1),
+                Sets.newHashSet(LOCATION_1_0, LOCATION_1_1, LOCATION_2_1, LOCATION_1_2),
+                Sets.newHashSet(LOCATION_0_1, LOCATION_1_1, LOCATION_2_1, LOCATION_1_2),
+                Sets.newHashSet(LOCATION_1_0, LOCATION_0_1, LOCATION_1_1, LOCATION_1_2)),
+            new Rectangle(0, 0, 3, 3)),
+    Z(
+            Arrays.asList(Sets.newHashSet(LOCATION_0_0, LOCATION_1_0, LOCATION_1_1, LOCATION_2_1),
+                Sets.newHashSet(LOCATION_2_0, LOCATION_1_1, LOCATION_2_1, LOCATION_1_2),
+                Sets.newHashSet(LOCATION_0_1, LOCATION_1_1, LOCATION_1_2, LOCATION_2_2),
+                Sets.newHashSet(LOCATION_1_0, LOCATION_0_1, LOCATION_1_1, LOCATION_0_2)),
+            new Rectangle(0, 0, 3, 3));
 
-        private final ShapeType shapeType = new ShapeType();
+    private final List<Set<Point>> rotations;
 
-        private Builder() {
-        }
+    private final Rectangle boundingBox;
 
-        public static Builder instance() {
-            return new Builder();
-        }
-
-        public Builder setId(Id id) {
-            shapeType.setId(id);
-            return this;
-        }
-
-        public Builder setRotations(List<Set<Point>> rotations) {
-            shapeType.setRotations(rotations);
-            return this;
-        }
-
-        public Builder setBoundingBox(Rectangle boundingBox) {
-            shapeType.setBoundingBox(boundingBox);
-            return this;
-        }
-
-        public ShapeType build() {
-            return shapeType;
-        }
-    }
-
-    private Id id;
-
-    private List<Set<Point>> rotations;
-
-    private Rectangle boundingBox;
-
-    public Id getId() {
-        return id;
-    }
-
-    public void setId(Id id) {
-        this.id = id;
+    private ShapeType(List<Set<Point>> rotations, Rectangle boundingBox) {
+        this.rotations = rotations;
+        this.boundingBox = boundingBox;
     }
 
     public List<Set<Point>> getRotations() {
         return rotations;
     }
 
-    public void setRotations(List<Set<Point>> rotations) {
-        this.rotations = rotations;
-    }
-
     public Rectangle getBoundingBox() {
         return boundingBox;
-    }
-
-    public void setBoundingBox(Rectangle boundingBox) {
-        this.boundingBox = boundingBox;
     }
 }

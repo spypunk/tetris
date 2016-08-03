@@ -22,8 +22,9 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.Lists;
+
 import spypunk.tetris.exception.TetrisException;
-import spypunk.tetris.factory.ShapeTypeFactory;
 import spypunk.tetris.model.ShapeType;
 
 @Singleton
@@ -36,9 +37,9 @@ public class ImageFactoryImpl implements ImageFactory {
     private final Map<ShapeType, Image> blockImages;
 
     @Inject
-    public ImageFactoryImpl(ShapeTypeFactory shapeTypeFactory) {
-        blockImages = shapeTypeFactory.createAll().stream().collect(Collectors.toMap(Function.identity(),
-            shapeType -> createImage(String.format("%s%s.png", BLOCKS_FOLDER, shapeType.getId()))));
+    public ImageFactoryImpl() {
+        blockImages = Lists.newArrayList(ShapeType.values()).stream().collect(Collectors.toMap(Function.identity(),
+            shapeType -> createImage(String.format("%s%s.png", BLOCKS_FOLDER, shapeType.name()))));
     }
 
     @Override

@@ -12,11 +12,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import com.google.common.collect.Lists;
 
 import spypunk.tetris.model.Block;
 import spypunk.tetris.model.Shape;
@@ -25,42 +25,29 @@ import spypunk.tetris.model.ShapeType;
 @Singleton
 public class ShapeFactoryImpl implements ShapeFactory {
 
+    private static final int INITIAL_ROTATION = 0;
+
     private final Random random = new Random();
 
-    private final List<ShapeType> shapeTypes;
-
-    @Inject
-    public ShapeFactoryImpl(ShapeTypeFactory shapeTypeFactory) {
-        shapeTypes = shapeTypeFactory.createAll();
-    }
+    private final List<ShapeType> shapeTypes = Lists.newArrayList(ShapeType.values());
 
     @Override
-    public Shape createShape(ShapeType shapeType, int rotationIndex) {
+    public Shape createRandomShape() {
+        final ShapeType shapeType = getRandomShapeType();
+
         final Rectangle boundingBox = new Rectangle(shapeType.getBoundingBox());
 
-        final Shape shape = Shape.Builder.instance().setBoundingBox(boundingBox).setCurrentRotation(rotationIndex)
-                .setShapeType(shapeType).build();
+        final Shape shape = Shape.Builder.instance().setBoundingBox(boundingBox).setShapeType(shapeType)
+                .setCurrentRotation(INITIAL_ROTATION).build();
 
-        final Set<Point> rotation = shapeType.getRotations().get(rotationIndex);
-
-        final List<Block> blocks = rotation.stream().map(location -> new Point(location.x, location.y))
+        final List<Block> blocks = shapeType.getRotations().get(INITIAL_ROTATION).stream()
+                .map(location -> new Point(location.x, location.y))
                 .map(location -> Block.Builder.instance().setLocation(location).setShape(shape).build())
                 .collect(Collectors.toList());
 
         shape.setBlocks(blocks);
 
         return shape;
-    }
-
-    @Override
-    public Shape createRandomShape() {
-        final ShapeType shapeType = getRandomShapeType();
-
-        final List<Set<Point>> rotations = shapeType.getRotations();
-
-        final int rotationIndex = random.nextInt(rotations.size());
-
-        return createShape(shapeType, rotationIndex);
     }
 
     private ShapeType getRandomShapeType() {

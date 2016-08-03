@@ -15,8 +15,6 @@ import com.google.inject.AbstractModule;
 
 import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.factory.ShapeFactoryImpl;
-import spypunk.tetris.factory.ShapeTypeFactory;
-import spypunk.tetris.factory.ShapeTypeFactoryImpl;
 import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.factory.TetrisFactoryImpl;
 import spypunk.tetris.service.TetrisService;
@@ -42,7 +40,6 @@ public class TetrisModule extends AbstractModule {
         bind(TetrisController.class).to(TetrisControllerImpl.class);
         bind(TetrisView.class).to(TetrisViewImpl.class);
         bind(ImageFactory.class).to(ImageFactoryImpl.class);
-        bind(ShapeTypeFactory.class).to(ShapeTypeFactoryImpl.class);
         bind(TetrisFactory.class).to(TetrisFactoryImpl.class);
         bind(FontFactory.class).to(FontFactoryImpl.class);
         bind(ContainerFactory.class).to(ContainerFactoryImpl.class);
