@@ -62,7 +62,7 @@ public class ContainerFactoryImpl implements ContainerFactory {
             TETRIS_CONTAINER_WIDTH,
             1 + BLOCK_SIZE * (HEIGHT - 2));
         nextShapeContainer = initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 11, INFO_CONTAINERS_WIDTH,
-            BLOCK_SIZE * 6,
+            BLOCK_SIZE * 4,
             NEXT_SHAPE);
         levelContainer = initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 2, INFO_CONTAINERS_WIDTH, BLOCK_SIZE,
             LEVEL);

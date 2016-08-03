@@ -204,20 +204,26 @@ public class TetrisViewImpl implements TetrisView {
 
     private void renderNextShape(Tetris tetris, Graphics2D graphics) {
         final Container nextShapeContainer = containerFactory.createNextShapeContainer();
+        final Shape nextShape = tetris.getNextShape();
 
         renderContainer(graphics, nextShapeContainer);
 
-        final Shape nextShape = tetris.getNextShape();
+        Image shapeImage = imageFactory.createShapeImage(nextShape.getShapeType());
+
+        int imageWidth = shapeImage.getWidth(null);
+        int imageHeight = shapeImage.getHeight(null);
+
         final Rectangle containerRectangle = nextShapeContainer.getRectangle();
-        final Rectangle boundingBox = nextShape.getBoundingBox();
         final int width = containerRectangle.width;
         final int height = containerRectangle.height;
 
-        final int dx = containerRectangle.x - boundingBox.x + (width - boundingBox.width * BLOCK_SIZE) / 2;
-        final int dy = containerRectangle.y - boundingBox.y + (height - boundingBox.height * BLOCK_SIZE) / 2;
+        final int x1 = containerRectangle.x + (width - imageWidth) / 2;
+        final int y1 = containerRectangle.y + (height - imageHeight) / 2;
+        final int x2 = x1 + imageWidth;
+        final int y2 = y1 + imageHeight;
 
-        nextShape.getBlocks().stream().forEach(
-            block -> renderBlock(graphics, block, dx, dy, BLOCK_SIZE));
+        graphics.drawImage(shapeImage, x1, y1, x2, y2, 0, 0, imageWidth, imageHeight,
+            null);
     }
 
     private void renderStatistics(Tetris tetris, Graphics2D graphics) {

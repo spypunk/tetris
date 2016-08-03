@@ -15,4 +15,6 @@ import spypunk.tetris.model.ShapeType;
 public interface ImageFactory {
 
     Image createBlockImage(ShapeType shapeType);
+
+    Image createShapeImage(ShapeType shapeType);
 }

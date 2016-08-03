@@ -34,17 +34,29 @@ public class ImageFactoryImpl implements ImageFactory {
 
     private static final String BLOCKS_FOLDER = "/img/blocks/";
 
+    private static final String SHAPES_FOLDER = "/img/shapes/";
+
     private final Map<ShapeType, Image> blockImages;
+
+    private final Map<ShapeType, Image> shapeImages;
 
     @Inject
     public ImageFactoryImpl() {
         blockImages = Lists.newArrayList(ShapeType.values()).stream().collect(Collectors.toMap(Function.identity(),
             shapeType -> createImage(String.format("%s%s.png", BLOCKS_FOLDER, shapeType.name()))));
+
+        shapeImages = Lists.newArrayList(ShapeType.values()).stream().collect(Collectors.toMap(Function.identity(),
+            shapeType -> createImage(String.format("%s%s.png", SHAPES_FOLDER, shapeType.name()))));
     }
 
     @Override
     public Image createBlockImage(ShapeType shapeType) {
         return blockImages.get(shapeType);
+    }
+
+    @Override
+    public Image createShapeImage(ShapeType shapeType) {
+        return shapeImages.get(shapeType);
     }
 
     private Image createImage(String resourceName) {
