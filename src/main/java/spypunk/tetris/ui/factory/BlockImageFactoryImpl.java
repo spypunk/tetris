@@ -37,13 +37,13 @@ public class BlockImageFactoryImpl implements BlockImageFactory {
 
     @Inject
     public BlockImageFactoryImpl(ImageFactory imageFactory, ShapeTypeFactory shapeTypeFactory) {
-        List<ShapeType> shapeTypes = shapeTypeFactory.createAll();
+        final List<ShapeType> shapeTypes = shapeTypeFactory.createAll();
 
         try {
-            for (ShapeType shapeType : shapeTypes) {
+            for (final ShapeType shapeType : shapeTypes) {
                 loadShapeTypeBlockImage(imageFactory, shapeType);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOGGER.error(e.getMessage(), e);
             throw new TetrisException(e);
         }
@@ -55,10 +55,10 @@ public class BlockImageFactoryImpl implements BlockImageFactory {
     }
 
     private void loadShapeTypeBlockImage(ImageFactory imageFactory, ShapeType shapeType) throws IOException {
-        String resourceName = String.format("%s%s.png", BLOCKS_FOLDER, shapeType.getId());
+        final String resourceName = String.format("%s%s.png", BLOCKS_FOLDER, shapeType.getId());
 
         try (InputStream inputStream = getClass().getResourceAsStream(resourceName)) {
-            Image image = imageFactory.createImage(getClass().getResourceAsStream(resourceName));
+            final Image image = imageFactory.createImage(getClass().getResourceAsStream(resourceName));
             images.put(shapeType, image);
         }
     }

@@ -48,12 +48,12 @@ public class SwingUtils {
     }
 
     public static Point getCenteredTextLocation(Graphics2D graphics, String text, Rectangle rectangle) {
-        FontRenderContext frc = graphics.getFontRenderContext();
-        GlyphVector gv = graphics.getFont().createGlyphVector(frc, text);
-        Rectangle textBounds = gv.getPixelBounds(null, 0, 0);
+        final FontRenderContext frc = graphics.getFontRenderContext();
+        final GlyphVector gv = graphics.getFont().createGlyphVector(frc, text);
+        final Rectangle textBounds = gv.getPixelBounds(null, 0, 0);
 
-        int x = rectangle.x + (rectangle.width - textBounds.width) / 2;
-        int y = rectangle.y + (rectangle.height + textBounds.height) / 2;
+        final int x = rectangle.x + (rectangle.width - textBounds.width) / 2;
+        final int y = rectangle.y + (rectangle.height + textBounds.height) / 2;
 
         return new Point(x, y);
     }

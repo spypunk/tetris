@@ -39,14 +39,14 @@ public class TetrisFactoryImpl implements TetrisFactory {
 
     @Override
     public Tetris createTetris() {
-        Map<Point, Optional<Block>> blocks = Maps.newHashMap();
+        final Map<Point, Optional<Block>> blocks = Maps.newHashMap();
 
         IntStream.range(0, WIDTH).forEach(x -> IntStream.range(0, HEIGHT)
                 .forEach(y -> blocks.put(new Point(x, y), Optional.empty())));
 
-        List<ShapeType> shapeTypes = shapeTypeFactory.createAll();
+        final List<ShapeType> shapeTypes = shapeTypeFactory.createAll();
 
-        Map<ShapeType, Integer> statistics = shapeTypes.stream()
+        final Map<ShapeType, Integer> statistics = shapeTypes.stream()
                 .collect(Collectors.toMap(shapeType -> shapeType, shapeType -> 0));
 
         return Tetris.Builder.instance().setBlocks(blocks).setNextShape(shapeFactory.createRandomShape())

@@ -32,7 +32,7 @@ public class FontFactoryImpl implements FontFactory {
     private final Font defaultFont;
 
     public FontFactoryImpl() {
-        String resourceName = String.format("%s%s", FONTS_FOLDER, DEFAULT_FONT_NAME);
+        final String resourceName = String.format("%s%s", FONTS_FOLDER, DEFAULT_FONT_NAME);
 
         try (InputStream inputStream = getClass().getResourceAsStream(resourceName)) {
             defaultFont = Font.createFont(Font.TRUETYPE_FONT, inputStream);

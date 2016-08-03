@@ -146,7 +146,7 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     private void doUpdate(Tetris tetris) {
-        Graphics2D graphics = initializeGraphics();
+        final Graphics2D graphics = initializeGraphics();
 
         renderBlocks(tetris, graphics);
         renderLevel(tetris, graphics);
@@ -160,7 +160,7 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     private Graphics2D initializeGraphics() {
-        Graphics2D graphics = image.createGraphics();
+        final Graphics2D graphics = image.createGraphics();
 
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -170,7 +170,7 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     private void renderBlocks(Tetris tetris, Graphics2D graphics) {
-        Container container = containerFactory.createTetrisContainer();
+        final Container container = containerFactory.createTetrisContainer();
 
         renderContainer(graphics, container);
 
@@ -180,7 +180,7 @@ public class TetrisViewImpl implements TetrisView {
                 .forEach(block -> renderBlock(graphics, block, BLOCK_SIZE + 1,
                     -BLOCK_SIZE + 1));
 
-        State state = tetris.getState();
+        final State state = tetris.getState();
 
         if (!State.RUNNING.equals(state)) {
             renderTetrisFrozen(graphics, container, state);
@@ -200,32 +200,32 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     private void renderNextShape(Tetris tetris, Graphics2D graphics) {
-        Container nextShapeContainer = containerFactory.createNextShapeContainer();
+        final Container nextShapeContainer = containerFactory.createNextShapeContainer();
 
         renderContainer(graphics, nextShapeContainer);
 
-        Shape nextShape = tetris.getNextShape();
-        Rectangle containerRectangle = nextShapeContainer.getRectangle();
-        Rectangle boundingBox = nextShape.getBoundingBox();
+        final Shape nextShape = tetris.getNextShape();
+        final Rectangle containerRectangle = nextShapeContainer.getRectangle();
+        final Rectangle boundingBox = nextShape.getBoundingBox();
 
-        int width = containerRectangle.width;
-        int height = containerRectangle.height;
-        int dx = containerRectangle.x - boundingBox.x + (width - boundingBox.width * BLOCK_SIZE) / 2;
-        int dy = containerRectangle.y - boundingBox.y + (height - boundingBox.height * BLOCK_SIZE) / 2;
+        final int width = containerRectangle.width;
+        final int height = containerRectangle.height;
+        final int dx = containerRectangle.x - boundingBox.x + (width - boundingBox.width * BLOCK_SIZE) / 2;
+        final int dy = containerRectangle.y - boundingBox.y + (height - boundingBox.height * BLOCK_SIZE) / 2;
 
         nextShape.getBlocks().stream().forEach(
             block -> renderBlock(graphics, block, dx, dy));
     }
 
     private void renderBlock(Graphics2D graphics, Block block, int dx, int dy) {
-        ShapeType shapeType = block.getShape().getShapeType();
+        final ShapeType shapeType = block.getShape().getShapeType();
 
-        Image blockImage = blockImageFactory.createBlockImage(shapeType);
+        final Image blockImage = blockImageFactory.createBlockImage(shapeType);
 
-        int dx1 = dx + block.getLocation().x * BLOCK_SIZE;
-        int dx2 = dx1 + BLOCK_SIZE;
-        int dy1 = dy + block.getLocation().y * BLOCK_SIZE;
-        int dy2 = dy1 + BLOCK_SIZE;
+        final int dx1 = dx + block.getLocation().x * BLOCK_SIZE;
+        final int dx2 = dx1 + BLOCK_SIZE;
+        final int dy1 = dy + block.getLocation().y * BLOCK_SIZE;
+        final int dy2 = dy1 + BLOCK_SIZE;
 
         graphics.drawImage(blockImage, dx1, dy1, dx2, dy2, 0, 0, blockImage.getWidth(null), blockImage.getHeight(null),
             null);
@@ -239,11 +239,11 @@ public class TetrisViewImpl implements TetrisView {
     private void renderContainer(Graphics2D graphics, Container container) {
         graphics.setColor(DEFAULT_CONTAINER_COLOR);
 
-        Rectangle rectangle = container.getRectangle();
+        final Rectangle rectangle = container.getRectangle();
 
         graphics.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 
-        String title = container.getTitle();
+        final String title = container.getTitle();
 
         if (title != null) {
             renderTextCentered(graphics, title,
@@ -255,13 +255,13 @@ public class TetrisViewImpl implements TetrisView {
         graphics.setColor(DEFAULT_FONT_COLOR);
         graphics.setFont(font);
 
-        Point location = SwingUtils.getCenteredTextLocation(graphics, text, rectangle);
+        final Point location = SwingUtils.getCenteredTextLocation(graphics, text, rectangle);
 
         graphics.drawString(text, location.x, location.y);
     }
 
     private void renderTetrisFrozen(Graphics2D graphics, Container container, State state) {
-        Rectangle rectangle = container.getRectangle();
+        final Rectangle rectangle = container.getRectangle();
 
         graphics.setColor(TETRIS_FROZEN_FG_COLOR);
         graphics.fillRect(rectangle.x + 1, rectangle.y + 1, rectangle.width - 1, rectangle.height - 1);

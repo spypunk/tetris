@@ -36,14 +36,14 @@ public class ShapeFactoryImpl implements ShapeFactory {
 
     @Override
     public Shape createShape(ShapeType shapeType, int rotationIndex) {
-        Rectangle boundingBox = new Rectangle(shapeType.getBoundingBox());
+        final Rectangle boundingBox = new Rectangle(shapeType.getBoundingBox());
 
-        Shape shape = Shape.Builder.instance().setBoundingBox(boundingBox).setCurrentRotation(rotationIndex)
+        final Shape shape = Shape.Builder.instance().setBoundingBox(boundingBox).setCurrentRotation(rotationIndex)
                 .setShapeType(shapeType).build();
 
-        Set<Point> rotation = shapeType.getRotations().get(rotationIndex);
+        final Set<Point> rotation = shapeType.getRotations().get(rotationIndex);
 
-        List<Block> blocks = rotation.stream().map(location -> new Point(location.x, location.y))
+        final List<Block> blocks = rotation.stream().map(location -> new Point(location.x, location.y))
                 .map(location -> Block.Builder.instance().setLocation(location).setShape(shape).build())
                 .collect(Collectors.toList());
 
@@ -54,17 +54,17 @@ public class ShapeFactoryImpl implements ShapeFactory {
 
     @Override
     public Shape createRandomShape() {
-        ShapeType shapeType = getRandomShapeType();
+        final ShapeType shapeType = getRandomShapeType();
 
-        List<Set<Point>> rotations = shapeType.getRotations();
+        final List<Set<Point>> rotations = shapeType.getRotations();
 
-        int rotationIndex = random.nextInt(rotations.size());
+        final int rotationIndex = random.nextInt(rotations.size());
 
         return createShape(shapeType, rotationIndex);
     }
 
     private ShapeType getRandomShapeType() {
-        int shapeIndex = random.nextInt(shapeTypes.size());
+        final int shapeIndex = random.nextInt(shapeTypes.size());
 
         return shapeTypes.get(shapeIndex);
     }

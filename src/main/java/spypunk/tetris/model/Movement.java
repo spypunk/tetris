@@ -37,23 +37,23 @@ public enum Movement {
     ROTATE_CW {
         @Override
         public Shape apply(Shape shape) {
-            Rectangle boundingBox = shape.getBoundingBox();
-            Rectangle newBoundingBox = new Rectangle(boundingBox);
+            final Rectangle boundingBox = shape.getBoundingBox();
+            final Rectangle newBoundingBox = new Rectangle(boundingBox);
 
             int nextRotationIndex = shape.getCurrentRotation() + 1;
 
-            List<Set<Point>> rotations = shape.getShapeType().getRotations();
+            final List<Set<Point>> rotations = shape.getShapeType().getRotations();
 
             if (rotations.size() == nextRotationIndex) {
                 nextRotationIndex = 0;
             }
 
-            Shape newShape = Shape.Builder.instance().setBoundingBox(newBoundingBox)
+            final Shape newShape = Shape.Builder.instance().setBoundingBox(newBoundingBox)
                     .setCurrentRotation(nextRotationIndex).setShapeType(shape.getShapeType()).build();
 
-            Set<Point> rotation = rotations.get(nextRotationIndex);
+            final Set<Point> rotation = rotations.get(nextRotationIndex);
 
-            List<Block> blocks = rotation.stream()
+            final List<Block> blocks = rotation.stream()
                     .map(location -> Block.Builder.instance()
                             .setLocation(new Point(location.x + newBoundingBox.x, location.y + newBoundingBox.y))
                             .setShape(newShape).build())
@@ -73,16 +73,16 @@ public enum Movement {
     public abstract Point apply(Point location);
 
     public Shape apply(Shape shape) {
-        Rectangle boundingBox = shape.getBoundingBox();
+        final Rectangle boundingBox = shape.getBoundingBox();
 
-        Rectangle newBoundingBox = new Rectangle(boundingBox);
+        final Rectangle newBoundingBox = new Rectangle(boundingBox);
 
         newBoundingBox.setLocation(apply(boundingBox.getLocation()));
 
-        Shape newShape = Shape.Builder.instance().setBoundingBox(newBoundingBox)
+        final Shape newShape = Shape.Builder.instance().setBoundingBox(newBoundingBox)
                 .setCurrentRotation(shape.getCurrentRotation()).setShapeType(shape.getShapeType()).build();
 
-        List<Block> blocks = shape.getBlocks().stream().map(block -> apply(block, newShape))
+        final List<Block> blocks = shape.getBlocks().stream().map(block -> apply(block, newShape))
                 .collect(Collectors.toList());
 
         newShape.setBlocks(blocks);
