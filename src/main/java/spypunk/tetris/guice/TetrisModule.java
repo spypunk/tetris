@@ -42,7 +42,6 @@ public class TetrisModule extends AbstractModule {
         bind(TetrisController.class).to(TetrisControllerImpl.class);
         bind(TetrisView.class).to(TetrisViewImpl.class);
         bind(ImageFactory.class).to(ImageFactoryImpl.class);
-        bind(ImageFactory.class).to(ImageFactoryImpl.class);
         bind(ShapeTypeFactory.class).to(ShapeTypeFactoryImpl.class);
         bind(TetrisFactory.class).to(TetrisFactoryImpl.class);
         bind(FontFactory.class).to(FontFactoryImpl.class);
