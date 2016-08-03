@@ -22,4 +22,5 @@ public interface ContainerFactory {
 
     Container createNextShapeContainer();
 
+    Container createStatisticsContainer();
 }

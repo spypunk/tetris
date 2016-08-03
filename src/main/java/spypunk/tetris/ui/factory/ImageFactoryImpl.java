@@ -11,55 +11,47 @@ package spypunk.tetris.ui.factory;
 import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Maps;
-
 import spypunk.tetris.exception.TetrisException;
 import spypunk.tetris.factory.ShapeTypeFactory;
 import spypunk.tetris.model.ShapeType;
 
 @Singleton
-public class BlockImageFactoryImpl implements BlockImageFactory {
+public class ImageFactoryImpl implements ImageFactory {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BlockImageFactoryImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImageFactoryImpl.class);
 
     private static final String BLOCKS_FOLDER = "/img/blocks/";
 
-    private final Map<ShapeType, Image> images = Maps.newHashMap();
+    private final Map<ShapeType, Image> blockImages;
 
     @Inject
-    public BlockImageFactoryImpl(ImageFactory imageFactory, ShapeTypeFactory shapeTypeFactory) {
-        final List<ShapeType> shapeTypes = shapeTypeFactory.createAll();
-
-        try {
-            for (final ShapeType shapeType : shapeTypes) {
-                loadShapeTypeBlockImage(imageFactory, shapeType);
-            }
-        } catch (final IOException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new TetrisException(e);
-        }
+    public ImageFactoryImpl(ShapeTypeFactory shapeTypeFactory) {
+        blockImages = shapeTypeFactory.createAll().stream().collect(Collectors.toMap(Function.identity(),
+            shapeType -> createImage(String.format("%s%s.png", BLOCKS_FOLDER, shapeType.getId()))));
     }
 
     @Override
     public Image createBlockImage(ShapeType shapeType) {
-        return images.get(shapeType);
+        return blockImages.get(shapeType);
     }
 
-    private void loadShapeTypeBlockImage(ImageFactory imageFactory, ShapeType shapeType) throws IOException {
-        final String resourceName = String.format("%s%s.png", BLOCKS_FOLDER, shapeType.getId());
-
+    private Image createImage(String resourceName) {
         try (InputStream inputStream = getClass().getResourceAsStream(resourceName)) {
-            final Image image = imageFactory.createImage(getClass().getResourceAsStream(resourceName));
-            images.put(shapeType, image);
+            return ImageIO.read(inputStream);
+        } catch (final IOException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new TetrisException(e);
         }
     }
 }

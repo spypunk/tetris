@@ -41,9 +41,9 @@ import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.ui.controller.TetrisController;
-import spypunk.tetris.ui.factory.BlockImageFactory;
 import spypunk.tetris.ui.factory.ContainerFactory;
 import spypunk.tetris.ui.factory.FontFactory;
+import spypunk.tetris.ui.factory.ImageFactory;
 import spypunk.tetris.ui.model.Container;
 import spypunk.tetris.ui.util.SwingUtils;
 
@@ -74,10 +74,10 @@ public class TetrisViewImpl implements TetrisView {
     private static final String TITLE = "Tetris";
 
     private static final Dimension DEFAULT_DIMENSION = new Dimension(
-            WIDTH * BLOCK_SIZE + 9 * BLOCK_SIZE,
+            WIDTH * BLOCK_SIZE + 16 * BLOCK_SIZE,
             (HEIGHT - 2) * BLOCK_SIZE + 2 * BLOCK_SIZE);
 
-    private static final float DEFAULT_FONT_SIZE = 32F;
+    private static final float DEFAULT_FONT_SIZE = 30F;
 
     private static final float TETRIS_FROZEN_FONT_SIZE = 42F;
 
@@ -105,7 +105,7 @@ public class TetrisViewImpl implements TetrisView {
     private TetrisController tetrisController;
 
     @Inject
-    private BlockImageFactory blockImageFactory;
+    private ImageFactory imageFactory;
 
     @Inject
     private ContainerFactory containerFactory;
@@ -153,6 +153,7 @@ public class TetrisViewImpl implements TetrisView {
         renderScore(tetris, graphics);
         renderRows(tetris, graphics);
         renderNextShape(tetris, graphics);
+        renderStatistics(tetris, graphics);
 
         graphics.dispose();
 
@@ -170,20 +171,22 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     private void renderBlocks(Tetris tetris, Graphics2D graphics) {
-        final Container container = containerFactory.createTetrisContainer();
+        final Container tetrisContainer = containerFactory.createTetrisContainer();
 
-        renderContainer(graphics, container);
+        renderContainer(graphics, tetrisContainer);
+
+        final Rectangle rectangle = tetrisContainer.getRectangle();
 
         tetris.getBlocks().values().stream().filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(block -> block.getLocation().y >= 2)
-                .forEach(block -> renderBlock(graphics, block, BLOCK_SIZE + 1,
-                    -BLOCK_SIZE + 1));
+                .forEach(block -> renderBlock(graphics, block, rectangle.x + 1,
+                    rectangle.y - 2 * BLOCK_SIZE + 1, BLOCK_SIZE));
 
         final State state = tetris.getState();
 
         if (!State.RUNNING.equals(state)) {
-            renderTetrisFrozen(graphics, container, state);
+            renderTetrisFrozen(graphics, tetrisContainer, state);
         }
     }
 
@@ -207,25 +210,30 @@ public class TetrisViewImpl implements TetrisView {
         final Shape nextShape = tetris.getNextShape();
         final Rectangle containerRectangle = nextShapeContainer.getRectangle();
         final Rectangle boundingBox = nextShape.getBoundingBox();
-
         final int width = containerRectangle.width;
         final int height = containerRectangle.height;
+
         final int dx = containerRectangle.x - boundingBox.x + (width - boundingBox.width * BLOCK_SIZE) / 2;
         final int dy = containerRectangle.y - boundingBox.y + (height - boundingBox.height * BLOCK_SIZE) / 2;
 
         nextShape.getBlocks().stream().forEach(
-            block -> renderBlock(graphics, block, dx, dy));
+            block -> renderBlock(graphics, block, dx, dy, BLOCK_SIZE));
     }
 
-    private void renderBlock(Graphics2D graphics, Block block, int dx, int dy) {
+    private void renderStatistics(Tetris tetris, Graphics2D graphics) {
+        final Container statisticsContainer = containerFactory.createStatisticsContainer();
+
+        renderContainer(graphics, statisticsContainer);
+    }
+
+    private void renderBlock(Graphics2D graphics, Block block, int dx, int dy, int blockSize) {
         final ShapeType shapeType = block.getShape().getShapeType();
 
-        final Image blockImage = blockImageFactory.createBlockImage(shapeType);
-
-        final int dx1 = dx + block.getLocation().x * BLOCK_SIZE;
-        final int dx2 = dx1 + BLOCK_SIZE;
-        final int dy1 = dy + block.getLocation().y * BLOCK_SIZE;
-        final int dy2 = dy1 + BLOCK_SIZE;
+        final Image blockImage = imageFactory.createBlockImage(shapeType);
+        final int dx1 = dx + block.getLocation().x * blockSize;
+        final int dx2 = dx1 + blockSize;
+        final int dy1 = dy + block.getLocation().y * blockSize;
+        final int dy2 = dy1 + blockSize;
 
         graphics.drawImage(blockImage, dx1, dy1, dx2, dy2, 0, 0, blockImage.getWidth(null), blockImage.getHeight(null),
             null);

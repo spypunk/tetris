@@ -26,15 +26,25 @@ public class ContainerFactoryImpl implements ContainerFactory {
 
     private static final int TETRIS_CONTAINER_WIDTH = 1 + BLOCK_SIZE * WIDTH;
 
-    private static final int INFO_CONTAINERS_X = TETRIS_CONTAINER_WIDTH + 2 * BLOCK_SIZE;
+    private static final int STATISTICS_CONTAINERS_WIDTH = BLOCK_SIZE * 6;
+
+    private static final int STATISTICS_CONTAINERS_X = BLOCK_SIZE;
+
+    private static final int TETRIS_CONTAINERS_X = STATISTICS_CONTAINERS_X + STATISTICS_CONTAINERS_WIDTH + BLOCK_SIZE;
+
+    private static final int INFO_CONTAINERS_X = TETRIS_CONTAINERS_X + TETRIS_CONTAINER_WIDTH + BLOCK_SIZE;
+
+    private static final String STATISTICS = "STATISTICS";
 
     private static final String SCORE = "SCORE";
 
     private static final String LEVEL = "LEVEL";
 
-    private static final String NEXT_SHAPE = "NEXT SHAPE";
+    private static final String NEXT_SHAPE = "NEXT";
 
     private static final String ROWS = "ROWS";
+
+    private final Container statisticsContainer;
 
     private final Container tetrisContainer;
 
@@ -48,16 +58,20 @@ public class ContainerFactoryImpl implements ContainerFactory {
 
     @Inject
     public ContainerFactoryImpl(FontFactory fontFactory) {
-        tetrisContainer = initializeContainer(BLOCK_SIZE, BLOCK_SIZE, TETRIS_CONTAINER_WIDTH,
+        tetrisContainer = initializeContainer(TETRIS_CONTAINERS_X, BLOCK_SIZE,
+            TETRIS_CONTAINER_WIDTH,
             1 + BLOCK_SIZE * (HEIGHT - 2));
         nextShapeContainer = initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 11, INFO_CONTAINERS_WIDTH,
-            INFO_CONTAINERS_WIDTH,
+            BLOCK_SIZE * 6,
             NEXT_SHAPE);
         levelContainer = initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 2, INFO_CONTAINERS_WIDTH, BLOCK_SIZE,
             LEVEL);
         scoreContainer = initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 5, INFO_CONTAINERS_WIDTH, BLOCK_SIZE,
             SCORE);
         rowsContainer = initializeContainer(INFO_CONTAINERS_X, BLOCK_SIZE * 8, INFO_CONTAINERS_WIDTH, BLOCK_SIZE, ROWS);
+        statisticsContainer = initializeContainer(STATISTICS_CONTAINERS_X, 2 * BLOCK_SIZE, STATISTICS_CONTAINERS_WIDTH,
+            1 + BLOCK_SIZE * (HEIGHT - 3),
+            STATISTICS);
     }
 
     @Override
@@ -83,6 +97,11 @@ public class ContainerFactoryImpl implements ContainerFactory {
     @Override
     public Container createNextShapeContainer() {
         return nextShapeContainer;
+    }
+
+    @Override
+    public Container createStatisticsContainer() {
+        return statisticsContainer;
     }
 
     private Container initializeContainer(int x, int y, int width, int height, String title) {

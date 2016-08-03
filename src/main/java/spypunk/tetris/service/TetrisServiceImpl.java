@@ -77,7 +77,7 @@ public class TetrisServiceImpl implements TetrisService {
             return true;
         }
 
-        if (!isTimeForNextShape(tetris)) {
+        if (!isTimeToGetNextShape(tetris)) {
             return false;
         }
 
@@ -165,7 +165,7 @@ public class TetrisServiceImpl implements TetrisService {
         return isTimeTo(tetris, tetris.getLastMoveTime());
     }
 
-    private boolean isTimeForNextShape(Tetris tetris) {
+    private boolean isTimeToGetNextShape(Tetris tetris) {
         return isTimeTo(tetris, tetris.getLastLockedTime());
     }
 
