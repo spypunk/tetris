@@ -8,13 +8,37 @@
 
 package spypunk.tetris.ui.view;
 
-import static spypunk.tetris.constants.TetrisConstants.HEIGHT;
-import static spypunk.tetris.constants.TetrisConstants.WIDTH;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_CONTAINER_COLOR;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_DIMENSION;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_SIZE;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.GAME_OVER;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.INFO_CONTAINERS_WIDTH;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.INFO_CONTAINERS_X;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.LEVEL;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.LEVEL_CONTAINER_Y;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.NEXT_SHAPE;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.NEXT_SHAPE_CONTAINER_HEIGHT;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.NEXT_SHAPE_CONTAINER_Y;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.PAUSE;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.ROWS;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.ROWS_CONTAINER_Y;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.SCORE;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.SCORE_CONTAINER_Y;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS_CONTAINERS_WIDTH;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS_CONTAINERS_X;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS_CONTAINER_HEIGHT;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINERS_X;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINER_HEIGHT;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINER_WIDTH;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_FROZEN_FG_COLOR;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_FROZEN_FONT_SIZE;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.TITLE;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -41,7 +65,6 @@ import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.ui.controller.TetrisController;
-import spypunk.tetris.ui.factory.ContainerFactory;
 import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.factory.ImageFactory;
 import spypunk.tetris.ui.model.Container;
@@ -71,35 +94,29 @@ public class TetrisViewImpl implements TetrisView {
         }
     }
 
-    private static final String TITLE = "Tetris";
+    private final FontFactory fontFactory;
 
-    private static final Dimension DEFAULT_DIMENSION = new Dimension(
-            WIDTH * BLOCK_SIZE + 16 * BLOCK_SIZE,
-            (HEIGHT - 2) * BLOCK_SIZE + 2 * BLOCK_SIZE);
+    private Font defaultFont;
 
-    private static final float DEFAULT_FONT_SIZE = 30F;
+    private Font frozenTetrisFont;
 
-    private static final float TETRIS_FROZEN_FONT_SIZE = 42F;
+    private JFrame frame;
 
-    private static final Color TETRIS_FROZEN_FG_COLOR = new Color(30, 30, 30, 150);
+    private JLabel label;
 
-    private static final String GAME_OVER = "GAME OVER";
+    private BufferedImage image;
 
-    private static final String PAUSE = "PAUSE";
+    private Container statisticsContainer;
 
-    private static final Color DEFAULT_FONT_COLOR = Color.LIGHT_GRAY;
+    private Container tetrisContainer;
 
-    private static final Color DEFAULT_CONTAINER_COLOR = Color.GRAY;
+    private Container nextShapeContainer;
 
-    private final Font defaultFont;
+    private Container levelContainer;
 
-    private final Font frozenTetrisFont;
+    private Container scoreContainer;
 
-    private final JFrame frame;
-
-    private final JLabel label;
-
-    private final BufferedImage image;
+    private Container rowsContainer;
 
     @Inject
     private TetrisController tetrisController;
@@ -108,13 +125,48 @@ public class TetrisViewImpl implements TetrisView {
     private ImageFactory imageFactory;
 
     @Inject
-    private ContainerFactory containerFactory;
-
-    @Inject
     public TetrisViewImpl(FontFactory fontFactory) {
+        this.fontFactory = fontFactory;
+
+        initializeFonts();
+        initializeContainers();
+        initializeFrame();
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        SwingUtils.doInAWTThread(() -> frame.setVisible(visible), true);
+    }
+
+    @Override
+    public void update(Tetris tetris) {
+        SwingUtils.doInAWTThread(() -> doUpdate(tetris), true);
+    }
+
+    private void initializeFonts() {
         defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
         frozenTetrisFont = fontFactory.createDefaultFont(TETRIS_FROZEN_FONT_SIZE);
+    }
 
+    private void initializeContainers() {
+        tetrisContainer = initializeContainer(TETRIS_CONTAINERS_X, BLOCK_SIZE,
+            TETRIS_CONTAINER_WIDTH,
+            TETRIS_CONTAINER_HEIGHT);
+        nextShapeContainer = initializeContainer(INFO_CONTAINERS_X, NEXT_SHAPE_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
+            NEXT_SHAPE_CONTAINER_HEIGHT,
+            NEXT_SHAPE);
+        levelContainer = initializeContainer(INFO_CONTAINERS_X, LEVEL_CONTAINER_Y, INFO_CONTAINERS_WIDTH, BLOCK_SIZE,
+            LEVEL);
+        scoreContainer = initializeContainer(INFO_CONTAINERS_X, SCORE_CONTAINER_Y, INFO_CONTAINERS_WIDTH, BLOCK_SIZE,
+            SCORE);
+        rowsContainer = initializeContainer(INFO_CONTAINERS_X, ROWS_CONTAINER_Y, INFO_CONTAINERS_WIDTH, BLOCK_SIZE,
+            ROWS);
+        statisticsContainer = initializeContainer(STATISTICS_CONTAINERS_X, 2 * BLOCK_SIZE, STATISTICS_CONTAINERS_WIDTH,
+            STATISTICS_CONTAINER_HEIGHT,
+            STATISTICS);
+    }
+
+    private void initializeFrame() {
         frame = new JFrame(TITLE);
 
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -133,16 +185,6 @@ public class TetrisViewImpl implements TetrisView {
         frame.pack();
 
         frame.setLocationRelativeTo(null);
-    }
-
-    @Override
-    public void setVisible(boolean visible) {
-        SwingUtils.doInAWTThread(() -> frame.setVisible(visible), true);
-    }
-
-    @Override
-    public void update(Tetris tetris) {
-        SwingUtils.doInAWTThread(() -> doUpdate(tetris), true);
     }
 
     private void doUpdate(Tetris tetris) {
@@ -171,8 +213,6 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     private void renderBlocks(Tetris tetris, Graphics2D graphics) {
-        final Container tetrisContainer = containerFactory.createTetrisContainer();
-
         renderContainer(graphics, tetrisContainer);
 
         final Rectangle rectangle = tetrisContainer.getRectangle();
@@ -191,27 +231,26 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     private void renderLevel(Tetris tetris, Graphics2D graphics) {
-        renderInfo(graphics, containerFactory.createLevelContainer(), String.valueOf(tetris.getLevel()));
+        renderInfo(graphics, levelContainer, String.valueOf(tetris.getLevel()));
     }
 
     private void renderScore(Tetris tetris, Graphics2D graphics) {
-        renderInfo(graphics, containerFactory.createScoreContainer(), String.valueOf(tetris.getScore()));
+        renderInfo(graphics, scoreContainer, String.valueOf(tetris.getScore()));
     }
 
     private void renderRows(Tetris tetris, Graphics2D graphics) {
-        renderInfo(graphics, containerFactory.createRowsContainer(), String.valueOf(tetris.getCompletedRows()));
+        renderInfo(graphics, rowsContainer, String.valueOf(tetris.getCompletedRows()));
     }
 
     private void renderNextShape(Tetris tetris, Graphics2D graphics) {
-        final Container nextShapeContainer = containerFactory.createNextShapeContainer();
         final Shape nextShape = tetris.getNextShape();
 
         renderContainer(graphics, nextShapeContainer);
 
-        Image shapeImage = imageFactory.createShapeImage(nextShape.getShapeType());
+        final Image shapeImage = imageFactory.createShapeImage(nextShape.getShapeType());
 
-        int imageWidth = shapeImage.getWidth(null);
-        int imageHeight = shapeImage.getHeight(null);
+        final int imageWidth = shapeImage.getWidth(null);
+        final int imageHeight = shapeImage.getHeight(null);
 
         final Rectangle containerRectangle = nextShapeContainer.getRectangle();
         final int width = containerRectangle.width;
@@ -227,9 +266,9 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     private void renderStatistics(Tetris tetris, Graphics2D graphics) {
-        final Container statisticsContainer = containerFactory.createStatisticsContainer();
-
         renderContainer(graphics, statisticsContainer);
+
+        // TODO render statistics
     }
 
     private void renderBlock(Graphics2D graphics, Block block, int dx, int dy, int blockSize) {
@@ -282,5 +321,16 @@ public class TetrisViewImpl implements TetrisView {
 
         renderTextCentered(graphics, State.GAME_OVER.equals(state) ? GAME_OVER : PAUSE, rectangle,
             frozenTetrisFont);
+    }
+
+    private Container initializeContainer(int x, int y, int width, int height, String title) {
+        return Container.Builder.instance()
+                .setRectangle(new Rectangle(x, y, width, height))
+                .setTitle(title)
+                .build();
+    }
+
+    private Container initializeContainer(int x, int y, int width, int height) {
+        return initializeContainer(x, y, width, height, null);
     }
 }
