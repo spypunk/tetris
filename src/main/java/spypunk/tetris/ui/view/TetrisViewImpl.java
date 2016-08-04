@@ -10,7 +10,6 @@ package spypunk.tetris.ui.view;
 
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_CONTAINER_COLOR;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_DIMENSION;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.GAME_OVER;
@@ -41,6 +40,7 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINER_Y;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_FROZEN_FG_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_FROZEN_FONT_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.TITLE;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.VIEW_DIMENSION;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -184,7 +184,7 @@ public class TetrisViewImpl implements TetrisView {
         frame.setResizable(false);
         frame.addWindowListener(new TetrisWindowListener());
 
-        image = new BufferedImage(DEFAULT_DIMENSION.width, DEFAULT_DIMENSION.height, BufferedImage.TYPE_INT_ARGB);
+        image = new BufferedImage(VIEW_DIMENSION.width, VIEW_DIMENSION.height, BufferedImage.TYPE_INT_ARGB);
 
         label = new JLabel(new ImageIcon(image));
         label.setFocusable(true);
@@ -217,7 +217,8 @@ public class TetrisViewImpl implements TetrisView {
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         graphics.setColor(Color.BLACK);
-        graphics.fillRect(0, 0, DEFAULT_DIMENSION.width, DEFAULT_DIMENSION.height);
+        graphics.fillRect(0, 0, VIEW_DIMENSION.width, VIEW_DIMENSION.height);
+
         return graphics;
     }
 
