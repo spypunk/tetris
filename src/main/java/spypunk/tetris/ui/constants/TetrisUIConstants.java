@@ -20,11 +20,11 @@ public class TetrisUIConstants {
 
     public static final int STATISTICS_CONTAINER_X = BLOCK_SIZE;
 
-    public static final int STATISTICS_CONTAINER_Y = 2 * BLOCK_SIZE;
+    public static final int STATISTICS_CONTAINER_Y = 4 * BLOCK_SIZE;
 
     public static final int STATISTICS_CONTAINER_WIDTH = BLOCK_SIZE * 6;
 
-    public static final int STATISTICS_CONTAINER_HEIGHT = 1 + BLOCK_SIZE * (HEIGHT - 3);
+    public static final int STATISTICS_CONTAINER_HEIGHT = 1 + BLOCK_SIZE * 15;
 
     public static final int TETRIS_CONTAINER_X = STATISTICS_CONTAINER_X + STATISTICS_CONTAINER_WIDTH + BLOCK_SIZE;
 
@@ -38,7 +38,7 @@ public class TetrisUIConstants {
 
     public static final int INFO_CONTAINERS_WIDTH = BLOCK_SIZE * 6;
 
-    public static final int LEVEL_CONTAINER_Y = BLOCK_SIZE * 2;
+    public static final int LEVEL_CONTAINER_Y = BLOCK_SIZE * 5;
 
     public static final int LEVEL_CONTAINER_HEIGHT = BLOCK_SIZE;
 

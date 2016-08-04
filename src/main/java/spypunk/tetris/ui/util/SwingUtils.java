@@ -9,7 +9,7 @@
 package spypunk.tetris.ui.util;
 
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
@@ -47,14 +47,32 @@ public class SwingUtils {
         }
     }
 
-    public static Point getCenteredTextLocation(Graphics2D graphics, String text, Rectangle rectangle) {
+    public static Rectangle getCenteredImageRectangle(Image image, Rectangle rectangle, double ratio) {
+        final int imageWidth = image.getWidth(null);
+        final int imageHeight = image.getHeight(null);
+
+        final int targetWidth = (int) (imageWidth * ratio);
+        final int targetHeight = (int) (imageHeight * ratio);
+
+        final int x1 = rectangle.x + (rectangle.width - targetWidth) / 2;
+        final int y1 = rectangle.y + (rectangle.height - targetHeight) / 2;
+
+        return new Rectangle(x1, y1, targetWidth, targetHeight);
+    }
+
+    public static Rectangle getCenteredTextRectangle(Graphics2D graphics, String text, Rectangle rectangle) {
+        final Rectangle textBounds = getTextBounds(graphics, text);
+
+        final int x1 = rectangle.x + (rectangle.width - textBounds.width) / 2;
+        final int y1 = rectangle.y + (rectangle.height + textBounds.height) / 2;
+
+        return new Rectangle(x1, y1, textBounds.width, textBounds.height);
+    }
+
+    private static Rectangle getTextBounds(Graphics2D graphics, String text) {
         final FontRenderContext frc = graphics.getFontRenderContext();
         final GlyphVector gv = graphics.getFont().createGlyphVector(frc, text);
         final Rectangle textBounds = gv.getPixelBounds(null, 0, 0);
-
-        final int x = rectangle.x + (rectangle.width - textBounds.width) / 2;
-        final int y = rectangle.y + (rectangle.height + textBounds.height) / 2;
-
-        return new Point(x, y);
+        return textBounds;
     }
 }

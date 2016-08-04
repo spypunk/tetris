@@ -47,7 +47,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
@@ -69,6 +68,7 @@ import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
+import spypunk.tetris.ui.constants.TetrisUIConstants;
 import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.factory.ImageFactory;
@@ -231,7 +231,7 @@ public class TetrisViewImpl implements TetrisView {
                 .map(Optional::get)
                 .filter(block -> block.getLocation().y >= 2)
                 .forEach(block -> renderBlock(graphics, block, rectangle.x + 1,
-                    rectangle.y - STATISTICS_CONTAINER_Y + 1));
+                    rectangle.y - TetrisUIConstants.TETRIS_CONTAINER_Y - BLOCK_SIZE + 1));
 
         final State state = tetris.getState();
 
@@ -278,7 +278,8 @@ public class TetrisViewImpl implements TetrisView {
     private void renderStatistics(Tetris tetris, Graphics2D graphics) {
         renderContainer(graphics, statisticsContainer);
 
-        // TODO render statistics
+        tetris.getStatistics().entrySet().forEach(statisticEntry -> renderStatistic(graphics, statisticEntry.getKey(),
+            String.valueOf(statisticEntry.getValue())));
     }
 
     private void renderBlock(Graphics2D graphics, Block block, int dx, int dy) {
@@ -296,7 +297,7 @@ public class TetrisViewImpl implements TetrisView {
 
     private void renderInfo(Graphics2D graphics, Container container, String info) {
         renderContainer(graphics, container);
-        renderTextCentered(graphics, info, container.getRectangle(), defaultFont);
+        renderText(graphics, info, container.getRectangle(), defaultFont);
     }
 
     private void renderContainer(Graphics2D graphics, Container container) {
@@ -309,18 +310,44 @@ public class TetrisViewImpl implements TetrisView {
         final String title = container.getTitle();
 
         if (title != null) {
-            renderTextCentered(graphics, title,
+            renderText(graphics, title,
                 new Rectangle(rectangle.x, rectangle.y - BLOCK_SIZE, rectangle.width, BLOCK_SIZE), defaultFont);
         }
     }
 
-    private void renderTextCentered(Graphics2D graphics, String text, Rectangle rectangle, Font font) {
+    private void renderStatistic(Graphics2D graphics, ShapeType shapeType, String value) {
+        final Image image = imageFactory.createShapeImage(shapeType);
+
+        final int imageWidth = image.getWidth(null);
+        final int imageHeight = image.getHeight(null);
+
+        final Rectangle containerRectangle = statisticsContainer.getRectangle();
+
+        final Rectangle imageContainerRectangle = new Rectangle(containerRectangle.x,
+                containerRectangle.y + shapeType.ordinal() * 2 * BLOCK_SIZE + BLOCK_SIZE,
+                containerRectangle.width / 2, BLOCK_SIZE);
+
+        final Rectangle imageRectangle = SwingUtils.getCenteredImageRectangle(image, imageContainerRectangle,
+            0.5);
+
+        graphics.drawImage(image, imageRectangle.x, imageRectangle.y, imageRectangle.x + imageRectangle.width,
+            imageRectangle.y + imageRectangle.height, 0, 0, imageWidth, imageHeight, null);
+
+        final Rectangle textContainerRectangle = new Rectangle(containerRectangle.x + imageContainerRectangle.width,
+                imageContainerRectangle.y, imageContainerRectangle.width, imageContainerRectangle.height);
+
+        final Rectangle textRectangle = SwingUtils.getCenteredTextRectangle(graphics, value, textContainerRectangle);
+
+        graphics.drawString(value, textRectangle.x, textRectangle.y);
+    }
+
+    private void renderText(Graphics2D graphics, String text, Rectangle rectangle, Font font) {
         graphics.setColor(DEFAULT_FONT_COLOR);
         graphics.setFont(font);
 
-        final Point location = SwingUtils.getCenteredTextLocation(graphics, text, rectangle);
+        final Rectangle textRectangle = SwingUtils.getCenteredTextRectangle(graphics, text, rectangle);
 
-        graphics.drawString(text, location.x, location.y);
+        graphics.drawString(text, textRectangle.x, textRectangle.y);
     }
 
     private void renderTetrisFrozen(Graphics2D graphics, Container container, State state) {
@@ -329,7 +356,7 @@ public class TetrisViewImpl implements TetrisView {
         graphics.setColor(TETRIS_FROZEN_FG_COLOR);
         graphics.fillRect(rectangle.x + 1, rectangle.y + 1, rectangle.width - 1, rectangle.height - 1);
 
-        renderTextCentered(graphics, State.GAME_OVER.equals(state) ? GAME_OVER : PAUSE, rectangle,
+        renderText(graphics, State.GAME_OVER.equals(state) ? GAME_OVER : PAUSE, rectangle,
             frozenTetrisFont);
     }
 
