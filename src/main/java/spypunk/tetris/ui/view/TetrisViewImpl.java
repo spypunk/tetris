@@ -17,22 +17,27 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.GAME_OVER;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.INFO_CONTAINERS_WIDTH;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.INFO_CONTAINERS_X;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.LEVEL;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.LEVEL_CONTAINER_HEIGHT;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.LEVEL_CONTAINER_Y;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.NEXT_SHAPE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.NEXT_SHAPE_CONTAINER_HEIGHT;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.NEXT_SHAPE_CONTAINER_Y;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.PAUSE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.ROWS;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.ROWS_CONTAINER_HEIGHT;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.ROWS_CONTAINER_Y;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.SCORE;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.SCORE_CONTAINER_HEIGHT;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.SCORE_CONTAINER_Y;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS_CONTAINERS_WIDTH;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS_CONTAINERS_X;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS_CONTAINER_HEIGHT;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINERS_X;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS_CONTAINER_WIDTH;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS_CONTAINER_X;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS_CONTAINER_Y;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINER_HEIGHT;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINER_WIDTH;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINER_X;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINER_Y;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_FROZEN_FG_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_FROZEN_FONT_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.TITLE;
@@ -149,19 +154,23 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     private void initializeContainers() {
-        tetrisContainer = initializeContainer(TETRIS_CONTAINERS_X, BLOCK_SIZE,
+        tetrisContainer = initializeContainer(TETRIS_CONTAINER_X, TETRIS_CONTAINER_Y,
             TETRIS_CONTAINER_WIDTH,
             TETRIS_CONTAINER_HEIGHT);
         nextShapeContainer = initializeContainer(INFO_CONTAINERS_X, NEXT_SHAPE_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
             NEXT_SHAPE_CONTAINER_HEIGHT,
             NEXT_SHAPE);
-        levelContainer = initializeContainer(INFO_CONTAINERS_X, LEVEL_CONTAINER_Y, INFO_CONTAINERS_WIDTH, BLOCK_SIZE,
+        levelContainer = initializeContainer(INFO_CONTAINERS_X, LEVEL_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
+            LEVEL_CONTAINER_HEIGHT,
             LEVEL);
-        scoreContainer = initializeContainer(INFO_CONTAINERS_X, SCORE_CONTAINER_Y, INFO_CONTAINERS_WIDTH, BLOCK_SIZE,
+        scoreContainer = initializeContainer(INFO_CONTAINERS_X, SCORE_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
+            SCORE_CONTAINER_HEIGHT,
             SCORE);
-        rowsContainer = initializeContainer(INFO_CONTAINERS_X, ROWS_CONTAINER_Y, INFO_CONTAINERS_WIDTH, BLOCK_SIZE,
+        rowsContainer = initializeContainer(INFO_CONTAINERS_X, ROWS_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
+            ROWS_CONTAINER_HEIGHT,
             ROWS);
-        statisticsContainer = initializeContainer(STATISTICS_CONTAINERS_X, 2 * BLOCK_SIZE, STATISTICS_CONTAINERS_WIDTH,
+        statisticsContainer = initializeContainer(STATISTICS_CONTAINER_X, STATISTICS_CONTAINER_Y,
+            STATISTICS_CONTAINER_WIDTH,
             STATISTICS_CONTAINER_HEIGHT,
             STATISTICS);
     }
@@ -221,7 +230,7 @@ public class TetrisViewImpl implements TetrisView {
                 .map(Optional::get)
                 .filter(block -> block.getLocation().y >= 2)
                 .forEach(block -> renderBlock(graphics, block, rectangle.x + 1,
-                    rectangle.y - 2 * BLOCK_SIZE + 1, BLOCK_SIZE));
+                    rectangle.y - STATISTICS_CONTAINER_Y + 1));
 
         final State state = tetris.getState();
 
@@ -271,14 +280,14 @@ public class TetrisViewImpl implements TetrisView {
         // TODO render statistics
     }
 
-    private void renderBlock(Graphics2D graphics, Block block, int dx, int dy, int blockSize) {
+    private void renderBlock(Graphics2D graphics, Block block, int dx, int dy) {
         final ShapeType shapeType = block.getShape().getShapeType();
 
         final Image blockImage = imageFactory.createBlockImage(shapeType);
-        final int dx1 = dx + block.getLocation().x * blockSize;
-        final int dx2 = dx1 + blockSize;
-        final int dy1 = dy + block.getLocation().y * blockSize;
-        final int dy2 = dy1 + blockSize;
+        final int dx1 = dx + block.getLocation().x * BLOCK_SIZE;
+        final int dx2 = dx1 + BLOCK_SIZE;
+        final int dy1 = dy + block.getLocation().y * BLOCK_SIZE;
+        final int dy2 = dy1 + BLOCK_SIZE;
 
         graphics.drawImage(blockImage, dx1, dy1, dx2, dy2, 0, 0, blockImage.getWidth(null), blockImage.getHeight(null),
             null);
