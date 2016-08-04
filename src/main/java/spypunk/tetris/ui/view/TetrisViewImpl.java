@@ -316,10 +316,10 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     private void renderStatistic(Graphics2D graphics, ShapeType shapeType, String value) {
-        final Image image = imageFactory.createShapeImage(shapeType);
+        final Image shapeImage = imageFactory.createShapeImage(shapeType);
 
-        final int imageWidth = image.getWidth(null);
-        final int imageHeight = image.getHeight(null);
+        final int imageWidth = shapeImage.getWidth(null);
+        final int imageHeight = shapeImage.getHeight(null);
 
         final Rectangle containerRectangle = statisticsContainer.getRectangle();
 
@@ -327,10 +327,10 @@ public class TetrisViewImpl implements TetrisView {
                 containerRectangle.y + shapeType.ordinal() * 2 * BLOCK_SIZE + BLOCK_SIZE,
                 containerRectangle.width / 2, BLOCK_SIZE);
 
-        final Rectangle imageRectangle = SwingUtils.getCenteredImageRectangle(image, imageContainerRectangle,
+        final Rectangle imageRectangle = SwingUtils.getCenteredImageRectangle(shapeImage, imageContainerRectangle,
             0.5);
 
-        graphics.drawImage(image, imageRectangle.x, imageRectangle.y, imageRectangle.x + imageRectangle.width,
+        graphics.drawImage(shapeImage, imageRectangle.x, imageRectangle.y, imageRectangle.x + imageRectangle.width,
             imageRectangle.y + imageRectangle.height, 0, 0, imageWidth, imageHeight, null);
 
         final Rectangle textContainerRectangle = new Rectangle(containerRectangle.x + imageContainerRectangle.width,

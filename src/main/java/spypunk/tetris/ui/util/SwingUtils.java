@@ -72,7 +72,7 @@ public class SwingUtils {
     private static Rectangle getTextBounds(Graphics2D graphics, String text) {
         final FontRenderContext frc = graphics.getFontRenderContext();
         final GlyphVector gv = graphics.getFont().createGlyphVector(frc, text);
-        final Rectangle textBounds = gv.getPixelBounds(null, 0, 0);
-        return textBounds;
+
+        return gv.getPixelBounds(null, 0, 0);
     }
 }
