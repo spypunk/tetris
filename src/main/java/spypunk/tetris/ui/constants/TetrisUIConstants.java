@@ -38,7 +38,7 @@ public class TetrisUIConstants {
 
     public static final int INFO_CONTAINERS_WIDTH = BLOCK_SIZE * 6;
 
-    public static final int LEVEL_CONTAINER_Y = BLOCK_SIZE * 5;
+    public static final int LEVEL_CONTAINER_Y = BLOCK_SIZE * 4;
 
     public static final int LEVEL_CONTAINER_HEIGHT = BLOCK_SIZE;
 
@@ -52,7 +52,7 @@ public class TetrisUIConstants {
 
     public static final int NEXT_SHAPE_CONTAINER_Y = ROWS_CONTAINER_Y + ROWS_CONTAINER_HEIGHT + 2 * BLOCK_SIZE;
 
-    public static final int NEXT_SHAPE_CONTAINER_HEIGHT = BLOCK_SIZE * 4;
+    public static final int NEXT_SHAPE_CONTAINER_HEIGHT = BLOCK_SIZE * 6;
 
     public static final Dimension VIEW_DIMENSION = new Dimension(
             INFO_CONTAINERS_X + INFO_CONTAINERS_WIDTH + BLOCK_SIZE,
