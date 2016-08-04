@@ -11,6 +11,7 @@ package spypunk.tetris.ui.factory;
 import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -42,11 +43,13 @@ public class ImageFactoryImpl implements ImageFactory {
 
     @Inject
     public ImageFactoryImpl() {
-        blockImages = Lists.newArrayList(ShapeType.values()).stream().collect(Collectors.toMap(Function.identity(),
-            shapeType -> createImage(String.format("%s%s.png", BLOCKS_FOLDER, shapeType.name()))));
+        final ArrayList<ShapeType> shapeTypes = Lists.newArrayList(ShapeType.values());
 
-        shapeImages = Lists.newArrayList(ShapeType.values()).stream().collect(Collectors.toMap(Function.identity(),
-            shapeType -> createImage(String.format("%s%s.png", SHAPES_FOLDER, shapeType.name()))));
+        blockImages = shapeTypes.stream().collect(Collectors.toMap(Function.identity(),
+            shapeType -> createImage(BLOCKS_FOLDER, shapeType)));
+
+        shapeImages = shapeTypes.stream().collect(Collectors.toMap(Function.identity(),
+            shapeType -> createImage(SHAPES_FOLDER, shapeType)));
     }
 
     @Override
@@ -59,7 +62,9 @@ public class ImageFactoryImpl implements ImageFactory {
         return shapeImages.get(shapeType);
     }
 
-    private Image createImage(String resourceName) {
+    private Image createImage(String imageFolder, ShapeType shapeType) {
+        final String resourceName = String.format("%s%s.png", imageFolder, shapeType.name());
+
         try (InputStream inputStream = getClass().getResourceAsStream(resourceName)) {
             return ImageIO.read(inputStream);
         } catch (final IOException e) {
