@@ -32,15 +32,6 @@ public class TetrisControllerImpl implements TetrisController {
 
     private static final int RENDER_PERIOD = 1000 / 60;
 
-    @Inject
-    private ScheduledExecutorService scheduledExecutorService;
-
-    @Inject
-    private TetrisView tetrisView;
-
-    @Inject
-    private TetrisService tetrisService;
-
     private final Tetris tetris;
 
     private final Map<Integer, Runnable> pressedKeyHandlers = Maps.newHashMap();
@@ -54,6 +45,15 @@ public class TetrisControllerImpl implements TetrisController {
     private volatile boolean pause;
 
     private Future<?> loopThread;
+
+    @Inject
+    private ScheduledExecutorService scheduledExecutorService;
+
+    @Inject
+    private TetrisView tetrisView;
+
+    @Inject
+    private TetrisService tetrisService;
 
     @Inject
     public TetrisControllerImpl(TetrisFactory tetrisFactory) {
