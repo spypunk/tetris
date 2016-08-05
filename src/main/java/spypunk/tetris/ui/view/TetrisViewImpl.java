@@ -173,8 +173,8 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     @Override
-    public void setVisible(boolean visible) {
-        SwingUtils.doInAWTThread(() -> frame.setVisible(visible), true);
+    public void show() {
+        SwingUtils.doInAWTThread(() -> frame.setVisible(true), true);
     }
 
     @Override

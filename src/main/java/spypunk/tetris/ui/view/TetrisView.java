@@ -10,7 +10,7 @@ package spypunk.tetris.ui.view;
 
 public interface TetrisView {
 
-    void setVisible(boolean visible);
+    void show();
 
     void update();
 }

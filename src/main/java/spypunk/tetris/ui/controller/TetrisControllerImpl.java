@@ -63,7 +63,7 @@ public class TetrisControllerImpl implements TetrisController {
 
     @Override
     public void start() {
-        tetrisView.setVisible(true);
+        tetrisView.show();
 
         loopThread = scheduledExecutorService.scheduleAtFixedRate(() -> onGameLoop(), 0, RENDER_PERIOD,
             TimeUnit.MILLISECONDS);
