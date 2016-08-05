@@ -83,6 +83,29 @@ import spypunk.tetris.ui.util.SwingUtils;
 @Singleton
 public class TetrisViewImpl implements TetrisView {
 
+    private final class TetrisURLLabelMouseAdapter extends MouseAdapter {
+        private final JLabel urlLabel;
+
+        private TetrisURLLabelMouseAdapter(JLabel urlLabel) {
+            this.urlLabel = urlLabel;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            tetrisController.onURLClicked();
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            urlLabel.setForeground(Color.CYAN);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            urlLabel.setForeground(DEFAULT_FONT_COLOR);
+        }
+    }
+
     private final class TetrisWindowListener extends WindowAdapter {
 
         @Override
@@ -209,32 +232,18 @@ public class TetrisViewImpl implements TetrisView {
 
     private JPanel initializeURLPanel() {
         final JLabel urlLabel = new JLabel(URL);
+
         urlLabel.setFont(urlFont);
         urlLabel.setForeground(DEFAULT_FONT_COLOR);
-
-        urlLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                tetrisController.onURLClicked();
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                urlLabel.setForeground(Color.CYAN);
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                urlLabel.setForeground(DEFAULT_FONT_COLOR);
-            }
-        });
+        urlLabel.addMouseListener(new TetrisURLLabelMouseAdapter(urlLabel));
 
         final JPanel urlPanel = new JPanel(new BorderLayout());
+
         urlPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         urlPanel.setBackground(Color.BLACK);
         urlPanel.setOpaque(true);
-
         urlPanel.add(urlLabel, BorderLayout.EAST);
+
         return urlPanel;
     }
 

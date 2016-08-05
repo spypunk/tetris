@@ -25,13 +25,13 @@ import spypunk.tetris.ui.controller.TetrisController;
 
 public class Main {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
     private static final String VERSION_KEY = "version";
 
     private static final String URL_KEY = "url";
 
     private static final String PROJECT_PROPERTIES = "/project.properties";
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static final String VERSION;
 
