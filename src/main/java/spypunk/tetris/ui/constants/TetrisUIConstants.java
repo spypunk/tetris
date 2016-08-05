@@ -14,8 +14,6 @@ import static spypunk.tetris.constants.TetrisConstants.WIDTH;
 import java.awt.Color;
 import java.awt.Dimension;
 
-import spypunk.tetris.Main;
-
 public class TetrisUIConstants {
 
     public static final int BLOCK_SIZE = 32;
@@ -75,10 +73,6 @@ public class TetrisUIConstants {
     public static final String GAME_OVER = "GAME OVER";
 
     public static final String PAUSE = "PAUSE";
-
-    public static final String TITLE = Main.VERSION;
-
-    public static final String URL = Main.URL.getHost() + Main.URL.getPath();
 
     public static final float DEFAULT_FONT_SIZE = 30F;
 

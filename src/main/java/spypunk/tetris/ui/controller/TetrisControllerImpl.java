@@ -20,7 +20,6 @@ import javax.inject.Singleton;
 
 import com.google.common.collect.Maps;
 
-import spypunk.tetris.Main;
 import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.model.Movement;
 import spypunk.tetris.model.Tetris;
@@ -42,8 +41,11 @@ public class TetrisControllerImpl implements TetrisController {
     @Inject
     private TetrisService tetrisService;
 
-    @Inject
-    private TetrisFactory tetrisFactory;
+    private final Tetris tetris;
+
+    private final Map<Integer, Runnable> pressedKeyHandlers = Maps.newHashMap();
+
+    private final Map<Integer, Runnable> releasedKeyHandlers = Maps.newHashMap();
 
     private volatile boolean newGame = true;
 
@@ -53,13 +55,9 @@ public class TetrisControllerImpl implements TetrisController {
 
     private Future<?> loopThread;
 
-    private Tetris tetris;
-
-    private final Map<Integer, Runnable> pressedKeyHandlers = Maps.newHashMap();
-
-    private final Map<Integer, Runnable> releasedKeyHandlers = Maps.newHashMap();
-
-    public TetrisControllerImpl() {
+    @Inject
+    public TetrisControllerImpl(TetrisFactory tetrisFactory) {
+        tetris = tetrisFactory.createTetris();
         initializeKeyHandlers();
     }
 
@@ -89,7 +87,12 @@ public class TetrisControllerImpl implements TetrisController {
 
     @Override
     public void onURLClicked() {
-        SwingUtils.openURI(Main.URL);
+        SwingUtils.openURI(tetris.getProjectURI());
+    }
+
+    @Override
+    public Tetris getTetris() {
+        return tetris;
     }
 
     private void initializeKeyHandlers() {
@@ -114,7 +117,7 @@ public class TetrisControllerImpl implements TetrisController {
         handlePause();
 
         tetrisService.update(tetris);
-        tetrisView.update(tetris);
+        tetrisView.update();
     }
 
     private void handlePause() {
@@ -131,7 +134,7 @@ public class TetrisControllerImpl implements TetrisController {
 
     private void handleNewGame() {
         if (newGame) {
-            tetris = tetrisFactory.createTetris();
+            tetrisService.newGame(tetris);
             newGame = false;
         }
     }

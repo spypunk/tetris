@@ -8,6 +8,8 @@
 
 package spypunk.tetris.ui.controller;
 
+import spypunk.tetris.model.Tetris;
+
 public interface TetrisController {
 
     void start();
@@ -19,4 +21,6 @@ public interface TetrisController {
     void onKeyReleased(int keyCode);
 
     void onURLClicked();
+
+    Tetris getTetris();
 }

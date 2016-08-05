@@ -39,8 +39,6 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINER_X;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINER_Y;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_FROZEN_FG_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_FROZEN_FONT_SIZE;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.TITLE;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.URL;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.VIEW_DIMENSION;
 
 import java.awt.BorderLayout;
@@ -57,6 +55,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.net.URI;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -72,7 +71,8 @@ import spypunk.tetris.model.Block;
 import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
-import spypunk.tetris.model.Tetris.State;
+import spypunk.tetris.model.TetrisInstance;
+import spypunk.tetris.model.TetrisInstance.State;
 import spypunk.tetris.ui.constants.TetrisUIConstants;
 import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.factory.FontFactory;
@@ -127,6 +127,8 @@ public class TetrisViewImpl implements TetrisView {
         }
     }
 
+    private final Tetris tetris;
+
     private final FontFactory fontFactory;
 
     private Font defaultFont;
@@ -160,8 +162,10 @@ public class TetrisViewImpl implements TetrisView {
     private ImageFactory imageFactory;
 
     @Inject
-    public TetrisViewImpl(FontFactory fontFactory) {
+    public TetrisViewImpl(FontFactory fontFactory, TetrisController tetrisController) {
         this.fontFactory = fontFactory;
+        this.tetrisController = tetrisController;
+        this.tetris = tetrisController.getTetris();
 
         initializeFonts();
         initializeContainers();
@@ -174,8 +178,8 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     @Override
-    public void update(Tetris tetris) {
-        SwingUtils.doInAWTThread(() -> doUpdate(tetris), true);
+    public void update() {
+        SwingUtils.doInAWTThread(() -> doUpdate(), true);
     }
 
     private void initializeFonts() {
@@ -207,7 +211,7 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     private void initializeFrame() {
-        frame = new JFrame(TITLE);
+        frame = new JFrame(tetris.getName() + " " + tetris.getVersion());
 
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setFocusable(false);
@@ -231,7 +235,9 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     private JPanel initializeURLPanel() {
-        final JLabel urlLabel = new JLabel(URL);
+        URI projectURI = tetris.getProjectURI();
+
+        final JLabel urlLabel = new JLabel(projectURI.getHost() + projectURI.getPath());
 
         urlLabel.setFont(urlFont);
         urlLabel.setForeground(DEFAULT_FONT_COLOR);
@@ -247,15 +253,15 @@ public class TetrisViewImpl implements TetrisView {
         return urlPanel;
     }
 
-    private void doUpdate(Tetris tetris) {
+    private void doUpdate() {
         final Graphics2D graphics = initializeGraphics();
 
-        renderBlocks(tetris, graphics);
-        renderLevel(tetris, graphics);
-        renderScore(tetris, graphics);
-        renderRows(tetris, graphics);
-        renderNextShape(tetris, graphics);
-        renderStatistics(tetris, graphics);
+        renderBlocks(graphics);
+        renderLevel(graphics);
+        renderScore(graphics);
+        renderRows(graphics);
+        renderNextShape(graphics);
+        renderStatistics(graphics);
 
         graphics.dispose();
 
@@ -273,38 +279,40 @@ public class TetrisViewImpl implements TetrisView {
         return graphics;
     }
 
-    private void renderBlocks(Tetris tetris, Graphics2D graphics) {
+    private void renderBlocks(Graphics2D graphics) {
         renderContainer(graphics, tetrisContainer);
 
         final Rectangle rectangle = tetrisContainer.getRectangle();
 
-        tetris.getBlocks().values().stream().filter(Optional::isPresent)
+        TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+
+        tetrisInstance.getBlocks().values().stream().filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(block -> block.getLocation().y >= 2)
                 .forEach(block -> renderBlock(graphics, block, rectangle.x + 1,
                     rectangle.y - TetrisUIConstants.TETRIS_CONTAINER_Y - BLOCK_SIZE + 1));
 
-        final State state = tetris.getState();
+        final State state = tetrisInstance.getState();
 
         if (!State.RUNNING.equals(state)) {
             renderTetrisFrozen(graphics, tetrisContainer, state);
         }
     }
 
-    private void renderLevel(Tetris tetris, Graphics2D graphics) {
-        renderTextInContainer(graphics, levelContainer, String.valueOf(tetris.getLevel()));
+    private void renderLevel(Graphics2D graphics) {
+        renderTextInContainer(graphics, levelContainer, String.valueOf(tetris.getTetrisInstance().getLevel()));
     }
 
-    private void renderScore(Tetris tetris, Graphics2D graphics) {
-        renderTextInContainer(graphics, scoreContainer, String.valueOf(tetris.getScore()));
+    private void renderScore(Graphics2D graphics) {
+        renderTextInContainer(graphics, scoreContainer, String.valueOf(tetris.getTetrisInstance().getScore()));
     }
 
-    private void renderRows(Tetris tetris, Graphics2D graphics) {
-        renderTextInContainer(graphics, rowsContainer, String.valueOf(tetris.getCompletedRows()));
+    private void renderRows(Graphics2D graphics) {
+        renderTextInContainer(graphics, rowsContainer, String.valueOf(tetris.getTetrisInstance().getCompletedRows()));
     }
 
-    private void renderNextShape(Tetris tetris, Graphics2D graphics) {
-        final Shape nextShape = tetris.getNextShape();
+    private void renderNextShape(Graphics2D graphics) {
+        final Shape nextShape = tetris.getTetrisInstance().getNextShape();
 
         renderContainer(graphics, nextShapeContainer);
 
@@ -314,11 +322,12 @@ public class TetrisViewImpl implements TetrisView {
         SwingUtils.drawImage(graphics, shapeImage, rectangle);
     }
 
-    private void renderStatistics(Tetris tetris, Graphics2D graphics) {
+    private void renderStatistics(Graphics2D graphics) {
         renderContainer(graphics, statisticsContainer);
 
-        tetris.getStatistics().entrySet().forEach(statisticEntry -> renderStatistic(graphics, statisticEntry.getKey(),
-            String.valueOf(statisticEntry.getValue())));
+        tetris.getTetrisInstance().getStatistics().entrySet()
+                .forEach(statisticEntry -> renderStatistic(graphics, statisticEntry.getKey(),
+                    String.valueOf(statisticEntry.getValue())));
     }
 
     private void renderBlock(Graphics2D graphics, Block block, int dx, int dy) {

@@ -8,11 +8,9 @@
 
 package spypunk.tetris.ui.view;
 
-import spypunk.tetris.model.Tetris;
-
 public interface TetrisView {
 
     void setVisible(boolean visible);
 
-    void update(Tetris tetris);
+    void update();
 }

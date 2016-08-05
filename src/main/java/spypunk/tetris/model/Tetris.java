@@ -8,17 +8,9 @@
 
 package spypunk.tetris.model;
 
-import java.awt.Point;
-import java.util.Map;
-import java.util.Optional;
+import java.net.URI;
 
 public class Tetris {
-
-    public enum State {
-        RUNNING,
-        PAUSED,
-        GAME_OVER;
-    }
 
     public static class Builder {
 
@@ -31,23 +23,18 @@ public class Tetris {
             return new Builder();
         }
 
-        public Builder setBlocks(Map<Point, Optional<Block>> blocks) {
-            tetris.setBlocks(blocks);
+        public Builder setName(String name) {
+            tetris.setName(name);
             return this;
         }
 
-        public Builder setNextShape(Shape nextShape) {
-            tetris.setNextShape(nextShape);
+        public Builder setVersion(String version) {
+            tetris.setVersion(version);
             return this;
         }
 
-        public Builder setStatistics(Map<ShapeType, Integer> statistics) {
-            tetris.setStatistics(statistics);
-            return this;
-        }
-
-        public Builder setState(State state) {
-            tetris.setState(state);
+        public Builder setProjectURI(URI projectURI) {
+            tetris.setProjectURI(projectURI);
             return this;
         }
 
@@ -57,125 +44,43 @@ public class Tetris {
 
     }
 
-    private static final int INITIAL_SPEED = 1000;
+    private String name;
 
-    private Map<Point, Optional<Block>> blocks;
+    private String version;
 
-    private Shape currentShape;
+    private URI projectURI;
 
-    private Shape nextShape;
+    private TetrisInstance tetrisInstance;
 
-    private long lastMoveTime;
-
-    private long lastLockedTime;
-
-    private Optional<Movement> movement = Optional.empty();
-
-    private Map<ShapeType, Integer> statistics;
-
-    private int level;
-
-    private int score;
-
-    private int completedRows;
-
-    private int speed = INITIAL_SPEED;
-
-    private State state;
-
-    public Map<Point, Optional<Block>> getBlocks() {
-        return blocks;
+    public String getName() {
+        return name;
     }
 
-    public void setBlocks(Map<Point, Optional<Block>> blocks) {
-        this.blocks = blocks;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Shape getCurrentShape() {
-        return currentShape;
+    public String getVersion() {
+        return version;
     }
 
-    public void setCurrentShape(Shape currentShape) {
-        this.currentShape = currentShape;
+    public void setVersion(String version) {
+        this.version = version;
     }
 
-    public Shape getNextShape() {
-        return nextShape;
+    public URI getProjectURI() {
+        return projectURI;
     }
 
-    public void setNextShape(Shape nextShape) {
-        this.nextShape = nextShape;
+    public void setProjectURI(URI projectURI) {
+        this.projectURI = projectURI;
     }
 
-    public long getLastMoveTime() {
-        return lastMoveTime;
+    public TetrisInstance getTetrisInstance() {
+        return tetrisInstance;
     }
 
-    public void setLastMoveTime(long lastMoveTime) {
-        this.lastMoveTime = lastMoveTime;
-    }
-
-    public Optional<Movement> getMovement() {
-        return movement;
-    }
-
-    public void setMovement(Optional<Movement> movement) {
-        this.movement = movement;
-    }
-
-    public Map<ShapeType, Integer> getStatistics() {
-        return statistics;
-    }
-
-    public void setStatistics(Map<ShapeType, Integer> statistics) {
-        this.statistics = statistics;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public int getCompletedRows() {
-        return completedRows;
-    }
-
-    public void setCompletedRows(int completedRows) {
-        this.completedRows = completedRows;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public long getLastLockedTime() {
-        return lastLockedTime;
-    }
-
-    public void setLastLockedTime(long lastLockedTime) {
-        this.lastLockedTime = lastLockedTime;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
+    public void setTetrisInstance(TetrisInstance tetrisInstance) {
+        this.tetrisInstance = tetrisInstance;
     }
 }

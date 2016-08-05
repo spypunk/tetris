@@ -8,43 +8,56 @@
 
 package spypunk.tetris.factory;
 
-import static spypunk.tetris.constants.TetrisConstants.HEIGHT;
-import static spypunk.tetris.constants.TetrisConstants.WIDTH;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Properties;
 
-import java.awt.Point;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import spypunk.tetris.model.Block;
-import spypunk.tetris.model.ShapeType;
+import spypunk.tetris.Main;
+import spypunk.tetris.exception.TetrisException;
 import spypunk.tetris.model.Tetris;
-import spypunk.tetris.model.Tetris.State;
 
 @Singleton
 public class TetrisFactoryImpl implements TetrisFactory {
 
-    @Inject
-    private ShapeFactory shapeFactory;
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
+    private static final String NAME_KEY = "name";
+
+    private static final String VERSION_KEY = "version";
+
+    private static final String URL_KEY = "url";
+
+    private static final String TETRIS_PROPERTIES = "/tetris.properties";
+
+    private final String name;
+
+    private final String version;
+
+    private final URI uri;
+
+    public TetrisFactoryImpl() {
+        try (InputStream inputStream = TetrisFactoryImpl.class.getResource(TETRIS_PROPERTIES).openStream()) {
+            final Properties properties = new Properties();
+
+            properties.load(inputStream);
+
+            name = properties.getProperty(NAME_KEY);
+            version = properties.getProperty(VERSION_KEY);
+            uri = URI.create(properties.getProperty(URL_KEY));
+        } catch (final IOException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new TetrisException(e);
+        }
+    }
 
     @Override
     public Tetris createTetris() {
-        final Map<Point, Optional<Block>> blocks = Maps.newHashMap();
-
-        IntStream.range(0, WIDTH).forEach(x -> IntStream.range(0, HEIGHT)
-                .forEach(y -> blocks.put(new Point(x, y), Optional.empty())));
-
-        final Map<ShapeType, Integer> statistics = Lists.newArrayList(ShapeType.values()).stream()
-                .collect(Collectors.toMap(shapeType -> shapeType, shapeType -> 0));
-
-        return Tetris.Builder.instance().setBlocks(blocks).setNextShape(shapeFactory.createRandomShape())
-                .setStatistics(statistics).setState(State.RUNNING).build();
+        return Tetris.Builder.instance().setName(name).setVersion(version).setProjectURI(uri).build();
     }
 }

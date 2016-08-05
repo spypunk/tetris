@@ -15,6 +15,8 @@ import spypunk.tetris.model.Tetris;
 
 public interface TetrisService {
 
+    void newGame(Tetris tetris);
+
     void update(Tetris tetris);
 
     void updateMovement(Tetris tetris, Optional<Movement> movement);
