@@ -20,10 +20,12 @@ import javax.inject.Singleton;
 
 import com.google.common.collect.Maps;
 
+import spypunk.tetris.Main;
 import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.model.Movement;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.service.TetrisService;
+import spypunk.tetris.ui.util.SwingUtils;
 import spypunk.tetris.ui.view.TetrisView;
 
 @Singleton
@@ -83,6 +85,11 @@ public class TetrisControllerImpl implements TetrisController {
     @Override
     public void onKeyReleased(int keyCode) {
         onKeyEvent(releasedKeyHandlers, keyCode);
+    }
+
+    @Override
+    public void onURLClicked() {
+        SwingUtils.openURI(Main.URL);
     }
 
     private void initializeKeyHandlers() {

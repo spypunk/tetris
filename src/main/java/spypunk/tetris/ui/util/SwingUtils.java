@@ -8,17 +8,23 @@
 
 package spypunk.tetris.ui.util;
 
+import java.awt.Desktop;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
 
 import javax.swing.SwingUtilities;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import spypunk.tetris.exception.TetrisException;
 
 public class SwingUtils {
 
@@ -38,9 +44,11 @@ public class SwingUtils {
                 SwingUtilities.invokeAndWait(runnable);
             } catch (final InvocationTargetException e) {
                 LOGGER.error(e.getMessage(), e);
+                throw new TetrisException(e);
             } catch (final InterruptedException e) {
                 Thread.currentThread().interrupt();
                 LOGGER.error(e.getMessage(), e);
+                throw new TetrisException(e);
             }
         } else {
             SwingUtilities.invokeLater(runnable);
@@ -60,8 +68,12 @@ public class SwingUtils {
         return new Rectangle(x1, y1, targetWidth, targetHeight);
     }
 
-    public static Rectangle getCenteredTextRectangle(Graphics2D graphics, String text, Rectangle rectangle) {
-        final Rectangle textBounds = getTextBounds(graphics, text);
+    public static Rectangle getCenteredImageRectangle(Image image, Rectangle rectangle) {
+        return getCenteredImageRectangle(image, rectangle, 1);
+    }
+
+    public static Rectangle getCenteredTextRectangle(Graphics2D graphics, String text, Rectangle rectangle, Font font) {
+        final Rectangle textBounds = getTextBounds(graphics, text, font);
 
         final int x1 = rectangle.x + (rectangle.width - textBounds.width) / 2;
         final int y1 = rectangle.y + (rectangle.height + textBounds.height) / 2;
@@ -69,10 +81,34 @@ public class SwingUtils {
         return new Rectangle(x1, y1, textBounds.width, textBounds.height);
     }
 
-    private static Rectangle getTextBounds(Graphics2D graphics, String text) {
+    public static Rectangle getTextBounds(Graphics2D graphics, String text, Font font) {
         final FontRenderContext frc = graphics.getFontRenderContext();
-        final GlyphVector gv = graphics.getFont().createGlyphVector(frc, text);
+        final GlyphVector gv = font.createGlyphVector(frc, text);
 
         return gv.getPixelBounds(null, 0, 0);
+    }
+
+    public static void drawImage(Graphics2D graphics, final Image image,
+            final Rectangle rectangle) {
+        final int imageWidth = image.getWidth(null);
+        final int imageHeight = image.getHeight(null);
+
+        graphics.drawImage(image, rectangle.x, rectangle.y, rectangle.x + rectangle.width,
+            rectangle.y + rectangle.height, 0, 0, imageWidth, imageHeight,
+            null);
+    }
+
+    public static void openURI(URI uri) {
+        final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+
+        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+            try {
+                desktop.browse(uri);
+            } catch (final IOException e) {
+                LOGGER.warn("Cannot open following URL" + uri + " : " + e.getMessage(), e);
+            }
+        } else {
+            LOGGER.warn("Your system does not support URL browsing, cannot open following URL : " + uri);
+        }
     }
 }

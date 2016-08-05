@@ -17,4 +17,6 @@ public interface TetrisController {
     void onKeyPressed(int keyCode);
 
     void onKeyReleased(int keyCode);
+
+    void onURLClicked();
 }

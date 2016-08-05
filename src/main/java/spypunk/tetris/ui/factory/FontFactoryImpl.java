@@ -27,23 +27,37 @@ public class FontFactoryImpl implements FontFactory {
 
     private static final String FONTS_FOLDER = "/font/";
 
-    private static final String DEFAULT_FONT_NAME = "default.ttf";
+    private static final String DEFAULT_FONT_NAME = "neutronium.ttf";
+
+    private static final String URL_FONT_NAME = "russo_one.ttf";
 
     private final Font defaultFont;
 
-    public FontFactoryImpl() {
-        final String resourceName = String.format("%s%s", FONTS_FOLDER, DEFAULT_FONT_NAME);
+    private final Font urlFont;
 
-        try (InputStream inputStream = getClass().getResourceAsStream(resourceName)) {
-            defaultFont = Font.createFont(Font.TRUETYPE_FONT, inputStream);
-        } catch (FontFormatException | IOException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new TetrisException(e);
-        }
+    public FontFactoryImpl() {
+        defaultFont = loadFont(DEFAULT_FONT_NAME);
+        urlFont = loadFont(URL_FONT_NAME);
     }
 
     @Override
     public Font createDefaultFont(float size) {
         return defaultFont.deriveFont(size);
+    }
+
+    @Override
+    public Font createURLFont(float size) {
+        return urlFont.deriveFont(size);
+    }
+
+    private Font loadFont(String fontName) {
+        final String resourceName = String.format("%s%s", FONTS_FOLDER, fontName);
+
+        try (InputStream inputStream = getClass().getResourceAsStream(resourceName)) {
+            return Font.createFont(Font.TRUETYPE_FONT, inputStream);
+        } catch (FontFormatException | IOException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new TetrisException(e);
+        }
     }
 }

@@ -9,6 +9,7 @@
 	<groupId>spypunk</groupId>
 	<artifactId>tetris</artifactId>
 	<version>0.4.0-SNAPSHOT</version>
+	<url>https://github.com/spypunk/tetris</url>
 
 	<prerequisites>
 		<maven>3.0</maven>

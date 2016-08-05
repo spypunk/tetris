@@ -56,6 +56,8 @@ public class TetrisUIConstants {
 
     public static final int NEXT_SHAPE_CONTAINER_HEIGHT = BLOCK_SIZE * 6;
 
+    public static final int URL_Y = TETRIS_CONTAINER_Y + TETRIS_CONTAINER_HEIGHT;
+
     public static final Dimension VIEW_DIMENSION = new Dimension(
             INFO_CONTAINERS_X + INFO_CONTAINERS_WIDTH + BLOCK_SIZE,
             TETRIS_CONTAINER_Y + TETRIS_CONTAINER_HEIGHT + BLOCK_SIZE);
@@ -76,15 +78,19 @@ public class TetrisUIConstants {
 
     public static final String TITLE = Main.VERSION;
 
+    public static final String URL = Main.URL.getHost() + Main.URL.getPath();
+
     public static final float DEFAULT_FONT_SIZE = 30F;
 
     public static final float TETRIS_FROZEN_FONT_SIZE = 42F;
 
-    public static final Color TETRIS_FROZEN_FG_COLOR = new Color(30, 30, 30, 150);
+    public static final Color TETRIS_FROZEN_FG_COLOR = new Color(30, 30, 30, 200);
 
     public static final Color DEFAULT_FONT_COLOR = Color.LIGHT_GRAY;
 
     public static final Color DEFAULT_CONTAINER_COLOR = Color.GRAY;
+
+    public static final Color DEFAULT_URL_COLOR = Color.LIGHT_GRAY;
 
     private TetrisUIConstants() {
         throw new IllegalAccessError();

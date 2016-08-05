@@ -40,6 +40,7 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINER_Y;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_FROZEN_FG_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_FROZEN_FONT_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.TITLE;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.URL;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.VIEW_DIMENSION;
 
 import java.awt.BorderLayout;
@@ -51,6 +52,8 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -58,9 +61,11 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import spypunk.tetris.model.Block;
@@ -105,9 +110,11 @@ public class TetrisViewImpl implements TetrisView {
 
     private Font frozenTetrisFont;
 
+    private Font urlFont;
+
     private JFrame frame;
 
-    private JLabel label;
+    private JLabel imageLabel;
 
     private BufferedImage image;
 
@@ -151,6 +158,7 @@ public class TetrisViewImpl implements TetrisView {
     private void initializeFonts() {
         defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
         frozenTetrisFont = fontFactory.createDefaultFont(TETRIS_FROZEN_FONT_SIZE);
+        urlFont = fontFactory.createURLFont(10.0f);
     }
 
     private void initializeContainers() {
@@ -186,14 +194,48 @@ public class TetrisViewImpl implements TetrisView {
 
         image = new BufferedImage(VIEW_DIMENSION.width, VIEW_DIMENSION.height, BufferedImage.TYPE_INT_ARGB);
 
-        label = new JLabel(new ImageIcon(image));
-        label.setFocusable(true);
-        label.addKeyListener(new TetrisKeyAdapter());
+        imageLabel = new JLabel(new ImageIcon(image));
+        imageLabel.setFocusable(true);
+        imageLabel.addKeyListener(new TetrisKeyAdapter());
 
-        frame.getContentPane().add(label, BorderLayout.CENTER);
+        final JPanel urlPanel = initializeURLPanel();
+
+        frame.add(imageLabel, BorderLayout.CENTER);
+        frame.add(urlPanel, BorderLayout.SOUTH);
         frame.pack();
 
         frame.setLocationRelativeTo(null);
+    }
+
+    private JPanel initializeURLPanel() {
+        final JLabel urlLabel = new JLabel(URL);
+        urlLabel.setFont(urlFont);
+        urlLabel.setForeground(DEFAULT_FONT_COLOR);
+
+        urlLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                tetrisController.onURLClicked();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                urlLabel.setForeground(Color.CYAN);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                urlLabel.setForeground(DEFAULT_FONT_COLOR);
+            }
+        });
+
+        final JPanel urlPanel = new JPanel(new BorderLayout());
+        urlPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        urlPanel.setBackground(Color.BLACK);
+        urlPanel.setOpaque(true);
+
+        urlPanel.add(urlLabel, BorderLayout.EAST);
+        return urlPanel;
     }
 
     private void doUpdate(Tetris tetris) {
@@ -208,7 +250,7 @@ public class TetrisViewImpl implements TetrisView {
 
         graphics.dispose();
 
-        label.repaint();
+        imageLabel.repaint();
     }
 
     private Graphics2D initializeGraphics() {
@@ -241,15 +283,15 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     private void renderLevel(Tetris tetris, Graphics2D graphics) {
-        renderInfo(graphics, levelContainer, String.valueOf(tetris.getLevel()));
+        renderTextInContainer(graphics, levelContainer, String.valueOf(tetris.getLevel()));
     }
 
     private void renderScore(Tetris tetris, Graphics2D graphics) {
-        renderInfo(graphics, scoreContainer, String.valueOf(tetris.getScore()));
+        renderTextInContainer(graphics, scoreContainer, String.valueOf(tetris.getScore()));
     }
 
     private void renderRows(Tetris tetris, Graphics2D graphics) {
-        renderInfo(graphics, rowsContainer, String.valueOf(tetris.getCompletedRows()));
+        renderTextInContainer(graphics, rowsContainer, String.valueOf(tetris.getCompletedRows()));
     }
 
     private void renderNextShape(Tetris tetris, Graphics2D graphics) {
@@ -258,21 +300,9 @@ public class TetrisViewImpl implements TetrisView {
         renderContainer(graphics, nextShapeContainer);
 
         final Image shapeImage = imageFactory.createShapeImage(nextShape.getShapeType());
+        final Rectangle rectangle = SwingUtils.getCenteredImageRectangle(shapeImage, nextShapeContainer.getRectangle());
 
-        final int imageWidth = shapeImage.getWidth(null);
-        final int imageHeight = shapeImage.getHeight(null);
-
-        final Rectangle containerRectangle = nextShapeContainer.getRectangle();
-        final int width = containerRectangle.width;
-        final int height = containerRectangle.height;
-
-        final int x1 = containerRectangle.x + (width - imageWidth) / 2;
-        final int y1 = containerRectangle.y + (height - imageHeight) / 2;
-        final int x2 = x1 + imageWidth;
-        final int y2 = y1 + imageHeight;
-
-        graphics.drawImage(shapeImage, x1, y1, x2, y2, 0, 0, imageWidth, imageHeight,
-            null);
+        SwingUtils.drawImage(graphics, shapeImage, rectangle);
     }
 
     private void renderStatistics(Tetris tetris, Graphics2D graphics) {
@@ -286,18 +316,18 @@ public class TetrisViewImpl implements TetrisView {
         final ShapeType shapeType = block.getShape().getShapeType();
 
         final Image blockImage = imageFactory.createBlockImage(shapeType);
-        final int dx1 = dx + block.getLocation().x * BLOCK_SIZE;
-        final int dx2 = dx1 + BLOCK_SIZE;
-        final int dy1 = dy + block.getLocation().y * BLOCK_SIZE;
-        final int dy2 = dy1 + BLOCK_SIZE;
 
-        graphics.drawImage(blockImage, dx1, dy1, dx2, dy2, 0, 0, blockImage.getWidth(null), blockImage.getHeight(null),
-            null);
+        final int x1 = dx + block.getLocation().x * BLOCK_SIZE;
+        final int x2 = dy + block.getLocation().y * BLOCK_SIZE;
+
+        final Rectangle rectangle = new Rectangle(x1, x2, BLOCK_SIZE, BLOCK_SIZE);
+
+        SwingUtils.drawImage(graphics, blockImage, rectangle);
     }
 
-    private void renderInfo(Graphics2D graphics, Container container, String info) {
+    private void renderTextInContainer(Graphics2D graphics, Container container, String info) {
         renderContainer(graphics, container);
-        renderText(graphics, info, container.getRectangle(), defaultFont);
+        renderText(graphics, info, container.getRectangle());
     }
 
     private void renderContainer(Graphics2D graphics, Container container) {
@@ -317,10 +347,6 @@ public class TetrisViewImpl implements TetrisView {
 
     private void renderStatistic(Graphics2D graphics, ShapeType shapeType, String value) {
         final Image shapeImage = imageFactory.createShapeImage(shapeType);
-
-        final int imageWidth = shapeImage.getWidth(null);
-        final int imageHeight = shapeImage.getHeight(null);
-
         final Rectangle containerRectangle = statisticsContainer.getRectangle();
 
         final Rectangle imageContainerRectangle = new Rectangle(containerRectangle.x,
@@ -330,22 +356,30 @@ public class TetrisViewImpl implements TetrisView {
         final Rectangle imageRectangle = SwingUtils.getCenteredImageRectangle(shapeImage, imageContainerRectangle,
             0.5);
 
-        graphics.drawImage(shapeImage, imageRectangle.x, imageRectangle.y, imageRectangle.x + imageRectangle.width,
-            imageRectangle.y + imageRectangle.height, 0, 0, imageWidth, imageHeight, null);
+        SwingUtils.drawImage(graphics, shapeImage, imageRectangle);
 
         final Rectangle textContainerRectangle = new Rectangle(containerRectangle.x + imageContainerRectangle.width,
                 imageContainerRectangle.y, imageContainerRectangle.width, imageContainerRectangle.height);
 
-        final Rectangle textRectangle = SwingUtils.getCenteredTextRectangle(graphics, value, textContainerRectangle);
+        final Rectangle textRectangle = SwingUtils.getCenteredTextRectangle(graphics, value, textContainerRectangle,
+            defaultFont);
 
         graphics.drawString(value, textRectangle.x, textRectangle.y);
     }
 
-    private void renderText(Graphics2D graphics, String text, Rectangle rectangle, Font font) {
-        graphics.setColor(DEFAULT_FONT_COLOR);
-        graphics.setFont(font);
+    private void renderText(Graphics2D graphics, String text, Rectangle rectangle) {
+        renderText(graphics, text, rectangle, defaultFont);
+    }
 
-        final Rectangle textRectangle = SwingUtils.getCenteredTextRectangle(graphics, text, rectangle);
+    private void renderText(Graphics2D graphics, String text, Rectangle rectangle, Font font) {
+        renderText(graphics, text, rectangle, font, DEFAULT_FONT_COLOR);
+    }
+
+    private void renderText(Graphics2D graphics, String text, Rectangle rectangle, Font font, Color fontColor) {
+        graphics.setFont(font);
+        graphics.setColor(fontColor);
+
+        final Rectangle textRectangle = SwingUtils.getCenteredTextRectangle(graphics, text, rectangle, font);
 
         graphics.drawString(text, textRectangle.x, textRectangle.y);
     }
