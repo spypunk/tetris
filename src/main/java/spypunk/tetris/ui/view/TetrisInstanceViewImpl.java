@@ -34,6 +34,7 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_FROZEN_FONT_S
 import static spypunk.tetris.ui.constants.TetrisUIConstants.VIEW_DIMENSION;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -47,6 +48,7 @@ import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 import com.google.common.collect.Maps;
 
@@ -63,7 +65,7 @@ import spypunk.tetris.ui.factory.ImageFactory;
 import spypunk.tetris.ui.model.Container;
 import spypunk.tetris.ui.util.SwingUtils;
 
-public class TetrisInstanceViewImpl extends TetrisInstanceView {
+public class TetrisInstanceViewImpl implements TetrisInstanceView {
 
     private static final class TetrisInstanceViewKeyAdapter extends KeyAdapter {
 
@@ -98,7 +100,7 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
         }
     }
 
-    private static final long serialVersionUID = -3562075227899474633L;
+    private final JLabel label;
 
     private final BufferedImage image;
 
@@ -132,9 +134,11 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
         initializeContainers();
 
-        setIcon(new ImageIcon(image));
-        setFocusable(true);
-        addKeyListener(new TetrisInstanceViewKeyAdapter(tetrisController));
+        label = new JLabel();
+
+        label.setIcon(new ImageIcon(image));
+        label.setFocusable(true);
+        label.addKeyListener(new TetrisInstanceViewKeyAdapter(tetrisController));
     }
 
     @Override
@@ -150,7 +154,12 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
         graphics.dispose();
 
-        repaint();
+        label.repaint();
+    }
+
+    @Override
+    public Component getComponent() {
+        return label;
     }
 
     private void initializeContainers() {

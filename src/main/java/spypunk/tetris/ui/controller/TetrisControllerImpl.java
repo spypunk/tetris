@@ -97,7 +97,7 @@ public class TetrisControllerImpl implements TetrisController {
     }
 
     @Override
-    public void onURLClicked() {
+    public void onURLOpen() {
         SwingUtils.openURI(tetris.getProjectURI());
     }
 

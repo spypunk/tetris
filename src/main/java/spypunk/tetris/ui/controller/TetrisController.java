@@ -28,7 +28,7 @@ public interface TetrisController {
 
     void onPause();
 
-    void onURLClicked();
+    void onURLOpen();
 
     Tetris getTetris();
 }

@@ -27,8 +27,6 @@ import spypunk.tetris.ui.factory.ImageFactory;
 import spypunk.tetris.ui.factory.ImageFactoryImpl;
 import spypunk.tetris.ui.view.TetrisInstanceView;
 import spypunk.tetris.ui.view.TetrisInstanceViewImpl;
-import spypunk.tetris.ui.view.TetrisURLView;
-import spypunk.tetris.ui.view.TetrisURLViewImpl;
 import spypunk.tetris.ui.view.TetrisView;
 import spypunk.tetris.ui.view.TetrisViewImpl;
 
@@ -41,7 +39,6 @@ public class TetrisModule extends AbstractModule {
         bind(ShapeFactory.class).to(ShapeFactoryImpl.class);
         bind(TetrisController.class).to(TetrisControllerImpl.class);
         bind(TetrisInstanceView.class).to(TetrisInstanceViewImpl.class);
-        bind(TetrisURLView.class).to(TetrisURLViewImpl.class);
         bind(TetrisView.class).to(TetrisViewImpl.class);
         bind(TetrisView.class).to(TetrisViewImpl.class);
         bind(ImageFactory.class).to(ImageFactoryImpl.class);

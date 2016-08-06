@@ -8,27 +8,38 @@
 
 package spypunk.tetris.ui.view;
 
+import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
+
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URI;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.controller.TetrisController;
+import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.util.SwingUtils;
 
 @Singleton
 public class TetrisViewImpl implements TetrisView {
 
-    private final class TetrisWindowListener extends WindowAdapter {
+    private final class TetrisViewWindowListener extends WindowAdapter {
 
         private final TetrisController tetrisController;
 
-        public TetrisWindowListener(TetrisController tetrisController) {
+        public TetrisViewWindowListener(TetrisController tetrisController) {
             this.tetrisController = tetrisController;
         }
 
@@ -38,18 +49,41 @@ public class TetrisViewImpl implements TetrisView {
         }
     }
 
+    private static final class URLLabelMouseAdapter extends MouseAdapter {
+
+        private final TetrisController tetrisController;
+        private final JLabel urlLabel;
+
+        public URLLabelMouseAdapter(TetrisController tetrisController, JLabel urlLabel) {
+            this.tetrisController = tetrisController;
+            this.urlLabel = urlLabel;
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            tetrisController.onURLOpen();
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            urlLabel.setForeground(Color.CYAN);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            urlLabel.setForeground(DEFAULT_FONT_COLOR);
+        }
+    }
+
     private final JFrame frame;
 
     private final TetrisInstanceView tetrisInstanceView;
 
-    private final TetrisURLView tetrisURLView;
-
     @Inject
     public TetrisViewImpl(TetrisController tetrisController,
             TetrisInstanceView tetrisInstanceView,
-            TetrisURLView tetrisURLView) {
+            FontFactory fontFactory) {
         this.tetrisInstanceView = tetrisInstanceView;
-        this.tetrisURLView = tetrisURLView;
 
         final Tetris tetris = tetrisController.getTetris();
 
@@ -59,10 +93,27 @@ public class TetrisViewImpl implements TetrisView {
         frame.setFocusable(false);
         frame.getContentPane().setLayout(new BorderLayout(0, 0));
         frame.setResizable(false);
-        frame.addWindowListener(new TetrisWindowListener(tetrisController));
+        frame.addWindowListener(new TetrisViewWindowListener(tetrisController));
 
-        frame.add(tetrisInstanceView, BorderLayout.CENTER);
-        frame.add(tetrisURLView, BorderLayout.SOUTH);
+        final URI projectURI = tetrisController.getTetris().getProjectURI();
+        final JLabel urlLabel = new JLabel(projectURI.getHost() + projectURI.getPath());
+        final Font urlFont = fontFactory.createURLFont(10.0f);
+
+        urlLabel.setFont(urlFont);
+        urlLabel.setForeground(DEFAULT_FONT_COLOR);
+        urlLabel.addMouseListener(new URLLabelMouseAdapter(tetrisController, urlLabel));
+
+        final JPanel urlPanel = new JPanel();
+
+        urlPanel.setLayout(new BorderLayout());
+        urlPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+        urlPanel.setBackground(Color.BLACK);
+        urlPanel.setOpaque(true);
+
+        urlPanel.add(urlLabel, BorderLayout.EAST);
+
+        frame.add(tetrisInstanceView.getComponent(), BorderLayout.CENTER);
+        frame.add(urlPanel, BorderLayout.SOUTH);
         frame.pack();
 
         frame.setLocationRelativeTo(null);
@@ -80,6 +131,5 @@ public class TetrisViewImpl implements TetrisView {
 
     private void doUpdate() {
         tetrisInstanceView.update();
-        tetrisURLView.update();
     }
 }

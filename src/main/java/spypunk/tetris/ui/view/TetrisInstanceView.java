@@ -1,10 +1,10 @@
 package spypunk.tetris.ui.view;
 
-import javax.swing.JLabel;
+import java.awt.Component;
 
-public abstract class TetrisInstanceView extends JLabel {
+public interface TetrisInstanceView {
 
-    private static final long serialVersionUID = -9178001693665061730L;
+    void update();
 
-    public abstract void update();
+    Component getComponent();
 }
