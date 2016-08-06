@@ -49,9 +49,7 @@ public class TetrisURLViewImpl extends TetrisURLView {
     @Inject
     public TetrisURLViewImpl(TetrisController tetrisController, FontFactory fontFactory) {
         final URI projectURI = tetrisController.getTetris().getProjectURI();
-
         final JLabel urlLabel = new JLabel(projectURI.getHost() + projectURI.getPath());
-
         final Font urlFont = fontFactory.createURLFont(10.0f);
 
         urlLabel.setFont(urlFont);
@@ -62,6 +60,7 @@ public class TetrisURLViewImpl extends TetrisURLView {
         setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
         setBackground(Color.BLACK);
         setOpaque(true);
+
         add(urlLabel, BorderLayout.EAST);
     }
 

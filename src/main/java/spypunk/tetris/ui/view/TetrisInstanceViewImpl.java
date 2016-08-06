@@ -83,15 +83,13 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     private static final long serialVersionUID = -3562075227899474633L;
 
+    private final BufferedImage image;
+
     private final Tetris tetris;
 
-    private final FontFactory fontFactory;
+    private final Font defaultFont;
 
-    private Font defaultFont;
-
-    private Font frozenTetrisFont;
-
-    private final BufferedImage image;
+    private final Font frozenTetrisFont;
 
     private Container statisticsContainer;
 
@@ -110,17 +108,16 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     @Inject
     public TetrisInstanceViewImpl(FontFactory fontFactory, TetrisController tetrisController) {
-        this.fontFactory = fontFactory;
         tetris = tetrisController.getTetris();
-
+        defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
+        frozenTetrisFont = fontFactory.createDefaultFont(TETRIS_FROZEN_FONT_SIZE);
         image = new BufferedImage(VIEW_DIMENSION.width, VIEW_DIMENSION.height, BufferedImage.TYPE_INT_ARGB);
+
+        initializeContainers();
 
         setIcon(new ImageIcon(image));
         setFocusable(true);
         addKeyListener(new TetrisInstanceViewKeyAdapter(tetrisController));
-
-        initializeFonts();
-        initializeContainers();
     }
 
     @Override
@@ -137,11 +134,6 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
         graphics.dispose();
 
         repaint();
-    }
-
-    private void initializeFonts() {
-        defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
-        frozenTetrisFont = fontFactory.createDefaultFont(TETRIS_FROZEN_FONT_SIZE);
     }
 
     private void initializeContainers() {
