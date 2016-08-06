@@ -22,11 +22,11 @@ public interface TetrisController {
 
     void onMoveDown();
 
+    void onRotate();
+
     void onNewGame();
 
     void onPause();
-
-    void onRotate();
 
     void onURLClicked();
 

@@ -91,11 +91,11 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     @Override
-    public void updateMovement(Tetris tetris, Optional<Movement> movement) {
+    public void updateMovement(Tetris tetris, Movement movement) {
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
         if (isTetrisInstanceRunning(tetrisInstance)) {
-            tetrisInstance.setMovement(movement);
+            tetrisInstance.setMovement(Optional.of(movement));
         }
     }
 
@@ -116,12 +116,16 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private boolean handleMovement(TetrisInstance tetrisInstance) {
-        final Optional<Movement> movement = tetrisInstance.getMovement();
+        final Optional<Movement> optionalMovement = tetrisInstance.getMovement();
 
-        return !movement.isPresent() || handleMovement(tetrisInstance, movement.get());
-    }
+        if (!optionalMovement.isPresent()) {
+            return true;
+        }
 
-    private boolean handleMovement(TetrisInstance tetrisInstance, Movement movement) {
+        final Movement movement = optionalMovement.get();
+
+        tetrisInstance.setMovement(Optional.empty());
+
         if (Movement.DOWN.equals(movement) || canShapeMove(tetrisInstance, movement)) {
             return moveShape(tetrisInstance, movement);
         }

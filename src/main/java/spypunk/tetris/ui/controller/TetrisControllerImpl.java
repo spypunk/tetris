@@ -82,6 +82,11 @@ public class TetrisControllerImpl implements TetrisController {
     }
 
     @Override
+    public void onRotate() {
+        onMovement(Movement.ROTATE_CW);
+    }
+
+    @Override
     public void onNewGame() {
         newGame = true;
     }
@@ -89,11 +94,6 @@ public class TetrisControllerImpl implements TetrisController {
     @Override
     public void onPause() {
         pause = true;
-    }
-
-    @Override
-    public void onRotate() {
-        onMovement(Movement.ROTATE_CW);
     }
 
     @Override
@@ -123,7 +123,10 @@ public class TetrisControllerImpl implements TetrisController {
     }
 
     private void handleMovement() {
-        tetrisService.updateMovement(tetris, movement);
+        if (movement.isPresent()) {
+            tetrisService.updateMovement(tetris, movement.get());
+        }
+
         movement = Optional.empty();
     }
 
