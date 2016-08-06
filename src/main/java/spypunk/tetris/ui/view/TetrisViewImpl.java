@@ -38,7 +38,6 @@ public class TetrisViewImpl implements TetrisView {
 
     private final TetrisURLView tetrisURLView;
 
-    @Inject
     private final TetrisController tetrisController;
 
     @Inject
