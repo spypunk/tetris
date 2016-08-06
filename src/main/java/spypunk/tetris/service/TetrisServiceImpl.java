@@ -71,8 +71,7 @@ public class TetrisServiceImpl implements TetrisService {
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
         if (!isTetrisInstanceRunning(tetrisInstance) || !handleNextShape(tetrisInstance)
-                || !handleMovement(tetrisInstance)
-                || !isTimeToHandleGravity(tetrisInstance)) {
+                || !handleMovement(tetrisInstance)) {
             return;
         }
 
@@ -82,12 +81,7 @@ public class TetrisServiceImpl implements TetrisService {
     @Override
     public void pause(Tetris tetris) {
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
-
-        if (isTetrisInstanceRunning(tetrisInstance)) {
-            tetrisInstance.setState(State.PAUSED);
-        } else if (isTetrisInstancePaused(tetrisInstance)) {
-            tetrisInstance.setState(State.RUNNING);
-        }
+        tetrisInstance.setState(tetrisInstance.getState().onPause());
     }
 
     @Override
@@ -134,6 +128,10 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private void handleGravity(TetrisInstance tetrisInstance) {
+        if (!isTimeToHandleGravity(tetrisInstance)) {
+            return;
+        }
+
         moveShape(tetrisInstance, Movement.DOWN);
 
         tetrisInstance.setLastMoveTime(now());
@@ -322,10 +320,6 @@ public class TetrisServiceImpl implements TetrisService {
 
     private boolean isTetrisInstanceRunning(TetrisInstance tetrisInstance) {
         return isTetrisInstanceState(tetrisInstance, State.RUNNING);
-    }
-
-    private boolean isTetrisInstancePaused(TetrisInstance tetrisInstance) {
-        return isTetrisInstanceState(tetrisInstance, State.PAUSED);
     }
 
     private boolean isTetrisInstanceState(TetrisInstance tetrisInstance, State state) {

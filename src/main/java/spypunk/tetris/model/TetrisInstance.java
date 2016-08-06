@@ -15,9 +15,26 @@ import java.util.Optional;
 public class TetrisInstance {
 
     public enum State {
-        RUNNING,
-        PAUSED,
-        GAME_OVER;
+        RUNNING {
+            @Override
+            public State onPause() {
+                return PAUSED;
+            }
+        },
+        PAUSED {
+            @Override
+            public State onPause() {
+                return RUNNING;
+            }
+        },
+        GAME_OVER {
+            @Override
+            public State onPause() {
+                return this;
+            }
+        };
+
+        public abstract State onPause();
     }
 
     public static class Builder {
