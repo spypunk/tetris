@@ -8,8 +8,6 @@
 
 package spypunk.tetris.ui.controller;
 
-import java.awt.event.KeyEvent;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
@@ -17,8 +15,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import com.google.common.collect.Maps;
 
 import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.model.Movement;
@@ -33,10 +29,6 @@ public class TetrisControllerImpl implements TetrisController {
     private static final int RENDER_PERIOD = 1000 / 60;
 
     private final Tetris tetris;
-
-    private final Map<Integer, Runnable> pressedKeyHandlers = Maps.newHashMap();
-
-    private final Map<Integer, Runnable> releasedKeyHandlers = Maps.newHashMap();
 
     private volatile boolean newGame = true;
 
@@ -58,7 +50,6 @@ public class TetrisControllerImpl implements TetrisController {
     @Inject
     public TetrisControllerImpl(TetrisFactory tetrisFactory) {
         tetris = tetrisFactory.createTetris();
-        initializeKeyHandlers();
     }
 
     @Override
@@ -76,13 +67,33 @@ public class TetrisControllerImpl implements TetrisController {
     }
 
     @Override
-    public void onKeyPressed(int keyCode) {
-        onKeyEvent(pressedKeyHandlers, keyCode);
+    public void onMoveLeft() {
+        onMovement(Movement.LEFT);
     }
 
     @Override
-    public void onKeyReleased(int keyCode) {
-        onKeyEvent(releasedKeyHandlers, keyCode);
+    public void onMoveRight() {
+        onMovement(Movement.RIGHT);
+    }
+
+    @Override
+    public void onMoveDown() {
+        onMovement(Movement.DOWN);
+    }
+
+    @Override
+    public void onNewGame() {
+        newGame = true;
+    }
+
+    @Override
+    public void onPause() {
+        pause = true;
+    }
+
+    @Override
+    public void onRotate() {
+        onMovement(Movement.ROTATE_CW);
     }
 
     @Override
@@ -93,22 +104,6 @@ public class TetrisControllerImpl implements TetrisController {
     @Override
     public Tetris getTetris() {
         return tetris;
-    }
-
-    private void initializeKeyHandlers() {
-        pressedKeyHandlers.put(KeyEvent.VK_LEFT, () -> movement = Optional.of(Movement.LEFT));
-        pressedKeyHandlers.put(KeyEvent.VK_RIGHT, () -> movement = Optional.of(Movement.RIGHT));
-        pressedKeyHandlers.put(KeyEvent.VK_DOWN, () -> movement = Optional.of(Movement.DOWN));
-
-        releasedKeyHandlers.put(KeyEvent.VK_SPACE, () -> newGame = true);
-        releasedKeyHandlers.put(KeyEvent.VK_P, () -> pause = true);
-        releasedKeyHandlers.put(KeyEvent.VK_UP, () -> movement = Optional.of(Movement.ROTATE_CW));
-    }
-
-    private void onKeyEvent(Map<Integer, Runnable> keyHandlers, int keyCode) {
-        if (keyHandlers.containsKey(keyCode)) {
-            keyHandlers.get(keyCode).run();
-        }
     }
 
     private void onGameLoop() {
@@ -137,5 +132,9 @@ public class TetrisControllerImpl implements TetrisController {
             tetrisService.newGame(tetris);
             newGame = false;
         }
+    }
+
+    private void onMovement(Movement movement) {
+        this.movement = Optional.of(movement);
     }
 }

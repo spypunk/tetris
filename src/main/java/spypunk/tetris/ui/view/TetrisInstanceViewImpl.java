@@ -42,10 +42,13 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.swing.ImageIcon;
+
+import com.google.common.collect.Maps;
 
 import spypunk.tetris.model.Block;
 import spypunk.tetris.model.Shape;
@@ -64,20 +67,34 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     private static final class TetrisInstanceViewKeyAdapter extends KeyAdapter {
 
-        private final TetrisController tetrisController;
+        private final Map<Integer, Runnable> pressedKeyHandlers = Maps.newHashMap();
+
+        private final Map<Integer, Runnable> releasedKeyHandlers = Maps.newHashMap();
 
         public TetrisInstanceViewKeyAdapter(TetrisController tetrisController) {
-            this.tetrisController = tetrisController;
+            pressedKeyHandlers.put(KeyEvent.VK_LEFT, () -> tetrisController.onMoveLeft());
+            pressedKeyHandlers.put(KeyEvent.VK_RIGHT, () -> tetrisController.onMoveRight());
+            pressedKeyHandlers.put(KeyEvent.VK_DOWN, () -> tetrisController.onMoveDown());
+
+            releasedKeyHandlers.put(KeyEvent.VK_SPACE, () -> tetrisController.onNewGame());
+            releasedKeyHandlers.put(KeyEvent.VK_P, () -> tetrisController.onPause());
+            releasedKeyHandlers.put(KeyEvent.VK_UP, () -> tetrisController.onRotate());
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
-            tetrisController.onKeyPressed(e.getKeyCode());
+            onKeyEvent(pressedKeyHandlers, e.getKeyCode());
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            tetrisController.onKeyReleased(e.getKeyCode());
+            onKeyEvent(releasedKeyHandlers, e.getKeyCode());
+        }
+
+        private void onKeyEvent(Map<Integer, Runnable> keyHandlers, int keyCode) {
+            if (keyHandlers.containsKey(keyCode)) {
+                keyHandlers.get(keyCode).run();
+            }
         }
     }
 

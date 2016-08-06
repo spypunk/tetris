@@ -16,9 +16,17 @@ public interface TetrisController {
 
     void onWindowClosed();
 
-    void onKeyPressed(int keyCode);
+    void onMoveLeft();
 
-    void onKeyReleased(int keyCode);
+    void onMoveRight();
+
+    void onMoveDown();
+
+    void onNewGame();
+
+    void onPause();
+
+    void onRotate();
 
     void onURLClicked();
 
