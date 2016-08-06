@@ -26,6 +26,12 @@ public class TetrisViewImpl implements TetrisView {
 
     private final class TetrisWindowListener extends WindowAdapter {
 
+        private final TetrisController tetrisController;
+
+        public TetrisWindowListener(TetrisController tetrisController) {
+            this.tetrisController = tetrisController;
+        }
+
         @Override
         public void windowClosed(WindowEvent e) {
             tetrisController.onWindowClosed();
@@ -38,13 +44,10 @@ public class TetrisViewImpl implements TetrisView {
 
     private final TetrisURLView tetrisURLView;
 
-    private final TetrisController tetrisController;
-
     @Inject
     public TetrisViewImpl(TetrisController tetrisController,
             TetrisInstanceView tetrisInstanceView,
             TetrisURLView tetrisURLView) {
-        this.tetrisController = tetrisController;
         this.tetrisInstanceView = tetrisInstanceView;
         this.tetrisURLView = tetrisURLView;
 
@@ -56,7 +59,7 @@ public class TetrisViewImpl implements TetrisView {
         frame.setFocusable(false);
         frame.getContentPane().setLayout(new BorderLayout(0, 0));
         frame.setResizable(false);
-        frame.addWindowListener(new TetrisWindowListener());
+        frame.addWindowListener(new TetrisWindowListener(tetrisController));
 
         frame.add(tetrisInstanceView, BorderLayout.CENTER);
         frame.add(tetrisURLView, BorderLayout.SOUTH);
