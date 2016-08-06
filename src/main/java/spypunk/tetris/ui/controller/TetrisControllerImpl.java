@@ -125,9 +125,8 @@ public class TetrisControllerImpl implements TetrisController {
     private void handleMovement() {
         if (movement.isPresent()) {
             tetrisService.updateMovement(tetris, movement.get());
+            movement = Optional.empty();
         }
-
-        movement = Optional.empty();
     }
 
     private void handleNewGame() {
