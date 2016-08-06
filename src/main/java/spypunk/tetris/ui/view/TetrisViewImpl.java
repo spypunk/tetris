@@ -245,7 +245,7 @@ public class TetrisViewImpl implements TetrisView {
 
         final JPanel urlPanel = new JPanel(new BorderLayout());
 
-        urlPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        urlPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
         urlPanel.setBackground(Color.BLACK);
         urlPanel.setOpaque(true);
         urlPanel.add(urlLabel, BorderLayout.EAST);
