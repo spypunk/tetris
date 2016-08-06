@@ -59,7 +59,7 @@ public class TetrisServiceImpl implements TetrisService {
         final Map<ShapeType, Integer> statistics = Lists.newArrayList(ShapeType.values()).stream()
                 .collect(Collectors.toMap(shapeType -> shapeType, shapeType -> 0));
 
-        TetrisInstance tetrisInstance = TetrisInstance.Builder.instance().setBlocks(blocks)
+        final TetrisInstance tetrisInstance = TetrisInstance.Builder.instance().setBlocks(blocks)
                 .setNextShape(shapeFactory.createRandomShape())
                 .setStatistics(statistics).setState(State.RUNNING).build();
 
@@ -68,7 +68,7 @@ public class TetrisServiceImpl implements TetrisService {
 
     @Override
     public void update(Tetris tetris) {
-        TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
         if (!isTetrisInstanceRunning(tetrisInstance) || !handleNextShape(tetrisInstance)
                 || !handleMovement(tetrisInstance)
@@ -81,7 +81,7 @@ public class TetrisServiceImpl implements TetrisService {
 
     @Override
     public void pause(Tetris tetris) {
-        TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
         if (isTetrisInstanceRunning(tetrisInstance)) {
             tetrisInstance.setState(State.PAUSED);
@@ -92,7 +92,7 @@ public class TetrisServiceImpl implements TetrisService {
 
     @Override
     public void updateMovement(Tetris tetris, Optional<Movement> movement) {
-        TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
         if (isTetrisInstanceRunning(tetrisInstance)) {
             tetrisInstance.setMovement(movement);
