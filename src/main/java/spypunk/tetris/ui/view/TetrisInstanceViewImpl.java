@@ -111,7 +111,7 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
     @Inject
     public TetrisInstanceViewImpl(FontFactory fontFactory, TetrisController tetrisController) {
         this.fontFactory = fontFactory;
-        this.tetris = tetrisController.getTetris();
+        tetris = tetrisController.getTetris();
 
         image = new BufferedImage(VIEW_DIMENSION.width, VIEW_DIMENSION.height, BufferedImage.TYPE_INT_ARGB);
 
