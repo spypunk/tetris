@@ -110,17 +110,17 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
 
     private final Font frozenTetrisFont;
 
-    private Container statisticsContainer;
+    private final Container statisticsContainer;
 
-    private Container tetrisContainer;
+    private final Container tetrisContainer;
 
-    private Container nextShapeContainer;
+    private final Container nextShapeContainer;
 
-    private Container levelContainer;
+    private final Container levelContainer;
 
-    private Container scoreContainer;
+    private final Container scoreContainer;
 
-    private Container rowsContainer;
+    private final Container rowsContainer;
 
     @Inject
     private ImageFactory imageFactory;
@@ -132,7 +132,12 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
         frozenTetrisFont = fontFactory.createDefaultFont(TETRIS_FROZEN_FONT_SIZE);
         image = new BufferedImage(VIEW_DIMENSION.width, VIEW_DIMENSION.height, BufferedImage.TYPE_INT_ARGB);
 
-        initializeContainers();
+        tetrisContainer = createTetrisContainer();
+        nextShapeContainer = createNextShapeContainer();
+        levelContainer = createLevelContainer();
+        scoreContainer = createScoreContainer();
+        rowsContainer = createRowsContainer();
+        statisticsContainer = createStatisticsContainer();
 
         label = new JLabel();
 
@@ -143,7 +148,7 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
 
     @Override
     public void update() {
-        final Graphics2D graphics = initializeGraphics();
+        final Graphics2D graphics = createGraphics();
 
         renderBlocks(graphics);
         renderLevel(graphics);
@@ -162,29 +167,44 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
         return label;
     }
 
-    private void initializeContainers() {
-        tetrisContainer = initializeContainer(TETRIS_CONTAINER_X, TETRIS_CONTAINER_Y,
-            TETRIS_CONTAINER_WIDTH,
-            TETRIS_CONTAINER_HEIGHT);
-        nextShapeContainer = initializeContainer(INFO_CONTAINERS_X, NEXT_SHAPE_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
-            NEXT_SHAPE_CONTAINER_HEIGHT,
-            NEXT_SHAPE);
-        levelContainer = initializeContainer(INFO_CONTAINERS_X, LEVEL_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
-            LEVEL_CONTAINER_HEIGHT,
-            LEVEL);
-        scoreContainer = initializeContainer(INFO_CONTAINERS_X, SCORE_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
-            SCORE_CONTAINER_HEIGHT,
-            SCORE);
-        rowsContainer = initializeContainer(INFO_CONTAINERS_X, ROWS_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
-            ROWS_CONTAINER_HEIGHT,
-            ROWS);
-        statisticsContainer = initializeContainer(STATISTICS_CONTAINER_X, STATISTICS_CONTAINER_Y,
+    private Container createStatisticsContainer() {
+        return createContainer(STATISTICS_CONTAINER_X, STATISTICS_CONTAINER_Y,
             STATISTICS_CONTAINER_WIDTH,
             STATISTICS_CONTAINER_HEIGHT,
             STATISTICS);
     }
 
-    private Graphics2D initializeGraphics() {
+    private Container createRowsContainer() {
+        return createContainer(INFO_CONTAINERS_X, ROWS_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
+            ROWS_CONTAINER_HEIGHT,
+            ROWS);
+    }
+
+    private Container createScoreContainer() {
+        return createContainer(INFO_CONTAINERS_X, SCORE_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
+            SCORE_CONTAINER_HEIGHT,
+            SCORE);
+    }
+
+    private Container createLevelContainer() {
+        return createContainer(INFO_CONTAINERS_X, LEVEL_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
+            LEVEL_CONTAINER_HEIGHT,
+            LEVEL);
+    }
+
+    private Container createNextShapeContainer() {
+        return createContainer(INFO_CONTAINERS_X, NEXT_SHAPE_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
+            NEXT_SHAPE_CONTAINER_HEIGHT,
+            NEXT_SHAPE);
+    }
+
+    private Container createTetrisContainer() {
+        return createContainer(TETRIS_CONTAINER_X, TETRIS_CONTAINER_Y,
+            TETRIS_CONTAINER_WIDTH,
+            TETRIS_CONTAINER_HEIGHT);
+    }
+
+    private Graphics2D createGraphics() {
         final Graphics2D graphics = image.createGraphics();
 
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -328,14 +348,14 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
             frozenTetrisFont);
     }
 
-    private Container initializeContainer(int x, int y, int width, int height, String title) {
+    private Container createContainer(int x, int y, int width, int height, String title) {
         return Container.Builder.instance()
                 .setRectangle(new Rectangle(x, y, width, height))
                 .setTitle(title)
                 .build();
     }
 
-    private Container initializeContainer(int x, int y, int width, int height) {
-        return initializeContainer(x, y, width, height, null);
+    private Container createContainer(int x, int y, int width, int height) {
+        return createContainer(x, y, width, height, null);
     }
 }
