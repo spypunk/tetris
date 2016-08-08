@@ -103,9 +103,8 @@ public class TetrisViewImpl implements TetrisView {
         urlLabel.setForeground(DEFAULT_FONT_COLOR);
         urlLabel.addMouseListener(new URLLabelMouseAdapter(tetrisController, urlLabel));
 
-        final JPanel urlPanel = new JPanel();
+        final JPanel urlPanel = new JPanel(new BorderLayout());
 
-        urlPanel.setLayout(new BorderLayout());
         urlPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
         urlPanel.setBackground(Color.BLACK);
         urlPanel.setOpaque(true);

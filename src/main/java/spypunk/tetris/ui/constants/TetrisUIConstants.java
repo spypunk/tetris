@@ -18,7 +18,7 @@ public class TetrisUIConstants {
 
     public static final Color DEFAULT_FONT_COLOR = Color.LIGHT_GRAY;
 
-    public static final Color DEFAULT_CONTAINER_COLOR = Color.GRAY;
+    public static final Color DEFAULT_BORDER_COLOR = Color.GRAY;
 
     private TetrisUIConstants() {
         throw new IllegalAccessError();

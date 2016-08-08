@@ -1,7 +1,7 @@
 package spypunk.tetris.ui.view;
 
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_CONTAINER_COLOR;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_SIZE;
 
@@ -178,7 +178,7 @@ public class TetrisInstanceInfoViewImpl implements TetrisInstanceInfoView {
         SwingUtils.renderCenteredText(graphics, label,
             labelRectangle, defaultFont, DEFAULT_FONT_COLOR);
 
-        graphics.setColor(DEFAULT_CONTAINER_COLOR);
+        graphics.setColor(DEFAULT_BORDER_COLOR);
 
         graphics.drawRect(rectangle.x, rectangle.y, rectangle.width,
             rectangle.height);
