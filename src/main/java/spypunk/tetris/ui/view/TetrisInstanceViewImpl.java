@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -37,6 +38,7 @@ import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.factory.ImageFactory;
 import spypunk.tetris.ui.util.SwingUtils;
 
+@Singleton
 public class TetrisInstanceViewImpl implements TetrisInstanceView {
 
     private static final class TetrisInstanceViewKeyAdapter extends KeyAdapter {
@@ -177,14 +179,10 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
 
     private void renderBlock(Graphics2D graphics, Block block) {
         final ShapeType shapeType = block.getShape().getShapeType();
-
         final Image blockImage = imageFactory.createBlockImage(shapeType);
-
         final Point location = block.getLocation();
-
         final int x1 = blockX + location.x * BLOCK_SIZE;
         final int x2 = blockY + location.y * BLOCK_SIZE;
-
         final Rectangle rectangle = new Rectangle(x1, x2, BLOCK_SIZE, BLOCK_SIZE);
 
         SwingUtils.drawImage(graphics, blockImage, rectangle);
