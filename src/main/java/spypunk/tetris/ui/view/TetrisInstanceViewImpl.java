@@ -153,12 +153,14 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
     public void update() {
         final Graphics2D graphics = createGraphics();
 
-        renderBlocks(graphics);
-        renderLevel(graphics);
-        renderScore(graphics);
-        renderRows(graphics);
-        renderNextShape(graphics);
-        renderStatistics(graphics);
+        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+
+        renderBlocks(graphics, tetrisInstance);
+        renderLevel(graphics, tetrisInstance);
+        renderScore(graphics, tetrisInstance);
+        renderRows(graphics, tetrisInstance);
+        renderNextShape(graphics, tetrisInstance);
+        renderStatistics(graphics, tetrisInstance);
 
         graphics.dispose();
 
@@ -218,12 +220,10 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
         return graphics;
     }
 
-    private void renderBlocks(Graphics2D graphics) {
+    private void renderBlocks(Graphics2D graphics, TetrisInstance tetrisInstance) {
         renderContainer(graphics, tetrisContainer);
 
         final Rectangle rectangle = tetrisContainer.getRectangle();
-
-        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
         tetrisInstance.getBlocks().values().stream().filter(Optional::isPresent)
                 .map(Optional::get)
@@ -238,20 +238,20 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
         }
     }
 
-    private void renderLevel(Graphics2D graphics) {
-        renderTextInContainer(graphics, levelContainer, String.valueOf(tetris.getTetrisInstance().getLevel()));
+    private void renderLevel(Graphics2D graphics, TetrisInstance tetrisInstance) {
+        renderTextInContainer(graphics, levelContainer, String.valueOf(tetrisInstance.getLevel()));
     }
 
-    private void renderScore(Graphics2D graphics) {
-        renderTextInContainer(graphics, scoreContainer, String.valueOf(tetris.getTetrisInstance().getScore()));
+    private void renderScore(Graphics2D graphics, TetrisInstance tetrisInstance) {
+        renderTextInContainer(graphics, scoreContainer, String.valueOf(tetrisInstance.getScore()));
     }
 
-    private void renderRows(Graphics2D graphics) {
-        renderTextInContainer(graphics, rowsContainer, String.valueOf(tetris.getTetrisInstance().getCompletedRows()));
+    private void renderRows(Graphics2D graphics, TetrisInstance tetrisInstance) {
+        renderTextInContainer(graphics, rowsContainer, String.valueOf(tetrisInstance.getCompletedRows()));
     }
 
-    private void renderNextShape(Graphics2D graphics) {
-        final Shape nextShape = tetris.getTetrisInstance().getNextShape();
+    private void renderNextShape(Graphics2D graphics, TetrisInstance tetrisInstance) {
+        final Shape nextShape = tetrisInstance.getNextShape();
 
         renderContainer(graphics, nextShapeContainer);
 
@@ -261,10 +261,10 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
         SwingUtils.drawImage(graphics, shapeImage, rectangle);
     }
 
-    private void renderStatistics(Graphics2D graphics) {
+    private void renderStatistics(Graphics2D graphics, TetrisInstance tetrisInstance) {
         renderContainer(graphics, statisticsContainer);
 
-        tetris.getTetrisInstance().getStatistics().entrySet()
+        tetrisInstance.getStatistics().entrySet()
                 .forEach(statisticEntry -> renderStatistic(graphics, statisticEntry.getKey(),
                     String.valueOf(statisticEntry.getValue())));
     }
