@@ -88,7 +88,7 @@ public class TetrisServiceImpl implements TetrisService {
     public void updateMovement(Tetris tetris, Movement movement) {
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
-        if (isTetrisInstanceRunning(tetrisInstance)) {
+        if (isTetrisInstanceRunning(tetrisInstance) && tetrisInstance.getCurrentShape() != null) {
             tetrisInstance.setMovement(Optional.of(movement));
         }
     }
@@ -102,7 +102,6 @@ public class TetrisServiceImpl implements TetrisService {
             clearCompleteRows(tetrisInstance);
             getNextShape(tetrisInstance);
             checkShapeIsLocked(tetrisInstance);
-            tetrisInstance.setMovement(Optional.empty());
         }
 
         return false;
