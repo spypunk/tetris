@@ -173,8 +173,6 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
         if (!State.RUNNING.equals(state)) {
             renderTetrisFrozen(graphics, state);
         }
-
-        graphics.dispose();
     }
 
     private void renderBlock(Graphics2D graphics, Block block) {
