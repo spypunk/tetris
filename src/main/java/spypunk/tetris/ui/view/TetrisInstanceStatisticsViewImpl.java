@@ -27,7 +27,6 @@ import com.google.common.collect.Lists;
 
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
-import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.factory.ImageFactory;
@@ -109,7 +108,7 @@ public class TetrisInstanceStatisticsViewImpl implements TetrisInstanceStatistic
     public void update() {
         final Graphics2D graphics = SwingUtils.createGraphics(image);
 
-        renderStatistics(graphics, tetris.getTetrisInstance());
+        renderStatistics(graphics);
 
         graphics.dispose();
     }
@@ -137,7 +136,7 @@ public class TetrisInstanceStatisticsViewImpl implements TetrisInstanceStatistic
                 textContainerRectangle);
     }
 
-    private void renderStatistics(Graphics2D graphics, TetrisInstance tetrisInstance) {
+    private void renderStatistics(Graphics2D graphics) {
         SwingUtils.renderCenteredText(graphics, STATISTICS,
             statisticsLabelRectangle, defaultFont, DEFAULT_FONT_COLOR);
 
