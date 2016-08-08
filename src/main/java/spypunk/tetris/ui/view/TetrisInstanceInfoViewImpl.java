@@ -111,9 +111,7 @@ public class TetrisInstanceInfoViewImpl implements TetrisInstanceInfoView {
 
     @Override
     public void update() {
-        SwingUtils.doInGraphics(image, graphics -> {
-            doUpdate(graphics);
-        });
+        SwingUtils.doInGraphics(image, this::doUpdate);
     }
 
     @Override
