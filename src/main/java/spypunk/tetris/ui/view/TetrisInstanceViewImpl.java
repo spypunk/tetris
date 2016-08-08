@@ -3,43 +3,15 @@ package spypunk.tetris.ui.view;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_CONTAINER_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_SIZE;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.GAME_OVER;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.INFO_CONTAINERS_WIDTH;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.INFO_CONTAINERS_X;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.LEVEL;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.LEVEL_CONTAINER_HEIGHT;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.LEVEL_CONTAINER_Y;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.NEXT_SHAPE;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.NEXT_SHAPE_CONTAINER_HEIGHT;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.NEXT_SHAPE_CONTAINER_Y;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.PAUSE;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.ROWS;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.ROWS_CONTAINER_HEIGHT;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.ROWS_CONTAINER_Y;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.SCORE;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.SCORE_CONTAINER_HEIGHT;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.SCORE_CONTAINER_Y;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS_CONTAINER_HEIGHT;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS_CONTAINER_WIDTH;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS_CONTAINER_X;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.STATISTICS_CONTAINER_Y;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINER_HEIGHT;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINER_WIDTH;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINER_X;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_CONTAINER_Y;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_FROZEN_FG_COLOR;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.TETRIS_FROZEN_FONT_SIZE;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.VIEW_DIMENSION;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -50,11 +22,12 @@ import javax.inject.Inject;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import com.google.common.collect.Maps;
 
+import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.model.Block;
-import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisInstance;
@@ -62,7 +35,6 @@ import spypunk.tetris.model.TetrisInstance.State;
 import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.factory.ImageFactory;
-import spypunk.tetris.ui.model.Container;
 import spypunk.tetris.ui.util.SwingUtils;
 
 public class TetrisInstanceViewImpl implements TetrisInstanceView {
@@ -100,265 +72,136 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
         }
     }
 
-    private final JLabel label;
+    private static final String PAUSE = "PAUSE";
+
+    private static final float TETRIS_FROZEN_FONT_SIZE = 42F;
+
+    private static final Color TETRIS_FROZEN_FG_COLOR = new Color(30, 30, 30, 200);
+
+    private static final String GAME_OVER = "GAME OVER";
+
+    private final JPanel panel;
 
     private final BufferedImage image;
 
     private final Tetris tetris;
 
-    private final Font defaultFont;
-
     private final Font frozenTetrisFont;
 
-    private final Container statisticsContainer;
+    private final TetrisInstanceStatisticsView tetrisInstanceStatisticsView;
 
-    private final Container tetrisContainer;
+    private final TetrisInstanceInfoView tetrisInstanceInfoView;
 
-    private final Container nextShapeContainer;
+    private final Rectangle gridRectangle;
 
-    private final Container levelContainer;
+    private final Rectangle frozenGridRectangle;
 
-    private final Container scoreContainer;
+    private final int blockX;
 
-    private final Container rowsContainer;
+    private final int blockY;
 
     @Inject
     private ImageFactory imageFactory;
 
     @Inject
-    public TetrisInstanceViewImpl(FontFactory fontFactory, TetrisController tetrisController) {
+    public TetrisInstanceViewImpl(FontFactory fontFactory, TetrisController tetrisController,
+            TetrisInstanceStatisticsView tetrisInstanceStatisticsView,
+            TetrisInstanceInfoView tetrisInstanceInfoView) {
+        this.tetrisInstanceStatisticsView = tetrisInstanceStatisticsView;
+        this.tetrisInstanceInfoView = tetrisInstanceInfoView;
+
         tetris = tetrisController.getTetris();
-        defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
+
         frozenTetrisFont = fontFactory.createDefaultFont(TETRIS_FROZEN_FONT_SIZE);
-        image = new BufferedImage(VIEW_DIMENSION.width, VIEW_DIMENSION.height, BufferedImage.TYPE_INT_ARGB);
 
-        tetrisContainer = createTetrisContainer();
-        nextShapeContainer = createNextShapeContainer();
-        levelContainer = createLevelContainer();
-        scoreContainer = createScoreContainer();
-        rowsContainer = createRowsContainer();
-        statisticsContainer = createStatisticsContainer();
+        gridRectangle = new Rectangle(0, 0, TetrisConstants.WIDTH * BLOCK_SIZE + 1,
+                (TetrisConstants.HEIGHT - 2) * BLOCK_SIZE + 1);
 
-        label = new JLabel();
+        frozenGridRectangle = new Rectangle(gridRectangle.x + 1, gridRectangle.y + 1, gridRectangle.width - 1,
+                gridRectangle.height - 1);
 
-        label.setIcon(new ImageIcon(image));
-        label.setFocusable(true);
-        label.addKeyListener(new TetrisInstanceViewKeyAdapter(tetrisController));
-        label.setBackground(Color.BLACK);
-        label.setBorder(BorderFactory.createEmptyBorder(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE));
-        label.setOpaque(true);
+        blockX = gridRectangle.x + 1;
+        blockY = gridRectangle.y + 1 - 2 * BLOCK_SIZE;
+
+        image = new BufferedImage(gridRectangle.width + 1, gridRectangle.height + 1,
+                BufferedImage.TYPE_INT_ARGB);
+
+        final JLabel label = new JLabel(new ImageIcon(image));
+
+        panel = new JPanel(new BorderLayout(BLOCK_SIZE, 0));
+        panel.setFocusable(true);
+        panel.setBackground(Color.BLACK);
+        panel.setOpaque(true);
+        panel.setBorder(BorderFactory.createEmptyBorder(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE));
+        panel.addKeyListener(new TetrisInstanceViewKeyAdapter(tetrisController));
+
+        panel.add(label, BorderLayout.CENTER);
+        panel.add(tetrisInstanceStatisticsView.getComponent(), BorderLayout.WEST);
+        panel.add(tetrisInstanceInfoView.getComponent(), BorderLayout.EAST);
     }
 
     @Override
     public void update() {
-        final Graphics2D graphics = createGraphics();
+        final Graphics2D graphics = SwingUtils.createGraphics(image);
 
-        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
-
-        renderBlocks(graphics, tetrisInstance);
-        renderLevel(graphics, tetrisInstance);
-        renderScore(graphics, tetrisInstance);
-        renderRows(graphics, tetrisInstance);
-        renderNextShape(graphics, tetrisInstance);
-        renderStatistics(graphics, tetrisInstance);
+        renderBlocks(graphics);
 
         graphics.dispose();
 
-        label.repaint();
+        tetrisInstanceStatisticsView.update();
+        tetrisInstanceInfoView.update();
+
+        panel.repaint();
     }
 
     @Override
     public Component getComponent() {
-        return label;
+        return panel;
     }
 
-    private Container createStatisticsContainer() {
-        return createContainer(STATISTICS_CONTAINER_X, STATISTICS_CONTAINER_Y,
-            STATISTICS_CONTAINER_WIDTH,
-            STATISTICS_CONTAINER_HEIGHT,
-            STATISTICS);
-    }
+    private void renderBlocks(final Graphics2D graphics) {
+        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
-    private Container createRowsContainer() {
-        return createContainer(INFO_CONTAINERS_X, ROWS_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
-            ROWS_CONTAINER_HEIGHT,
-            ROWS);
-    }
+        graphics.setColor(DEFAULT_CONTAINER_COLOR);
 
-    private Container createScoreContainer() {
-        return createContainer(INFO_CONTAINERS_X, SCORE_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
-            SCORE_CONTAINER_HEIGHT,
-            SCORE);
-    }
-
-    private Container createLevelContainer() {
-        return createContainer(INFO_CONTAINERS_X, LEVEL_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
-            LEVEL_CONTAINER_HEIGHT,
-            LEVEL);
-    }
-
-    private Container createNextShapeContainer() {
-        return createContainer(INFO_CONTAINERS_X, NEXT_SHAPE_CONTAINER_Y, INFO_CONTAINERS_WIDTH,
-            NEXT_SHAPE_CONTAINER_HEIGHT,
-            NEXT_SHAPE);
-    }
-
-    private Container createTetrisContainer() {
-        return createContainer(TETRIS_CONTAINER_X, TETRIS_CONTAINER_Y,
-            TETRIS_CONTAINER_WIDTH,
-            TETRIS_CONTAINER_HEIGHT);
-    }
-
-    private Graphics2D createGraphics() {
-        final Graphics2D graphics = image.createGraphics();
-
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        graphics.setColor(Color.BLACK);
-        graphics.fillRect(0, 0, VIEW_DIMENSION.width, VIEW_DIMENSION.height);
-
-        return graphics;
-    }
-
-    private void renderBlocks(Graphics2D graphics, TetrisInstance tetrisInstance) {
-        renderContainer(graphics, tetrisContainer);
-
-        final Rectangle rectangle = tetrisContainer.getRectangle();
+        graphics.drawRect(gridRectangle.x, gridRectangle.y, gridRectangle.width,
+            gridRectangle.height);
 
         tetrisInstance.getBlocks().values().stream().filter(Optional::isPresent)
                 .map(Optional::get)
                 .filter(block -> block.getLocation().y >= 2)
-                .forEach(block -> renderBlock(graphics, block, rectangle.x + 1,
-                    rectangle.y + 1 - 2 * BLOCK_SIZE));
+                .forEach(block -> renderBlock(graphics, block));
 
         final State state = tetrisInstance.getState();
 
         if (!State.RUNNING.equals(state)) {
-            renderTetrisFrozen(graphics, tetrisContainer, state);
+            renderTetrisFrozen(graphics, state);
         }
+
+        graphics.dispose();
     }
 
-    private void renderLevel(Graphics2D graphics, TetrisInstance tetrisInstance) {
-        renderTextInContainer(graphics, levelContainer, String.valueOf(tetrisInstance.getLevel()));
-    }
-
-    private void renderScore(Graphics2D graphics, TetrisInstance tetrisInstance) {
-        renderTextInContainer(graphics, scoreContainer, String.valueOf(tetrisInstance.getScore()));
-    }
-
-    private void renderRows(Graphics2D graphics, TetrisInstance tetrisInstance) {
-        renderTextInContainer(graphics, rowsContainer, String.valueOf(tetrisInstance.getCompletedRows()));
-    }
-
-    private void renderNextShape(Graphics2D graphics, TetrisInstance tetrisInstance) {
-        final Shape nextShape = tetrisInstance.getNextShape();
-
-        renderContainer(graphics, nextShapeContainer);
-
-        final Image shapeImage = imageFactory.createShapeImage(nextShape.getShapeType());
-        final Rectangle rectangle = SwingUtils.getCenteredImageRectangle(shapeImage, nextShapeContainer.getRectangle());
-
-        SwingUtils.drawImage(graphics, shapeImage, rectangle);
-    }
-
-    private void renderStatistics(Graphics2D graphics, TetrisInstance tetrisInstance) {
-        renderContainer(graphics, statisticsContainer);
-
-        tetrisInstance.getStatistics().entrySet()
-                .forEach(statisticEntry -> renderStatistic(graphics, statisticEntry.getKey(),
-                    String.valueOf(statisticEntry.getValue())));
-    }
-
-    private void renderBlock(Graphics2D graphics, Block block, int dx, int dy) {
+    private void renderBlock(Graphics2D graphics, Block block) {
         final ShapeType shapeType = block.getShape().getShapeType();
 
         final Image blockImage = imageFactory.createBlockImage(shapeType);
 
-        final int x1 = dx + block.getLocation().x * BLOCK_SIZE;
-        final int x2 = dy + block.getLocation().y * BLOCK_SIZE;
+        final Point location = block.getLocation();
+
+        final int x1 = blockX + location.x * BLOCK_SIZE;
+        final int x2 = blockY + location.y * BLOCK_SIZE;
 
         final Rectangle rectangle = new Rectangle(x1, x2, BLOCK_SIZE, BLOCK_SIZE);
 
         SwingUtils.drawImage(graphics, blockImage, rectangle);
     }
 
-    private void renderTextInContainer(Graphics2D graphics, Container container, String info) {
-        renderContainer(graphics, container);
-        renderText(graphics, info, container.getRectangle());
-    }
-
-    private void renderContainer(Graphics2D graphics, Container container) {
-        graphics.setColor(DEFAULT_CONTAINER_COLOR);
-
-        final Rectangle rectangle = container.getRectangle();
-
-        graphics.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-
-        final String title = container.getTitle();
-
-        if (title != null) {
-            renderText(graphics, title,
-                new Rectangle(rectangle.x, rectangle.y - BLOCK_SIZE, rectangle.width, BLOCK_SIZE), defaultFont);
-        }
-    }
-
-    private void renderStatistic(Graphics2D graphics, ShapeType shapeType, String value) {
-        final Image shapeImage = imageFactory.createShapeImage(shapeType);
-        final Rectangle containerRectangle = statisticsContainer.getRectangle();
-
-        final Rectangle imageContainerRectangle = new Rectangle(containerRectangle.x,
-                containerRectangle.y + shapeType.ordinal() * 2 * BLOCK_SIZE + BLOCK_SIZE,
-                containerRectangle.width / 2, BLOCK_SIZE);
-
-        final Rectangle imageRectangle = SwingUtils.getCenteredImageRectangle(shapeImage, imageContainerRectangle,
-            0.5);
-
-        SwingUtils.drawImage(graphics, shapeImage, imageRectangle);
-
-        final Rectangle textContainerRectangle = new Rectangle(containerRectangle.x + imageContainerRectangle.width,
-                imageContainerRectangle.y, imageContainerRectangle.width, imageContainerRectangle.height);
-
-        final Rectangle textRectangle = SwingUtils.getCenteredTextRectangle(graphics, value, textContainerRectangle,
-            defaultFont);
-
-        graphics.drawString(value, textRectangle.x, textRectangle.y);
-    }
-
-    private void renderText(Graphics2D graphics, String text, Rectangle rectangle) {
-        renderText(graphics, text, rectangle, defaultFont);
-    }
-
-    private void renderText(Graphics2D graphics, String text, Rectangle rectangle, Font font) {
-        renderText(graphics, text, rectangle, font, DEFAULT_FONT_COLOR);
-    }
-
-    private void renderText(Graphics2D graphics, String text, Rectangle rectangle, Font font, Color fontColor) {
-        graphics.setFont(font);
-        graphics.setColor(fontColor);
-
-        final Rectangle textRectangle = SwingUtils.getCenteredTextRectangle(graphics, text, rectangle, font);
-
-        graphics.drawString(text, textRectangle.x, textRectangle.y);
-    }
-
-    private void renderTetrisFrozen(Graphics2D graphics, Container container, State state) {
-        final Rectangle rectangle = container.getRectangle();
-
+    private void renderTetrisFrozen(Graphics2D graphics, State state) {
         graphics.setColor(TETRIS_FROZEN_FG_COLOR);
-        graphics.fillRect(rectangle.x + 1, rectangle.y + 1, rectangle.width - 1, rectangle.height - 1);
+        graphics.fillRect(frozenGridRectangle.x, frozenGridRectangle.y, frozenGridRectangle.width,
+            frozenGridRectangle.height);
 
-        renderText(graphics, State.GAME_OVER.equals(state) ? GAME_OVER : PAUSE, rectangle,
-            frozenTetrisFont);
-    }
-
-    private Container createContainer(int x, int y, int width, int height, String title) {
-        return Container.Builder.instance()
-                .setRectangle(new Rectangle(x, y, width, height))
-                .setTitle(title)
-                .build();
-    }
-
-    private Container createContainer(int x, int y, int width, int height) {
-        return createContainer(x, y, width, height, null);
+        SwingUtils.renderCenteredText(graphics, State.GAME_OVER.equals(state) ? GAME_OVER : PAUSE, gridRectangle,
+            frozenTetrisFont, DEFAULT_FONT_COLOR);
     }
 }

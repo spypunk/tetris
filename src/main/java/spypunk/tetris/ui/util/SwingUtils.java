@@ -8,13 +8,16 @@
 
 package spypunk.tetris.ui.util;
 
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
@@ -110,5 +113,27 @@ public class SwingUtils {
         } else {
             LOGGER.warn("Your system does not support URL browsing, cannot open following URL : " + uri);
         }
+    }
+
+    public static void renderCenteredText(Graphics2D graphics, String text, Rectangle rectangle, Font font,
+            Color fontColor) {
+        graphics.setFont(font);
+        graphics.setColor(fontColor);
+
+        final Rectangle textRectangle = SwingUtils.getCenteredTextRectangle(graphics, text, rectangle, font);
+
+        graphics.drawString(text, textRectangle.x, textRectangle.y);
+    }
+
+    public static Graphics2D createGraphics(BufferedImage image) {
+        final Graphics2D graphics = image.createGraphics();
+
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+        graphics.setColor(Color.BLACK);
+        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
+
+        return graphics;
     }
 }
