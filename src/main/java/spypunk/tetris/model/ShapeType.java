@@ -14,13 +14,13 @@ import static spypunk.tetris.constants.TetrisConstants.LOCATION_0_2;
 import static spypunk.tetris.constants.TetrisConstants.LOCATION_1_0;
 import static spypunk.tetris.constants.TetrisConstants.LOCATION_1_1;
 import static spypunk.tetris.constants.TetrisConstants.LOCATION_1_2;
-import static spypunk.tetris.constants.TetrisConstants.LOCATION_1_3;
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_1_M1;
 import static spypunk.tetris.constants.TetrisConstants.LOCATION_2_0;
 import static spypunk.tetris.constants.TetrisConstants.LOCATION_2_1;
 import static spypunk.tetris.constants.TetrisConstants.LOCATION_2_2;
-import static spypunk.tetris.constants.TetrisConstants.LOCATION_2_3;
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_2_M1;
+import static spypunk.tetris.constants.TetrisConstants.LOCATION_3_0;
 import static spypunk.tetris.constants.TetrisConstants.LOCATION_3_1;
-import static spypunk.tetris.constants.TetrisConstants.LOCATION_3_2;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -36,10 +36,10 @@ public enum ShapeType {
             Arrays.asList(Sets.newHashSet(LOCATION_0_0, LOCATION_1_0, LOCATION_0_1, LOCATION_1_1)),
             new Rectangle(0, 0, 2, 2)),
     I(
-            Arrays.asList(Sets.newHashSet(LOCATION_0_1, LOCATION_1_1, LOCATION_2_1, LOCATION_3_1),
-                Sets.newHashSet(LOCATION_2_0, LOCATION_2_1, LOCATION_2_2, LOCATION_2_3),
-                Sets.newHashSet(LOCATION_0_2, LOCATION_1_2, LOCATION_2_2, LOCATION_3_2),
-                Sets.newHashSet(LOCATION_1_0, LOCATION_1_1, LOCATION_1_2, LOCATION_1_3)),
+            Arrays.asList(Sets.newHashSet(LOCATION_0_0, LOCATION_1_0, LOCATION_2_0, LOCATION_3_0),
+                Sets.newHashSet(LOCATION_2_M1, LOCATION_2_0, LOCATION_2_1, LOCATION_2_2),
+                Sets.newHashSet(LOCATION_0_1, LOCATION_1_1, LOCATION_2_1, LOCATION_3_1),
+                Sets.newHashSet(LOCATION_1_M1, LOCATION_1_0, LOCATION_1_1, LOCATION_1_2)),
             new Rectangle(0, 0, 4, 4)),
     J(
             Arrays.asList(Sets.newHashSet(LOCATION_0_1, LOCATION_1_1, LOCATION_2_1, LOCATION_2_0),

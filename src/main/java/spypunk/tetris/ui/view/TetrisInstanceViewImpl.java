@@ -120,13 +120,13 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
         frozenTetrisFont = fontFactory.createDefaultFont(TETRIS_FROZEN_FONT_SIZE);
 
         gridRectangle = new Rectangle(0, 0, TetrisConstants.WIDTH * BLOCK_SIZE + 1,
-                (TetrisConstants.HEIGHT - 2) * BLOCK_SIZE + 1);
+                TetrisConstants.HEIGHT * BLOCK_SIZE + 1);
 
         frozenGridRectangle = new Rectangle(gridRectangle.x + 1, gridRectangle.y + 1, gridRectangle.width - 1,
                 gridRectangle.height - 1);
 
         blockX = gridRectangle.x + 1;
-        blockY = gridRectangle.y + 1 - 2 * BLOCK_SIZE;
+        blockY = gridRectangle.y + 1;
 
         image = new BufferedImage(gridRectangle.width + 1, gridRectangle.height + 1,
                 BufferedImage.TYPE_INT_ARGB);
@@ -174,7 +174,6 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
 
         tetrisInstance.getBlocks().values().stream().filter(Optional::isPresent)
                 .map(Optional::get)
-                .filter(block -> block.getLocation().y >= 2)
                 .forEach(block -> renderBlock(graphics, block));
 
         final State state = tetrisInstance.getState();
@@ -189,8 +188,8 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
         final Image blockImage = blockImages.get(shapeType);
         final Point location = block.getLocation();
         final int x1 = blockX + location.x * BLOCK_SIZE;
-        final int x2 = blockY + location.y * BLOCK_SIZE;
-        final Rectangle rectangle = new Rectangle(x1, x2, BLOCK_SIZE, BLOCK_SIZE);
+        final int y1 = blockY + location.y * BLOCK_SIZE;
+        final Rectangle rectangle = new Rectangle(x1, y1, BLOCK_SIZE, BLOCK_SIZE);
 
         SwingUtils.drawImage(graphics, blockImage, rectangle);
     }

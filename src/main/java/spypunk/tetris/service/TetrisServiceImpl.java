@@ -98,15 +98,14 @@ public class TetrisServiceImpl implements TetrisService {
             return true;
         }
 
-        if (!isTimeToGetNextShape(tetrisInstance)) {
-            return false;
+        if (isTimeToGetNextShape(tetrisInstance)) {
+            clearCompleteRows(tetrisInstance);
+            getNextShape(tetrisInstance);
+            checkShapeIsLocked(tetrisInstance);
+            tetrisInstance.setMovement(Optional.empty());
         }
 
-        clearCompleteRows(tetrisInstance);
-
-        getNextShape(tetrisInstance);
-
-        return !checkShapeIsLocked(tetrisInstance);
+        return false;
     }
 
     private boolean handleMovement(TetrisInstance tetrisInstance) {
@@ -187,7 +186,7 @@ public class TetrisServiceImpl implements TetrisService {
 
     private boolean isGameOver(TetrisInstance tetrisInstance) {
         return tetrisInstance.getBlocks().values().stream()
-                .anyMatch(block -> block.isPresent() && block.get().getLocation().y == 2);
+                .anyMatch(block -> block.isPresent() && block.get().getLocation().y == 0);
     }
 
     private boolean isTimeToHandleGravity(TetrisInstance tetrisInstance) {
@@ -203,7 +202,7 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private void clearCompleteRows(TetrisInstance tetrisInstance) {
-        final List<Integer> completeRows = IntStream.range(2, HEIGHT)
+        final List<Integer> completeRows = IntStream.range(0, HEIGHT)
                 .filter(row -> isRowComplete(tetrisInstance, row)).boxed().collect(Collectors.toList());
 
         if (completeRows.isEmpty()) {
@@ -300,7 +299,7 @@ public class TetrisServiceImpl implements TetrisService {
     private boolean canBlockMove(TetrisInstance tetrisInstance, Block block) {
         final Point location = block.getLocation();
 
-        if (location.x < 0 || location.x == WIDTH || location.y == HEIGHT) {
+        if (location.x < 0 || location.x == WIDTH || location.y < 0 || location.y == HEIGHT) {
             return false;
         }
 
