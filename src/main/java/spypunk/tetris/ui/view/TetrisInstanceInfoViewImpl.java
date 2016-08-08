@@ -13,6 +13,7 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -48,8 +49,6 @@ public class TetrisInstanceInfoViewImpl implements TetrisInstanceInfoView {
 
     private static final String ROWS = "ROWS";
 
-    private final ImageFactory imageFactory;
-
     private final JPanel panel;
 
     private final BufferedImage image;
@@ -72,6 +71,8 @@ public class TetrisInstanceInfoViewImpl implements TetrisInstanceInfoView {
 
     private final Map<ShapeType, Rectangle> shapeTypeImageRectangles;
 
+    private final Map<ShapeType, Image> shapeTypeImages;
+
     private final Font defaultFont;
 
     private final Tetris tetris;
@@ -79,8 +80,6 @@ public class TetrisInstanceInfoViewImpl implements TetrisInstanceInfoView {
     @Inject
     public TetrisInstanceInfoViewImpl(FontFactory fontFactory, TetrisController tetrisController,
             ImageFactory imageFactory) {
-        this.imageFactory = imageFactory;
-
         tetris = tetrisController.getTetris();
         defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
 
@@ -104,7 +103,13 @@ public class TetrisInstanceInfoViewImpl implements TetrisInstanceInfoView {
         rowsLabelRectangle = createLabelRectangle(rowsRectangle);
         nextShapeLabelRectangle = createLabelRectangle(nextShapeRectangle);
 
-        shapeTypeImageRectangles = Lists.newArrayList(ShapeType.values()).stream()
+        final List<ShapeType> shapeTypes = Lists.newArrayList(ShapeType.values());
+
+        shapeTypeImages = shapeTypes.stream()
+                .collect(
+                    Collectors.toMap(Function.identity(), imageFactory::createShapeImage));
+
+        shapeTypeImageRectangles = shapeTypes.stream()
                 .collect(
                     Collectors.toMap(Function.identity(), this::createShapeTypeImageRectangle));
     }
@@ -134,9 +139,8 @@ public class TetrisInstanceInfoViewImpl implements TetrisInstanceInfoView {
     }
 
     private Rectangle createShapeTypeImageRectangle(ShapeType shapeType) {
-        final Image shapeImage = imageFactory
-                .createShapeImage(shapeType);
-        return SwingUtils.getCenteredImageRectangle(shapeImage, nextShapeRectangle);
+        final Image shapeTypeImage = shapeTypeImages.get(shapeType);
+        return SwingUtils.getCenteredImageRectangle(shapeTypeImage, nextShapeRectangle);
     }
 
     private void renderRows(final Graphics2D graphics, final TetrisInstance tetrisInstance) {
@@ -156,11 +160,10 @@ public class TetrisInstanceInfoViewImpl implements TetrisInstanceInfoView {
         renderLabelAndRectangle(graphics, nextShapeRectangle, nextShapeLabelRectangle, NEXT_SHAPE);
 
         final ShapeType shapeType = tetrisInstance.getNextShape().getShapeType();
-
-        final Image shapeImage = imageFactory.createShapeImage(shapeType);
+        final Image shapeTypeImage = shapeTypeImages.get(shapeType);
         final Rectangle rectangle = shapeTypeImageRectangles.get(shapeType);
 
-        SwingUtils.drawImage(graphics, shapeImage, rectangle);
+        SwingUtils.drawImage(graphics, shapeTypeImage, rectangle);
     }
 
     private void renderInfo(Graphics2D graphics, Rectangle rectangle, Rectangle labelRectangle,
