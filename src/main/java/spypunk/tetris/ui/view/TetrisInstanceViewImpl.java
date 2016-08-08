@@ -17,6 +17,8 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -25,6 +27,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import spypunk.tetris.constants.TetrisConstants;
@@ -102,13 +105,13 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
 
     private final int blockY;
 
-    @Inject
-    private ImageFactory imageFactory;
+    private final Map<ShapeType, Image> blockImages;
 
     @Inject
     public TetrisInstanceViewImpl(FontFactory fontFactory, TetrisController tetrisController,
             TetrisInstanceStatisticsView tetrisInstanceStatisticsView,
-            TetrisInstanceInfoView tetrisInstanceInfoView) {
+            TetrisInstanceInfoView tetrisInstanceInfoView,
+            ImageFactory imageFactory) {
         this.tetrisInstanceStatisticsView = tetrisInstanceStatisticsView;
         this.tetrisInstanceInfoView = tetrisInstanceInfoView;
 
@@ -127,6 +130,10 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
 
         image = new BufferedImage(gridRectangle.width + 1, gridRectangle.height + 1,
                 BufferedImage.TYPE_INT_ARGB);
+
+        blockImages = Lists.newArrayList(ShapeType.values()).stream()
+                .collect(
+                    Collectors.toMap(Function.identity(), imageFactory::createBlockImage));
 
         final JLabel label = new JLabel(new ImageIcon(image));
 
@@ -179,7 +186,7 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
 
     private void renderBlock(Graphics2D graphics, Block block) {
         final ShapeType shapeType = block.getShape().getShapeType();
-        final Image blockImage = imageFactory.createBlockImage(shapeType);
+        final Image blockImage = blockImages.get(shapeType);
         final Point location = block.getLocation();
         final int x1 = blockX + location.x * BLOCK_SIZE;
         final int x2 = blockY + location.y * BLOCK_SIZE;

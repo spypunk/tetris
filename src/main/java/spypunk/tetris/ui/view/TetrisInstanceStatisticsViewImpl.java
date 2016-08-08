@@ -146,12 +146,10 @@ public class TetrisInstanceStatisticsViewImpl implements TetrisInstanceStatistic
 
     private void renderStatistic(Graphics2D graphics, ShapeType shapeType) {
         final StatisticsRow statisticsRow = statisticsRows.get(shapeType);
+        final Map<ShapeType, Integer> statistics = tetris.getTetrisInstance().getStatistics();
+        final String value = String.valueOf(statistics.get(shapeType));
 
         SwingUtils.drawImage(graphics, statisticsRow.getImage(), statisticsRow.getImageRectangle());
-
-        final Map<ShapeType, Integer> statistics = tetris.getTetrisInstance().getStatistics();
-
-        final String value = String.valueOf(statistics.get(shapeType));
 
         SwingUtils.renderCenteredText(graphics, value,
             statisticsRow.getTextContainerRectangle(), defaultFont, DEFAULT_FONT_COLOR);
