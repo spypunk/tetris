@@ -47,6 +47,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.inject.Inject;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -58,7 +59,6 @@ import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.model.TetrisInstance.State;
-import spypunk.tetris.ui.constants.TetrisUIConstants;
 import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.factory.ImageFactory;
@@ -144,6 +144,9 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
         label.setIcon(new ImageIcon(image));
         label.setFocusable(true);
         label.addKeyListener(new TetrisInstanceViewKeyAdapter(tetrisController));
+        label.setBackground(Color.BLACK);
+        label.setBorder(BorderFactory.createEmptyBorder(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE));
+        label.setOpaque(true);
     }
 
     @Override
@@ -226,7 +229,7 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
                 .map(Optional::get)
                 .filter(block -> block.getLocation().y >= 2)
                 .forEach(block -> renderBlock(graphics, block, rectangle.x + 1,
-                    rectangle.y - TetrisUIConstants.TETRIS_CONTAINER_Y - BLOCK_SIZE + 1));
+                    rectangle.y + 1 - 2 * BLOCK_SIZE));
 
         final State state = tetrisInstance.getState();
 
