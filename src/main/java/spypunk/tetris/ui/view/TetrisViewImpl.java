@@ -12,6 +12,7 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -75,6 +76,8 @@ public class TetrisViewImpl implements TetrisView {
         }
     }
 
+    private static final float URL_FONT_SIZE = 10F;
+
     private final JFrame frame;
 
     private final TetrisInstanceView tetrisInstanceView;
@@ -97,7 +100,7 @@ public class TetrisViewImpl implements TetrisView {
 
         final URI projectURI = tetrisController.getTetris().getProjectURI();
         final JLabel urlLabel = new JLabel(projectURI.getHost() + projectURI.getPath());
-        final Font urlFont = fontFactory.createURLFont(10.0f);
+        final Font urlFont = fontFactory.createURLFont(URL_FONT_SIZE);
 
         urlLabel.setFont(urlFont);
         urlLabel.setForeground(DEFAULT_FONT_COLOR);
@@ -130,5 +133,10 @@ public class TetrisViewImpl implements TetrisView {
 
     private void doUpdate() {
         tetrisInstanceView.update();
+    }
+
+    @Override
+    public Component getComponent() {
+        return frame;
     }
 }
