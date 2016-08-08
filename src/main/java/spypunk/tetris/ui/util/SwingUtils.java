@@ -21,6 +21,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
+import java.util.function.Consumer;
 
 import javax.swing.SwingUtilities;
 
@@ -125,15 +126,16 @@ public class SwingUtils {
         graphics.drawString(text, textRectangle.x, textRectangle.y);
     }
 
-    public static Graphics2D createGraphics(BufferedImage image) {
+    public static void doInGraphics(BufferedImage image, Consumer<Graphics2D> consumer) {
         final Graphics2D graphics = image.createGraphics();
 
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
 
-        return graphics;
+        consumer.accept(graphics);
+
+        graphics.dispose();
     }
 }

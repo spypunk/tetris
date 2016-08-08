@@ -106,11 +106,7 @@ public class TetrisInstanceStatisticsViewImpl implements TetrisInstanceStatistic
 
     @Override
     public void update() {
-        final Graphics2D graphics = SwingUtils.createGraphics(image);
-
-        renderStatistics(graphics);
-
-        graphics.dispose();
+        SwingUtils.doInGraphics(image, this::renderStatistics);
     }
 
     @Override

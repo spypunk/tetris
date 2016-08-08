@@ -142,11 +142,7 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
 
     @Override
     public void update() {
-        final Graphics2D graphics = SwingUtils.createGraphics(image);
-
-        renderBlocks(graphics);
-
-        graphics.dispose();
+        SwingUtils.doInGraphics(image, this::renderBlocks);
 
         tetrisInstanceStatisticsView.update();
         tetrisInstanceInfoView.update();

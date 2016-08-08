@@ -111,21 +111,23 @@ public class TetrisInstanceInfoViewImpl implements TetrisInstanceInfoView {
 
     @Override
     public void update() {
-        final Graphics2D graphics = SwingUtils.createGraphics(image);
+        SwingUtils.doInGraphics(image, graphics -> {
+            doUpdate(graphics);
+        });
+    }
 
+    @Override
+    public Component getComponent() {
+        return panel;
+    }
+
+    private void doUpdate(Graphics2D graphics) {
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
         renderLevel(graphics, tetrisInstance);
         renderScore(graphics, tetrisInstance);
         renderRows(graphics, tetrisInstance);
         renderNextShape(graphics, tetrisInstance);
-
-        graphics.dispose();
-    }
-
-    @Override
-    public Component getComponent() {
-        return panel;
     }
 
     private Rectangle createLabelRectangle(Rectangle rectangle) {
