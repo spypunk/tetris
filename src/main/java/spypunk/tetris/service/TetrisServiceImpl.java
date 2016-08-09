@@ -348,10 +348,6 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private int getSpeed(int level) {
-        if (level >= 29) {
-            return 1;
-        }
-
-        return levelSpeeds.get(level);
+        return level < 29 ? levelSpeeds.get(level) : 1;
     }
 }
