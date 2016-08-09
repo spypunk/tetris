@@ -12,7 +12,6 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -20,8 +19,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URI;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,7 +30,6 @@ import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.util.SwingUtils;
 
-@Singleton
 public class TetrisViewImpl implements TetrisView {
 
     private final class TetrisViewWindowListener extends WindowAdapter {
@@ -82,23 +78,13 @@ public class TetrisViewImpl implements TetrisView {
 
     private final TetrisInstanceView tetrisInstanceView;
 
-    @Inject
     public TetrisViewImpl(TetrisController tetrisController,
             TetrisInstanceView tetrisInstanceView,
-            FontFactory fontFactory) {
+            FontFactory fontFactory,
+            Tetris tetris) {
         this.tetrisInstanceView = tetrisInstanceView;
 
-        final Tetris tetris = tetrisController.getTetris();
-
-        frame = new JFrame(tetris.getName() + " " + tetris.getVersion());
-
-        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setFocusable(false);
-        frame.getContentPane().setLayout(new BorderLayout(0, 0));
-        frame.setResizable(false);
-        frame.addWindowListener(new TetrisViewWindowListener(tetrisController));
-
-        final URI projectURI = tetrisController.getTetris().getProjectURI();
+        final URI projectURI = tetris.getProjectURI();
         final JLabel urlLabel = new JLabel(projectURI.getHost() + projectURI.getPath());
         final Font urlFont = fontFactory.createURLFont(URL_FONT_SIZE);
 
@@ -114,7 +100,15 @@ public class TetrisViewImpl implements TetrisView {
 
         urlPanel.add(urlLabel, BorderLayout.EAST);
 
-        frame.add(tetrisInstanceView.getComponent(), BorderLayout.CENTER);
+        frame = new JFrame(tetris.getName() + " " + tetris.getVersion());
+
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frame.setFocusable(false);
+        frame.getContentPane().setLayout(new BorderLayout(0, 0));
+        frame.setResizable(false);
+        frame.addWindowListener(new TetrisViewWindowListener(tetrisController));
+
+        frame.add(tetrisInstanceView, BorderLayout.CENTER);
         frame.add(urlPanel, BorderLayout.SOUTH);
         frame.pack();
 
@@ -133,10 +127,5 @@ public class TetrisViewImpl implements TetrisView {
 
     private void doUpdate() {
         tetrisInstanceView.update();
-    }
-
-    @Override
-    public Component getComponent() {
-        return frame;
     }
 }

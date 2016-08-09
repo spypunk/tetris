@@ -25,14 +25,8 @@ import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.factory.FontFactoryImpl;
 import spypunk.tetris.ui.factory.ImageFactory;
 import spypunk.tetris.ui.factory.ImageFactoryImpl;
-import spypunk.tetris.ui.view.TetrisInstanceInfoView;
-import spypunk.tetris.ui.view.TetrisInstanceInfoViewImpl;
-import spypunk.tetris.ui.view.TetrisInstanceStatisticsView;
-import spypunk.tetris.ui.view.TetrisInstanceStatisticsViewImpl;
-import spypunk.tetris.ui.view.TetrisInstanceView;
-import spypunk.tetris.ui.view.TetrisInstanceViewImpl;
-import spypunk.tetris.ui.view.TetrisView;
-import spypunk.tetris.ui.view.TetrisViewImpl;
+import spypunk.tetris.ui.factory.TetrisViewFactory;
+import spypunk.tetris.ui.factory.TetrisViewFactoryImpl;
 
 public class TetrisModule extends AbstractModule {
 
@@ -42,11 +36,7 @@ public class TetrisModule extends AbstractModule {
         bind(TetrisService.class).to(TetrisServiceImpl.class);
         bind(ShapeFactory.class).to(ShapeFactoryImpl.class);
         bind(TetrisController.class).to(TetrisControllerImpl.class);
-        bind(TetrisInstanceView.class).to(TetrisInstanceViewImpl.class);
-        bind(TetrisInstanceStatisticsView.class).to(TetrisInstanceStatisticsViewImpl.class);
-        bind(TetrisInstanceInfoView.class).to(TetrisInstanceInfoViewImpl.class);
-        bind(TetrisView.class).to(TetrisViewImpl.class);
-        bind(TetrisView.class).to(TetrisViewImpl.class);
+        bind(TetrisViewFactory.class).to(TetrisViewFactoryImpl.class);
         bind(ImageFactory.class).to(ImageFactoryImpl.class);
         bind(TetrisFactory.class).to(TetrisFactoryImpl.class);
         bind(FontFactory.class).to(FontFactoryImpl.class);

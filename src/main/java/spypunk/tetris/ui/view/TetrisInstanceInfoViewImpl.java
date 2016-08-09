@@ -6,7 +6,6 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_SIZE;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
@@ -18,11 +17,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import com.google.common.collect.Lists;
 
@@ -34,8 +30,9 @@ import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.factory.ImageFactory;
 import spypunk.tetris.ui.util.SwingUtils;
 
-@Singleton
-public class TetrisInstanceInfoViewImpl implements TetrisInstanceInfoView {
+public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
+
+    private static final long serialVersionUID = 7458148358359765406L;
 
     private static final int HEIGHT = 1 + BLOCK_SIZE * 16;
 
@@ -48,8 +45,6 @@ public class TetrisInstanceInfoViewImpl implements TetrisInstanceInfoView {
     private static final String NEXT_SHAPE = "NEXT";
 
     private static final String ROWS = "ROWS";
-
-    private final JPanel panel;
 
     private final BufferedImage image;
 
@@ -77,21 +72,15 @@ public class TetrisInstanceInfoViewImpl implements TetrisInstanceInfoView {
 
     private final Tetris tetris;
 
-    @Inject
     public TetrisInstanceInfoViewImpl(FontFactory fontFactory, TetrisController tetrisController,
-            ImageFactory imageFactory) {
-        tetris = tetrisController.getTetris();
-        defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
+            ImageFactory imageFactory, Tetris tetris) {
+        this.tetris = tetris;
 
-        panel = new JPanel(new GridBagLayout());
-        panel.setBackground(Color.BLACK);
-        panel.setOpaque(true);
+        defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
 
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
         final JLabel label = new JLabel(new ImageIcon(image));
-
-        panel.add(label);
 
         levelRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE);
         scoreRectangle = new Rectangle(0, BLOCK_SIZE * 4, BLOCK_SIZE * 6, BLOCK_SIZE);
@@ -112,16 +101,16 @@ public class TetrisInstanceInfoViewImpl implements TetrisInstanceInfoView {
         shapeTypeImageRectangles = shapeTypes.stream()
                 .collect(
                     Collectors.toMap(Function.identity(), this::createShapeTypeImageRectangle));
+
+        setLayout(new GridBagLayout());
+        setBackground(Color.BLACK);
+        setOpaque(true);
+        add(label);
     }
 
     @Override
     public void update() {
         SwingUtils.doInGraphics(image, this::doUpdate);
-    }
-
-    @Override
-    public Component getComponent() {
-        return panel;
     }
 
     private void doUpdate(Graphics2D graphics) {

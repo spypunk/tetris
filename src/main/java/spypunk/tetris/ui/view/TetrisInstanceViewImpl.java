@@ -6,7 +6,6 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -20,12 +19,9 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -41,8 +37,12 @@ import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.factory.ImageFactory;
 import spypunk.tetris.ui.util.SwingUtils;
 
-@Singleton
-public class TetrisInstanceViewImpl implements TetrisInstanceView {
+public class TetrisInstanceViewImpl extends TetrisInstanceView {
+
+    /**
+     *
+     */
+    private static final long serialVersionUID = -3487901883637598196L;
 
     private static final class TetrisInstanceViewKeyAdapter extends KeyAdapter {
 
@@ -85,8 +85,6 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
 
     private static final String GAME_OVER = "GAME OVER";
 
-    private final JPanel panel;
-
     private final BufferedImage image;
 
     private final Tetris tetris;
@@ -107,15 +105,15 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
 
     private final Map<ShapeType, Image> blockImages;
 
-    @Inject
     public TetrisInstanceViewImpl(FontFactory fontFactory, TetrisController tetrisController,
             TetrisInstanceStatisticsView tetrisInstanceStatisticsView,
             TetrisInstanceInfoView tetrisInstanceInfoView,
-            ImageFactory imageFactory) {
+            ImageFactory imageFactory,
+            Tetris tetris) {
         this.tetrisInstanceStatisticsView = tetrisInstanceStatisticsView;
         this.tetrisInstanceInfoView = tetrisInstanceInfoView;
 
-        tetris = tetrisController.getTetris();
+        this.tetris = tetris;
 
         frozenTetrisFont = fontFactory.createDefaultFont(TETRIS_FROZEN_FONT_SIZE);
 
@@ -137,16 +135,16 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
 
         final JLabel label = new JLabel(new ImageIcon(image));
 
-        panel = new JPanel(new BorderLayout(BLOCK_SIZE, 0));
-        panel.setFocusable(true);
-        panel.setBackground(Color.BLACK);
-        panel.setOpaque(true);
-        panel.setBorder(BorderFactory.createEmptyBorder(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE));
-        panel.addKeyListener(new TetrisInstanceViewKeyAdapter(tetrisController));
+        setLayout(new BorderLayout(BLOCK_SIZE, 0));
+        setFocusable(true);
+        setBackground(Color.BLACK);
+        setOpaque(true);
+        setBorder(BorderFactory.createEmptyBorder(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE));
+        addKeyListener(new TetrisInstanceViewKeyAdapter(tetrisController));
 
-        panel.add(label, BorderLayout.CENTER);
-        panel.add(tetrisInstanceStatisticsView.getComponent(), BorderLayout.WEST);
-        panel.add(tetrisInstanceInfoView.getComponent(), BorderLayout.EAST);
+        add(label, BorderLayout.CENTER);
+        add(tetrisInstanceStatisticsView, BorderLayout.WEST);
+        add(tetrisInstanceInfoView, BorderLayout.EAST);
     }
 
     @Override
@@ -156,12 +154,7 @@ public class TetrisInstanceViewImpl implements TetrisInstanceView {
         tetrisInstanceStatisticsView.update();
         tetrisInstanceInfoView.update();
 
-        panel.repaint();
-    }
-
-    @Override
-    public Component getComponent() {
-        return panel;
+        repaint();
     }
 
     private void renderBlocks(final Graphics2D graphics) {

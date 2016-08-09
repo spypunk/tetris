@@ -6,7 +6,6 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_SIZE;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
@@ -17,11 +16,8 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import com.google.common.collect.Lists;
 
@@ -32,8 +28,7 @@ import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.factory.ImageFactory;
 import spypunk.tetris.ui.util.SwingUtils;
 
-@Singleton
-public class TetrisInstanceStatisticsViewImpl implements TetrisInstanceStatisticsView {
+public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsView {
 
     private static class StatisticsRow {
 
@@ -63,9 +58,9 @@ public class TetrisInstanceStatisticsViewImpl implements TetrisInstanceStatistic
         }
     }
 
-    private static final String STATISTICS = "STATISTICS";
+    private static final long serialVersionUID = 288335810615538818L;
 
-    private final JPanel panel;
+    private static final String STATISTICS = "STATISTICS";
 
     private final BufferedImage image;
 
@@ -79,10 +74,10 @@ public class TetrisInstanceStatisticsViewImpl implements TetrisInstanceStatistic
 
     private final Map<ShapeType, StatisticsRow> statisticsRows;
 
-    @Inject
     public TetrisInstanceStatisticsViewImpl(FontFactory fontFactory, TetrisController tetrisController,
-            ImageFactory imageFactory) {
-        tetris = tetrisController.getTetris();
+            ImageFactory imageFactory, Tetris tetris) {
+        this.tetris = tetris;
+
         defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
 
         statisticsRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE * 15);
@@ -92,26 +87,20 @@ public class TetrisInstanceStatisticsViewImpl implements TetrisInstanceStatistic
                 .collect(
                     Collectors.toMap(Function.identity(), shapeType -> createStatisticRow(imageFactory, shapeType)));
 
-        panel = new JPanel(new GridBagLayout());
-        panel.setBackground(Color.BLACK);
-        panel.setOpaque(true);
-
         image = new BufferedImage(statisticsRectangle.width + 1, statisticsRectangle.height + BLOCK_SIZE + 1,
                 BufferedImage.TYPE_INT_ARGB);
 
         final JLabel label = new JLabel(new ImageIcon(image));
 
-        panel.add(label);
+        setLayout(new GridBagLayout());
+        setBackground(Color.BLACK);
+        setOpaque(true);
+        add(label);
     }
 
     @Override
     public void update() {
         SwingUtils.doInGraphics(image, this::renderStatistics);
-    }
-
-    @Override
-    public Component getComponent() {
-        return panel;
     }
 
     private StatisticsRow createStatisticRow(ImageFactory imageFactory, ShapeType shapeType) {

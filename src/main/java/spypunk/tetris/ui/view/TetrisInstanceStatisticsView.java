@@ -1,5 +1,8 @@
 package spypunk.tetris.ui.view;
 
-public interface TetrisInstanceStatisticsView extends View {
+import javax.swing.JPanel;
 
+public abstract class TetrisInstanceStatisticsView extends JPanel implements View {
+
+    private static final long serialVersionUID = 7364205373034584453L;
 }

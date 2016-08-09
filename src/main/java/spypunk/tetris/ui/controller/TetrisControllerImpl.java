@@ -20,6 +20,7 @@ import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.model.Movement;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.service.TetrisService;
+import spypunk.tetris.ui.factory.TetrisViewFactory;
 import spypunk.tetris.ui.util.SwingUtils;
 import spypunk.tetris.ui.view.TetrisView;
 
@@ -27,6 +28,8 @@ import spypunk.tetris.ui.view.TetrisView;
 public class TetrisControllerImpl implements TetrisController {
 
     private static final int RENDER_PERIOD = 1000 / 60;
+
+    private final TetrisView tetrisView;
 
     private final Tetris tetris;
 
@@ -42,14 +45,12 @@ public class TetrisControllerImpl implements TetrisController {
     private ScheduledExecutorService scheduledExecutorService;
 
     @Inject
-    private TetrisView tetrisView;
-
-    @Inject
     private TetrisService tetrisService;
 
     @Inject
-    public TetrisControllerImpl(TetrisFactory tetrisFactory) {
+    public TetrisControllerImpl(TetrisFactory tetrisFactory, TetrisViewFactory tetrisViewFactory) {
         tetris = tetrisFactory.createTetris();
+        tetrisView = tetrisViewFactory.createTetrisView(tetris);
     }
 
     @Override
@@ -99,11 +100,6 @@ public class TetrisControllerImpl implements TetrisController {
     @Override
     public void onURLOpen() {
         SwingUtils.openURI(tetris.getProjectURI());
-    }
-
-    @Override
-    public Tetris getTetris() {
-        return tetris;
     }
 
     private void onGameLoop() {
