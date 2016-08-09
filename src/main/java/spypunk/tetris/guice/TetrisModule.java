@@ -8,9 +8,6 @@
 
 package spypunk.tetris.guice;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-
 import com.google.inject.AbstractModule;
 
 import spypunk.tetris.factory.ShapeFactory;
@@ -32,7 +29,6 @@ public class TetrisModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(ScheduledExecutorService.class).toInstance(Executors.newSingleThreadScheduledExecutor());
         bind(TetrisService.class).to(TetrisServiceImpl.class);
         bind(ShapeFactory.class).to(ShapeFactoryImpl.class);
         bind(TetrisController.class).to(TetrisControllerImpl.class);

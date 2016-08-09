@@ -140,6 +140,7 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
         setBackground(Color.BLACK);
         setOpaque(true);
         setBorder(BorderFactory.createEmptyBorder(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE));
+        setIgnoreRepaint(true);
         addKeyListener(new TetrisInstanceViewKeyAdapter(tetrisController));
 
         add(label, BorderLayout.CENTER);

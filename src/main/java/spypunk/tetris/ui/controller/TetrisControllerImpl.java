@@ -9,14 +9,13 @@
 package spypunk.tetris.ui.controller;
 
 import java.util.Optional;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import spypunk.tetris.factory.TetrisFactory;
+import spypunk.tetris.gameloop.TetrisGameLoop;
+import spypunk.tetris.gameloop.TetrisGameLoopListener;
 import spypunk.tetris.model.Movement;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.service.TetrisService;
@@ -25,24 +24,19 @@ import spypunk.tetris.ui.util.SwingUtils;
 import spypunk.tetris.ui.view.TetrisView;
 
 @Singleton
-public class TetrisControllerImpl implements TetrisController {
-
-    private static final int RENDER_PERIOD = 1000 / 60;
+public class TetrisControllerImpl implements TetrisController, TetrisGameLoopListener {
 
     private final TetrisView tetrisView;
 
     private final Tetris tetris;
 
-    private volatile boolean newGame = true;
+    private final TetrisGameLoop tetrisGameLoop = new TetrisGameLoop(this);
+
+    private volatile boolean newGame;
 
     private volatile Optional<Movement> movement = Optional.empty();
 
     private volatile boolean pause;
-
-    private Future<?> loopThread;
-
-    @Inject
-    private ScheduledExecutorService scheduledExecutorService;
 
     @Inject
     private TetrisService tetrisService;
@@ -55,16 +49,16 @@ public class TetrisControllerImpl implements TetrisController {
 
     @Override
     public void start() {
+        tetrisService.newGame(tetris);
+
         tetrisView.show();
 
-        loopThread = scheduledExecutorService.scheduleAtFixedRate(() -> onGameLoop(), 0, RENDER_PERIOD,
-            TimeUnit.MILLISECONDS);
+        tetrisGameLoop.start();
     }
 
     @Override
     public void onWindowClosed() {
-        loopThread.cancel(false);
-        scheduledExecutorService.shutdown();
+        tetrisGameLoop.stop();
     }
 
     @Override
@@ -102,12 +96,17 @@ public class TetrisControllerImpl implements TetrisController {
         SwingUtils.openURI(tetris.getProjectURI());
     }
 
-    private void onGameLoop() {
+    @Override
+    public void update() {
         handleNewGame();
         handleMovement();
         handlePause();
 
         tetrisService.update(tetris);
+    }
+
+    @Override
+    public void render() {
         tetrisView.update();
     }
 
