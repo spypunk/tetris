@@ -74,17 +74,13 @@ public class TetrisInstance {
 
     }
 
-    private static final int INITIAL_SPEED = 1000;
+    private static final int INITIAL_SPEED = 48;
 
     private Map<Point, Optional<Block>> blocks;
 
     private Shape currentShape;
 
     private Shape nextShape;
-
-    private long lastMoveTime;
-
-    private long lastLockedTime;
 
     private Optional<Movement> movement = Optional.empty();
 
@@ -99,6 +95,10 @@ public class TetrisInstance {
     private int speed = INITIAL_SPEED;
 
     private State state;
+
+    private int currentGravityFrame = 0;
+
+    private int currentNextShapeFrame = 0;
 
     public Map<Point, Optional<Block>> getBlocks() {
         return blocks;
@@ -122,14 +122,6 @@ public class TetrisInstance {
 
     public void setNextShape(Shape nextShape) {
         this.nextShape = nextShape;
-    }
-
-    public long getLastMoveTime() {
-        return lastMoveTime;
-    }
-
-    public void setLastMoveTime(long lastMoveTime) {
-        this.lastMoveTime = lastMoveTime;
     }
 
     public Optional<Movement> getMovement() {
@@ -180,19 +172,27 @@ public class TetrisInstance {
         this.speed = speed;
     }
 
-    public long getLastLockedTime() {
-        return lastLockedTime;
-    }
-
-    public void setLastLockedTime(long lastLockedTime) {
-        this.lastLockedTime = lastLockedTime;
-    }
-
     public State getState() {
         return state;
     }
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public int getCurrentGravityFrame() {
+        return currentGravityFrame;
+    }
+
+    public void setCurrentGravityFrame(int currentGravityFrame) {
+        this.currentGravityFrame = currentGravityFrame;
+    }
+
+    public int getCurrentNextShapeFrame() {
+        return currentNextShapeFrame;
+    }
+
+    public void setCurrentNextShapeFrame(int currentNextShapeFrame) {
+        this.currentNextShapeFrame = currentNextShapeFrame;
     }
 }

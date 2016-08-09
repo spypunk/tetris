@@ -70,6 +70,8 @@ public class TetrisServiceImpl implements TetrisService {
     public void update(Tetris tetris) {
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
+        tetrisInstance.setCurrentGravityFrame(tetrisInstance.getCurrentGravityFrame() + 1);
+
         if (isTetrisInstanceRunning(tetrisInstance) && handleNextShape(tetrisInstance)
                 && handleMovement(tetrisInstance)) {
             handleGravity(tetrisInstance);
@@ -95,6 +97,8 @@ public class TetrisServiceImpl implements TetrisService {
         if (tetrisInstance.getCurrentShape() != null) {
             return true;
         }
+
+        tetrisInstance.setCurrentNextShapeFrame(tetrisInstance.getCurrentNextShapeFrame() + 1);
 
         if (isTimeToGetNextShape(tetrisInstance)) {
             clearCompleteRows(tetrisInstance);
@@ -130,7 +134,7 @@ public class TetrisServiceImpl implements TetrisService {
 
         moveShape(tetrisInstance, Movement.DOWN);
 
-        tetrisInstance.setLastMoveTime(now());
+        tetrisInstance.setCurrentGravityFrame(0);
     }
 
     private boolean checkShapeIsLocked(TetrisInstance tetrisInstance) {
@@ -142,7 +146,7 @@ public class TetrisServiceImpl implements TetrisService {
             tetrisInstance.setState(State.GAME_OVER);
         } else {
             tetrisInstance.setCurrentShape(null);
-            tetrisInstance.setLastLockedTime(now());
+            tetrisInstance.setCurrentNextShapeFrame(0);
         }
 
         return true;
@@ -159,9 +163,10 @@ public class TetrisServiceImpl implements TetrisService {
                 .forEach(block -> tetrisInstance.getBlocks().put(block.getLocation(), Optional.of(block)));
 
         tetrisInstance.setNextShape(shapeFactory.createRandomShape());
-        tetrisInstance.setLastMoveTime(now());
 
         updateStatistics(tetrisInstance);
+
+        tetrisInstance.setCurrentGravityFrame(0);
     }
 
     private void randomizeShapeStartX(Shape shape) {
@@ -187,15 +192,11 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private boolean isTimeToHandleGravity(TetrisInstance tetrisInstance) {
-        return isTimeTo(tetrisInstance, tetrisInstance.getLastMoveTime());
+        return tetrisInstance.getCurrentGravityFrame() > tetrisInstance.getSpeed();
     }
 
     private boolean isTimeToGetNextShape(TetrisInstance tetrisInstance) {
-        return isTimeTo(tetrisInstance, tetrisInstance.getLastLockedTime());
-    }
-
-    private boolean isTimeTo(TetrisInstance tetrisInstance, long lastTime) {
-        return now() - lastTime > tetrisInstance.getSpeed();
+        return tetrisInstance.getCurrentNextShapeFrame() > tetrisInstance.getSpeed();
     }
 
     private void clearCompleteRows(TetrisInstance tetrisInstance) {
