@@ -70,12 +70,10 @@ public class TetrisServiceImpl implements TetrisService {
     public void update(Tetris tetris) {
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
-        if (!isTetrisInstanceRunning(tetrisInstance) || !handleNextShape(tetrisInstance)
-                || !handleMovement(tetrisInstance)) {
-            return;
+        if (isTetrisInstanceRunning(tetrisInstance) && handleNextShape(tetrisInstance)
+                && handleMovement(tetrisInstance)) {
+            handleGravity(tetrisInstance);
         }
-
-        handleGravity(tetrisInstance);
     }
 
     @Override
