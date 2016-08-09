@@ -101,7 +101,7 @@ public class TetrisServiceImpl implements TetrisService {
             return true;
         }
 
-        if (isTimeToGetNextShape(tetrisInstance)) {
+        if (isTimeToHandleGravity(tetrisInstance)) {
             clearCompleteRows(tetrisInstance);
             getNextShape(tetrisInstance);
             checkShapeIsLocked(tetrisInstance);
@@ -193,10 +193,6 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private boolean isTimeToHandleGravity(TetrisInstance tetrisInstance) {
-        return tetrisInstance.getCurrentGravityFrame() > tetrisInstance.getSpeed();
-    }
-
-    private boolean isTimeToGetNextShape(TetrisInstance tetrisInstance) {
         return tetrisInstance.getCurrentGravityFrame() > tetrisInstance.getSpeed();
     }
 
@@ -310,10 +306,6 @@ public class TetrisServiceImpl implements TetrisService {
         }
 
         return true;
-    }
-
-    private long now() {
-        return System.currentTimeMillis();
     }
 
     private boolean isTetrisInstanceRunning(TetrisInstance tetrisInstance) {
