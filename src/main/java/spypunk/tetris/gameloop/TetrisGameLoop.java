@@ -11,8 +11,6 @@ public final class TetrisGameLoop {
 
         private static final int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
 
-        private static final int MAX_FRAMESKIP = 5;
-
         private final TetrisGameLoopListener tetrisGameLoopListener;
 
         private volatile boolean running = true;
@@ -24,16 +22,10 @@ public final class TetrisGameLoop {
         @Override
         public void run() {
             double nextTick = System.currentTimeMillis();
-            int loops;
 
             while (running) {
-                loops = 0;
-
-                while (System.currentTimeMillis() > nextTick && loops < MAX_FRAMESKIP) {
+                for (; System.currentTimeMillis() > nextTick; nextTick += SKIP_TICKS) {
                     tetrisGameLoopListener.update();
-
-                    nextTick += SKIP_TICKS;
-                    loops++;
                 }
 
                 tetrisGameLoopListener.render();
