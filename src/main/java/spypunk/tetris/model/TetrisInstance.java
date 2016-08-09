@@ -98,8 +98,6 @@ public class TetrisInstance {
 
     private int currentGravityFrame = 0;
 
-    private int currentNextShapeFrame = 0;
-
     public Map<Point, Optional<Block>> getBlocks() {
         return blocks;
     }
@@ -186,13 +184,5 @@ public class TetrisInstance {
 
     public void setCurrentGravityFrame(int currentGravityFrame) {
         this.currentGravityFrame = currentGravityFrame;
-    }
-
-    public int getCurrentNextShapeFrame() {
-        return currentNextShapeFrame;
-    }
-
-    public void setCurrentNextShapeFrame(int currentNextShapeFrame) {
-        this.currentNextShapeFrame = currentNextShapeFrame;
     }
 }

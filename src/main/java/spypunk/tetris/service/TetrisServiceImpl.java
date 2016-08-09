@@ -101,8 +101,6 @@ public class TetrisServiceImpl implements TetrisService {
             return true;
         }
 
-        tetrisInstance.setCurrentNextShapeFrame(tetrisInstance.getCurrentNextShapeFrame() + 1);
-
         if (isTimeToGetNextShape(tetrisInstance)) {
             clearCompleteRows(tetrisInstance);
             getNextShape(tetrisInstance);
@@ -149,7 +147,7 @@ public class TetrisServiceImpl implements TetrisService {
             tetrisInstance.setState(State.GAME_OVER);
         } else {
             tetrisInstance.setCurrentShape(null);
-            tetrisInstance.setCurrentNextShapeFrame(0);
+            tetrisInstance.setCurrentGravityFrame(0);
         }
 
         return true;
@@ -199,7 +197,7 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private boolean isTimeToGetNextShape(TetrisInstance tetrisInstance) {
-        return tetrisInstance.getCurrentNextShapeFrame() > tetrisInstance.getSpeed();
+        return tetrisInstance.getCurrentGravityFrame() > tetrisInstance.getSpeed();
     }
 
     private void clearCompleteRows(TetrisInstance tetrisInstance) {
