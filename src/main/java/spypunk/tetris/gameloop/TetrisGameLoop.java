@@ -21,7 +21,7 @@ public final class TetrisGameLoop {
 
         @Override
         public void run() {
-            double nextTick = System.currentTimeMillis();
+            long nextTick = System.currentTimeMillis();
 
             while (running) {
                 for (; System.currentTimeMillis() > nextTick; nextTick += SKIP_TICKS) {
