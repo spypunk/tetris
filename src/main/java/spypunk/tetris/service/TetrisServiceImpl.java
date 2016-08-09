@@ -104,6 +104,7 @@ public class TetrisServiceImpl implements TetrisService {
         if (isTimeToHandleGravity(tetrisInstance)) {
             clearCompleteRows(tetrisInstance);
             getNextShape(tetrisInstance);
+            resetCurrentGravityFrame(tetrisInstance);
             checkShapeIsLocked(tetrisInstance);
         }
 
@@ -135,7 +136,7 @@ public class TetrisServiceImpl implements TetrisService {
 
         moveShape(tetrisInstance, Movement.DOWN);
 
-        tetrisInstance.setCurrentGravityFrame(0);
+        resetCurrentGravityFrame(tetrisInstance);
     }
 
     private boolean checkShapeIsLocked(TetrisInstance tetrisInstance) {
@@ -147,7 +148,7 @@ public class TetrisServiceImpl implements TetrisService {
             tetrisInstance.setState(State.GAME_OVER);
         } else {
             tetrisInstance.setCurrentShape(null);
-            tetrisInstance.setCurrentGravityFrame(0);
+            resetCurrentGravityFrame(tetrisInstance);
         }
 
         return true;
@@ -166,8 +167,6 @@ public class TetrisServiceImpl implements TetrisService {
         tetrisInstance.setNextShape(shapeFactory.createRandomShape());
 
         updateStatistics(tetrisInstance);
-
-        tetrisInstance.setCurrentGravityFrame(0);
     }
 
     private void randomizeShapeStartX(Shape shape) {
@@ -314,5 +313,9 @@ public class TetrisServiceImpl implements TetrisService {
 
     private boolean isTetrisInstanceState(TetrisInstance tetrisInstance, State state) {
         return state.equals(tetrisInstance.getState());
+    }
+
+    private void resetCurrentGravityFrame(TetrisInstance tetrisInstance) {
+        tetrisInstance.setCurrentGravityFrame(0);
     }
 }
