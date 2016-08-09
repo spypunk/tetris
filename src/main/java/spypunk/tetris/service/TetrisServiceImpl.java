@@ -70,10 +70,13 @@ public class TetrisServiceImpl implements TetrisService {
     public void update(Tetris tetris) {
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
+        if (!isTetrisInstanceRunning(tetrisInstance)) {
+            return;
+        }
+
         tetrisInstance.setCurrentGravityFrame(tetrisInstance.getCurrentGravityFrame() + 1);
 
-        if (isTetrisInstanceRunning(tetrisInstance) && handleNextShape(tetrisInstance)
-                && handleMovement(tetrisInstance)) {
+        if (handleNextShape(tetrisInstance) && handleMovement(tetrisInstance)) {
             handleGravity(tetrisInstance);
         }
     }
