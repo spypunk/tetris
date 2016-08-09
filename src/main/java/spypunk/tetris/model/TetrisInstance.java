@@ -68,13 +68,16 @@ public class TetrisInstance {
             return this;
         }
 
+        public Builder setSpeed(int speed) {
+            tetrisInstance.setSpeed(speed);
+            return this;
+        }
+
         public TetrisInstance build() {
             return tetrisInstance;
         }
 
     }
-
-    private static final int INITIAL_SPEED = 48;
 
     private Map<Point, Optional<Block>> blocks;
 
@@ -92,7 +95,7 @@ public class TetrisInstance {
 
     private int completedRows;
 
-    private int speed = INITIAL_SPEED;
+    private int speed;
 
     private State state;
 
