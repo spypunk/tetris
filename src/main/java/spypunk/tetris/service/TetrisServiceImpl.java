@@ -60,7 +60,7 @@ public class TetrisServiceImpl implements TetrisService {
         final Map<ShapeType, Integer> statistics = Lists.newArrayList(ShapeType.values()).stream()
                 .collect(Collectors.toMap(shapeType -> shapeType, shapeType -> 0));
 
-        final int speed = getSpeed(0);
+        final int speed = getLevelSpeed(0);
 
         final TetrisInstance tetrisInstance = TetrisInstance.Builder.instance()
                 .setNextShape(shapeFactory.createRandomShape())
@@ -102,16 +102,9 @@ public class TetrisServiceImpl implements TetrisService {
 
     private void initializeLevelSpeeds() {
         levelSpeeds.put(0, 48);
-        levelSpeeds.put(1, 43);
-        levelSpeeds.put(2, 38);
-        levelSpeeds.put(3, 33);
-        levelSpeeds.put(4, 28);
-        levelSpeeds.put(5, 23);
-        levelSpeeds.put(6, 18);
-        levelSpeeds.put(7, 13);
-        levelSpeeds.put(8, 8);
         levelSpeeds.put(9, 6);
 
+        IntStream.range(1, 9).forEach(level -> levelSpeeds.put(level, levelSpeeds.get(0) - 5 * level));
         IntStream.range(10, 13).forEach(level -> levelSpeeds.put(level, 5));
         IntStream.range(13, 16).forEach(level -> levelSpeeds.put(level, 4));
         IntStream.range(16, 19).forEach(level -> levelSpeeds.put(level, 3));
@@ -241,7 +234,7 @@ public class TetrisServiceImpl implements TetrisService {
         if (completedRows >= ROWS_PER_LEVEL * nextLevel) {
             tetrisInstance.setLevel(nextLevel);
 
-            final int speed = getSpeed(nextLevel);
+            final int speed = getLevelSpeed(nextLevel);
 
             tetrisInstance.setSpeed(speed);
         }
@@ -332,7 +325,7 @@ public class TetrisServiceImpl implements TetrisService {
         tetrisInstance.setCurrentGravityFrame(0);
     }
 
-    private int getSpeed(int level) {
+    private int getLevelSpeed(int level) {
         return level < 29 ? levelSpeeds.get(level) : 1;
     }
 }
