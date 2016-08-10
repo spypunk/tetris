@@ -30,11 +30,11 @@ public class TetrisControllerImpl implements TetrisController, TetrisGameLoopLis
 
     private final Tetris tetris;
 
-    private final TetrisGameLoop tetrisGameLoop = new TetrisGameLoop(this);
+    private final TetrisGameLoop tetrisGameLoop;
 
     private volatile boolean newGame;
 
-    private volatile Optional<Movement> movement = Optional.empty();
+    private volatile Optional<Movement> movement;
 
     private volatile boolean pause;
 
@@ -45,6 +45,8 @@ public class TetrisControllerImpl implements TetrisController, TetrisGameLoopLis
     public TetrisControllerImpl(TetrisFactory tetrisFactory, TetrisViewFactory tetrisViewFactory) {
         tetris = tetrisFactory.createTetris();
         tetrisView = tetrisViewFactory.createTetrisView(tetris);
+        tetrisGameLoop = new TetrisGameLoop(this);
+        movement = Optional.empty();
     }
 
     @Override

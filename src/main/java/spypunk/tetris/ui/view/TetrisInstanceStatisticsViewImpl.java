@@ -75,11 +75,13 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
 
     private final Map<ShapeType, StatisticsRow> statisticsRows;
 
-    private final List<ShapeType> shapeTypes = Lists.newArrayList(ShapeType.values());
+    private final List<ShapeType> shapeTypes;
 
     public TetrisInstanceStatisticsViewImpl(FontFactory fontFactory, TetrisController tetrisController,
             ImageFactory imageFactory, Tetris tetris) {
         this.tetris = tetris;
+
+        shapeTypes = Lists.newArrayList(ShapeType.values());
 
         defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
 

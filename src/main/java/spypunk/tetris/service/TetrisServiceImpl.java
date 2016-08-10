@@ -44,16 +44,12 @@ public class TetrisServiceImpl implements TetrisService {
 
     private final Map<Integer, Integer> scorePerRows = ImmutableMap.of(1, 40, 2, 100, 3, 300, 4, 1200);
 
-    private final Map<Integer, Integer> levelSpeeds = Maps.newHashMap();
+    private final Map<Integer, Integer> levelSpeeds = createLevelSpeeds();
 
     private final Random random = new Random();
 
     @Inject
     private ShapeFactory shapeFactory;
-
-    public TetrisServiceImpl() {
-        initializeLevelSpeeds();
-    }
 
     @Override
     public void newGame(Tetris tetris) {
@@ -98,19 +94,6 @@ public class TetrisServiceImpl implements TetrisService {
         if (isTetrisInstanceRunning(tetrisInstance) && tetrisInstance.getCurrentShape() != null) {
             tetrisInstance.setMovement(Optional.of(movement));
         }
-    }
-
-    private void initializeLevelSpeeds() {
-        final int initialSpeed = 48;
-
-        levelSpeeds.put(0, initialSpeed);
-        levelSpeeds.put(9, 6);
-
-        IntStream.range(1, 9).forEach(level -> levelSpeeds.put(level, initialSpeed - 5 * level));
-        IntStream.range(10, 13).forEach(level -> levelSpeeds.put(level, 5));
-        IntStream.range(13, 16).forEach(level -> levelSpeeds.put(level, 4));
-        IntStream.range(16, 19).forEach(level -> levelSpeeds.put(level, 3));
-        IntStream.range(19, 29).forEach(level -> levelSpeeds.put(level, 2));
     }
 
     private boolean handleNextShape(TetrisInstance tetrisInstance) {
@@ -319,6 +302,23 @@ public class TetrisServiceImpl implements TetrisService {
 
     private void resetCurrentGravityFrame(TetrisInstance tetrisInstance) {
         tetrisInstance.setCurrentGravityFrame(0);
+    }
+
+    private static Map<Integer, Integer> createLevelSpeeds() {
+        final int initialSpeed = 48;
+
+        final Map<Integer, Integer> levelSpeeds = Maps.newHashMap();
+
+        levelSpeeds.put(0, initialSpeed);
+        levelSpeeds.put(9, 6);
+
+        IntStream.range(1, 9).forEach(level -> levelSpeeds.put(level, initialSpeed - 5 * level));
+        IntStream.range(10, 13).forEach(level -> levelSpeeds.put(level, 5));
+        IntStream.range(13, 16).forEach(level -> levelSpeeds.put(level, 4));
+        IntStream.range(16, 19).forEach(level -> levelSpeeds.put(level, 3));
+        IntStream.range(19, 29).forEach(level -> levelSpeeds.put(level, 2));
+
+        return levelSpeeds;
     }
 
     private int getLevelSpeed(int level) {

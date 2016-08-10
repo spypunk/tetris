@@ -39,9 +39,6 @@ import spypunk.tetris.ui.util.SwingUtils;
 
 public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = -3487901883637598196L;
 
     private static final class TetrisInstanceViewKeyAdapter extends KeyAdapter {
