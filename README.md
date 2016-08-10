@@ -1,8 +1,5 @@
 # tetris - Just another Tetris™ clone
-[![License](https://img.shields.io/badge/license-WTFPL-blue.svg)](http://www.wtfpl.net/) ![Maturity](https://img.shields.io/badge/maturity-beta-yellow.svg) [![Build Status](https://travis-ci.org/spypunk/tetris.svg?branch=master)](https://travis-ci.org/spypunk/tetris)
-
-
-
+[![License](https://img.shields.io/badge/license-WTFPL-blue.svg)](http://www.wtfpl.net/) ![Maturity](https://img.shields.io/badge/maturity-beta-yellow.svg) [![Release](https://img.shields.io/badge/latest%20release-0.7.0-green.svg)](https://github.com/spypunk/tetris/releases/tag/0.7.0) ![Java](https://img.shields.io/badge/java-8-red.svg) [![Build Status](https://travis-ci.org/spypunk/tetris.svg?branch=master)](https://travis-ci.org/spypunk/tetris)
 
 ## How it looks ?
 
