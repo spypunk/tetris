@@ -1,1 +1,1 @@
-java -jar tetris.jar
+start javaw -jar tetris.jar
