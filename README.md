@@ -1,4 +1,5 @@
-# tetris - Just another Tetris™ clone [![License](https://img.shields.io/badge/license-WTFPL-blue.svg)](http://www.wtfpl.net/) ![Maturity](https://img.shields.io/badge/maturity-beta-yellow.svg) [![Build Status](https://travis-ci.org/spypunk/tetris.svg?branch=master)](https://travis-ci.org/spypunk/tetris)
+# tetris - Just another Tetris™ clone
+[![License](https://img.shields.io/badge/license-WTFPL-blue.svg)](http://www.wtfpl.net/) ![Maturity](https://img.shields.io/badge/maturity-beta-yellow.svg) [![Build Status](https://travis-ci.org/spypunk/tetris.svg?branch=master)](https://travis-ci.org/spypunk/tetris)
 
 
 
