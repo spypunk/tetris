@@ -270,8 +270,8 @@ public class TetrisServiceImpl implements TetrisService {
     private boolean isRowComplete(TetrisInstance tetrisInstance, int row) {
         final Map<Point, Block> blocks = tetrisInstance.getBlocks();
 
-        return IntStream.range(0, WIDTH).mapToObj(column -> blocks.get(new Point(column, row)))
-                .allMatch(block -> block != null);
+        return IntStream.range(0, WIDTH)
+                .allMatch(column -> blocks.containsKey(new Point(column, row)));
     }
 
     private boolean moveShape(TetrisInstance tetrisInstance, Movement movement) {
