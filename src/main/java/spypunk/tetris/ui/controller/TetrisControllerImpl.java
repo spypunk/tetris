@@ -27,6 +27,8 @@ import spypunk.tetris.ui.view.TetrisView;
 @Singleton
 public class TetrisControllerImpl implements TetrisController, GameLoopListener {
 
+    private final TetrisService tetrisService;
+
     private final TetrisView tetrisView;
 
     private final Tetris tetris;
@@ -40,11 +42,9 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
     private volatile boolean pause;
 
     @Inject
-    private TetrisService tetrisService;
-
-    @Inject
     public TetrisControllerImpl(TetrisFactory tetrisFactory, TetrisViewFactory tetrisViewFactory,
-            GameLoopFactory gameLoopFactory) {
+            GameLoopFactory gameLoopFactory, TetrisService tetrisService) {
+        this.tetrisService = tetrisService;
         tetris = tetrisFactory.createTetris();
         tetrisView = tetrisViewFactory.createTetrisView(tetris);
         gameLoop = gameLoopFactory.createGameLoop(this);

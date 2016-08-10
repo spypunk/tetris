@@ -17,14 +17,19 @@ import spypunk.tetris.ui.view.TetrisViewImpl;
 @Singleton
 public class TetrisViewFactoryImpl implements TetrisViewFactory {
 
-    @Inject
-    private TetrisController tetrisController;
+    private final TetrisController tetrisController;
+
+    private final FontFactory fontFactory;
+
+    private final ImageFactory imageFactory;
 
     @Inject
-    private FontFactory fontFactory;
-
-    @Inject
-    private ImageFactory imageFactory;
+    public TetrisViewFactoryImpl(TetrisController tetrisController, FontFactory fontFactory,
+            ImageFactory imageFactory) {
+        this.tetrisController = tetrisController;
+        this.fontFactory = fontFactory;
+        this.imageFactory = imageFactory;
+    }
 
     @Override
     public TetrisView createTetrisView(Tetris tetris) {

@@ -17,7 +17,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
-import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import org.slf4j.Logger;
@@ -41,7 +40,6 @@ public class ImageFactoryImpl implements ImageFactory {
 
     private final Map<ShapeType, Image> shapeImages;
 
-    @Inject
     public ImageFactoryImpl() {
         final ArrayList<ShapeType> shapeTypes = Lists.newArrayList(ShapeType.values());
 

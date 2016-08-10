@@ -31,14 +31,9 @@ public class FontFactoryImpl implements FontFactory {
 
     private static final String URL_FONT_NAME = "russo_one.ttf";
 
-    private final Font defaultFont;
+    private final Font defaultFont = createFont(DEFAULT_FONT_NAME);
 
-    private final Font urlFont;
-
-    public FontFactoryImpl() {
-        defaultFont = loadFont(DEFAULT_FONT_NAME);
-        urlFont = loadFont(URL_FONT_NAME);
-    }
+    private final Font urlFont = createFont(URL_FONT_NAME);
 
     @Override
     public Font createDefaultFont(float size) {
@@ -50,10 +45,10 @@ public class FontFactoryImpl implements FontFactory {
         return urlFont.deriveFont(size);
     }
 
-    private Font loadFont(String fontName) {
+    private static Font createFont(String fontName) {
         final String resourceName = String.format("%s%s", FONTS_FOLDER, fontName);
 
-        try (InputStream inputStream = getClass().getResourceAsStream(resourceName)) {
+        try (InputStream inputStream = FontFactoryImpl.class.getResourceAsStream(resourceName)) {
             return Font.createFont(Font.TRUETYPE_FONT, inputStream);
         } catch (FontFormatException | IOException e) {
             LOGGER.error(e.getMessage(), e);
