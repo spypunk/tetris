@@ -96,7 +96,9 @@ public class TetrisInstance {
 
     private State state;
 
-    private int currentGravityFrame = 0;
+    private int currentGravityFrame;
+
+    private int currentMovementScore;
 
     public Map<Point, Block> getBlocks() {
         return blocks;
@@ -184,5 +186,13 @@ public class TetrisInstance {
 
     public void setCurrentGravityFrame(int currentGravityFrame) {
         this.currentGravityFrame = currentGravityFrame;
+    }
+
+    public int getCurrentMovementScore() {
+        return currentMovementScore;
+    }
+
+    public void setCurrentMovementScore(int currentMovementScore) {
+        this.currentMovementScore = currentMovementScore;
     }
 }

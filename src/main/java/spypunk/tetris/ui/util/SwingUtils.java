@@ -17,6 +17,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -77,19 +78,19 @@ public class SwingUtils {
     }
 
     public static Rectangle getCenteredTextRectangle(Graphics2D graphics, String text, Rectangle rectangle, Font font) {
-        final Rectangle textBounds = getTextBounds(graphics, text, font);
+        final Rectangle2D textBounds = getTextBounds(graphics, text, font);
 
-        final int x1 = rectangle.x + (rectangle.width - textBounds.width) / 2;
-        final int y1 = rectangle.y + (rectangle.height + textBounds.height) / 2;
+        final int x1 = (int) (rectangle.x + (rectangle.width - textBounds.getWidth()) / 2);
+        final int y1 = (int) (rectangle.y + (rectangle.height + textBounds.getHeight()) / 2);
 
-        return new Rectangle(x1, y1, textBounds.width, textBounds.height);
+        return new Rectangle(x1, y1, (int) textBounds.getWidth(), (int) textBounds.getHeight());
     }
 
-    public static Rectangle getTextBounds(Graphics2D graphics, String text, Font font) {
+    public static Rectangle2D getTextBounds(Graphics2D graphics, String text, Font font) {
         final FontRenderContext frc = graphics.getFontRenderContext();
         final GlyphVector gv = font.createGlyphVector(frc, text);
 
-        return gv.getPixelBounds(null, 0, 0);
+        return gv.getVisualBounds();
     }
 
     public static void drawImage(Graphics2D graphics, final Image image,

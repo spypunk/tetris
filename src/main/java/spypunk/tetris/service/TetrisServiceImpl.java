@@ -122,9 +122,17 @@ public class TetrisServiceImpl implements TetrisService {
 
         tetrisInstance.setMovement(Optional.empty());
 
-        final boolean canShapeMove = Movement.DOWN.equals(movement) || canShapeMove(tetrisInstance, movement);
+        final boolean isDownMovement = Movement.DOWN.equals(movement);
 
-        return canShapeMove ? moveShape(tetrisInstance, movement) : true;
+        if (isDownMovement || canShapeMove(tetrisInstance, movement)) {
+            if (isDownMovement) {
+                updateScoreWithCompletedMovement(tetrisInstance);
+            }
+
+            return moveShape(tetrisInstance, movement);
+        }
+
+        return true;
     }
 
     private void handleGravity(TetrisInstance tetrisInstance) {
@@ -206,7 +214,7 @@ public class TetrisServiceImpl implements TetrisService {
 
         tetrisInstance.setCompletedRows(tetrisInstance.getCompletedRows() + completedRows);
 
-        updateScore(tetrisInstance, completedRows);
+        updateScoreWithCompletedRows(tetrisInstance, completedRows);
         updateLevel(tetrisInstance);
     }
 
@@ -223,11 +231,15 @@ public class TetrisServiceImpl implements TetrisService {
         }
     }
 
-    private void updateScore(TetrisInstance tetrisInstance, int completedRows) {
+    private void updateScoreWithCompletedRows(TetrisInstance tetrisInstance, int completedRows) {
         final Integer rowsScore = scorePerRows.get(completedRows);
         final int score = tetrisInstance.getScore();
 
         tetrisInstance.setScore(score + rowsScore * (tetrisInstance.getLevel() + 1));
+    }
+
+    private void updateScoreWithCompletedMovement(TetrisInstance tetrisInstance) {
+        tetrisInstance.setScore(tetrisInstance.getScore() + 1);
     }
 
     private void clearCompleteRow(TetrisInstance tetrisInstance, Integer row) {
