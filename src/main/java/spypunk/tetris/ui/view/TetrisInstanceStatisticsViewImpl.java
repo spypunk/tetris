@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -74,6 +75,8 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
 
     private final Map<ShapeType, StatisticsRow> statisticsRows;
 
+    private final List<ShapeType> shapeTypes = Lists.newArrayList(ShapeType.values());
+
     public TetrisInstanceStatisticsViewImpl(FontFactory fontFactory, TetrisController tetrisController,
             ImageFactory imageFactory, Tetris tetris) {
         this.tetris = tetris;
@@ -83,7 +86,7 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
         statisticsRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE * 15);
         statisticsLabelRectangle = new Rectangle(0, 0, statisticsRectangle.width, BLOCK_SIZE);
 
-        statisticsRows = Lists.newArrayList(ShapeType.values()).stream()
+        statisticsRows = shapeTypes.stream()
                 .collect(
                     Collectors.toMap(Function.identity(), shapeType -> createStatisticRow(imageFactory, shapeType)));
 
@@ -130,7 +133,7 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
         graphics.drawRect(statisticsRectangle.x, statisticsRectangle.y, statisticsRectangle.width,
             statisticsRectangle.height);
 
-        Lists.newArrayList(ShapeType.values()).forEach(shapeType -> renderStatistic(graphics, shapeType));
+        shapeTypes.forEach(shapeType -> renderStatistic(graphics, shapeType));
     }
 
     private void renderStatistic(Graphics2D graphics, ShapeType shapeType) {
