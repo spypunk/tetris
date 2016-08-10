@@ -122,7 +122,7 @@ public class TetrisViewImpl implements TetrisView {
 
     @Override
     public void update() {
-        SwingUtils.doInAWTThread(() -> doUpdate(), true);
+        SwingUtils.doInAWTThread(this::doUpdate, true);
     }
 
     private void doUpdate() {

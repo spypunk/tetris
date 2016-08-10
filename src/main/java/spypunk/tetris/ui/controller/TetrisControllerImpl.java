@@ -13,9 +13,10 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import spypunk.tetris.factory.GameLoopFactory;
 import spypunk.tetris.factory.TetrisFactory;
-import spypunk.tetris.gameloop.TetrisGameLoop;
-import spypunk.tetris.gameloop.TetrisGameLoopListener;
+import spypunk.tetris.gameloop.GameLoop;
+import spypunk.tetris.gameloop.GameLoopListener;
 import spypunk.tetris.model.Movement;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.service.TetrisService;
@@ -24,13 +25,13 @@ import spypunk.tetris.ui.util.SwingUtils;
 import spypunk.tetris.ui.view.TetrisView;
 
 @Singleton
-public class TetrisControllerImpl implements TetrisController, TetrisGameLoopListener {
+public class TetrisControllerImpl implements TetrisController, GameLoopListener {
 
     private final TetrisView tetrisView;
 
     private final Tetris tetris;
 
-    private final TetrisGameLoop tetrisGameLoop;
+    private final GameLoop gameLoop;
 
     private volatile boolean newGame;
 
@@ -42,25 +43,26 @@ public class TetrisControllerImpl implements TetrisController, TetrisGameLoopLis
     private TetrisService tetrisService;
 
     @Inject
-    public TetrisControllerImpl(TetrisFactory tetrisFactory, TetrisViewFactory tetrisViewFactory) {
+    public TetrisControllerImpl(TetrisFactory tetrisFactory, TetrisViewFactory tetrisViewFactory,
+            GameLoopFactory gameLoopFactory) {
         tetris = tetrisFactory.createTetris();
         tetrisView = tetrisViewFactory.createTetrisView(tetris);
-        tetrisGameLoop = new TetrisGameLoop(this);
+        gameLoop = gameLoopFactory.createGameLoop(this);
         movement = Optional.empty();
     }
 
     @Override
     public void start() {
-        tetrisService.newGame(tetris);
+        tetrisService.newInstance(tetris);
 
         tetrisView.show();
 
-        tetrisGameLoop.start();
+        gameLoop.start();
     }
 
     @Override
     public void onWindowClosed() {
-        tetrisGameLoop.stop();
+        gameLoop.stop();
     }
 
     @Override
@@ -104,7 +106,7 @@ public class TetrisControllerImpl implements TetrisController, TetrisGameLoopLis
         handleMovement();
         handlePause();
 
-        tetrisService.update(tetris);
+        tetrisService.updateInstance(tetris.getTetrisInstance());
     }
 
     @Override
@@ -114,21 +116,21 @@ public class TetrisControllerImpl implements TetrisController, TetrisGameLoopLis
 
     private void handlePause() {
         if (pause) {
-            tetrisService.pause(tetris);
+            tetrisService.pauseInstance(tetris.getTetrisInstance());
             pause = false;
         }
     }
 
     private void handleMovement() {
         if (movement.isPresent()) {
-            tetrisService.updateMovement(tetris, movement.get());
+            tetrisService.updateInstanceMovement(tetris.getTetrisInstance(), movement.get());
             movement = Optional.empty();
         }
     }
 
     private void handleNewGame() {
         if (newGame) {
-            tetrisService.newGame(tetris);
+            tetrisService.newInstance(tetris);
             newGame = false;
         }
     }

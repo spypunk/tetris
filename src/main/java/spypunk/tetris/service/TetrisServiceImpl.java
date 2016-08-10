@@ -52,7 +52,7 @@ public class TetrisServiceImpl implements TetrisService {
     private ShapeFactory shapeFactory;
 
     @Override
-    public void newGame(Tetris tetris) {
+    public void newInstance(Tetris tetris) {
         final Map<ShapeType, Integer> statistics = Lists.newArrayList(ShapeType.values()).stream()
                 .collect(Collectors.toMap(shapeType -> shapeType, shapeType -> 0));
 
@@ -67,9 +67,7 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     @Override
-    public void update(Tetris tetris) {
-        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
-
+    public void updateInstance(TetrisInstance tetrisInstance) {
         if (!isTetrisInstanceRunning(tetrisInstance)) {
             return;
         }
@@ -82,15 +80,12 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     @Override
-    public void pause(Tetris tetris) {
-        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+    public void pauseInstance(TetrisInstance tetrisInstance) {
         tetrisInstance.setState(tetrisInstance.getState().onPause());
     }
 
     @Override
-    public void updateMovement(Tetris tetris, Movement movement) {
-        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
-
+    public void updateInstanceMovement(TetrisInstance tetrisInstance, Movement movement) {
         if (isTetrisInstanceRunning(tetrisInstance) && tetrisInstance.getCurrentShape() != null) {
             tetrisInstance.setMovement(Optional.of(movement));
         }

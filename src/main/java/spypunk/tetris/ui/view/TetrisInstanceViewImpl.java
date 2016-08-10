@@ -48,13 +48,13 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
         private final Map<Integer, Runnable> releasedKeyHandlers = Maps.newHashMap();
 
         public TetrisInstanceViewKeyAdapter(TetrisController tetrisController) {
-            pressedKeyHandlers.put(KeyEvent.VK_LEFT, () -> tetrisController.onMoveLeft());
-            pressedKeyHandlers.put(KeyEvent.VK_RIGHT, () -> tetrisController.onMoveRight());
-            pressedKeyHandlers.put(KeyEvent.VK_DOWN, () -> tetrisController.onMoveDown());
+            pressedKeyHandlers.put(KeyEvent.VK_LEFT, tetrisController::onMoveLeft);
+            pressedKeyHandlers.put(KeyEvent.VK_RIGHT, tetrisController::onMoveRight);
+            pressedKeyHandlers.put(KeyEvent.VK_DOWN, tetrisController::onMoveDown);
 
-            releasedKeyHandlers.put(KeyEvent.VK_SPACE, () -> tetrisController.onNewGame());
-            releasedKeyHandlers.put(KeyEvent.VK_P, () -> tetrisController.onPause());
-            releasedKeyHandlers.put(KeyEvent.VK_UP, () -> tetrisController.onRotate());
+            releasedKeyHandlers.put(KeyEvent.VK_SPACE, tetrisController::onNewGame);
+            releasedKeyHandlers.put(KeyEvent.VK_P, tetrisController::onPause);
+            releasedKeyHandlers.put(KeyEvent.VK_UP, tetrisController::onRotate);
         }
 
         @Override

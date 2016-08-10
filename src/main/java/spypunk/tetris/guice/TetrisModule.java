@@ -10,6 +10,8 @@ package spypunk.tetris.guice;
 
 import com.google.inject.AbstractModule;
 
+import spypunk.tetris.factory.GameLoopFactory;
+import spypunk.tetris.factory.GameLoopFactoryImpl;
 import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.factory.ShapeFactoryImpl;
 import spypunk.tetris.factory.TetrisFactory;
@@ -36,5 +38,6 @@ public class TetrisModule extends AbstractModule {
         bind(ImageFactory.class).to(ImageFactoryImpl.class);
         bind(TetrisFactory.class).to(TetrisFactoryImpl.class);
         bind(FontFactory.class).to(FontFactoryImpl.class);
+        bind(GameLoopFactory.class).to(GameLoopFactoryImpl.class);
     }
 }

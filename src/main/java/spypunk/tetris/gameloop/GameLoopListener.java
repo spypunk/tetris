@@ -1,6 +1,6 @@
 package spypunk.tetris.gameloop;
 
-public interface TetrisGameLoopListener {
+public interface GameLoopListener {
 
     void onUpdate();
 
