@@ -139,11 +139,9 @@ public class TetrisServiceImpl implements TetrisService {
 
         tetrisInstance.setMovement(Optional.empty());
 
-        if (Movement.DOWN.equals(movement) || canShapeMove(tetrisInstance, movement)) {
-            return moveShape(tetrisInstance, movement);
-        }
+        final boolean canShapeMove = Movement.DOWN.equals(movement) || canShapeMove(tetrisInstance, movement);
 
-        return true;
+        return canShapeMove ? moveShape(tetrisInstance, movement) : true;
     }
 
     private void handleGravity(TetrisInstance tetrisInstance) {
@@ -280,11 +278,7 @@ public class TetrisServiceImpl implements TetrisService {
 
         tetrisInstance.setCurrentShape(newShape);
 
-        if (checkShapeIsLocked(tetrisInstance)) {
-            return false;
-        }
-
-        return true;
+        return !checkShapeIsLocked(tetrisInstance);
     }
 
     private void moveBlockDown(TetrisInstance tetrisInstance, Block block) {
