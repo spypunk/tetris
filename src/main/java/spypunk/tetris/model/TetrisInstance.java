@@ -12,6 +12,8 @@ import java.awt.Point;
 import java.util.Map;
 import java.util.Optional;
 
+import com.google.common.collect.Maps;
+
 public class TetrisInstance {
 
     public enum State {
@@ -48,11 +50,6 @@ public class TetrisInstance {
             return new Builder();
         }
 
-        public Builder setBlocks(Map<Point, Optional<Block>> blocks) {
-            tetrisInstance.setBlocks(blocks);
-            return this;
-        }
-
         public Builder setNextShape(Shape nextShape) {
             tetrisInstance.setNextShape(nextShape);
             return this;
@@ -79,7 +76,7 @@ public class TetrisInstance {
 
     }
 
-    private Map<Point, Optional<Block>> blocks;
+    private Map<Point, Block> blocks = Maps.newHashMap();
 
     private Shape currentShape;
 
@@ -101,11 +98,11 @@ public class TetrisInstance {
 
     private int currentGravityFrame = 0;
 
-    public Map<Point, Optional<Block>> getBlocks() {
+    public Map<Point, Block> getBlocks() {
         return blocks;
     }
 
-    public void setBlocks(Map<Point, Optional<Block>> blocks) {
+    public void setBlocks(Map<Point, Block> blocks) {
         this.blocks = blocks;
     }
 

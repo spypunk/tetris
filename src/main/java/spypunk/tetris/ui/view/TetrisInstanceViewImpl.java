@@ -15,7 +15,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -167,8 +166,7 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
         graphics.drawRect(gridRectangle.x, gridRectangle.y, gridRectangle.width,
             gridRectangle.height);
 
-        tetrisInstance.getBlocks().values().stream().filter(Optional::isPresent)
-                .map(Optional::get)
+        tetrisInstance.getBlocks().values().stream()
                 .forEach(block -> renderBlock(graphics, block));
 
         final Shape currentShape = tetrisInstance.getCurrentShape();
