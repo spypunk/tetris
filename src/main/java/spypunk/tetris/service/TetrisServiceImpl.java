@@ -101,10 +101,12 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private void initializeLevelSpeeds() {
-        levelSpeeds.put(0, 48);
+        final int initialSpeed = 48;
+
+        levelSpeeds.put(0, initialSpeed);
         levelSpeeds.put(9, 6);
 
-        IntStream.range(1, 9).forEach(level -> levelSpeeds.put(level, levelSpeeds.get(0) - 5 * level));
+        IntStream.range(1, 9).forEach(level -> levelSpeeds.put(level, initialSpeed - 5 * level));
         IntStream.range(10, 13).forEach(level -> levelSpeeds.put(level, 5));
         IntStream.range(13, 16).forEach(level -> levelSpeeds.put(level, 4));
         IntStream.range(16, 19).forEach(level -> levelSpeeds.put(level, 3));
