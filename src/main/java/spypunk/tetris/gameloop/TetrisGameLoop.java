@@ -25,10 +25,10 @@ public final class TetrisGameLoop {
 
             while (running) {
                 for (; System.currentTimeMillis() > nextTick; nextTick += SKIP_TICKS) {
-                    tetrisGameLoopListener.update();
+                    tetrisGameLoopListener.onUpdate();
                 }
 
-                tetrisGameLoopListener.render();
+                tetrisGameLoopListener.onRender();
             }
         }
 

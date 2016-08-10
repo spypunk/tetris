@@ -97,7 +97,7 @@ public class TetrisControllerImpl implements TetrisController, TetrisGameLoopLis
     }
 
     @Override
-    public void update() {
+    public void onUpdate() {
         handleNewGame();
         handleMovement();
         handlePause();
@@ -106,7 +106,7 @@ public class TetrisControllerImpl implements TetrisController, TetrisGameLoopLis
     }
 
     @Override
-    public void render() {
+    public void onRender() {
         tetrisView.update();
     }
 
