@@ -28,6 +28,7 @@ import com.google.common.collect.Maps;
 
 import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.model.Block;
+import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisInstance;
@@ -169,6 +170,12 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
         tetrisInstance.getBlocks().values().stream().filter(Optional::isPresent)
                 .map(Optional::get)
                 .forEach(block -> renderBlock(graphics, block));
+
+        final Shape currentShape = tetrisInstance.getCurrentShape();
+
+        if (currentShape != null) {
+            currentShape.getBlocks().stream().forEach(block -> renderBlock(graphics, block));
+        }
 
         final State state = tetrisInstance.getState();
 

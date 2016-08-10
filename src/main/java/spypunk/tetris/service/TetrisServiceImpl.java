@@ -171,6 +171,9 @@ public class TetrisServiceImpl implements TetrisService {
             return false;
         }
 
+        tetrisInstance.getCurrentShape().getBlocks()
+                .forEach(block -> tetrisInstance.getBlocks().put(block.getLocation(), Optional.of(block)));
+
         if (isGameOver(tetrisInstance)) {
             tetrisInstance.setState(State.GAME_OVER);
         } else {
@@ -187,9 +190,6 @@ public class TetrisServiceImpl implements TetrisService {
         tetrisInstance.setCurrentShape(currentShape);
 
         randomizeShapeStartX(currentShape);
-
-        currentShape.getBlocks()
-                .forEach(block -> tetrisInstance.getBlocks().put(block.getLocation(), Optional.of(block)));
 
         tetrisInstance.setNextShape(shapeFactory.createRandomShape());
 
@@ -288,11 +288,6 @@ public class TetrisServiceImpl implements TetrisService {
         final Shape currentShape = tetrisInstance.getCurrentShape();
         final Shape newShape = movement.apply(currentShape);
 
-        currentShape.getBlocks()
-                .forEach(block -> tetrisInstance.getBlocks().put(block.getLocation(), Optional.empty()));
-
-        newShape.getBlocks().forEach(block -> tetrisInstance.getBlocks().put(block.getLocation(), Optional.of(block)));
-
         tetrisInstance.setCurrentShape(newShape);
 
         if (checkShapeIsLocked(tetrisInstance)) {
@@ -327,12 +322,7 @@ public class TetrisServiceImpl implements TetrisService {
 
         final Optional<Block> nextLocationBlock = tetrisInstance.getBlocks().get(location);
 
-        if (nextLocationBlock.isPresent()
-                && !nextLocationBlock.get().getShape().equals(tetrisInstance.getCurrentShape())) {
-            return false;
-        }
-
-        return true;
+        return !nextLocationBlock.isPresent();
     }
 
     private boolean isTetrisInstanceRunning(TetrisInstance tetrisInstance) {
