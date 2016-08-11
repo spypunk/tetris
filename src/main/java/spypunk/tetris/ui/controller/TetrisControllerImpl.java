@@ -17,6 +17,7 @@ import spypunk.tetris.gameloop.GameLoop;
 import spypunk.tetris.gameloop.GameLoopListener;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.service.TetrisService;
+import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
 import spypunk.tetris.ui.factory.TetrisViewFactory;
 import spypunk.tetris.ui.util.SwingUtils;
 import spypunk.tetris.ui.view.TetrisView;

@@ -1,4 +1,4 @@
-package spypunk.tetris.ui.controller;
+package spypunk.tetris.ui.controller.input;
 
 import java.awt.event.KeyEvent;
 import java.util.List;
