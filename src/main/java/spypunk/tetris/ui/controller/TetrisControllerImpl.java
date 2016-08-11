@@ -8,8 +8,6 @@
 
 package spypunk.tetris.ui.controller;
 
-import java.util.Optional;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -35,20 +33,17 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
     private final GameLoop gameLoop;
 
-    private volatile boolean newGame;
-
-    private volatile Optional<Movement> movement;
-
-    private volatile boolean pause;
+    private final TetrisControllerInputHandler tetrisControllerInputHandler;
 
     @Inject
     public TetrisControllerImpl(TetrisFactory tetrisFactory, TetrisViewFactory tetrisViewFactory,
-            GameLoopFactory gameLoopFactory, TetrisService tetrisService) {
+            GameLoopFactory gameLoopFactory, TetrisService tetrisService,
+            TetrisControllerInputHandler tetrisControllerInputHandler) {
         this.tetrisService = tetrisService;
+        this.tetrisControllerInputHandler = tetrisControllerInputHandler;
         tetris = tetrisFactory.createTetris();
         tetrisView = tetrisViewFactory.createTetrisView(tetris);
         gameLoop = gameLoopFactory.createGameLoop(this);
-        movement = Optional.empty();
     }
 
     @Override
@@ -87,12 +82,12 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
     @Override
     public void onNewGame() {
-        newGame = true;
+        tetrisControllerInputHandler.onNewGame();
     }
 
     @Override
     public void onPause() {
-        pause = true;
+        tetrisControllerInputHandler.onPause();
     }
 
     @Override
@@ -102,11 +97,12 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
     @Override
     public void onUpdate() {
-        handleNewGame();
-        handleMovement();
-        handlePause();
+        tetrisControllerInputHandler.handleInput()
+                .forEach(tetrisControllerCommand -> tetrisControllerCommand.execute(tetris));
 
         tetrisService.updateInstance(tetris.getTetrisInstance());
+
+        tetrisControllerInputHandler.reset();
     }
 
     @Override
@@ -114,28 +110,7 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
         tetrisView.update();
     }
 
-    private void handlePause() {
-        if (pause) {
-            tetrisService.pauseInstance(tetris.getTetrisInstance());
-            pause = false;
-        }
-    }
-
-    private void handleMovement() {
-        if (movement.isPresent()) {
-            tetrisService.updateInstanceMovement(tetris.getTetrisInstance(), movement.get());
-            movement = Optional.empty();
-        }
-    }
-
-    private void handleNewGame() {
-        if (newGame) {
-            tetrisService.newInstance(tetris);
-            newGame = false;
-        }
-    }
-
     private void onMovement(Movement movement) {
-        this.movement = Optional.of(movement);
+        tetrisControllerInputHandler.onMovement(movement);
     }
 }
