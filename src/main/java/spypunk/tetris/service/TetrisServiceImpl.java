@@ -199,11 +199,11 @@ public class TetrisServiceImpl implements TetrisService {
         final List<Integer> completeRows = IntStream.range(0, HEIGHT)
                 .filter(row -> isRowComplete(tetrisInstance, row)).boxed().collect(Collectors.toList());
 
-        if (completeRows.isEmpty()) {
+        final int completedRows = completeRows.size();
+
+        if (completedRows == 0) {
             return;
         }
-
-        final int completedRows = completeRows.size();
 
         completeRows.forEach(row -> clearCompleteRow(tetrisInstance, row));
 
@@ -256,10 +256,8 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private boolean isRowComplete(TetrisInstance tetrisInstance, int row) {
-        final Map<Point, Block> blocks = tetrisInstance.getBlocks();
-
         return IntStream.range(0, WIDTH)
-                .allMatch(column -> blocks.containsKey(new Point(column, row)));
+                .allMatch(column -> tetrisInstance.getBlocks().containsKey(new Point(column, row)));
     }
 
     private boolean moveShape(TetrisInstance tetrisInstance, Movement movement) {
