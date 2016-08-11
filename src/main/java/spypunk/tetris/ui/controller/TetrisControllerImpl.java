@@ -15,7 +15,6 @@ import spypunk.tetris.factory.GameLoopFactory;
 import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.gameloop.GameLoop;
 import spypunk.tetris.gameloop.GameLoopListener;
-import spypunk.tetris.model.Movement;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.ui.factory.TetrisViewFactory;
@@ -61,36 +60,6 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
     }
 
     @Override
-    public void onMoveLeft() {
-        onMovement(Movement.LEFT);
-    }
-
-    @Override
-    public void onMoveRight() {
-        onMovement(Movement.RIGHT);
-    }
-
-    @Override
-    public void onMoveDown() {
-        onMovement(Movement.DOWN);
-    }
-
-    @Override
-    public void onRotate() {
-        onMovement(Movement.ROTATE_CW);
-    }
-
-    @Override
-    public void onNewGame() {
-        tetrisControllerInputHandler.onNewGame();
-    }
-
-    @Override
-    public void onPause() {
-        tetrisControllerInputHandler.onPause();
-    }
-
-    @Override
     public void onURLOpen() {
         SwingUtils.openURI(tetris.getProjectURI());
     }
@@ -110,7 +79,13 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
         tetrisView.update();
     }
 
-    private void onMovement(Movement movement) {
-        tetrisControllerInputHandler.onMovement(movement);
+    @Override
+    public void onKeyPressed(int keyCode) {
+        tetrisControllerInputHandler.onKeyPressed(keyCode);
+    }
+
+    @Override
+    public void onKeyReleased(int keyCode) {
+        tetrisControllerInputHandler.onKeyReleased(keyCode);
     }
 }

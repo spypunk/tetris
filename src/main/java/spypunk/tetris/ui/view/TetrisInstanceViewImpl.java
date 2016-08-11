@@ -23,7 +23,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.model.Block;
@@ -41,36 +40,22 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     private static final long serialVersionUID = -3487901883637598196L;
 
-    private static final class TetrisInstanceViewKeyAdapter extends KeyAdapter {
+    private final class TetrisInstanceViewKeyAdapter extends KeyAdapter {
 
-        private final Map<Integer, Runnable> pressedKeyHandlers = Maps.newHashMap();
-
-        private final Map<Integer, Runnable> releasedKeyHandlers = Maps.newHashMap();
+        private final TetrisController tetrisController;
 
         public TetrisInstanceViewKeyAdapter(TetrisController tetrisController) {
-            pressedKeyHandlers.put(KeyEvent.VK_LEFT, tetrisController::onMoveLeft);
-            pressedKeyHandlers.put(KeyEvent.VK_RIGHT, tetrisController::onMoveRight);
-            pressedKeyHandlers.put(KeyEvent.VK_DOWN, tetrisController::onMoveDown);
-
-            releasedKeyHandlers.put(KeyEvent.VK_SPACE, tetrisController::onNewGame);
-            releasedKeyHandlers.put(KeyEvent.VK_P, tetrisController::onPause);
-            releasedKeyHandlers.put(KeyEvent.VK_UP, tetrisController::onRotate);
+            this.tetrisController = tetrisController;
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
-            onKeyEvent(pressedKeyHandlers, e.getKeyCode());
+            tetrisController.onKeyPressed(e.getKeyCode());
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            onKeyEvent(releasedKeyHandlers, e.getKeyCode());
-        }
-
-        private void onKeyEvent(Map<Integer, Runnable> keyHandlers, int keyCode) {
-            if (keyHandlers.containsKey(keyCode)) {
-                keyHandlers.get(keyCode).run();
-            }
+            tetrisController.onKeyReleased(e.getKeyCode());
         }
     }
 
