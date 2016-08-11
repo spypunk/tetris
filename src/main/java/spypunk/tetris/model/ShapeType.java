@@ -42,10 +42,10 @@ public enum ShapeType {
                 Sets.newHashSet(LOCATION_1_M1, LOCATION_1_0, LOCATION_1_1, LOCATION_1_2)),
             new Rectangle(0, 0, 4, 4)),
     J(
-            Arrays.asList(Sets.newHashSet(LOCATION_0_1, LOCATION_1_1, LOCATION_2_1, LOCATION_2_0),
-                Sets.newHashSet(LOCATION_1_0, LOCATION_1_1, LOCATION_1_2, LOCATION_2_2),
-                Sets.newHashSet(LOCATION_0_1, LOCATION_1_1, LOCATION_2_1, LOCATION_0_2),
-                Sets.newHashSet(LOCATION_0_0, LOCATION_1_0, LOCATION_1_1, LOCATION_1_2)),
+            Arrays.asList(Sets.newHashSet(LOCATION_0_0, LOCATION_0_1, LOCATION_1_1, LOCATION_2_1),
+                Sets.newHashSet(LOCATION_1_0, LOCATION_2_0, LOCATION_1_1, LOCATION_1_2),
+                Sets.newHashSet(LOCATION_0_1, LOCATION_1_1, LOCATION_2_1, LOCATION_2_2),
+                Sets.newHashSet(LOCATION_1_0, LOCATION_1_1, LOCATION_0_2, LOCATION_1_2)),
             new Rectangle(0, 0, 3, 3)),
     L(
             Arrays.asList(Sets.newHashSet(LOCATION_0_1, LOCATION_1_1, LOCATION_2_1, LOCATION_2_0),
