@@ -67,7 +67,9 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     @Override
-    public void updateInstance(TetrisInstance tetrisInstance) {
+    public void updateInstance(Tetris tetris) {
+        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+
         if (!isTetrisInstanceRunning(tetrisInstance)) {
             return;
         }
@@ -80,12 +82,16 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     @Override
-    public void pauseInstance(TetrisInstance tetrisInstance) {
+    public void pauseInstance(Tetris tetris) {
+        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+
         tetrisInstance.setState(tetrisInstance.getState().onPause());
     }
 
     @Override
-    public void updateInstanceMovement(TetrisInstance tetrisInstance, Movement movement) {
+    public void updateInstanceMovement(Tetris tetris, Movement movement) {
+        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+
         if (isTetrisInstanceRunning(tetrisInstance) && tetrisInstance.getCurrentShape() != null) {
             tetrisInstance.setMovement(Optional.of(movement));
         }

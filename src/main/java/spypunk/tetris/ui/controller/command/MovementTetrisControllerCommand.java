@@ -17,7 +17,7 @@ public class MovementTetrisControllerCommand implements TetrisControllerCommand 
 
     @Override
     public void execute(Tetris tetris) {
-        tetrisService.updateInstanceMovement(tetris.getTetrisInstance(), movement);
+        tetrisService.updateInstanceMovement(tetris, movement);
     }
 
 }

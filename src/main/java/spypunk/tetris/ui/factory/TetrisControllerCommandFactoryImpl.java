@@ -22,7 +22,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
         this.tetrisService = tetrisService;
 
         newGameTetrisControllerCommand = tetrisService::newInstance;
-        pauseTetrisControllerCommand = tetris -> tetrisService.pauseInstance(tetris.getTetrisInstance());
+        pauseTetrisControllerCommand = tetrisService::pauseInstance;
     }
 
     @Override
