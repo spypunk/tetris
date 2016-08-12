@@ -1,11 +1,15 @@
 package spypunk.tetris.ui.factory;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+
 import spypunk.tetris.model.Movement;
 import spypunk.tetris.service.TetrisService;
-import spypunk.tetris.ui.controller.command.MovementTetrisControllerCommand;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 
 @Singleton
@@ -15,14 +19,18 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     private final TetrisControllerCommand pauseTetrisControllerCommand;
 
-    private final TetrisService tetrisService;
+    private final Map<Movement, TetrisControllerCommand> movementTetrisControllerCommands;
 
     @Inject
     public TetrisControllerCommandFactoryImpl(TetrisService tetrisService) {
-        this.tetrisService = tetrisService;
-
         newGameTetrisControllerCommand = tetrisService::newInstance;
         pauseTetrisControllerCommand = tetrisService::pauseInstance;
+
+        movementTetrisControllerCommands = Maps.newHashMap();
+
+        Lists.newArrayList(Movement.values()).stream()
+                .forEach(movement -> movementTetrisControllerCommands.put(movement,
+                    tetris -> tetrisService.updateInstanceMovement(tetris, movement)));
     }
 
     @Override
@@ -37,6 +45,6 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     @Override
     public TetrisControllerCommand createMovementTetrisControllerCommand(Movement movement) {
-        return new MovementTetrisControllerCommand(tetrisService, movement);
+        return movementTetrisControllerCommands.get(movement);
     }
 }
