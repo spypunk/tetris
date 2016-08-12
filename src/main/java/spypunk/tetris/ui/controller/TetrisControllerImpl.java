@@ -18,6 +18,8 @@ import spypunk.tetris.gameloop.GameLoopListener;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
+import spypunk.tetris.ui.controller.input.TetrisControllerInputTranslator;
+import spypunk.tetris.ui.factory.TetrisControllerInputTranslatorFactory;
 import spypunk.tetris.ui.factory.TetrisViewFactory;
 import spypunk.tetris.ui.util.SwingUtils;
 import spypunk.tetris.ui.view.TetrisView;
@@ -33,14 +35,20 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
     private final GameLoop gameLoop;
 
+    private final TetrisControllerInputTranslator tetrisControllerInputTranslator;
+
     private final TetrisControllerInputHandler tetrisControllerInputHandler;
 
     @Inject
     public TetrisControllerImpl(TetrisFactory tetrisFactory, TetrisViewFactory tetrisViewFactory,
             GameLoopFactory gameLoopFactory, TetrisService tetrisService,
-            TetrisControllerInputHandler tetrisControllerInputHandler) {
+            TetrisControllerInputHandler tetrisControllerInputHandler,
+            TetrisControllerInputTranslatorFactory tetrisControllerInputTranslatorFactory) {
         this.tetrisService = tetrisService;
         this.tetrisControllerInputHandler = tetrisControllerInputHandler;
+        tetrisControllerInputTranslator = tetrisControllerInputTranslatorFactory
+                .createTetrisControllerInputTranslator(tetrisControllerInputHandler);
+
         tetris = tetrisFactory.createTetris();
         tetrisView = tetrisViewFactory.createTetrisView(tetris);
         gameLoop = gameLoopFactory.createGameLoop(this);
@@ -48,7 +56,7 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
     @Override
     public void start() {
-        tetrisService.newInstance(tetris);
+        tetrisControllerInputHandler.onNewGame();
 
         tetrisView.show();
 
@@ -82,11 +90,11 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
     @Override
     public void onKeyPressed(int keyCode) {
-        tetrisControllerInputHandler.onKeyPressed(keyCode);
+        tetrisControllerInputTranslator.onKeyPressed(keyCode);
     }
 
     @Override
     public void onKeyReleased(int keyCode) {
-        tetrisControllerInputHandler.onKeyReleased(keyCode);
+        tetrisControllerInputTranslator.onKeyReleased(keyCode);
     }
 }

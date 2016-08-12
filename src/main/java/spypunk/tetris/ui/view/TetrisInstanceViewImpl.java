@@ -132,6 +132,10 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     @Override
     public void update() {
+        if (tetris.getTetrisInstance() == null) {
+            return;
+        }
+
         SwingUtils.doInGraphics(image, this::renderBlocks);
 
         tetrisInstanceStatisticsView.update();
