@@ -42,15 +42,15 @@ public class TetrisViewFactoryImpl implements TetrisViewFactory {
         final TetrisInstanceStatisticsView tetrisInstanceStatisticsView = createTetrisInstanceStatisticsView(tetris);
         final TetrisInstanceInfoView tetrisInstanceInfoView = createTetrisInstanceInfoView(tetris);
 
-        return new TetrisInstanceViewImpl(fontFactory, tetrisController, tetrisInstanceStatisticsView,
+        return new TetrisInstanceViewImpl(fontFactory, tetrisInstanceStatisticsView,
                 tetrisInstanceInfoView, imageFactory, tetris);
     }
 
     private TetrisInstanceStatisticsView createTetrisInstanceStatisticsView(Tetris tetris) {
-        return new TetrisInstanceStatisticsViewImpl(fontFactory, tetrisController, imageFactory, tetris);
+        return new TetrisInstanceStatisticsViewImpl(fontFactory, imageFactory, tetris);
     }
 
     private TetrisInstanceInfoView createTetrisInstanceInfoView(Tetris tetris) {
-        return new TetrisInstanceInfoViewImpl(fontFactory, tetrisController, imageFactory, tetris);
+        return new TetrisInstanceInfoViewImpl(fontFactory, imageFactory, tetris);
     }
 }

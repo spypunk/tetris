@@ -13,6 +13,8 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -43,6 +45,25 @@ public class TetrisViewImpl implements TetrisView {
         @Override
         public void windowClosed(WindowEvent e) {
             tetrisController.onWindowClosed();
+        }
+    }
+
+    private static final class TetrisViewKeyAdapter extends KeyAdapter {
+
+        private final TetrisController tetrisController;
+
+        public TetrisViewKeyAdapter(TetrisController tetrisController) {
+            this.tetrisController = tetrisController;
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            tetrisController.onKeyPressed(e.getKeyCode());
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            tetrisController.onKeyReleased(e.getKeyCode());
         }
     }
 
@@ -103,10 +124,10 @@ public class TetrisViewImpl implements TetrisView {
         frame = new JFrame(tetris.getName() + " " + tetris.getVersion());
 
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.setFocusable(false);
         frame.getContentPane().setLayout(new BorderLayout(0, 0));
         frame.setResizable(false);
         frame.addWindowListener(new TetrisViewWindowListener(tetrisController));
+        frame.addKeyListener(new TetrisViewKeyAdapter(tetrisController));
 
         frame.add(tetrisInstanceView, BorderLayout.CENTER);
         frame.add(urlPanel, BorderLayout.SOUTH);

@@ -11,8 +11,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 import java.util.function.Function;
@@ -31,7 +29,6 @@ import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.model.TetrisInstance.State;
-import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.factory.ImageFactory;
 import spypunk.tetris.ui.util.SwingUtils;
@@ -39,25 +36,6 @@ import spypunk.tetris.ui.util.SwingUtils;
 public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     private static final long serialVersionUID = -3487901883637598196L;
-
-    private final class TetrisInstanceViewKeyAdapter extends KeyAdapter {
-
-        private final TetrisController tetrisController;
-
-        public TetrisInstanceViewKeyAdapter(TetrisController tetrisController) {
-            this.tetrisController = tetrisController;
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            tetrisController.onKeyPressed(e.getKeyCode());
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-            tetrisController.onKeyReleased(e.getKeyCode());
-        }
-    }
 
     private static final String PAUSE = "PAUSE";
 
@@ -87,7 +65,7 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     private final Map<ShapeType, Image> blockImages;
 
-    public TetrisInstanceViewImpl(FontFactory fontFactory, TetrisController tetrisController,
+    public TetrisInstanceViewImpl(FontFactory fontFactory,
             TetrisInstanceStatisticsView tetrisInstanceStatisticsView,
             TetrisInstanceInfoView tetrisInstanceInfoView,
             ImageFactory imageFactory,
@@ -118,12 +96,10 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
         final JLabel label = new JLabel(new ImageIcon(image));
 
         setLayout(new BorderLayout(BLOCK_SIZE, 0));
-        setFocusable(true);
         setBackground(Color.BLACK);
         setOpaque(true);
         setBorder(BorderFactory.createEmptyBorder(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE));
         setIgnoreRepaint(true);
-        addKeyListener(new TetrisInstanceViewKeyAdapter(tetrisController));
 
         add(label, BorderLayout.CENTER);
         add(tetrisInstanceStatisticsView, BorderLayout.WEST);

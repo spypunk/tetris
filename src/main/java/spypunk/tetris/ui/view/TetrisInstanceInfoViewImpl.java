@@ -25,7 +25,6 @@ import com.google.common.collect.Lists;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisInstance;
-import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.factory.ImageFactory;
 import spypunk.tetris.ui.util.SwingUtils;
@@ -72,7 +71,7 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
 
     private final Tetris tetris;
 
-    public TetrisInstanceInfoViewImpl(FontFactory fontFactory, TetrisController tetrisController,
+    public TetrisInstanceInfoViewImpl(FontFactory fontFactory,
             ImageFactory imageFactory, Tetris tetris) {
         this.tetris = tetris;
 
