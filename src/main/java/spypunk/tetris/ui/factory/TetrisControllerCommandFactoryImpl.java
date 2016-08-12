@@ -11,6 +11,7 @@ import com.google.common.collect.Maps;
 import spypunk.tetris.model.Movement;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
+import spypunk.tetris.ui.service.MusicService;
 
 @Singleton
 public class TetrisControllerCommandFactoryImpl implements TetrisControllerCommandFactory {
@@ -22,9 +23,16 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     private final Map<Movement, TetrisControllerCommand> movementTetrisControllerCommands;
 
     @Inject
-    public TetrisControllerCommandFactoryImpl(TetrisService tetrisService) {
-        newGameTetrisControllerCommand = tetrisService::newInstance;
-        pauseTetrisControllerCommand = tetrisService::pauseInstance;
+    public TetrisControllerCommandFactoryImpl(TetrisService tetrisService, MusicService musicService) {
+        newGameTetrisControllerCommand = tetris -> {
+            tetrisService.newInstance(tetris);
+            musicService.playMusic();
+        };
+
+        pauseTetrisControllerCommand = tetris -> {
+            tetrisService.pauseInstance(tetris);
+            musicService.pauseMusic();
+        };
 
         movementTetrisControllerCommands = Maps.newHashMap();
 

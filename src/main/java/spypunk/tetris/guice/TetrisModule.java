@@ -30,6 +30,8 @@ import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactoryImpl;
 import spypunk.tetris.ui.factory.TetrisViewFactory;
 import spypunk.tetris.ui.factory.TetrisViewFactoryImpl;
+import spypunk.tetris.ui.service.MusicService;
+import spypunk.tetris.ui.service.MusicServiceImpl;
 
 public class TetrisModule extends AbstractModule {
 
@@ -45,5 +47,6 @@ public class TetrisModule extends AbstractModule {
         bind(GameLoopFactory.class).to(GameLoopFactoryImpl.class);
         bind(TetrisControllerInputHandler.class).to(TetrisControllerInputHandlerImpl.class);
         bind(TetrisControllerCommandFactory.class).to(TetrisControllerCommandFactoryImpl.class);
+        bind(MusicService.class).to(MusicServiceImpl.class);
     }
 }
