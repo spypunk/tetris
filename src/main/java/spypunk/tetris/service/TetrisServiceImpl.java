@@ -105,8 +105,10 @@ public class TetrisServiceImpl implements TetrisService {
         if (isTimeToHandleGravity(tetrisInstance)) {
             clearCompleteRows(tetrisInstance);
             getNextShape(tetrisInstance);
-            resetCurrentGravityFrame(tetrisInstance);
-            checkShapeIsLocked(tetrisInstance);
+
+            if (!checkShapeIsLocked(tetrisInstance)) {
+                resetCurrentGravityFrame(tetrisInstance);
+            }
         }
 
         return false;

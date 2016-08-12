@@ -56,14 +56,10 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
         if (newGameTriggered) {
             tetrisControllerCommands
                     .add(tetrisControllerCommandFactory.createNewGameTetrisControllerCommand());
-        }
-
-        if (pauseTriggered) {
+        } else if (pauseTriggered) {
             tetrisControllerCommands
                     .add(tetrisControllerCommandFactory.createPauseTetrisControllerCommand());
-        }
-
-        if (movementTriggered) {
+        } else if (movementTriggered) {
             tetrisControllerCommands
                     .add(tetrisControllerCommandFactory.createMovementTetrisControllerCommand(movement));
         }
