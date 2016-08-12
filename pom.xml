@@ -11,6 +11,20 @@
 	<version>0.8.0-SNAPSHOT</version>
 	<url>https://github.com/spypunk/tetris</url>
 
+	<licenses>
+		<license>
+			<name>WTFPL</name>
+			<url>http://www.wtfpl.net/about/</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>spypunk</name>
+			<url>https://github.com/spypunk</url>
+		</developer>
+	</developers>
+
 	<prerequisites>
 		<maven>3.0</maven>
 	</prerequisites>
@@ -88,6 +102,26 @@
 			<version>1.7.21</version>
 		</dependency>
 		<dependency>
+			<groupId>org.jcraft</groupId>
+			<artifactId>jorbis</artifactId>
+			<version>0.0.17</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.soundlibs</groupId>
+			<artifactId>tritonus-share</artifactId>
+			<version>0.3.7.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.soundlibs</groupId>
+			<artifactId>vorbisspi</artifactId>
+			<version>1.0.3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>spypunk</groupId>
+			<artifactId>tinysound</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
@@ -116,4 +150,12 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>project.local</id>
+			<name>project</name>
+			<url>file://${project.basedir}/repo</url>
+		</repository>
+	</repositories>
 </project>
