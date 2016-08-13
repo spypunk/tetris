@@ -19,7 +19,8 @@ import com.google.common.collect.Maps;
 import spypunk.tetris.model.Movement;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
-import spypunk.tetris.ui.service.MusicService;
+import spypunk.tetris.ui.service.Sound;
+import spypunk.tetris.ui.service.SoundService;
 
 @Singleton
 public class TetrisControllerCommandFactoryImpl implements TetrisControllerCommandFactory {
@@ -30,17 +31,19 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     private final Map<Movement, TetrisControllerCommand> movementTetrisControllerCommands;
 
+    private final TetrisControllerCommand shapeLockedTetrisControllerCommand;
+
     @Inject
-    public TetrisControllerCommandFactoryImpl(TetrisService tetrisService, MusicService musicService) {
+    public TetrisControllerCommandFactoryImpl(TetrisService tetrisService, SoundService soundService) {
         newGameTetrisControllerCommand = tetris -> {
             tetrisService.newInstance(tetris);
-            musicService.stopMusic();
-            musicService.playMusic();
+            soundService.stopMusic();
+            soundService.playMusic();
         };
 
         pauseTetrisControllerCommand = tetris -> {
             tetrisService.pauseInstance(tetris);
-            musicService.pauseMusic();
+            soundService.pauseMusic();
         };
 
         movementTetrisControllerCommands = Maps.newHashMap();
@@ -48,6 +51,10 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
         Lists.newArrayList(Movement.values()).stream()
                 .forEach(movement -> movementTetrisControllerCommands.put(movement,
                     tetris -> tetrisService.updateInstanceMovement(tetris, movement)));
+
+        shapeLockedTetrisControllerCommand = tetris -> {
+            soundService.playSound(Sound.SHAPE_LOCKED);
+        };
     }
 
     @Override
@@ -63,5 +70,10 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     @Override
     public TetrisControllerCommand createMovementTetrisControllerCommand(Movement movement) {
         return movementTetrisControllerCommands.get(movement);
+    }
+
+    @Override
+    public TetrisControllerCommand createShapeLockedTetrisControllerCommand() {
+        return shapeLockedTetrisControllerCommand;
     }
 }

@@ -20,6 +20,8 @@ import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.service.TetrisServiceImpl;
 import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.controller.TetrisControllerImpl;
+import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
+import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandlerImpl;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandlerImpl;
 import spypunk.tetris.ui.factory.FontFactory;
@@ -32,8 +34,8 @@ import spypunk.tetris.ui.factory.TetrisControllerInputTranslatorFactory;
 import spypunk.tetris.ui.factory.TetrisControllerInputTranslatorFactoryImpl;
 import spypunk.tetris.ui.factory.TetrisViewFactory;
 import spypunk.tetris.ui.factory.TetrisViewFactoryImpl;
-import spypunk.tetris.ui.service.MusicService;
-import spypunk.tetris.ui.service.MusicServiceImpl;
+import spypunk.tetris.ui.service.SoundService;
+import spypunk.tetris.ui.service.SoundServiceImpl;
 
 public class TetrisModule extends AbstractModule {
 
@@ -50,6 +52,7 @@ public class TetrisModule extends AbstractModule {
         bind(TetrisControllerInputHandler.class).to(TetrisControllerInputHandlerImpl.class);
         bind(TetrisControllerCommandFactory.class).to(TetrisControllerCommandFactoryImpl.class);
         bind(TetrisControllerInputTranslatorFactory.class).to(TetrisControllerInputTranslatorFactoryImpl.class);
-        bind(MusicService.class).to(MusicServiceImpl.class);
+        bind(TetrisControllerTetrisEventHandler.class).to(TetrisControllerTetrisEventHandlerImpl.class);
+        bind(SoundService.class).to(SoundServiceImpl.class);
     }
 }

@@ -17,6 +17,7 @@ import spypunk.tetris.gameloop.GameLoop;
 import spypunk.tetris.gameloop.GameLoopListener;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.service.TetrisService;
+import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputTranslator;
 import spypunk.tetris.ui.factory.TetrisControllerInputTranslatorFactory;
@@ -39,13 +40,17 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
     private final TetrisControllerInputHandler tetrisControllerInputHandler;
 
+    private final TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler;
+
     @Inject
     public TetrisControllerImpl(TetrisFactory tetrisFactory, TetrisViewFactory tetrisViewFactory,
             GameLoopFactory gameLoopFactory, TetrisService tetrisService,
             TetrisControllerInputHandler tetrisControllerInputHandler,
-            TetrisControllerInputTranslatorFactory tetrisControllerInputTranslatorFactory) {
+            TetrisControllerInputTranslatorFactory tetrisControllerInputTranslatorFactory,
+            TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler) {
         this.tetrisService = tetrisService;
         this.tetrisControllerInputHandler = tetrisControllerInputHandler;
+        this.tetrisControllerTetrisEventHandler = tetrisControllerTetrisEventHandler;
         tetrisControllerInputTranslator = tetrisControllerInputTranslatorFactory
                 .createTetrisControllerInputTranslator(tetrisControllerInputHandler);
 
@@ -79,6 +84,9 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
                 .forEach(tetrisControllerCommand -> tetrisControllerCommand.execute(tetris));
 
         tetrisService.updateInstance(tetris);
+
+        tetrisControllerTetrisEventHandler.handleEvents(tetris.getTetrisInstance().getTetrisEvents())
+                .forEach(tetrisControllerCommand -> tetrisControllerCommand.execute(tetris));
 
         tetrisControllerInputHandler.reset();
     }

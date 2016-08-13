@@ -32,6 +32,7 @@ import spypunk.tetris.model.Movement;
 import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.model.TetrisEvent;
 import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.model.TetrisInstance.State;
 
@@ -69,6 +70,8 @@ public class TetrisServiceImpl implements TetrisService {
     @Override
     public void updateInstance(Tetris tetris) {
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+
+        tetrisInstance.getTetrisEvents().clear();
 
         if (!isTetrisInstanceRunning(tetrisInstance)) {
             return;
@@ -161,6 +164,8 @@ public class TetrisServiceImpl implements TetrisService {
             tetrisInstance.setCurrentShape(null);
             resetCurrentGravityFrame(tetrisInstance);
         }
+
+        tetrisInstance.getTetrisEvents().add(TetrisEvent.SHAPE_LOCKED);
 
         return true;
     }

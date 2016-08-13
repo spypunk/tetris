@@ -11,7 +11,7 @@ package spypunk.tetris.ui.service;
 import javax.inject.Singleton;
 
 @Singleton
-public class MusicServiceImpl implements MusicService {
+public class SoundServiceImpl implements SoundService {
 
     @Override
     public void playMusic() {
@@ -25,6 +25,11 @@ public class MusicServiceImpl implements MusicService {
 
     @Override
     public void stopMusic() {
+        // TODO
+    }
+
+    @Override
+    public void playSound(Sound sound) {
         // TODO
     }
 }

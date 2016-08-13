@@ -9,9 +9,11 @@
 package spypunk.tetris.model;
 
 import java.awt.Point;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 public class TetrisInstance {
@@ -99,6 +101,8 @@ public class TetrisInstance {
     private int currentGravityFrame;
 
     private int currentMovementScore;
+
+    private List<TetrisEvent> tetrisEvents = Lists.newArrayList();
 
     public Map<Point, Block> getBlocks() {
         return blocks;
@@ -194,5 +198,13 @@ public class TetrisInstance {
 
     public void setCurrentMovementScore(int currentMovementScore) {
         this.currentMovementScore = currentMovementScore;
+    }
+
+    public List<TetrisEvent> getTetrisEvents() {
+        return tetrisEvents;
+    }
+
+    public void setTetrisEvents(List<TetrisEvent> tetrisEvents) {
+        this.tetrisEvents = tetrisEvents;
     }
 }
