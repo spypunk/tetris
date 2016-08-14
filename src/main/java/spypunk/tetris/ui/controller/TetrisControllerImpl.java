@@ -22,6 +22,7 @@ import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputTranslator;
 import spypunk.tetris.ui.factory.TetrisControllerInputTranslatorFactory;
 import spypunk.tetris.ui.factory.TetrisViewFactory;
+import spypunk.tetris.ui.service.SoundService;
 import spypunk.tetris.ui.util.SwingUtils;
 import spypunk.tetris.ui.view.TetrisView;
 
@@ -42,15 +43,20 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
     private final TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler;
 
+    private final SoundService soundService;
+
     @Inject
     public TetrisControllerImpl(TetrisFactory tetrisFactory, TetrisViewFactory tetrisViewFactory,
             GameLoopFactory gameLoopFactory, TetrisService tetrisService,
             TetrisControllerInputHandler tetrisControllerInputHandler,
             TetrisControllerInputTranslatorFactory tetrisControllerInputTranslatorFactory,
-            TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler) {
+            TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler,
+            SoundService soundService) {
         this.tetrisService = tetrisService;
         this.tetrisControllerInputHandler = tetrisControllerInputHandler;
         this.tetrisControllerTetrisEventHandler = tetrisControllerTetrisEventHandler;
+        this.soundService = soundService;
+
         tetrisControllerInputTranslator = tetrisControllerInputTranslatorFactory
                 .createTetrisControllerInputTranslator(tetrisControllerInputHandler);
 
@@ -71,6 +77,7 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
     @Override
     public void onWindowClosed() {
         gameLoop.stop();
+        soundService.stop();
     }
 
     @Override

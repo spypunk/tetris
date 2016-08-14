@@ -45,6 +45,8 @@
 					<encoding>UTF-8</encoding>
 					<nonFilteredFileExtensions>
 						<nonFilteredFileExtension>ttf</nonFilteredFileExtension>
+						<nonFilteredFileExtension>wav</nonFilteredFileExtension>
+						<nonFilteredFileExtension>png</nonFilteredFileExtension>
 					</nonFilteredFileExtensions>
 				</configuration>
 			</plugin>

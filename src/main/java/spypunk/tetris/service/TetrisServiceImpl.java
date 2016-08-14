@@ -163,9 +163,8 @@ public class TetrisServiceImpl implements TetrisService {
         } else {
             tetrisInstance.setCurrentShape(null);
             resetCurrentGravityFrame(tetrisInstance);
+            tetrisInstance.getTetrisEvents().add(TetrisEvent.SHAPE_LOCKED);
         }
-
-        tetrisInstance.getTetrisEvents().add(TetrisEvent.SHAPE_LOCKED);
 
         return true;
     }
