@@ -27,6 +27,7 @@ public class TetrisControllerInputTranslatorImpl implements TetrisControllerInpu
         releasedKeyHandlers.put(KeyEvent.VK_SPACE, tetrisControllerInputHandler::onNewGame);
         releasedKeyHandlers.put(KeyEvent.VK_P, tetrisControllerInputHandler::onPause);
         releasedKeyHandlers.put(KeyEvent.VK_UP, tetrisControllerInputHandler::onRotate);
+        releasedKeyHandlers.put(KeyEvent.VK_M, tetrisControllerInputHandler::onMute);
     }
 
     @Override

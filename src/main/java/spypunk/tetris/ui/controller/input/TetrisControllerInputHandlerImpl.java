@@ -28,6 +28,8 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
 
     private boolean newGameTriggered;
 
+    private boolean muteTriggered;
+
     @Inject
     private TetrisControllerCommandFactory tetrisControllerCommandFactory;
 
@@ -62,11 +64,17 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
     }
 
     @Override
+    public void onMute() {
+        muteTriggered = true;
+    }
+
+    @Override
     public void reset() {
         movementTriggered = false;
         movement = null;
         pauseTriggered = false;
         newGameTriggered = false;
+        muteTriggered = false;
     }
 
     @Override
@@ -83,6 +91,11 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
         } else if (movementTriggered) {
             tetrisControllerCommands
                     .add(tetrisControllerCommandFactory.createMovementTetrisControllerCommand(movement));
+        }
+
+        if (muteTriggered) {
+            tetrisControllerCommands
+                    .add(tetrisControllerCommandFactory.createMuteTetrisControllerCommand());
         }
 
         return tetrisControllerCommands;

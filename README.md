@@ -26,6 +26,8 @@ SPACE - Start a new game
 
 P - Pause the current game
 
+M - Mute / Unmute sounds
+
 ## What about license ?
 
 This project is licensed under the WTFPL (Do What The Fuck You Want To Public License)

@@ -41,6 +41,8 @@ public class SoundServiceImpl implements SoundService {
 
     private final Map<Sound, Clip> soundClips = createSoundClips();
 
+    private boolean muted;
+
     @Override
     public void stop() {
         executorService.shutdown();
@@ -63,6 +65,10 @@ public class SoundServiceImpl implements SoundService {
 
     @Override
     public void playSound(Sound sound) {
+        if (muted) {
+            return;
+        }
+
         executorService.execute(() -> doPlaySound(sound));
     }
 
@@ -100,5 +106,10 @@ public class SoundServiceImpl implements SoundService {
 
         clip.setFramePosition(0);
         clip.start();
+    }
+
+    @Override
+    public void mute() {
+        muted = !muted;
     }
 }

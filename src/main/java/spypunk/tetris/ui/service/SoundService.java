@@ -19,4 +19,6 @@ public interface SoundService {
     void pauseMusic();
 
     void stopMusic();
+
+    void mute();
 }
