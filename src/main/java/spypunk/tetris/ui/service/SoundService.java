@@ -8,13 +8,15 @@
 
 package spypunk.tetris.ui.service;
 
+import spypunk.tetris.ui.sound.Sound;
+
 public interface SoundService {
 
     void stop();
 
     void playSound(Sound sound);
 
-    void playMusic();
+    void playMusic(Sound sound);
 
     void pauseMusic();
 

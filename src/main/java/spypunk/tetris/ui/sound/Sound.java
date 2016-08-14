@@ -6,23 +6,24 @@
  * as published by Sam Hocevar. See the COPYING file for more details.
  */
 
-package spypunk.tetris.ui.service;
+package spypunk.tetris.ui.sound;
 
 public enum Sound {
 
-    SHAPE_LOCKED(Extension.WAV);
+    SHAPE_LOCKED(Extension.WAV),
+    GAME_OVER(Extension.WAV);
 
     private enum Extension {
         WAV
     }
 
-    private final Extension extension;
+    private final String fileName;
 
     private Sound(Extension extension) {
-        this.extension = extension;
+        fileName = name().toLowerCase() + "." + extension.name().toLowerCase();
     }
 
     public String getFileName() {
-        return name() + "." + extension.name().toLowerCase();
+        return fileName;
     }
 }

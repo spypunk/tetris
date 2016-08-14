@@ -2,5 +2,6 @@ package spypunk.tetris.model;
 
 public enum TetrisEvent {
 
-    SHAPE_LOCKED
+    SHAPE_LOCKED,
+    GAME_OVER
 }

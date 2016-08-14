@@ -20,6 +20,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
@@ -29,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Maps;
 
 import spypunk.tetris.exception.TetrisException;
+import spypunk.tetris.ui.sound.Sound;
 
 @Singleton
 public class SoundServiceImpl implements SoundService {
@@ -41,6 +43,8 @@ public class SoundServiceImpl implements SoundService {
 
     private final Map<Sound, Clip> soundClips = createSoundClips();
 
+    private Clip currentMusic;
+
     private boolean muted;
 
     @Override
@@ -49,8 +53,12 @@ public class SoundServiceImpl implements SoundService {
     }
 
     @Override
-    public void playMusic() {
-        // TODO
+    public void playMusic(Sound sound) {
+        if (muted) {
+            return;
+        }
+
+        executorService.execute(() -> doPlayMusic(sound));
     }
 
     @Override
@@ -60,7 +68,10 @@ public class SoundServiceImpl implements SoundService {
 
     @Override
     public void stopMusic() {
-        // TODO
+        if (currentMusic != null) {
+            currentMusic.stop();
+            currentMusic = null;
+        }
     }
 
     @Override
@@ -104,8 +115,22 @@ public class SoundServiceImpl implements SoundService {
             clip.stop();
         }
 
+        final FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(-10.0f);
+
         clip.setFramePosition(0);
         clip.start();
+    }
+
+    private void doPlayMusic(Sound sound) {
+        stopMusic();
+
+        final Clip clip = soundClips.get(sound);
+
+        currentMusic = clip;
+
+        clip.setFramePosition(0);
+        clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     @Override

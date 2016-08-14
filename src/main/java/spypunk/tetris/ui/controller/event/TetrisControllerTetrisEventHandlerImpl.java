@@ -24,6 +24,9 @@ public class TetrisControllerTetrisEventHandlerImpl implements TetrisControllerT
     public TetrisControllerTetrisEventHandlerImpl(TetrisControllerCommandFactory tetrisControllerCommandFactory) {
         tetrisControllerCommands.put(TetrisEvent.SHAPE_LOCKED,
             () -> tetrisControllerCommandFactory.createShapeLockedTetrisControllerCommand());
+
+        tetrisControllerCommands.put(TetrisEvent.GAME_OVER,
+            () -> tetrisControllerCommandFactory.createGameOverTetrisControllerCommand());
     }
 
     @Override

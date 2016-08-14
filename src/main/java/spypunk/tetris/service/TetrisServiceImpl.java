@@ -160,6 +160,7 @@ public class TetrisServiceImpl implements TetrisService {
 
         if (isGameOver(tetrisInstance)) {
             tetrisInstance.setState(State.GAME_OVER);
+            tetrisInstance.getTetrisEvents().add(TetrisEvent.GAME_OVER);
         } else {
             tetrisInstance.setCurrentShape(null);
             resetCurrentGravityFrame(tetrisInstance);
