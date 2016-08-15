@@ -77,7 +77,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     public TetrisControllerCommand createGameOverTetrisControllerCommand() {
         return gameOverTetrisControllerCommand;
     }
-    
+
     private TetrisControllerCommand createNewGameTetrisControllerCommand(TetrisService tetrisService,
             SoundService soundService) {
         return tetris -> {
@@ -99,10 +99,10 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     }
 
     private Map<Movement, TetrisControllerCommand> createMovementTetrisControllerCommands(TetrisService tetrisService) {
-        Map<Movement, TetrisControllerCommand> commands = Maps.newHashMap();
+        final Map<Movement, TetrisControllerCommand> commands = Maps.newHashMap();
 
         Lists.newArrayList(Movement.values()).forEach(movement -> commands.put(movement,
-                    tetris -> tetrisService.updateInstanceMovement(tetris, movement)));
+            tetris -> tetrisService.updateInstanceMovement(tetris, movement)));
 
         return commands;
     }

@@ -18,6 +18,8 @@ import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.factory.TetrisFactoryImpl;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.service.TetrisServiceImpl;
+import spypunk.tetris.sound.factory.SoundClipFactory;
+import spypunk.tetris.sound.factory.SoundClipFactoryImpl;
 import spypunk.tetris.sound.service.SoundService;
 import spypunk.tetris.sound.service.SoundServiceImpl;
 import spypunk.tetris.ui.controller.TetrisController;
@@ -54,5 +56,6 @@ public class TetrisModule extends AbstractModule {
         bind(TetrisControllerInputTranslatorFactory.class).to(TetrisControllerInputTranslatorFactoryImpl.class);
         bind(TetrisControllerTetrisEventHandler.class).to(TetrisControllerTetrisEventHandlerImpl.class);
         bind(SoundService.class).to(SoundServiceImpl.class);
+        bind(SoundClipFactory.class).to(SoundClipFactoryImpl.class);
     }
 }

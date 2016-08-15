@@ -6,20 +6,13 @@
  * as published by Sam Hocevar. See the COPYING file for more details.
  */
 
-package spypunk.tetris.sound;
+package spypunk.tetris.sound.factory;
 
-import java.io.Closeable;
+import spypunk.tetris.sound.Sound;
+import spypunk.tetris.sound.SoundClip;
 
-public interface SoundClip extends Closeable {
+@FunctionalInterface
+public interface SoundClipFactory {
 
-    void play();
-
-    void pause();
-
-    void stop();
-
-    void mute();
-
-    @Override
-    void close();
+    SoundClip createSoundClip(Sound sound);
 }

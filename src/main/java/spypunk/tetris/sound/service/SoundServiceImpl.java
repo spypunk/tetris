@@ -8,37 +8,33 @@
 
 package spypunk.tetris.sound.service;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.collect.Lists;
 
-import com.google.common.collect.Maps;
-
-import spypunk.tetris.exception.TetrisException;
 import spypunk.tetris.sound.Sound;
 import spypunk.tetris.sound.SoundClip;
+import spypunk.tetris.sound.factory.SoundClipFactory;
 
 @Singleton
 public class SoundServiceImpl implements SoundService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SoundServiceImpl.class);
-
-    private static final String SOUNDS_FOLDER = "/sound/";
-
-    private final Map<Sound, SoundClip> soundClips = createSoundClips();
+    private final Map<Sound, SoundClip> soundClips;
 
     private SoundClip currentSoundClip;
 
     private boolean muted;
+
+    @Inject
+    public SoundServiceImpl(SoundClipFactory soundClipFactory) {
+        soundClips = Lists.newArrayList(Sound.values()).stream()
+                .collect(Collectors.toMap(Function.identity(), soundClipFactory::createSoundClip));
+    }
 
     @Override
     public void shutdown() {
@@ -79,29 +75,6 @@ public class SoundServiceImpl implements SoundService {
     @Override
     public void mute() {
         doMute();
-    }
-
-    private static Map<Sound, SoundClip> createSoundClips() {
-        final Map<Sound, SoundClip> soundClips = Maps.newHashMap();
-
-        for (final Sound sound : Sound.values()) {
-            soundClips.put(sound, createSoundClip(sound));
-        }
-
-        return soundClips;
-    }
-
-    private static SoundClip createSoundClip(Sound sound) {
-        try (InputStream inputStream = SoundServiceImpl.class
-                .getResourceAsStream(SOUNDS_FOLDER + sound.getFileName());
-                AudioInputStream audioInputStream = AudioSystem
-                        .getAudioInputStream(new BufferedInputStream(inputStream))) {
-
-            return new SoundClip(audioInputStream, sound.isLoop());
-        } catch (UnsupportedAudioFileException | IOException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new TetrisException(e);
-        }
     }
 
     private void doPlaySound(Sound sound) {

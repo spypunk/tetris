@@ -5,6 +5,7 @@ import java.util.List;
 import spypunk.tetris.model.TetrisEvent;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 
+@FunctionalInterface
 public interface TetrisControllerTetrisEventHandler {
 
     List<TetrisControllerCommand> handleEvents(List<TetrisEvent> tetrisEvents);
