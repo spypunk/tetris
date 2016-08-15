@@ -7,6 +7,7 @@ import javax.sound.sampled.AudioFormat.Encoding;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 
 import org.apache.commons.io.IOUtils;
@@ -23,9 +24,15 @@ public class SoundClip implements AutoCloseable {
 
     private final boolean loop;
 
+    private final FloatControl volumeControl;
+
     private boolean paused;
 
     private long currentFramePosition;
+
+    private boolean muted;
+
+    private float currentVolume;
 
     public SoundClip(AudioInputStream inputStream, boolean loop) {
         audioFormat = getOutFormat(inputStream.getFormat());
@@ -35,6 +42,7 @@ public class SoundClip implements AutoCloseable {
             clip = AudioSystem.getClip();
             audioInputStream = AudioSystem.getAudioInputStream(audioFormat, inputStream);
             clip.open(audioInputStream);
+            volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         } catch (LineUnavailableException | IOException e) {
             throw new TetrisException(e);
         }
@@ -59,6 +67,16 @@ public class SoundClip implements AutoCloseable {
     public void stop() {
         clip.stop();
         clip.setFramePosition(0);
+    }
+
+    public void mute() {
+        muted = !muted;
+
+        if (muted) {
+            volumeControl.setValue(volumeControl.getMinimum());
+        } else {
+            volumeControl.setValue(currentVolume);
+        }
     }
 
     @Override

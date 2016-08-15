@@ -12,8 +12,6 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.inject.Singleton;
 import javax.sound.sampled.AudioInputStream;
@@ -36,8 +34,6 @@ public class SoundServiceImpl implements SoundService {
 
     private static final String SOUNDS_FOLDER = "/sound/";
 
-    private final ExecutorService executorService = Executors.newCachedThreadPool();
-
     private final Map<Sound, SoundClip> soundClips = createSoundClips();
 
     private SoundClip currentSoundClip;
@@ -47,7 +43,6 @@ public class SoundServiceImpl implements SoundService {
     @Override
     public void shutdown() {
         soundClips.values().forEach(SoundClip::close);
-        executorService.shutdown();
     }
 
     @Override
@@ -56,12 +51,12 @@ public class SoundServiceImpl implements SoundService {
             return;
         }
 
-        executorService.execute(() -> doPlayMusic(sound));
+        doPlayMusic(sound);
     }
 
     @Override
     public void pauseMusic() {
-        executorService.execute(this::doPauseMusic);
+        doPauseMusic();
     }
 
     @Override
@@ -78,7 +73,12 @@ public class SoundServiceImpl implements SoundService {
             return;
         }
 
-        executorService.execute(() -> doPlaySound(sound));
+        doPlaySound(sound);
+    }
+
+    @Override
+    public void mute() {
+        doMute();
     }
 
     private static Map<Sound, SoundClip> createSoundClips() {
@@ -127,8 +127,11 @@ public class SoundServiceImpl implements SoundService {
         }
     }
 
-    @Override
-    public void mute() {
+    private void doMute() {
         muted = !muted;
+
+        if (currentSoundClip != null) {
+            currentSoundClip.mute();
+        }
     }
 }
