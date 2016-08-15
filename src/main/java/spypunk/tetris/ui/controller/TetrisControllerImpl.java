@@ -77,7 +77,7 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
     @Override
     public void onWindowClosed() {
         gameLoop.stop();
-        soundService.shutDown();
+        soundService.shutdown();
     }
 
     @Override

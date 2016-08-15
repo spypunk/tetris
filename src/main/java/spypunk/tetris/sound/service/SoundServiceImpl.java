@@ -45,7 +45,7 @@ public class SoundServiceImpl implements SoundService {
     private boolean muted;
 
     @Override
-    public void shutDown() {
+    public void shutdown() {
         soundClips.values().forEach(SoundClip::close);
         executorService.shutdown();
     }

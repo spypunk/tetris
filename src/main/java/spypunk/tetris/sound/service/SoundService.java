@@ -12,7 +12,7 @@ import spypunk.tetris.sound.Sound;
 
 public interface SoundService {
 
-    void shutDown();
+    void shutdown();
 
     void playSound(Sound sound);
 
