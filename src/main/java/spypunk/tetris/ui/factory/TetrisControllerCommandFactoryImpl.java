@@ -17,6 +17,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import spypunk.tetris.model.Movement;
+import spypunk.tetris.model.TetrisInstance.State;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.sound.Sound;
 import spypunk.tetris.sound.service.SoundService;
@@ -39,23 +40,9 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     @Inject
     public TetrisControllerCommandFactoryImpl(TetrisService tetrisService, SoundService soundService) {
-        newGameTetrisControllerCommand = tetris -> {
-            tetrisService.newInstance(tetris);
-            soundService.stopMusic();
-            soundService.playMusic(Sound.BACKGROUND);
-        };
-
-        pauseTetrisControllerCommand = tetris -> {
-            tetrisService.pauseInstance(tetris);
-            soundService.pauseMusic();
-        };
-
-        movementTetrisControllerCommands = Maps.newHashMap();
-
-        Lists.newArrayList(Movement.values()).stream()
-                .forEach(movement -> movementTetrisControllerCommands.put(movement,
-                    tetris -> tetrisService.updateInstanceMovement(tetris, movement)));
-
+        newGameTetrisControllerCommand = createNewGameTetrisControllerCommand(tetrisService, soundService);
+        pauseTetrisControllerCommand = createPauseTetrisControllerCommand(tetrisService, soundService);
+        movementTetrisControllerCommands = createMovementTetrisControllerCommands(tetrisService);
         shapeLockedTetrisControllerCommand = tetris -> soundService.playSound(Sound.SHAPE_LOCKED);
         muteTetrisControllerCommand = tetris -> soundService.mute();
         gameOverTetrisControllerCommand = tetris -> soundService.playMusic(Sound.GAME_OVER);
@@ -89,5 +76,34 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     @Override
     public TetrisControllerCommand createGameOverTetrisControllerCommand() {
         return gameOverTetrisControllerCommand;
+    }
+    
+    private TetrisControllerCommand createNewGameTetrisControllerCommand(TetrisService tetrisService,
+            SoundService soundService) {
+        return tetris -> {
+            tetrisService.newInstance(tetris);
+            soundService.stopMusic();
+            soundService.playMusic(Sound.BACKGROUND);
+        };
+    }
+
+    private TetrisControllerCommand createPauseTetrisControllerCommand(TetrisService tetrisService,
+            SoundService soundService) {
+        return tetris -> {
+            tetrisService.pauseInstance(tetris);
+
+            if (!State.GAME_OVER.equals(tetris.getTetrisInstance().getState())) {
+                soundService.pauseMusic();
+            }
+        };
+    }
+
+    private Map<Movement, TetrisControllerCommand> createMovementTetrisControllerCommands(TetrisService tetrisService) {
+        Map<Movement, TetrisControllerCommand> commands = Maps.newHashMap();
+
+        Lists.newArrayList(Movement.values()).forEach(movement -> commands.put(movement,
+                    tetris -> tetrisService.updateInstanceMovement(tetris, movement)));
+
+        return commands;
     }
 }

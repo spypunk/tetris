@@ -72,7 +72,11 @@ public class SoundClip implements AutoCloseable {
     public void mute() {
         muted = !muted;
 
-        pause();
+        boolean pausedNeeded = !paused;
+
+        if (pausedNeeded) {
+            pause();
+        }
 
         if (muted) {
             volumeControl.setValue(volumeControl.getMinimum());
@@ -80,7 +84,9 @@ public class SoundClip implements AutoCloseable {
             volumeControl.setValue(currentVolume);
         }
 
-        pause();
+        if (pausedNeeded) {
+            pause();
+        }
     }
 
     @Override
