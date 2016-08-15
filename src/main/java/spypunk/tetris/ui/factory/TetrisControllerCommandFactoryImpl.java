@@ -18,9 +18,9 @@ import com.google.common.collect.Maps;
 
 import spypunk.tetris.model.Movement;
 import spypunk.tetris.service.TetrisService;
+import spypunk.tetris.sound.Sound;
+import spypunk.tetris.sound.service.SoundService;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
-import spypunk.tetris.ui.service.SoundService;
-import spypunk.tetris.ui.sound.Sound;
 
 @Singleton
 public class TetrisControllerCommandFactoryImpl implements TetrisControllerCommandFactory {
@@ -42,6 +42,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
         newGameTetrisControllerCommand = tetris -> {
             tetrisService.newInstance(tetris);
             soundService.stopMusic();
+            soundService.playMusic(Sound.BACKGROUND);
         };
 
         pauseTetrisControllerCommand = tetris -> {
@@ -55,17 +56,9 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
                 .forEach(movement -> movementTetrisControllerCommands.put(movement,
                     tetris -> tetrisService.updateInstanceMovement(tetris, movement)));
 
-        shapeLockedTetrisControllerCommand = tetris -> {
-            soundService.playSound(Sound.SHAPE_LOCKED);
-        };
-
-        muteTetrisControllerCommand = tetris -> {
-            soundService.mute();
-        };
-
-        gameOverTetrisControllerCommand = tetris -> {
-            soundService.playMusic(Sound.GAME_OVER);
-        };
+        shapeLockedTetrisControllerCommand = tetris -> soundService.playSound(Sound.SHAPE_LOCKED);
+        muteTetrisControllerCommand = tetris -> soundService.mute();
+        gameOverTetrisControllerCommand = tetris -> soundService.playMusic(Sound.GAME_OVER);
     }
 
     @Override

@@ -17,12 +17,12 @@ import spypunk.tetris.gameloop.GameLoop;
 import spypunk.tetris.gameloop.GameLoopListener;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.service.TetrisService;
+import spypunk.tetris.sound.service.SoundService;
 import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputTranslator;
 import spypunk.tetris.ui.factory.TetrisControllerInputTranslatorFactory;
 import spypunk.tetris.ui.factory.TetrisViewFactory;
-import spypunk.tetris.ui.service.SoundService;
 import spypunk.tetris.ui.util.SwingUtils;
 import spypunk.tetris.ui.view.TetrisView;
 
@@ -77,7 +77,7 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
     @Override
     public void onWindowClosed() {
         gameLoop.stop();
-        soundService.stop();
+        soundService.shutDown();
     }
 
     @Override
