@@ -73,7 +73,9 @@ public class SoundClip implements AutoCloseable {
         muted = !muted;
 
         if (muted) {
+            pause();
             volumeControl.setValue(volumeControl.getMinimum());
+            pause();
         } else {
             volumeControl.setValue(currentVolume);
         }
