@@ -11,7 +11,6 @@ package spypunk.tetris.ui.cache;
 import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -36,19 +35,9 @@ public class ImageCacheImpl implements ImageCache {
 
     private static final String SHAPES_FOLDER = "/img/shapes/";
 
-    private final Map<ShapeType, Image> blockImages;
+    private final Map<ShapeType, Image> blockImages = createBlockImages();
 
-    private final Map<ShapeType, Image> shapeImages;
-
-    public ImageCacheImpl() {
-        final ArrayList<ShapeType> shapeTypes = Lists.newArrayList(ShapeType.values());
-
-        blockImages = shapeTypes.stream().collect(Collectors.toMap(Function.identity(),
-            shapeType -> createImage(BLOCKS_FOLDER, shapeType)));
-
-        shapeImages = shapeTypes.stream().collect(Collectors.toMap(Function.identity(),
-            shapeType -> createImage(SHAPES_FOLDER, shapeType)));
-    }
+    private final Map<ShapeType, Image> shapeImages = createShapeImages();
 
     @Override
     public Image getBlockImage(ShapeType shapeType) {
@@ -60,14 +49,24 @@ public class ImageCacheImpl implements ImageCache {
         return shapeImages.get(shapeType);
     }
 
-    private Image createImage(String imageFolder, ShapeType shapeType) {
+    private static Image createImage(String imageFolder, ShapeType shapeType) {
         final String resourceName = String.format("%s%s.png", imageFolder, shapeType.name());
 
-        try (InputStream inputStream = getClass().getResourceAsStream(resourceName)) {
+        try (InputStream inputStream = ImageCacheImpl.class.getResourceAsStream(resourceName)) {
             return ImageIO.read(inputStream);
         } catch (final IOException e) {
             LOGGER.error(e.getMessage(), e);
             throw new TetrisException(e);
         }
+    }
+
+    private static Map<ShapeType, Image> createShapeImages() {
+        return Lists.newArrayList(ShapeType.values()).stream().collect(Collectors.toMap(Function.identity(),
+            shapeType -> createImage(SHAPES_FOLDER, shapeType)));
+    }
+
+    private static Map<ShapeType, Image> createBlockImages() {
+        return Lists.newArrayList(ShapeType.values()).stream().collect(Collectors.toMap(Function.identity(),
+            shapeType -> createImage(BLOCKS_FOLDER, shapeType)));
     }
 }

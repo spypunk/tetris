@@ -13,4 +13,8 @@ public class FontConstants {
     public static final String NEUTRONIUM = "neutronium";
 
     public static final String RUSSO_ONE = "russo_one";
+
+    private FontConstants() {
+        throw new IllegalAccessError();
+    }
 }

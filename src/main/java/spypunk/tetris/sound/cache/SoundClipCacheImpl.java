@@ -12,6 +12,8 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.inject.Singleton;
 import javax.sound.sampled.AudioInputStream;
@@ -21,7 +23,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 
 import spypunk.tetris.exception.TetrisException;
 import spypunk.tetris.sound.Sound;
@@ -36,7 +38,7 @@ public class SoundClipCacheImpl implements SoundClipCache {
 
     private static final String SOUNDS_FOLDER = "/sound/";
 
-    private final Map<Sound, SoundClip> soundClips = loadSoundClips();
+    private final Map<Sound, SoundClip> soundClips = createSoundClips();
 
     @Override
     public SoundClip getSoundClip(Sound sound) {
@@ -48,7 +50,7 @@ public class SoundClipCacheImpl implements SoundClipCache {
         soundClips.values().forEach(SoundClip::close);
     }
 
-    private static SoundClip loadSoundClip(Sound sound) {
+    private static SoundClip createSoundClip(Sound sound) {
         try (InputStream inputStream = SoundServiceImpl.class
                 .getResourceAsStream(SOUNDS_FOLDER + sound.getFileName());
                 AudioInputStream audioInputStream = AudioSystem
@@ -61,13 +63,8 @@ public class SoundClipCacheImpl implements SoundClipCache {
         }
     }
 
-    private static Map<Sound, SoundClip> loadSoundClips() {
-        final Map<Sound, SoundClip> soundClips = Maps.newHashMap();
-
-        for (final Sound sound : Sound.values()) {
-            soundClips.put(sound, loadSoundClip(sound));
-        }
-
-        return soundClips;
+    private static Map<Sound, SoundClip> createSoundClips() {
+        return Lists.newArrayList(Sound.values()).stream()
+                .collect(Collectors.toMap(Function.identity(), SoundClipCacheImpl::createSoundClip));
     }
 }

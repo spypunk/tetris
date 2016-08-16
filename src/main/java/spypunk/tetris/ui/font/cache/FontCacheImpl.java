@@ -13,13 +13,15 @@ import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.inject.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 
 import spypunk.tetris.exception.TetrisException;
 import spypunk.tetris.ui.font.FontType;
@@ -31,7 +33,7 @@ public class FontCacheImpl implements FontCache {
 
     private static final String FONTS_FOLDER = "/font/";
 
-    private final Map<FontType, Font> fonts = loadFonts();
+    private final Map<FontType, Font> fonts = createFonts();
 
     @Override
     public Font getFont(FontType fontType) {
@@ -49,13 +51,8 @@ public class FontCacheImpl implements FontCache {
         }
     }
 
-    private static Map<FontType, Font> loadFonts() {
-        final Map<FontType, Font> fonts = Maps.newHashMap();
-
-        for (final FontType fontType : FontType.values()) {
-            fonts.put(fontType, createFont(fontType));
-        }
-
-        return fonts;
+    private static Map<FontType, Font> createFonts() {
+        return Lists.newArrayList(FontType.values()).stream()
+                .collect(Collectors.toMap(Function.identity(), FontCacheImpl::createFont));
     }
 }
