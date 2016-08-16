@@ -18,10 +18,12 @@ import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.factory.TetrisFactoryImpl;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.service.TetrisServiceImpl;
-import spypunk.tetris.sound.factory.SoundClipFactory;
-import spypunk.tetris.sound.factory.SoundClipFactoryImpl;
+import spypunk.tetris.sound.cache.SoundClipCache;
+import spypunk.tetris.sound.cache.SoundClipCacheImpl;
 import spypunk.tetris.sound.service.SoundService;
 import spypunk.tetris.sound.service.SoundServiceImpl;
+import spypunk.tetris.ui.cache.ImageCache;
+import spypunk.tetris.ui.cache.ImageCacheImpl;
 import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.controller.TetrisControllerImpl;
 import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
@@ -30,8 +32,6 @@ import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandlerImpl;
 import spypunk.tetris.ui.factory.FontFactory;
 import spypunk.tetris.ui.factory.FontFactoryImpl;
-import spypunk.tetris.ui.factory.ImageFactory;
-import spypunk.tetris.ui.factory.ImageFactoryImpl;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactoryImpl;
 import spypunk.tetris.ui.factory.TetrisControllerInputTranslatorFactory;
@@ -47,7 +47,7 @@ public class TetrisModule extends AbstractModule {
         bind(ShapeFactory.class).to(ShapeFactoryImpl.class);
         bind(TetrisController.class).to(TetrisControllerImpl.class);
         bind(TetrisViewFactory.class).to(TetrisViewFactoryImpl.class);
-        bind(ImageFactory.class).to(ImageFactoryImpl.class);
+        bind(ImageCache.class).to(ImageCacheImpl.class);
         bind(TetrisFactory.class).to(TetrisFactoryImpl.class);
         bind(FontFactory.class).to(FontFactoryImpl.class);
         bind(GameLoopFactory.class).to(GameLoopFactoryImpl.class);
@@ -56,6 +56,6 @@ public class TetrisModule extends AbstractModule {
         bind(TetrisControllerInputTranslatorFactory.class).to(TetrisControllerInputTranslatorFactoryImpl.class);
         bind(TetrisControllerTetrisEventHandler.class).to(TetrisControllerTetrisEventHandlerImpl.class);
         bind(SoundService.class).to(SoundServiceImpl.class);
-        bind(SoundClipFactory.class).to(SoundClipFactoryImpl.class);
+        bind(SoundClipCache.class).to(SoundClipCacheImpl.class);
     }
 }

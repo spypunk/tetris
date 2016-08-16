@@ -32,8 +32,8 @@ import com.google.common.collect.Lists;
 
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.factory.FontFactory;
-import spypunk.tetris.ui.factory.ImageFactory;
 import spypunk.tetris.ui.util.SwingUtils;
 
 public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsView {
@@ -85,7 +85,7 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
     private final List<ShapeType> shapeTypes;
 
     public TetrisInstanceStatisticsViewImpl(FontFactory fontFactory,
-            ImageFactory imageFactory, Tetris tetris) {
+            ImageCache imageCache, Tetris tetris) {
         this.tetris = tetris;
 
         shapeTypes = Lists.newArrayList(ShapeType.values());
@@ -97,7 +97,7 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
 
         statisticsRows = shapeTypes.stream()
                 .collect(
-                    Collectors.toMap(Function.identity(), shapeType -> createStatisticRow(imageFactory, shapeType)));
+                    Collectors.toMap(Function.identity(), shapeType -> createStatisticRow(imageCache, shapeType)));
 
         image = new BufferedImage(statisticsRectangle.width + 1, statisticsRectangle.height + BLOCK_SIZE + 1,
                 BufferedImage.TYPE_INT_ARGB);
@@ -115,8 +115,8 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
         SwingUtils.doInGraphics(image, this::renderStatistics);
     }
 
-    private StatisticsRow createStatisticRow(ImageFactory imageFactory, ShapeType shapeType) {
-        final Image shapeImage = imageFactory.createShapeImage(shapeType);
+    private StatisticsRow createStatisticRow(ImageCache imageCache, ShapeType shapeType) {
+        final Image shapeImage = imageCache.getShapeImage(shapeType);
         final Rectangle imageContainerRectangle = new Rectangle(statisticsRectangle.x,
                 statisticsRectangle.y + shapeType.ordinal() * 2 * BLOCK_SIZE + BLOCK_SIZE,
                 statisticsRectangle.width / 2, BLOCK_SIZE);

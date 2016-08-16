@@ -20,15 +20,10 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
-import com.google.common.collect.Lists;
 
 import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.model.Block;
@@ -37,8 +32,8 @@ import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.model.TetrisInstance.State;
+import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.factory.FontFactory;
-import spypunk.tetris.ui.factory.ImageFactory;
 import spypunk.tetris.ui.util.SwingUtils;
 
 public class TetrisInstanceViewImpl extends TetrisInstanceView {
@@ -67,20 +62,20 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     private final Rectangle frozenGridRectangle;
 
+    private final ImageCache imageCache;
+
     private final int blockX;
 
     private final int blockY;
 
-    private final Map<ShapeType, Image> blockImages;
-
     public TetrisInstanceViewImpl(FontFactory fontFactory,
             TetrisInstanceStatisticsView tetrisInstanceStatisticsView,
             TetrisInstanceInfoView tetrisInstanceInfoView,
-            ImageFactory imageFactory,
+            ImageCache imageCache,
             Tetris tetris) {
         this.tetrisInstanceStatisticsView = tetrisInstanceStatisticsView;
         this.tetrisInstanceInfoView = tetrisInstanceInfoView;
-
+        this.imageCache = imageCache;
         this.tetris = tetris;
 
         frozenTetrisFont = fontFactory.createDefaultFont(TETRIS_FROZEN_FONT_SIZE);
@@ -96,10 +91,6 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
         image = new BufferedImage(gridRectangle.width + 1, gridRectangle.height + 1,
                 BufferedImage.TYPE_INT_ARGB);
-
-        blockImages = Lists.newArrayList(ShapeType.values()).stream()
-                .collect(
-                    Collectors.toMap(Function.identity(), imageFactory::createBlockImage));
 
         final JLabel label = new JLabel(new ImageIcon(image));
 
@@ -154,7 +145,7 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     private void renderBlock(Graphics2D graphics, Block block) {
         final ShapeType shapeType = block.getShape().getShapeType();
-        final Image blockImage = blockImages.get(shapeType);
+        final Image blockImage = imageCache.getBlockImage(shapeType);
         final Point location = block.getLocation();
         final int x1 = blockX + location.x * BLOCK_SIZE;
         final int y1 = blockY + location.y * BLOCK_SIZE;

@@ -33,8 +33,8 @@ import com.google.common.collect.Lists;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisInstance;
+import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.factory.FontFactory;
-import spypunk.tetris.ui.factory.ImageFactory;
 import spypunk.tetris.ui.util.SwingUtils;
 
 public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
@@ -73,15 +73,16 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
 
     private final Map<ShapeType, Rectangle> shapeTypeImageRectangles;
 
-    private final Map<ShapeType, Image> shapeTypeImages;
-
     private final Font defaultFont;
 
     private final Tetris tetris;
 
+    private final ImageCache imageCache;
+
     public TetrisInstanceInfoViewImpl(FontFactory fontFactory,
-            ImageFactory imageFactory, Tetris tetris) {
+            ImageCache imageCache, Tetris tetris) {
         this.tetris = tetris;
+        this.imageCache = imageCache;
 
         defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
 
@@ -100,10 +101,6 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
         nextShapeLabelRectangle = createLabelRectangle(nextShapeRectangle);
 
         final List<ShapeType> shapeTypes = Lists.newArrayList(ShapeType.values());
-
-        shapeTypeImages = shapeTypes.stream()
-                .collect(
-                    Collectors.toMap(Function.identity(), imageFactory::createShapeImage));
 
         shapeTypeImageRectangles = shapeTypes.stream()
                 .collect(
@@ -135,7 +132,7 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
     }
 
     private Rectangle createShapeTypeImageRectangle(ShapeType shapeType) {
-        final Image shapeTypeImage = shapeTypeImages.get(shapeType);
+        final Image shapeTypeImage = imageCache.getShapeImage(shapeType);
         return SwingUtils.getCenteredImageRectangle(shapeTypeImage, nextShapeRectangle);
     }
 
@@ -156,7 +153,7 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
         renderLabelAndRectangle(graphics, nextShapeRectangle, nextShapeLabelRectangle, NEXT_SHAPE);
 
         final ShapeType shapeType = tetrisInstance.getNextShape().getShapeType();
-        final Image shapeTypeImage = shapeTypeImages.get(shapeType);
+        final Image shapeTypeImage = imageCache.getShapeImage(shapeType);
         final Rectangle rectangle = shapeTypeImageRectangles.get(shapeType);
 
         SwingUtils.drawImage(graphics, shapeTypeImage, rectangle);

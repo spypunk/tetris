@@ -6,13 +6,15 @@
  * as published by Sam Hocevar. See the COPYING file for more details.
  */
 
-package spypunk.tetris.sound.factory;
+package spypunk.tetris.ui.cache;
 
-import spypunk.tetris.sound.Sound;
-import spypunk.tetris.sound.SoundClip;
+import java.awt.Image;
 
-@FunctionalInterface
-public interface SoundClipFactory {
+import spypunk.tetris.model.ShapeType;
 
-    SoundClip createSoundClip(Sound sound);
+public interface ImageCache {
+
+    Image getBlockImage(ShapeType shapeType);
+
+    Image getShapeImage(ShapeType shapeType);
 }

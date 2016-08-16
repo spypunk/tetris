@@ -8,37 +8,30 @@
 
 package spypunk.tetris.sound.service;
 
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.google.common.collect.Lists;
-
 import spypunk.tetris.sound.Sound;
 import spypunk.tetris.sound.SoundClip;
-import spypunk.tetris.sound.factory.SoundClipFactory;
+import spypunk.tetris.sound.cache.SoundClipCache;
 
 @Singleton
 public class SoundServiceImpl implements SoundService {
 
-    private final Map<Sound, SoundClip> soundClips;
+    private final SoundClipCache soundClipCache;
 
     private SoundClip currentSoundClip;
 
     private boolean muted;
 
     @Inject
-    public SoundServiceImpl(SoundClipFactory soundClipFactory) {
-        soundClips = Lists.newArrayList(Sound.values()).stream()
-                .collect(Collectors.toMap(Function.identity(), soundClipFactory::createSoundClip));
+    public SoundServiceImpl(SoundClipCache soundClipCache) {
+        this.soundClipCache = soundClipCache;
     }
 
     @Override
     public void shutdown() {
-        soundClips.values().forEach(SoundClip::close);
+        soundClipCache.clear();
     }
 
     @Override
@@ -78,7 +71,7 @@ public class SoundServiceImpl implements SoundService {
     }
 
     private void doPlaySound(Sound sound) {
-        final SoundClip clip = soundClips.get(sound);
+        final SoundClip clip = soundClipCache.getSoundClip(sound);
 
         clip.stop();
         clip.play();
@@ -87,7 +80,7 @@ public class SoundServiceImpl implements SoundService {
     private void doPlayMusic(Sound sound) {
         stopMusic();
 
-        final SoundClip clip = soundClips.get(sound);
+        final SoundClip clip = soundClipCache.getSoundClip(sound);
 
         currentSoundClip = clip;
 

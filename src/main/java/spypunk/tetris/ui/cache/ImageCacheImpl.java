@@ -6,7 +6,7 @@
  * as published by Sam Hocevar. See the COPYING file for more details.
  */
 
-package spypunk.tetris.ui.factory;
+package spypunk.tetris.ui.cache;
 
 import java.awt.Image;
 import java.io.IOException;
@@ -28,9 +28,9 @@ import spypunk.tetris.exception.TetrisException;
 import spypunk.tetris.model.ShapeType;
 
 @Singleton
-public class ImageFactoryImpl implements ImageFactory {
+public class ImageCacheImpl implements ImageCache {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ImageFactoryImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImageCacheImpl.class);
 
     private static final String BLOCKS_FOLDER = "/img/blocks/";
 
@@ -40,7 +40,7 @@ public class ImageFactoryImpl implements ImageFactory {
 
     private final Map<ShapeType, Image> shapeImages;
 
-    public ImageFactoryImpl() {
+    public ImageCacheImpl() {
         final ArrayList<ShapeType> shapeTypes = Lists.newArrayList(ShapeType.values());
 
         blockImages = shapeTypes.stream().collect(Collectors.toMap(Function.identity(),
@@ -51,12 +51,12 @@ public class ImageFactoryImpl implements ImageFactory {
     }
 
     @Override
-    public Image createBlockImage(ShapeType shapeType) {
+    public Image getBlockImage(ShapeType shapeType) {
         return blockImages.get(shapeType);
     }
 
     @Override
-    public Image createShapeImage(ShapeType shapeType) {
+    public Image getShapeImage(ShapeType shapeType) {
         return shapeImages.get(shapeType);
     }
 

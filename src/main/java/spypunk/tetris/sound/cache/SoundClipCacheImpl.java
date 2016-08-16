@@ -6,7 +6,7 @@
  * as published by Sam Hocevar. See the COPYING file for more details.
  */
 
-package spypunk.tetris.sound.factory;
+package spypunk.tetris.sound.cache;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -30,17 +30,23 @@ import spypunk.tetris.sound.SoundClipImpl;
 import spypunk.tetris.sound.service.SoundServiceImpl;
 
 @Singleton
-public class SoundClipFactoryImpl implements SoundClipFactory {
+public class SoundClipCacheImpl implements SoundClipCache {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SoundClipFactoryImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SoundClipCacheImpl.class);
 
     private static final String SOUNDS_FOLDER = "/sound/";
 
     private final Map<Sound, SoundClip> soundClips = loadSoundClips();
 
     @Override
-    public SoundClip createSoundClip(Sound sound) {
+    public SoundClip getSoundClip(Sound sound) {
         return soundClips.get(sound);
+    }
+
+    @Override
+    public void clear() {
+        soundClips.values().forEach(SoundClip::close);
+        soundClips.clear();
     }
 
     private static SoundClip loadSoundClip(Sound sound) {

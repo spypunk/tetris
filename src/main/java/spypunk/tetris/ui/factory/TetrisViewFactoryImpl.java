@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.view.TetrisInstanceInfoView;
 import spypunk.tetris.ui.view.TetrisInstanceInfoViewImpl;
@@ -29,14 +30,14 @@ public class TetrisViewFactoryImpl implements TetrisViewFactory {
 
     private final FontFactory fontFactory;
 
-    private final ImageFactory imageFactory;
+    private final ImageCache imageCache;
 
     @Inject
     public TetrisViewFactoryImpl(TetrisController tetrisController, FontFactory fontFactory,
-            ImageFactory imageFactory) {
+            ImageCache imageCache) {
         this.tetrisController = tetrisController;
         this.fontFactory = fontFactory;
-        this.imageFactory = imageFactory;
+        this.imageCache = imageCache;
     }
 
     @Override
@@ -51,14 +52,14 @@ public class TetrisViewFactoryImpl implements TetrisViewFactory {
         final TetrisInstanceInfoView tetrisInstanceInfoView = createTetrisInstanceInfoView(tetris);
 
         return new TetrisInstanceViewImpl(fontFactory, tetrisInstanceStatisticsView,
-                tetrisInstanceInfoView, imageFactory, tetris);
+                tetrisInstanceInfoView, imageCache, tetris);
     }
 
     private TetrisInstanceStatisticsView createTetrisInstanceStatisticsView(Tetris tetris) {
-        return new TetrisInstanceStatisticsViewImpl(fontFactory, imageFactory, tetris);
+        return new TetrisInstanceStatisticsViewImpl(fontFactory, imageCache, tetris);
     }
 
     private TetrisInstanceInfoView createTetrisInstanceInfoView(Tetris tetris) {
-        return new TetrisInstanceInfoViewImpl(fontFactory, imageFactory, tetris);
+        return new TetrisInstanceInfoViewImpl(fontFactory, imageCache, tetris);
     }
 }
