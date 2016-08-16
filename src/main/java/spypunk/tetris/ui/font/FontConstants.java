@@ -6,13 +6,11 @@
  * as published by Sam Hocevar. See the COPYING file for more details.
  */
 
-package spypunk.tetris.ui.factory;
+package spypunk.tetris.ui.font;
 
-import java.awt.Font;
+public class FontConstants {
 
-public interface FontFactory {
+    public static final String NEUTRONIUM = "neutronium";
 
-    Font createDefaultFont(float defaultFontSize);
-
-    Font createURLFont(float defaultFontSize);
+    public static final String RUSSO_ONE = "russo_one";
 }

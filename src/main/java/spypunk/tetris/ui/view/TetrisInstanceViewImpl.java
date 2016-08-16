@@ -14,7 +14,6 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
@@ -33,7 +32,8 @@ import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.model.TetrisInstance.State;
 import spypunk.tetris.ui.cache.ImageCache;
-import spypunk.tetris.ui.factory.FontFactory;
+import spypunk.tetris.ui.font.FontType;
+import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
 public class TetrisInstanceViewImpl extends TetrisInstanceView {
@@ -42,8 +42,6 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     private static final String PAUSE = "PAUSE";
 
-    private static final float TETRIS_FROZEN_FONT_SIZE = 42F;
-
     private static final Color TETRIS_FROZEN_FG_COLOR = new Color(30, 30, 30, 200);
 
     private static final String GAME_OVER = "GAME OVER";
@@ -51,8 +49,6 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
     private final BufferedImage image;
 
     private final Tetris tetris;
-
-    private final Font frozenTetrisFont;
 
     private final TetrisInstanceStatisticsView tetrisInstanceStatisticsView;
 
@@ -64,11 +60,13 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     private final ImageCache imageCache;
 
+    private final FontCache fontCache;
+
     private final int blockX;
 
     private final int blockY;
 
-    public TetrisInstanceViewImpl(FontFactory fontFactory,
+    public TetrisInstanceViewImpl(FontCache fontCache,
             TetrisInstanceStatisticsView tetrisInstanceStatisticsView,
             TetrisInstanceInfoView tetrisInstanceInfoView,
             ImageCache imageCache,
@@ -77,8 +75,7 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
         this.tetrisInstanceInfoView = tetrisInstanceInfoView;
         this.imageCache = imageCache;
         this.tetris = tetris;
-
-        frozenTetrisFont = fontFactory.createDefaultFont(TETRIS_FROZEN_FONT_SIZE);
+        this.fontCache = fontCache;
 
         gridRectangle = new Rectangle(0, 0, TetrisConstants.WIDTH * BLOCK_SIZE + 1,
                 TetrisConstants.HEIGHT * BLOCK_SIZE + 1);
@@ -160,6 +157,6 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
             frozenGridRectangle.height);
 
         SwingUtils.renderCenteredText(graphics, State.GAME_OVER.equals(state) ? GAME_OVER : PAUSE, gridRectangle,
-            frozenTetrisFont, DEFAULT_FONT_COLOR);
+            fontCache.getFont(FontType.FROZEN), DEFAULT_FONT_COLOR);
     }
 }

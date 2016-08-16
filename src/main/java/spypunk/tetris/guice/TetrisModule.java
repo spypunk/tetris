@@ -30,14 +30,14 @@ import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
 import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandlerImpl;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandlerImpl;
-import spypunk.tetris.ui.factory.FontFactory;
-import spypunk.tetris.ui.factory.FontFactoryImpl;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactoryImpl;
 import spypunk.tetris.ui.factory.TetrisControllerInputTranslatorFactory;
 import spypunk.tetris.ui.factory.TetrisControllerInputTranslatorFactoryImpl;
 import spypunk.tetris.ui.factory.TetrisViewFactory;
 import spypunk.tetris.ui.factory.TetrisViewFactoryImpl;
+import spypunk.tetris.ui.font.cache.FontCache;
+import spypunk.tetris.ui.font.cache.FontCacheImpl;
 
 public class TetrisModule extends AbstractModule {
 
@@ -49,7 +49,7 @@ public class TetrisModule extends AbstractModule {
         bind(TetrisViewFactory.class).to(TetrisViewFactoryImpl.class);
         bind(ImageCache.class).to(ImageCacheImpl.class);
         bind(TetrisFactory.class).to(TetrisFactoryImpl.class);
-        bind(FontFactory.class).to(FontFactoryImpl.class);
+        bind(FontCache.class).to(FontCacheImpl.class);
         bind(GameLoopFactory.class).to(GameLoopFactoryImpl.class);
         bind(TetrisControllerInputHandler.class).to(TetrisControllerInputHandlerImpl.class);
         bind(TetrisControllerCommandFactory.class).to(TetrisControllerCommandFactoryImpl.class);

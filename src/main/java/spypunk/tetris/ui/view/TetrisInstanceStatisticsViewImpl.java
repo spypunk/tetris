@@ -11,10 +11,8 @@ package spypunk.tetris.ui.view;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_SIZE;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -33,7 +31,8 @@ import com.google.common.collect.Lists;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.cache.ImageCache;
-import spypunk.tetris.ui.factory.FontFactory;
+import spypunk.tetris.ui.font.FontType;
+import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
 public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsView {
@@ -72,8 +71,6 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
 
     private final BufferedImage image;
 
-    private final Font defaultFont;
-
     private final Tetris tetris;
 
     private final Rectangle statisticsRectangle;
@@ -84,13 +81,14 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
 
     private final List<ShapeType> shapeTypes;
 
-    public TetrisInstanceStatisticsViewImpl(FontFactory fontFactory,
+    private final FontCache fontCache;
+
+    public TetrisInstanceStatisticsViewImpl(FontCache fontCache,
             ImageCache imageCache, Tetris tetris) {
         this.tetris = tetris;
+        this.fontCache = fontCache;
 
         shapeTypes = Lists.newArrayList(ShapeType.values());
-
-        defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
 
         statisticsRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE * 15);
         statisticsLabelRectangle = new Rectangle(0, 0, statisticsRectangle.width, BLOCK_SIZE);
@@ -135,7 +133,7 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
 
     private void renderStatistics(Graphics2D graphics) {
         SwingUtils.renderCenteredText(graphics, STATISTICS,
-            statisticsLabelRectangle, defaultFont, DEFAULT_FONT_COLOR);
+            statisticsLabelRectangle, fontCache.getFont(FontType.DEFAULT), DEFAULT_FONT_COLOR);
 
         graphics.setColor(DEFAULT_BORDER_COLOR);
 
@@ -153,6 +151,6 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
         SwingUtils.drawImage(graphics, statisticsRow.getImage(), statisticsRow.getImageRectangle());
 
         SwingUtils.renderCenteredText(graphics, value,
-            statisticsRow.getTextContainerRectangle(), defaultFont, DEFAULT_FONT_COLOR);
+            statisticsRow.getTextContainerRectangle(), fontCache.getFont(FontType.DEFAULT), DEFAULT_FONT_COLOR);
     }
 }

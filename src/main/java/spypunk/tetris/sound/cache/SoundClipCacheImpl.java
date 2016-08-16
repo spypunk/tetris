@@ -46,7 +46,6 @@ public class SoundClipCacheImpl implements SoundClipCache {
     @Override
     public void clear() {
         soundClips.values().forEach(SoundClip::close);
-        soundClips.clear();
     }
 
     private static SoundClip loadSoundClip(Sound sound) {

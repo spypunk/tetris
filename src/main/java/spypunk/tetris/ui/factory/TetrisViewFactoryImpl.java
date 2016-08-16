@@ -14,6 +14,7 @@ import javax.inject.Singleton;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.controller.TetrisController;
+import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.view.TetrisInstanceInfoView;
 import spypunk.tetris.ui.view.TetrisInstanceInfoViewImpl;
 import spypunk.tetris.ui.view.TetrisInstanceStatisticsView;
@@ -28,15 +29,15 @@ public class TetrisViewFactoryImpl implements TetrisViewFactory {
 
     private final TetrisController tetrisController;
 
-    private final FontFactory fontFactory;
+    private final FontCache fontCache;
 
     private final ImageCache imageCache;
 
     @Inject
-    public TetrisViewFactoryImpl(TetrisController tetrisController, FontFactory fontFactory,
+    public TetrisViewFactoryImpl(TetrisController tetrisController, FontCache fontCache,
             ImageCache imageCache) {
         this.tetrisController = tetrisController;
-        this.fontFactory = fontFactory;
+        this.fontCache = fontCache;
         this.imageCache = imageCache;
     }
 
@@ -44,22 +45,22 @@ public class TetrisViewFactoryImpl implements TetrisViewFactory {
     public TetrisView createTetrisView(Tetris tetris) {
         final TetrisInstanceView tetrisInstanceView = createTetrisInstanceView(tetris);
 
-        return new TetrisViewImpl(tetrisController, tetrisInstanceView, fontFactory, tetris);
+        return new TetrisViewImpl(tetrisController, tetrisInstanceView, fontCache, tetris);
     }
 
     private TetrisInstanceView createTetrisInstanceView(Tetris tetris) {
         final TetrisInstanceStatisticsView tetrisInstanceStatisticsView = createTetrisInstanceStatisticsView(tetris);
         final TetrisInstanceInfoView tetrisInstanceInfoView = createTetrisInstanceInfoView(tetris);
 
-        return new TetrisInstanceViewImpl(fontFactory, tetrisInstanceStatisticsView,
+        return new TetrisInstanceViewImpl(fontCache, tetrisInstanceStatisticsView,
                 tetrisInstanceInfoView, imageCache, tetris);
     }
 
     private TetrisInstanceStatisticsView createTetrisInstanceStatisticsView(Tetris tetris) {
-        return new TetrisInstanceStatisticsViewImpl(fontFactory, imageCache, tetris);
+        return new TetrisInstanceStatisticsViewImpl(fontCache, imageCache, tetris);
     }
 
     private TetrisInstanceInfoView createTetrisInstanceInfoView(Tetris tetris) {
-        return new TetrisInstanceInfoViewImpl(fontFactory, imageCache, tetris);
+        return new TetrisInstanceInfoViewImpl(fontCache, imageCache, tetris);
     }
 }

@@ -11,10 +11,8 @@ package spypunk.tetris.ui.view;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_SIZE;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -34,7 +32,8 @@ import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.ui.cache.ImageCache;
-import spypunk.tetris.ui.factory.FontFactory;
+import spypunk.tetris.ui.font.FontType;
+import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
 public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
@@ -73,18 +72,17 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
 
     private final Map<ShapeType, Rectangle> shapeTypeImageRectangles;
 
-    private final Font defaultFont;
-
     private final Tetris tetris;
 
     private final ImageCache imageCache;
 
-    public TetrisInstanceInfoViewImpl(FontFactory fontFactory,
+    private final FontCache fontCache;
+
+    public TetrisInstanceInfoViewImpl(FontCache fontCache,
             ImageCache imageCache, Tetris tetris) {
         this.tetris = tetris;
         this.imageCache = imageCache;
-
-        defaultFont = fontFactory.createDefaultFont(DEFAULT_FONT_SIZE);
+        this.fontCache = fontCache;
 
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
@@ -164,13 +162,13 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
         renderLabelAndRectangle(graphics, rectangle, labelRectangle, title);
 
         SwingUtils.renderCenteredText(graphics, value,
-            rectangle, defaultFont, DEFAULT_FONT_COLOR);
+            rectangle, fontCache.getFont(FontType.DEFAULT), DEFAULT_FONT_COLOR);
     }
 
     private void renderLabelAndRectangle(Graphics2D graphics, Rectangle rectangle, Rectangle labelRectangle,
             String label) {
         SwingUtils.renderCenteredText(graphics, label,
-            labelRectangle, defaultFont, DEFAULT_FONT_COLOR);
+            labelRectangle, fontCache.getFont(FontType.DEFAULT), DEFAULT_FONT_COLOR);
 
         graphics.setColor(DEFAULT_BORDER_COLOR);
 

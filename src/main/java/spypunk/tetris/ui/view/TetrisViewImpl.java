@@ -12,7 +12,6 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -29,7 +28,8 @@ import javax.swing.WindowConstants;
 
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.controller.TetrisController;
-import spypunk.tetris.ui.factory.FontFactory;
+import spypunk.tetris.ui.font.FontType;
+import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
 public class TetrisViewImpl implements TetrisView {
@@ -93,23 +93,20 @@ public class TetrisViewImpl implements TetrisView {
         }
     }
 
-    private static final float URL_FONT_SIZE = 10F;
-
     private final JFrame frame;
 
     private final TetrisInstanceView tetrisInstanceView;
 
     public TetrisViewImpl(TetrisController tetrisController,
             TetrisInstanceView tetrisInstanceView,
-            FontFactory fontFactory,
+            FontCache fontCache,
             Tetris tetris) {
         this.tetrisInstanceView = tetrisInstanceView;
 
         final URI projectURI = tetris.getProjectURI();
         final JLabel urlLabel = new JLabel(projectURI.getHost() + projectURI.getPath());
-        final Font urlFont = fontFactory.createURLFont(URL_FONT_SIZE);
 
-        urlLabel.setFont(urlFont);
+        urlLabel.setFont(fontCache.getFont(FontType.URL));
         urlLabel.setForeground(DEFAULT_FONT_COLOR);
         urlLabel.addMouseListener(new URLLabelMouseAdapter(tetrisController, urlLabel));
 
