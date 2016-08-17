@@ -35,7 +35,6 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     public TetrisControllerCommand createNewGameTetrisControllerCommand() {
         return tetris -> {
             tetrisService.newInstance(tetris);
-            soundService.stopMusic();
             soundService.playMusic(Sound.BACKGROUND);
         };
     }
