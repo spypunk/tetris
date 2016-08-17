@@ -16,7 +16,8 @@ public enum Sound {
 
     SHAPE_LOCKED(Format.WAV, false),
     GAME_OVER(Format.WAV, true),
-    BACKGROUND(Format.MP3, true);
+    BACKGROUND(Format.MP3, true),
+    ROWS_COMPLETED(Format.WAV, false);
 
     public enum Format {
         WAV {

@@ -23,10 +23,13 @@ public class TetrisControllerTetrisEventHandlerImpl implements TetrisControllerT
     @Inject
     public TetrisControllerTetrisEventHandlerImpl(TetrisControllerCommandFactory tetrisControllerCommandFactory) {
         tetrisControllerCommands.put(TetrisEvent.SHAPE_LOCKED,
-            () -> tetrisControllerCommandFactory.createShapeLockedTetrisControllerCommand());
+            tetrisControllerCommandFactory::createShapeLockedTetrisControllerCommand);
 
         tetrisControllerCommands.put(TetrisEvent.GAME_OVER,
-            () -> tetrisControllerCommandFactory.createGameOverTetrisControllerCommand());
+            tetrisControllerCommandFactory::createGameOverTetrisControllerCommand);
+
+        tetrisControllerCommands.put(TetrisEvent.ROWS_COMPLETED,
+            tetrisControllerCommandFactory::createRowsCompletedTetrisControllerCommand);
     }
 
     @Override

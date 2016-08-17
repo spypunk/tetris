@@ -38,6 +38,8 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     private final TetrisControllerCommand gameOverTetrisControllerCommand;
 
+    private final TetrisControllerCommand rowsCompletedTetrisControllerCommand;
+
     @Inject
     public TetrisControllerCommandFactoryImpl(TetrisService tetrisService, SoundService soundService) {
         newGameTetrisControllerCommand = createNewGameTetrisControllerCommand(tetrisService, soundService);
@@ -46,6 +48,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
         shapeLockedTetrisControllerCommand = tetris -> soundService.playSound(Sound.SHAPE_LOCKED);
         muteTetrisControllerCommand = tetris -> soundService.mute();
         gameOverTetrisControllerCommand = tetris -> soundService.playMusic(Sound.GAME_OVER);
+        rowsCompletedTetrisControllerCommand = tetris -> soundService.playSound(Sound.ROWS_COMPLETED);
     }
 
     @Override
@@ -76,6 +79,11 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     @Override
     public TetrisControllerCommand createGameOverTetrisControllerCommand() {
         return gameOverTetrisControllerCommand;
+    }
+
+    @Override
+    public TetrisControllerCommand createRowsCompletedTetrisControllerCommand() {
+        return rowsCompletedTetrisControllerCommand;
     }
 
     private TetrisControllerCommand createNewGameTetrisControllerCommand(TetrisService tetrisService,

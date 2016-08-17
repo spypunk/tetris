@@ -24,4 +24,6 @@ public interface TetrisControllerCommandFactory {
     TetrisControllerCommand createMuteTetrisControllerCommand();
 
     TetrisControllerCommand createGameOverTetrisControllerCommand();
+
+    TetrisControllerCommand createRowsCompletedTetrisControllerCommand();
 }

@@ -224,6 +224,8 @@ public class TetrisServiceImpl implements TetrisService {
 
         updateScoreWithCompletedRows(tetrisInstance, completedRows);
         updateLevel(tetrisInstance);
+
+        tetrisInstance.getTetrisEvents().add(TetrisEvent.ROWS_COMPLETED);
     }
 
     private void updateLevel(TetrisInstance tetrisInstance) {
