@@ -14,10 +14,10 @@ import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
 
 public enum Sound {
 
-    SHAPE_LOCKED(Format.WAV, false),
-    GAME_OVER(Format.WAV, true),
+    SHAPE_LOCKED(Format.MP3, false),
+    GAME_OVER(Format.MP3, true),
     BACKGROUND(Format.MP3, true),
-    ROWS_COMPLETED(Format.WAV, false);
+    ROWS_COMPLETED(Format.MP3, false);
 
     public enum Format {
         WAV {
