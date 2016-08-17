@@ -110,7 +110,7 @@ public class SwingUtils {
             try {
                 desktop.browse(uri);
             } catch (final IOException e) {
-                LOGGER.warn("Cannot open following URL" + uri + " : " + e.getMessage(), e);
+                LOGGER.warn("Cannot open following URL : " + uri + " | " + e.getMessage(), e);
             }
         } else {
             LOGGER.warn("Your system does not support URL browsing, cannot open following URL : " + uri);
