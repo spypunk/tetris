@@ -14,6 +14,7 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
@@ -60,7 +61,7 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     private final ImageCache imageCache;
 
-    private final FontCache fontCache;
+    private final Font frozenFont;
 
     private final int blockX;
 
@@ -75,7 +76,8 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
         this.tetrisInstanceInfoView = tetrisInstanceInfoView;
         this.imageCache = imageCache;
         this.tetris = tetris;
-        this.fontCache = fontCache;
+
+        frozenFont = fontCache.getFont(FontType.FROZEN);
 
         gridRectangle = new Rectangle(0, 0, TetrisConstants.WIDTH * BLOCK_SIZE + 1,
                 TetrisConstants.HEIGHT * BLOCK_SIZE + 1);
@@ -157,6 +159,6 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
             frozenGridRectangle.height);
 
         SwingUtils.renderCenteredText(graphics, State.GAME_OVER.equals(state) ? GAME_OVER : PAUSE, gridRectangle,
-            fontCache.getFont(FontType.FROZEN), DEFAULT_FONT_COLOR);
+            frozenFont, DEFAULT_FONT_COLOR);
     }
 }

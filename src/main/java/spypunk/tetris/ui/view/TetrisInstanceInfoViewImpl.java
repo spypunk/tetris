@@ -13,6 +13,7 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -76,13 +77,14 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
 
     private final ImageCache imageCache;
 
-    private final FontCache fontCache;
+    private final Font defaultFont;
 
     public TetrisInstanceInfoViewImpl(FontCache fontCache,
             ImageCache imageCache, Tetris tetris) {
         this.tetris = tetris;
         this.imageCache = imageCache;
-        this.fontCache = fontCache;
+
+        defaultFont = fontCache.getFont(FontType.DEFAULT);
 
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
@@ -162,13 +164,13 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
         renderLabelAndRectangle(graphics, rectangle, labelRectangle, title);
 
         SwingUtils.renderCenteredText(graphics, value,
-            rectangle, fontCache.getFont(FontType.DEFAULT), DEFAULT_FONT_COLOR);
+            rectangle, defaultFont, DEFAULT_FONT_COLOR);
     }
 
     private void renderLabelAndRectangle(Graphics2D graphics, Rectangle rectangle, Rectangle labelRectangle,
             String label) {
         SwingUtils.renderCenteredText(graphics, label,
-            labelRectangle, fontCache.getFont(FontType.DEFAULT), DEFAULT_FONT_COLOR);
+            labelRectangle, defaultFont, DEFAULT_FONT_COLOR);
 
         graphics.setColor(DEFAULT_BORDER_COLOR);
 

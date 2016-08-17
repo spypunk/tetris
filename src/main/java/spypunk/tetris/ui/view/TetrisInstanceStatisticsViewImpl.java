@@ -13,6 +13,7 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -81,12 +82,13 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
 
     private final List<ShapeType> shapeTypes;
 
-    private final FontCache fontCache;
+    private final Font defaultFont;
 
     public TetrisInstanceStatisticsViewImpl(FontCache fontCache,
             ImageCache imageCache, Tetris tetris) {
         this.tetris = tetris;
-        this.fontCache = fontCache;
+
+        defaultFont = fontCache.getFont(FontType.DEFAULT);
 
         shapeTypes = Lists.newArrayList(ShapeType.values());
 
@@ -133,7 +135,7 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
 
     private void renderStatistics(Graphics2D graphics) {
         SwingUtils.renderCenteredText(graphics, STATISTICS,
-            statisticsLabelRectangle, fontCache.getFont(FontType.DEFAULT), DEFAULT_FONT_COLOR);
+            statisticsLabelRectangle, defaultFont, DEFAULT_FONT_COLOR);
 
         graphics.setColor(DEFAULT_BORDER_COLOR);
 
@@ -151,6 +153,6 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
         SwingUtils.drawImage(graphics, statisticsRow.getImage(), statisticsRow.getImageRectangle());
 
         SwingUtils.renderCenteredText(graphics, value,
-            statisticsRow.getTextContainerRectangle(), fontCache.getFont(FontType.DEFAULT), DEFAULT_FONT_COLOR);
+            statisticsRow.getTextContainerRectangle(), defaultFont, DEFAULT_FONT_COLOR);
     }
 }
