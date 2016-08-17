@@ -28,7 +28,5 @@ public interface TetrisControllerInputHandler {
 
     void onMute();
 
-    void reset();
-
     List<TetrisControllerCommand> handleInput();
 }

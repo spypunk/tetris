@@ -69,15 +69,6 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
     }
 
     @Override
-    public void reset() {
-        movementTriggered = false;
-        movement = null;
-        pauseTriggered = false;
-        newGameTriggered = false;
-        muteTriggered = false;
-    }
-
-    @Override
     public List<TetrisControllerCommand> handleInput() {
 
         final List<TetrisControllerCommand> tetrisControllerCommands = Lists.newArrayList();
@@ -98,11 +89,21 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
                     .add(tetrisControllerCommandFactory.createMuteTetrisControllerCommand());
         }
 
+        reset();
+
         return tetrisControllerCommands;
     }
 
     private void onMovement(Movement movement) {
         movementTriggered = true;
         this.movement = movement;
+    }
+
+    private void reset() {
+        movementTriggered = false;
+        movement = null;
+        pauseTriggered = false;
+        newGameTriggered = false;
+        muteTriggered = false;
     }
 }

@@ -95,8 +95,6 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
         tetrisControllerTetrisEventHandler.handleEvents(tetris.getTetrisInstance().getTetrisEvents())
                 .forEach(tetrisControllerCommand -> tetrisControllerCommand.execute(tetris));
-
-        tetrisControllerInputHandler.reset();
     }
 
     @Override
