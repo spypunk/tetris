@@ -9,6 +9,7 @@
 package spypunk.tetris.ui.controller.input;
 
 import java.awt.event.KeyEvent;
+import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
 
@@ -23,21 +24,22 @@ import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 
 public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHandler {
 
+    private enum InputType {
+        MOVEMENT,
+        PAUSE,
+        NEW_GAME,
+        MUTE
+    }
+
     private final TetrisControllerCommandFactory tetrisControllerCommandFactory;
 
     private final Map<Integer, Runnable> pressedKeyHandlers = Maps.newHashMap();
 
     private final Map<Integer, Runnable> releasedKeyHandlers = Maps.newHashMap();
 
-    private boolean movementTriggered;
+    private final BitSet bitSet = new BitSet();
 
     private Movement movement;
-
-    private boolean pauseTriggered;
-
-    private boolean newGameTriggered;
-
-    private boolean muteTriggered;
 
     @Inject
     public TetrisControllerInputHandlerImpl(TetrisControllerCommandFactory tetrisControllerCommandFactory) {
@@ -85,17 +87,17 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
 
     @Override
     public void onNewGame() {
-        newGameTriggered = true;
+        onInput(InputType.NEW_GAME);
     }
 
     @Override
     public void onPause() {
-        pauseTriggered = true;
+        onInput(InputType.PAUSE);
     }
 
     @Override
     public void onMute() {
-        muteTriggered = true;
+        onInput(InputType.MOVEMENT);
     }
 
     @Override
@@ -103,18 +105,18 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
 
         final List<TetrisControllerCommand> tetrisControllerCommands = Lists.newArrayList();
 
-        if (newGameTriggered) {
+        if (isInputTriggered(InputType.NEW_GAME)) {
             tetrisControllerCommands
                     .add(tetrisControllerCommandFactory.createNewGameTetrisControllerCommand());
-        } else if (pauseTriggered) {
+        } else if (isInputTriggered(InputType.PAUSE)) {
             tetrisControllerCommands
                     .add(tetrisControllerCommandFactory.createPauseTetrisControllerCommand());
-        } else if (movementTriggered) {
+        } else if (isInputTriggered(InputType.MOVEMENT)) {
             tetrisControllerCommands
                     .add(tetrisControllerCommandFactory.createMovementTetrisControllerCommand(movement));
         }
 
-        if (muteTriggered) {
+        if (isInputTriggered(InputType.MUTE)) {
             tetrisControllerCommands
                     .add(tetrisControllerCommandFactory.createMuteTetrisControllerCommand());
         }
@@ -124,6 +126,10 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
         return tetrisControllerCommands;
     }
 
+    private boolean isInputTriggered(InputType inputType) {
+        return bitSet.get(inputType.ordinal());
+    }
+
     private void onKeyEvent(Map<Integer, Runnable> keyHandlers, int keyCode) {
         if (keyHandlers.containsKey(keyCode)) {
             keyHandlers.get(keyCode).run();
@@ -131,15 +137,16 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
     }
 
     private void onMovement(Movement movement) {
-        movementTriggered = true;
+        onInput(InputType.MOVEMENT);
         this.movement = movement;
     }
 
     private void reset() {
-        movementTriggered = false;
+        bitSet.clear();
         movement = null;
-        pauseTriggered = false;
-        newGameTriggered = false;
-        muteTriggered = false;
+    }
+
+    private void onInput(InputType inputType) {
+        bitSet.set(inputType.ordinal());
     }
 }
