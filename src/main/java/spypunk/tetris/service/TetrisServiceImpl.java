@@ -43,6 +43,8 @@ public class TetrisServiceImpl implements TetrisService {
 
     private static final int ROWS_PER_LEVEL = 10;
 
+    private final ShapeFactory shapeFactory;
+
     private final Map<Integer, Integer> scorePerRows = ImmutableMap.of(1, 40, 2, 100, 3, 300, 4, 1200);
 
     private final Map<Integer, Integer> levelSpeeds = createLevelSpeeds();
@@ -50,7 +52,9 @@ public class TetrisServiceImpl implements TetrisService {
     private final Random random = new Random();
 
     @Inject
-    private ShapeFactory shapeFactory;
+    public TetrisServiceImpl(final ShapeFactory shapeFactory) {
+        this.shapeFactory = shapeFactory;
+    }
 
     @Override
     public void newInstance(final Tetris tetris) {
