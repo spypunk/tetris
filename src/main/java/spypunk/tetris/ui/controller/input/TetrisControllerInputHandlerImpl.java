@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -22,6 +23,7 @@ import spypunk.tetris.model.Movement;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 
+@Singleton
 public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHandler {
 
     private enum InputType {
