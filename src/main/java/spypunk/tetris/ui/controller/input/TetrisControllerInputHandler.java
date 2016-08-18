@@ -14,6 +14,10 @@ import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 
 public interface TetrisControllerInputHandler {
 
+    void onKeyPressed(int keyCode);
+
+    void onKeyReleased(int keyCode);
+
     void onMoveLeft();
 
     void onMoveRight();
