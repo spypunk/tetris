@@ -12,8 +12,6 @@ import spypunk.tetris.sound.Sound;
 
 public interface SoundService {
 
-    void shutdown();
-
     void playSound(Sound sound);
 
     void playMusic(Sound sound);

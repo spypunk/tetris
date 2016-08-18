@@ -14,6 +14,4 @@ import spypunk.tetris.sound.SoundClip;
 public interface SoundClipCache {
 
     SoundClip getSoundClip(Sound sound);
-
-    void clear();
 }

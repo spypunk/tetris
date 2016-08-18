@@ -30,11 +30,6 @@ public class SoundServiceImpl implements SoundService {
     }
 
     @Override
-    public void shutdown() {
-        soundClipCache.clear();
-    }
-
-    @Override
     public void playMusic(Sound sound) {
         if (muted) {
             return;

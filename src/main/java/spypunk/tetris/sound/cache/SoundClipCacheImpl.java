@@ -45,11 +45,6 @@ public class SoundClipCacheImpl implements SoundClipCache {
         return soundClips.get(sound);
     }
 
-    @Override
-    public void clear() {
-        soundClips.values().forEach(SoundClip::close);
-    }
-
     private static SoundClip createSoundClip(Sound sound) {
         try (InputStream inputStream = SoundServiceImpl.class
                 .getResourceAsStream(SOUNDS_FOLDER + sound.getFileName());
