@@ -26,7 +26,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     private final SoundService soundService;
 
     @Inject
-    public TetrisControllerCommandFactoryImpl(TetrisService tetrisService, SoundService soundService) {
+    public TetrisControllerCommandFactoryImpl(final TetrisService tetrisService, final SoundService soundService) {
         this.tetrisService = tetrisService;
         this.soundService = soundService;
     }
@@ -51,7 +51,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     }
 
     @Override
-    public TetrisControllerCommand createMovementTetrisControllerCommand(Movement movement) {
+    public TetrisControllerCommand createMovementTetrisControllerCommand(final Movement movement) {
         return tetris -> tetrisService.updateInstanceMovement(tetris, movement);
     }
 

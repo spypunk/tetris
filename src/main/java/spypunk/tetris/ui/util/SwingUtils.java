@@ -39,11 +39,11 @@ public class SwingUtils {
         throw new IllegalAccessError();
     }
 
-    public static void doInAWTThread(Runnable runnable) {
+    public static void doInAWTThread(final Runnable runnable) {
         doInAWTThread(runnable, false);
     }
 
-    public static void doInAWTThread(Runnable runnable, boolean wait) {
+    public static void doInAWTThread(final Runnable runnable, final boolean wait) {
         if (wait) {
             try {
                 SwingUtilities.invokeAndWait(runnable);
@@ -60,7 +60,8 @@ public class SwingUtils {
         }
     }
 
-    public static Rectangle getCenteredImageRectangle(Image image, Rectangle rectangle, double ratio) {
+    public static Rectangle getCenteredImageRectangle(final Image image, final Rectangle rectangle,
+            final double ratio) {
         final int imageWidth = image.getWidth(null);
         final int imageHeight = image.getHeight(null);
 
@@ -73,11 +74,12 @@ public class SwingUtils {
         return new Rectangle(x1, y1, targetWidth, targetHeight);
     }
 
-    public static Rectangle getCenteredImageRectangle(Image image, Rectangle rectangle) {
+    public static Rectangle getCenteredImageRectangle(final Image image, final Rectangle rectangle) {
         return getCenteredImageRectangle(image, rectangle, 1);
     }
 
-    public static Rectangle getCenteredTextRectangle(Graphics2D graphics, String text, Rectangle rectangle, Font font) {
+    public static Rectangle getCenteredTextRectangle(final Graphics2D graphics, final String text,
+            final Rectangle rectangle, final Font font) {
         final Rectangle2D textBounds = getTextBounds(graphics, text, font);
 
         final int x1 = (int) (rectangle.x + (rectangle.width - textBounds.getWidth()) / 2);
@@ -86,14 +88,14 @@ public class SwingUtils {
         return new Rectangle(x1, y1, (int) textBounds.getWidth(), (int) textBounds.getHeight());
     }
 
-    public static Rectangle2D getTextBounds(Graphics2D graphics, String text, Font font) {
+    public static Rectangle2D getTextBounds(final Graphics2D graphics, final String text, final Font font) {
         final FontRenderContext frc = graphics.getFontRenderContext();
         final GlyphVector gv = font.createGlyphVector(frc, text);
 
         return gv.getVisualBounds();
     }
 
-    public static void drawImage(Graphics2D graphics, final Image image,
+    public static void drawImage(final Graphics2D graphics, final Image image,
             final Rectangle rectangle) {
         final int imageWidth = image.getWidth(null);
         final int imageHeight = image.getHeight(null);
@@ -103,7 +105,7 @@ public class SwingUtils {
             null);
     }
 
-    public static void openURI(URI uri) {
+    public static void openURI(final URI uri) {
         final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 
         if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
@@ -117,8 +119,9 @@ public class SwingUtils {
         }
     }
 
-    public static void renderCenteredText(Graphics2D graphics, String text, Rectangle rectangle, Font font,
-            Color fontColor) {
+    public static void renderCenteredText(final Graphics2D graphics, final String text, final Rectangle rectangle,
+            final Font font,
+            final Color fontColor) {
         graphics.setFont(font);
         graphics.setColor(fontColor);
 
@@ -127,7 +130,7 @@ public class SwingUtils {
         graphics.drawString(text, textRectangle.x, textRectangle.y);
     }
 
-    public static void doInGraphics(BufferedImage image, Consumer<Graphics2D> consumer) {
+    public static void doInGraphics(final BufferedImage image, final Consumer<Graphics2D> consumer) {
         final Graphics2D graphics = image.createGraphics();
 
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

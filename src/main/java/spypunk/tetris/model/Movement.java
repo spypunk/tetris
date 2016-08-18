@@ -18,25 +18,25 @@ public enum Movement {
 
     LEFT {
         @Override
-        public Point apply(Point location) {
+        public Point apply(final Point location) {
             return new Point(location.x - 1, location.y);
         }
     },
     RIGHT {
         @Override
-        public Point apply(Point location) {
+        public Point apply(final Point location) {
             return new Point(location.x + 1, location.y);
         }
     },
     DOWN {
         @Override
-        public Point apply(Point location) {
+        public Point apply(final Point location) {
             return new Point(location.x, location.y + 1);
         }
     },
     ROTATE_CW {
         @Override
-        public Shape apply(Shape shape) {
+        public Shape apply(final Shape shape) {
             final Rectangle boundingBox = shape.getBoundingBox();
             final Rectangle newBoundingBox = new Rectangle(boundingBox);
 
@@ -65,14 +65,14 @@ public enum Movement {
         }
 
         @Override
-        public Point apply(Point location) {
+        public Point apply(final Point location) {
             throw new UnsupportedOperationException();
         }
     };
 
     public abstract Point apply(Point location);
 
-    public Shape apply(Shape shape) {
+    public Shape apply(final Shape shape) {
         final Rectangle boundingBox = shape.getBoundingBox();
 
         final Rectangle newBoundingBox = new Rectangle(boundingBox);
@@ -90,7 +90,7 @@ public enum Movement {
         return newShape;
     }
 
-    protected Block apply(Block block, Shape newShape) {
+    protected Block apply(final Block block, final Shape newShape) {
         return Block.Builder.instance().setLocation(apply(block.getLocation())).setShape(newShape).build();
     }
 }

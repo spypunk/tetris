@@ -40,16 +40,16 @@ public class ImageCacheImpl implements ImageCache {
     private final Map<ShapeType, Image> shapeImages = createShapeImages();
 
     @Override
-    public Image getBlockImage(ShapeType shapeType) {
+    public Image getBlockImage(final ShapeType shapeType) {
         return blockImages.get(shapeType);
     }
 
     @Override
-    public Image getShapeImage(ShapeType shapeType) {
+    public Image getShapeImage(final ShapeType shapeType) {
         return shapeImages.get(shapeType);
     }
 
-    private static Image createImage(String imageFolder, ShapeType shapeType) {
+    private static Image createImage(final String imageFolder, final ShapeType shapeType) {
         final String resourceName = String.format("%s%s.png", imageFolder, shapeType.name());
 
         try (InputStream inputStream = ImageCacheImpl.class.getResourceAsStream(resourceName)) {

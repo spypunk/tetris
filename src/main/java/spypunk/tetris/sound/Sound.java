@@ -42,7 +42,7 @@ public enum Sound {
 
     private final boolean loop;
 
-    private Sound(Format format, boolean loop) {
+    private Sound(final Format format, final boolean loop) {
         fileName = name().toLowerCase() + "." + format.name().toLowerCase();
         this.format = format;
         this.loop = loop;

@@ -24,22 +24,22 @@ public class Shape {
             return new Builder();
         }
 
-        public Builder setShapeType(ShapeType shapeType) {
+        public Builder setShapeType(final ShapeType shapeType) {
             shape.setShapeType(shapeType);
             return this;
         }
 
-        public Builder setBlocks(List<Block> blocks) {
+        public Builder setBlocks(final List<Block> blocks) {
             shape.setBlocks(blocks);
             return this;
         }
 
-        public Builder setBoundingBox(Rectangle boundingBox) {
+        public Builder setBoundingBox(final Rectangle boundingBox) {
             shape.setBoundingBox(boundingBox);
             return this;
         }
 
-        public Builder setCurrentRotation(int currentRotation) {
+        public Builder setCurrentRotation(final int currentRotation) {
             shape.setCurrentRotation(currentRotation);
             return this;
         }
@@ -61,7 +61,7 @@ public class Shape {
         return shapeType;
     }
 
-    public void setShapeType(ShapeType shapeType) {
+    public void setShapeType(final ShapeType shapeType) {
         this.shapeType = shapeType;
     }
 
@@ -69,7 +69,7 @@ public class Shape {
         return blocks;
     }
 
-    public void setBlocks(List<Block> blocks) {
+    public void setBlocks(final List<Block> blocks) {
         this.blocks = blocks;
     }
 
@@ -77,7 +77,7 @@ public class Shape {
         return boundingBox;
     }
 
-    public void setBoundingBox(Rectangle boundingBox) {
+    public void setBoundingBox(final Rectangle boundingBox) {
         this.boundingBox = boundingBox;
     }
 
@@ -85,7 +85,7 @@ public class Shape {
         return currentRotation;
     }
 
-    public void setCurrentRotation(int currentRotation) {
+    public void setCurrentRotation(final int currentRotation) {
         this.currentRotation = currentRotation;
     }
 

@@ -23,17 +23,17 @@ public class Tetris {
             return new Builder();
         }
 
-        public Builder setName(String name) {
+        public Builder setName(final String name) {
             tetris.setName(name);
             return this;
         }
 
-        public Builder setVersion(String version) {
+        public Builder setVersion(final String version) {
             tetris.setVersion(version);
             return this;
         }
 
-        public Builder setProjectURI(URI projectURI) {
+        public Builder setProjectURI(final URI projectURI) {
             tetris.setProjectURI(projectURI);
             return this;
         }
@@ -56,7 +56,7 @@ public class Tetris {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -64,7 +64,7 @@ public class Tetris {
         return version;
     }
 
-    public void setVersion(String version) {
+    public void setVersion(final String version) {
         this.version = version;
     }
 
@@ -72,7 +72,7 @@ public class Tetris {
         return projectURI;
     }
 
-    public void setProjectURI(URI projectURI) {
+    public void setProjectURI(final URI projectURI) {
         this.projectURI = projectURI;
     }
 
@@ -80,7 +80,7 @@ public class Tetris {
         return tetrisInstance;
     }
 
-    public void setTetrisInstance(TetrisInstance tetrisInstance) {
+    public void setTetrisInstance(final TetrisInstance tetrisInstance) {
         this.tetrisInstance = tetrisInstance;
     }
 }

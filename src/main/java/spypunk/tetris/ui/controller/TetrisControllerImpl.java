@@ -39,10 +39,10 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
     private final TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler;
 
     @Inject
-    public TetrisControllerImpl(TetrisFactory tetrisFactory, TetrisViewFactory tetrisViewFactory,
-            GameLoopFactory gameLoopFactory, TetrisService tetrisService,
-            TetrisControllerInputHandler tetrisControllerInputHandler,
-            TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler) {
+    public TetrisControllerImpl(final TetrisFactory tetrisFactory, final TetrisViewFactory tetrisViewFactory,
+            final GameLoopFactory gameLoopFactory, final TetrisService tetrisService,
+            final TetrisControllerInputHandler tetrisControllerInputHandler,
+            final TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler) {
         this.tetrisService = tetrisService;
         this.tetrisControllerInputHandler = tetrisControllerInputHandler;
         this.tetrisControllerTetrisEventHandler = tetrisControllerTetrisEventHandler;
@@ -88,12 +88,12 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
     }
 
     @Override
-    public void onKeyPressed(int keyCode) {
+    public void onKeyPressed(final int keyCode) {
         tetrisControllerInputHandler.onKeyPressed(keyCode);
     }
 
     @Override
-    public void onKeyReleased(int keyCode) {
+    public void onKeyReleased(final int keyCode) {
         tetrisControllerInputHandler.onKeyReleased(keyCode);
     }
 }

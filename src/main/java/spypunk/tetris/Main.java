@@ -20,7 +20,7 @@ public class Main {
         throw new IllegalAccessError();
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         final Injector injector = Guice.createInjector(new TetrisModule());
         final TetrisController tetrisController = injector.getInstance(TetrisController.class);
         tetrisController.start();

@@ -52,22 +52,22 @@ public class TetrisInstance {
             return new Builder();
         }
 
-        public Builder setNextShape(Shape nextShape) {
+        public Builder setNextShape(final Shape nextShape) {
             tetrisInstance.setNextShape(nextShape);
             return this;
         }
 
-        public Builder setStatistics(Map<ShapeType, Integer> statistics) {
+        public Builder setStatistics(final Map<ShapeType, Integer> statistics) {
             tetrisInstance.setStatistics(statistics);
             return this;
         }
 
-        public Builder setState(State state) {
+        public Builder setState(final State state) {
             tetrisInstance.setState(state);
             return this;
         }
 
-        public Builder setSpeed(int speed) {
+        public Builder setSpeed(final int speed) {
             tetrisInstance.setSpeed(speed);
             return this;
         }
@@ -108,7 +108,7 @@ public class TetrisInstance {
         return blocks;
     }
 
-    public void setBlocks(Map<Point, Block> blocks) {
+    public void setBlocks(final Map<Point, Block> blocks) {
         this.blocks = blocks;
     }
 
@@ -116,7 +116,7 @@ public class TetrisInstance {
         return currentShape;
     }
 
-    public void setCurrentShape(Shape currentShape) {
+    public void setCurrentShape(final Shape currentShape) {
         this.currentShape = currentShape;
     }
 
@@ -124,7 +124,7 @@ public class TetrisInstance {
         return nextShape;
     }
 
-    public void setNextShape(Shape nextShape) {
+    public void setNextShape(final Shape nextShape) {
         this.nextShape = nextShape;
     }
 
@@ -132,7 +132,7 @@ public class TetrisInstance {
         return movement;
     }
 
-    public void setMovement(Optional<Movement> movement) {
+    public void setMovement(final Optional<Movement> movement) {
         this.movement = movement;
     }
 
@@ -140,7 +140,7 @@ public class TetrisInstance {
         return statistics;
     }
 
-    public void setStatistics(Map<ShapeType, Integer> statistics) {
+    public void setStatistics(final Map<ShapeType, Integer> statistics) {
         this.statistics = statistics;
     }
 
@@ -148,7 +148,7 @@ public class TetrisInstance {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(final int level) {
         this.level = level;
     }
 
@@ -156,7 +156,7 @@ public class TetrisInstance {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(final int score) {
         this.score = score;
     }
 
@@ -164,7 +164,7 @@ public class TetrisInstance {
         return completedRows;
     }
 
-    public void setCompletedRows(int completedRows) {
+    public void setCompletedRows(final int completedRows) {
         this.completedRows = completedRows;
     }
 
@@ -172,7 +172,7 @@ public class TetrisInstance {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(final int speed) {
         this.speed = speed;
     }
 
@@ -180,7 +180,7 @@ public class TetrisInstance {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(final State state) {
         this.state = state;
     }
 
@@ -188,7 +188,7 @@ public class TetrisInstance {
         return currentGravityFrame;
     }
 
-    public void setCurrentGravityFrame(int currentGravityFrame) {
+    public void setCurrentGravityFrame(final int currentGravityFrame) {
         this.currentGravityFrame = currentGravityFrame;
     }
 
@@ -196,7 +196,7 @@ public class TetrisInstance {
         return currentMovementScore;
     }
 
-    public void setCurrentMovementScore(int currentMovementScore) {
+    public void setCurrentMovementScore(final int currentMovementScore) {
         this.currentMovementScore = currentMovementScore;
     }
 
@@ -204,7 +204,7 @@ public class TetrisInstance {
         return tetrisEvents;
     }
 
-    public void setTetrisEvents(List<TetrisEvent> tetrisEvents) {
+    public void setTetrisEvents(final List<TetrisEvent> tetrisEvents) {
         this.tetrisEvents = tetrisEvents;
     }
 }

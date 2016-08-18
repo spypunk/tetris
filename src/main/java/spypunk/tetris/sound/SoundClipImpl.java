@@ -42,7 +42,7 @@ public class SoundClipImpl implements SoundClip {
 
     private float currentVolume;
 
-    public SoundClipImpl(AudioInputStream inputStream, boolean loop) {
+    public SoundClipImpl(final AudioInputStream inputStream, final boolean loop) {
         audioFormat = getOutFormat(inputStream.getFormat());
         this.loop = loop;
 
@@ -123,7 +123,7 @@ public class SoundClipImpl implements SoundClip {
         paused = false;
     }
 
-    private AudioFormat getOutFormat(AudioFormat inFormat) {
+    private AudioFormat getOutFormat(final AudioFormat inFormat) {
         final int ch = inFormat.getChannels();
         final float rate = inFormat.getSampleRate();
         return new AudioFormat(Encoding.PCM_SIGNED, rate, 16, ch, ch * 2, rate, false);

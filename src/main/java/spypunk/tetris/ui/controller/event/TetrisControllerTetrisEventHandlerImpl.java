@@ -21,7 +21,7 @@ public class TetrisControllerTetrisEventHandlerImpl implements TetrisControllerT
             .newHashMap();
 
     @Inject
-    public TetrisControllerTetrisEventHandlerImpl(TetrisControllerCommandFactory tetrisControllerCommandFactory) {
+    public TetrisControllerTetrisEventHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory) {
         tetrisControllerCommands.put(TetrisEvent.SHAPE_LOCKED,
             tetrisControllerCommandFactory::createShapeLockedTetrisControllerCommand);
 
@@ -33,7 +33,7 @@ public class TetrisControllerTetrisEventHandlerImpl implements TetrisControllerT
     }
 
     @Override
-    public List<TetrisControllerCommand> handleEvents(List<TetrisEvent> tetrisEvents) {
+    public List<TetrisControllerCommand> handleEvents(final List<TetrisEvent> tetrisEvents) {
         return tetrisEvents.stream().map(tetrisControllerCommands::get).map(Supplier::get).collect(Collectors.toList());
     }
 

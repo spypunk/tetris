@@ -12,7 +12,7 @@ public class TetrisException extends RuntimeException {
 
     private static final long serialVersionUID = -2863969090656932325L;
 
-    public TetrisException(Throwable cause) {
+    public TetrisException(final Throwable cause) {
         super(cause);
     }
 }

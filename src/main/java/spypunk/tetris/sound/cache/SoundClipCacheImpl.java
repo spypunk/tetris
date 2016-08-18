@@ -41,11 +41,11 @@ public class SoundClipCacheImpl implements SoundClipCache {
     private final Map<Sound, SoundClip> soundClips = createSoundClips();
 
     @Override
-    public SoundClip getSoundClip(Sound sound) {
+    public SoundClip getSoundClip(final Sound sound) {
         return soundClips.get(sound);
     }
 
-    private static SoundClip createSoundClip(Sound sound) {
+    private static SoundClip createSoundClip(final Sound sound) {
         try (InputStream inputStream = SoundServiceImpl.class
                 .getResourceAsStream(SOUNDS_FOLDER + sound.getFileName());
                 AudioInputStream audioInputStream = AudioSystem

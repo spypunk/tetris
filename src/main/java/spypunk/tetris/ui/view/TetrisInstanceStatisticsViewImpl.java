@@ -46,8 +46,8 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
 
         private final Rectangle textContainerRectangle;
 
-        public StatisticsRow(Image image, Rectangle imageRectangle,
-                Rectangle textContainerRectangle) {
+        public StatisticsRow(final Image image, final Rectangle imageRectangle,
+                final Rectangle textContainerRectangle) {
             this.image = image;
             this.imageRectangle = imageRectangle;
             this.textContainerRectangle = textContainerRectangle;
@@ -84,8 +84,8 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
 
     private final Font defaultFont;
 
-    public TetrisInstanceStatisticsViewImpl(FontCache fontCache,
-            ImageCache imageCache, Tetris tetris) {
+    public TetrisInstanceStatisticsViewImpl(final FontCache fontCache,
+            final ImageCache imageCache, final Tetris tetris) {
         this.tetris = tetris;
 
         defaultFont = fontCache.getFont(FontType.DEFAULT);
@@ -115,7 +115,7 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
         SwingUtils.doInGraphics(image, this::renderStatistics);
     }
 
-    private StatisticsRow createStatisticRow(ImageCache imageCache, ShapeType shapeType) {
+    private StatisticsRow createStatisticRow(final ImageCache imageCache, final ShapeType shapeType) {
         final Image shapeImage = imageCache.getShapeImage(shapeType);
         final Rectangle imageContainerRectangle = new Rectangle(statisticsRectangle.x,
                 statisticsRectangle.y + shapeType.ordinal() * 2 * BLOCK_SIZE + BLOCK_SIZE,
@@ -133,7 +133,7 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
                 textContainerRectangle);
     }
 
-    private void renderStatistics(Graphics2D graphics) {
+    private void renderStatistics(final Graphics2D graphics) {
         SwingUtils.renderCenteredText(graphics, STATISTICS,
             statisticsLabelRectangle, defaultFont, DEFAULT_FONT_COLOR);
 
@@ -145,7 +145,7 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
         shapeTypes.forEach(shapeType -> renderStatistic(graphics, shapeType));
     }
 
-    private void renderStatistic(Graphics2D graphics, ShapeType shapeType) {
+    private void renderStatistic(final Graphics2D graphics, final ShapeType shapeType) {
         final StatisticsRow statisticsRow = statisticsRows.get(shapeType);
         final Map<ShapeType, Integer> statistics = tetris.getTetrisInstance().getStatistics();
         final String value = String.valueOf(statistics.get(shapeType));

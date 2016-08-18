@@ -34,21 +34,21 @@ public class TetrisViewFactoryImpl implements TetrisViewFactory {
     private final ImageCache imageCache;
 
     @Inject
-    public TetrisViewFactoryImpl(TetrisController tetrisController, FontCache fontCache,
-            ImageCache imageCache) {
+    public TetrisViewFactoryImpl(final TetrisController tetrisController, final FontCache fontCache,
+            final ImageCache imageCache) {
         this.tetrisController = tetrisController;
         this.fontCache = fontCache;
         this.imageCache = imageCache;
     }
 
     @Override
-    public TetrisView createTetrisView(Tetris tetris) {
+    public TetrisView createTetrisView(final Tetris tetris) {
         final TetrisInstanceView tetrisInstanceView = createTetrisInstanceView(tetris);
 
         return new TetrisViewImpl(tetrisController, tetrisInstanceView, fontCache, tetris);
     }
 
-    private TetrisInstanceView createTetrisInstanceView(Tetris tetris) {
+    private TetrisInstanceView createTetrisInstanceView(final Tetris tetris) {
         final TetrisInstanceStatisticsView tetrisInstanceStatisticsView = createTetrisInstanceStatisticsView(tetris);
         final TetrisInstanceInfoView tetrisInstanceInfoView = createTetrisInstanceInfoView(tetris);
 
@@ -56,11 +56,11 @@ public class TetrisViewFactoryImpl implements TetrisViewFactory {
                 tetrisInstanceInfoView, imageCache, tetris);
     }
 
-    private TetrisInstanceStatisticsView createTetrisInstanceStatisticsView(Tetris tetris) {
+    private TetrisInstanceStatisticsView createTetrisInstanceStatisticsView(final Tetris tetris) {
         return new TetrisInstanceStatisticsViewImpl(fontCache, imageCache, tetris);
     }
 
-    private TetrisInstanceInfoView createTetrisInstanceInfoView(Tetris tetris) {
+    private TetrisInstanceInfoView createTetrisInstanceInfoView(final Tetris tetris) {
         return new TetrisInstanceInfoViewImpl(fontCache, imageCache, tetris);
     }
 }

@@ -36,11 +36,11 @@ public class FontCacheImpl implements FontCache {
     private final Map<FontType, Font> fonts = createFonts();
 
     @Override
-    public Font getFont(FontType fontType) {
+    public Font getFont(final FontType fontType) {
         return fonts.get(fontType);
     }
 
-    private static Font createFont(FontType fontType) {
+    private static Font createFont(final FontType fontType) {
         final String resourceName = String.format("%s%s", FONTS_FOLDER, fontType.getFileName());
 
         try (InputStream inputStream = FontCacheImpl.class.getResourceAsStream(resourceName)) {

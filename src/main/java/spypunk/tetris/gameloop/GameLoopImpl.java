@@ -22,7 +22,7 @@ public final class GameLoopImpl implements GameLoop, Runnable {
 
     private volatile boolean running;
 
-    public GameLoopImpl(ExecutorService executorService, GameLoopListener gameLoopListener) {
+    public GameLoopImpl(final ExecutorService executorService, final GameLoopListener gameLoopListener) {
         this.executorService = executorService;
         this.gameLoopListener = gameLoopListener;
     }

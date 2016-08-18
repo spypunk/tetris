@@ -23,12 +23,12 @@ public class Block {
             return new Builder();
         }
 
-        public Builder setShape(Shape shape) {
+        public Builder setShape(final Shape shape) {
             block.setShape(shape);
             return this;
         }
 
-        public Builder setLocation(Point location) {
+        public Builder setLocation(final Point location) {
             block.setLocation(location);
             return this;
         }
@@ -46,7 +46,7 @@ public class Block {
         return shape;
     }
 
-    public void setShape(Shape shape) {
+    public void setShape(final Shape shape) {
         this.shape = shape;
     }
 
@@ -54,7 +54,7 @@ public class Block {
         return location;
     }
 
-    public void setLocation(Point location) {
+    public void setLocation(final Point location) {
         this.location = location;
     }
 

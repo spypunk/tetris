@@ -20,7 +20,7 @@ import spypunk.tetris.gameloop.GameLoopListener;
 public class GameLoopFactoryImpl implements GameLoopFactory {
 
     @Override
-    public GameLoop createGameLoop(GameLoopListener gameLoopListener) {
+    public GameLoop createGameLoop(final GameLoopListener gameLoopListener) {
         return new GameLoopImpl(Executors.newSingleThreadExecutor(), gameLoopListener);
     }
 

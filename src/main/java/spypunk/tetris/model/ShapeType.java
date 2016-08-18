@@ -76,7 +76,7 @@ public enum ShapeType {
 
     private final Rectangle boundingBox;
 
-    ShapeType(List<Set<Point>> rotations, Rectangle boundingBox) {
+    ShapeType(final List<Set<Point>> rotations, final Rectangle boundingBox) {
         this.rotations = rotations;
         this.boundingBox = boundingBox;
     }

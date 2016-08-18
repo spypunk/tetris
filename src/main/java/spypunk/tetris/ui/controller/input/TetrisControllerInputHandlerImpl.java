@@ -42,7 +42,7 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
     private Movement movement;
 
     @Inject
-    public TetrisControllerInputHandlerImpl(TetrisControllerCommandFactory tetrisControllerCommandFactory) {
+    public TetrisControllerInputHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory) {
         this.tetrisControllerCommandFactory = tetrisControllerCommandFactory;
 
         pressedKeyHandlers.put(KeyEvent.VK_LEFT, this::onMoveLeft);
@@ -56,12 +56,12 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
     }
 
     @Override
-    public void onKeyPressed(int keyCode) {
+    public void onKeyPressed(final int keyCode) {
         onKeyEvent(pressedKeyHandlers, keyCode);
     }
 
     @Override
-    public void onKeyReleased(int keyCode) {
+    public void onKeyReleased(final int keyCode) {
         onKeyEvent(releasedKeyHandlers, keyCode);
     }
 
@@ -126,17 +126,17 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
         return tetrisControllerCommands;
     }
 
-    private boolean isInputTriggered(InputType inputType) {
+    private boolean isInputTriggered(final InputType inputType) {
         return bitSet.get(inputType.ordinal());
     }
 
-    private void onKeyEvent(Map<Integer, Runnable> keyHandlers, int keyCode) {
+    private void onKeyEvent(final Map<Integer, Runnable> keyHandlers, final int keyCode) {
         if (keyHandlers.containsKey(keyCode)) {
             keyHandlers.get(keyCode).run();
         }
     }
 
-    private void onMovement(Movement movement) {
+    private void onMovement(final Movement movement) {
         onInput(InputType.MOVEMENT);
         this.movement = movement;
     }
@@ -146,7 +146,7 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
         movement = null;
     }
 
-    private void onInput(InputType inputType) {
+    private void onInput(final InputType inputType) {
         bitSet.set(inputType.ordinal());
     }
 }

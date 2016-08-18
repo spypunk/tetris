@@ -18,7 +18,7 @@ public enum FontType {
 
     private final String fileName;
 
-    private FontType(float size, String fontName) {
+    private FontType(final float size, final String fontName) {
         this.size = size;
         fileName = fontName + ".ttf";
     }

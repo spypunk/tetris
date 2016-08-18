@@ -67,11 +67,11 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     private final int blockY;
 
-    public TetrisInstanceViewImpl(FontCache fontCache,
-            TetrisInstanceStatisticsView tetrisInstanceStatisticsView,
-            TetrisInstanceInfoView tetrisInstanceInfoView,
-            ImageCache imageCache,
-            Tetris tetris) {
+    public TetrisInstanceViewImpl(final FontCache fontCache,
+            final TetrisInstanceStatisticsView tetrisInstanceStatisticsView,
+            final TetrisInstanceInfoView tetrisInstanceInfoView,
+            final ImageCache imageCache,
+            final Tetris tetris) {
         this.tetrisInstanceStatisticsView = tetrisInstanceStatisticsView;
         this.tetrisInstanceInfoView = tetrisInstanceInfoView;
         this.imageCache = imageCache;
@@ -142,7 +142,7 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
         }
     }
 
-    private void renderBlock(Graphics2D graphics, Block block) {
+    private void renderBlock(final Graphics2D graphics, final Block block) {
         final ShapeType shapeType = block.getShape().getShapeType();
         final Image blockImage = imageCache.getBlockImage(shapeType);
         final Point location = block.getLocation();
@@ -153,7 +153,7 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
         SwingUtils.drawImage(graphics, blockImage, rectangle);
     }
 
-    private void renderTetrisFrozen(Graphics2D graphics, State state) {
+    private void renderTetrisFrozen(final Graphics2D graphics, final State state) {
         graphics.setColor(TETRIS_FROZEN_FG_COLOR);
         graphics.fillRect(frozenGridRectangle.x, frozenGridRectangle.y, frozenGridRectangle.width,
             frozenGridRectangle.height);

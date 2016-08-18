@@ -79,8 +79,8 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
 
     private final Font defaultFont;
 
-    public TetrisInstanceInfoViewImpl(FontCache fontCache,
-            ImageCache imageCache, Tetris tetris) {
+    public TetrisInstanceInfoViewImpl(final FontCache fontCache,
+            final ImageCache imageCache, final Tetris tetris) {
         this.tetris = tetris;
         this.imageCache = imageCache;
 
@@ -117,7 +117,7 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
         SwingUtils.doInGraphics(image, this::doUpdate);
     }
 
-    private void doUpdate(Graphics2D graphics) {
+    private void doUpdate(final Graphics2D graphics) {
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
         renderLevel(graphics, tetrisInstance);
@@ -126,12 +126,12 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
         renderNextShape(graphics, tetrisInstance);
     }
 
-    private Rectangle createLabelRectangle(Rectangle rectangle) {
+    private Rectangle createLabelRectangle(final Rectangle rectangle) {
         return new Rectangle(0, rectangle.y - BLOCK_SIZE, rectangle.width,
                 BLOCK_SIZE);
     }
 
-    private Rectangle createShapeTypeImageRectangle(ShapeType shapeType) {
+    private Rectangle createShapeTypeImageRectangle(final ShapeType shapeType) {
         final Image shapeTypeImage = imageCache.getShapeImage(shapeType);
         return SwingUtils.getCenteredImageRectangle(shapeTypeImage, nextShapeRectangle);
     }
@@ -149,7 +149,7 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
         renderInfo(graphics, levelRectangle, levelLabelRectangle, LEVEL, String.valueOf(tetrisInstance.getLevel()));
     }
 
-    private void renderNextShape(final Graphics2D graphics, TetrisInstance tetrisInstance) {
+    private void renderNextShape(final Graphics2D graphics, final TetrisInstance tetrisInstance) {
         renderLabelAndRectangle(graphics, nextShapeRectangle, nextShapeLabelRectangle, NEXT_SHAPE);
 
         final ShapeType shapeType = tetrisInstance.getNextShape().getShapeType();
@@ -159,16 +159,17 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
         SwingUtils.drawImage(graphics, shapeTypeImage, rectangle);
     }
 
-    private void renderInfo(Graphics2D graphics, Rectangle rectangle, Rectangle labelRectangle,
-            String title, String value) {
+    private void renderInfo(final Graphics2D graphics, final Rectangle rectangle, final Rectangle labelRectangle,
+            final String title, final String value) {
         renderLabelAndRectangle(graphics, rectangle, labelRectangle, title);
 
         SwingUtils.renderCenteredText(graphics, value,
             rectangle, defaultFont, DEFAULT_FONT_COLOR);
     }
 
-    private void renderLabelAndRectangle(Graphics2D graphics, Rectangle rectangle, Rectangle labelRectangle,
-            String label) {
+    private void renderLabelAndRectangle(final Graphics2D graphics, final Rectangle rectangle,
+            final Rectangle labelRectangle,
+            final String label) {
         SwingUtils.renderCenteredText(graphics, label,
             labelRectangle, defaultFont, DEFAULT_FONT_COLOR);
 

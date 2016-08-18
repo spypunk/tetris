@@ -38,12 +38,12 @@ public class TetrisViewImpl implements TetrisView {
 
         private final TetrisController tetrisController;
 
-        public TetrisViewWindowListener(TetrisController tetrisController) {
+        public TetrisViewWindowListener(final TetrisController tetrisController) {
             this.tetrisController = tetrisController;
         }
 
         @Override
-        public void windowClosed(WindowEvent e) {
+        public void windowClosed(final WindowEvent e) {
             tetrisController.onWindowClosed();
         }
     }
@@ -52,17 +52,17 @@ public class TetrisViewImpl implements TetrisView {
 
         private final TetrisController tetrisController;
 
-        public TetrisViewKeyAdapter(TetrisController tetrisController) {
+        public TetrisViewKeyAdapter(final TetrisController tetrisController) {
             this.tetrisController = tetrisController;
         }
 
         @Override
-        public void keyPressed(KeyEvent e) {
+        public void keyPressed(final KeyEvent e) {
             tetrisController.onKeyPressed(e.getKeyCode());
         }
 
         @Override
-        public void keyReleased(KeyEvent e) {
+        public void keyReleased(final KeyEvent e) {
             tetrisController.onKeyReleased(e.getKeyCode());
         }
     }
@@ -72,23 +72,23 @@ public class TetrisViewImpl implements TetrisView {
         private final TetrisController tetrisController;
         private final JLabel urlLabel;
 
-        public URLLabelMouseAdapter(TetrisController tetrisController, JLabel urlLabel) {
+        public URLLabelMouseAdapter(final TetrisController tetrisController, final JLabel urlLabel) {
             this.tetrisController = tetrisController;
             this.urlLabel = urlLabel;
         }
 
         @Override
-        public void mouseClicked(MouseEvent e) {
+        public void mouseClicked(final MouseEvent e) {
             tetrisController.onURLOpen();
         }
 
         @Override
-        public void mouseEntered(MouseEvent e) {
+        public void mouseEntered(final MouseEvent e) {
             urlLabel.setForeground(Color.CYAN);
         }
 
         @Override
-        public void mouseExited(MouseEvent e) {
+        public void mouseExited(final MouseEvent e) {
             urlLabel.setForeground(DEFAULT_FONT_COLOR);
         }
     }
@@ -97,10 +97,10 @@ public class TetrisViewImpl implements TetrisView {
 
     private final TetrisInstanceView tetrisInstanceView;
 
-    public TetrisViewImpl(TetrisController tetrisController,
-            TetrisInstanceView tetrisInstanceView,
-            FontCache fontCache,
-            Tetris tetris) {
+    public TetrisViewImpl(final TetrisController tetrisController,
+            final TetrisInstanceView tetrisInstanceView,
+            final FontCache fontCache,
+            final Tetris tetris) {
         this.tetrisInstanceView = tetrisInstanceView;
 
         final URI projectURI = tetris.getProjectURI();
