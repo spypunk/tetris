@@ -78,7 +78,7 @@ public class SoundClipImpl implements SoundClip {
     @Override
     public void stop() {
         clip.stop();
-        clip.setFramePosition(0);
+        currentFramePosition = 0;
     }
 
     @Override
