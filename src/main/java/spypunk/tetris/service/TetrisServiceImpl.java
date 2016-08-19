@@ -64,11 +64,18 @@ public class TetrisServiceImpl implements TetrisService {
         final int speed = getLevelSpeed(0);
 
         final TetrisInstance tetrisInstance = TetrisInstance.Builder.instance()
-                .setNextShape(shapeFactory.createRandomShape())
-                .setStatistics(statistics).setState(State.RUNNING)
+                .setStatistics(statistics).setState(State.NEW)
                 .setSpeed(speed).build();
 
         tetris.setTetrisInstance(tetrisInstance);
+    }
+
+    @Override
+    public void startInstance(final Tetris tetris) {
+        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+
+        tetrisInstance.setState(tetrisInstance.getState().onStart());
+        tetrisInstance.setNextShape(shapeFactory.createRandomShape());
     }
 
     @Override

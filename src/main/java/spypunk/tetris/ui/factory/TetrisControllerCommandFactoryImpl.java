@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import spypunk.tetris.model.Movement;
+import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.model.TetrisInstance.State;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.sound.Sound;
@@ -34,7 +35,15 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     @Override
     public TetrisControllerCommand createNewGameTetrisControllerCommand() {
         return tetris -> {
-            tetrisService.newInstance(tetris);
+
+            final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+
+            if (!State.NEW.equals(tetrisInstance.getState())) {
+                tetrisService.newInstance(tetris);
+            }
+
+            tetrisService.startInstance(tetris);
+
             soundService.playMusic(Sound.BACKGROUND);
         };
     }
@@ -44,7 +53,9 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
         return tetris -> {
             tetrisService.pauseInstance(tetris);
 
-            if (!State.GAME_OVER.equals(tetris.getTetrisInstance().getState())) {
+            final State state = tetris.getTetrisInstance().getState();
+
+            if (State.RUNNING.equals(state) || State.PAUSED.equals(state)) {
                 soundService.pauseMusic();
             }
         };

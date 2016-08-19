@@ -54,7 +54,7 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
     @Override
     public void start() {
-        tetrisControllerInputHandler.onNewGame();
+        tetrisService.newInstance(tetris);
 
         tetrisView.show();
 

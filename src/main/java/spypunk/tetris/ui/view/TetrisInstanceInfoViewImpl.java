@@ -29,9 +29,11 @@ import javax.swing.JLabel;
 
 import com.google.common.collect.Lists;
 
+import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisInstance;
+import spypunk.tetris.model.TetrisInstance.State;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.FontType;
 import spypunk.tetris.ui.font.cache.FontCache;
@@ -123,6 +125,7 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
         renderLevel(graphics, tetrisInstance);
         renderScore(graphics, tetrisInstance);
         renderRows(graphics, tetrisInstance);
+
         renderNextShape(graphics, tetrisInstance);
     }
 
@@ -152,7 +155,12 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
     private void renderNextShape(final Graphics2D graphics, final TetrisInstance tetrisInstance) {
         renderLabelAndRectangle(graphics, nextShapeRectangle, nextShapeLabelRectangle, NEXT_SHAPE);
 
-        final ShapeType shapeType = tetrisInstance.getNextShape().getShapeType();
+        if (State.NEW.equals(tetrisInstance.getState())) {
+            return;
+        }
+
+        final Shape nextShape = tetrisInstance.getNextShape();
+        final ShapeType shapeType = nextShape.getShapeType();
         final Image shapeTypeImage = imageCache.getShapeImage(shapeType);
         final Rectangle rectangle = shapeTypeImageRectangles.get(shapeType);
 

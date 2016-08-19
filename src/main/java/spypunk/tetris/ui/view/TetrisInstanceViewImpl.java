@@ -47,6 +47,8 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     private static final String GAME_OVER = "GAME OVER";
 
+    private static final String PRESS_SPACE = "PRESS SPACE";
+
     private final BufferedImage image;
 
     private final Tetris tetris;
@@ -137,7 +139,9 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
         final State state = tetrisInstance.getState();
 
-        if (!State.RUNNING.equals(state)) {
+        if (State.NEW.equals(state)) {
+            renderTetrisNew(graphics);
+        } else if (!State.RUNNING.equals(state)) {
             renderTetrisFrozen(graphics, state);
         }
     }
@@ -151,6 +155,11 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
         final Rectangle rectangle = new Rectangle(x1, y1, BLOCK_SIZE, BLOCK_SIZE);
 
         SwingUtils.drawImage(graphics, blockImage, rectangle);
+    }
+
+    private void renderTetrisNew(final Graphics2D graphics) {
+        SwingUtils.renderCenteredText(graphics, PRESS_SPACE, gridRectangle,
+            frozenFont, DEFAULT_FONT_COLOR);
     }
 
     private void renderTetrisFrozen(final Graphics2D graphics, final State state) {

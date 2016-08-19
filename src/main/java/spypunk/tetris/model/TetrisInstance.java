@@ -19,6 +19,7 @@ import com.google.common.collect.Maps;
 public class TetrisInstance {
 
     public enum State {
+        NEW,
         RUNNING {
             @Override
             public State onPause() {
@@ -31,14 +32,15 @@ public class TetrisInstance {
                 return RUNNING;
             }
         },
-        GAME_OVER {
-            @Override
-            public State onPause() {
-                return this;
-            }
-        };
+        GAME_OVER;
 
-        public abstract State onPause();
+        public State onPause() {
+            return this;
+        }
+
+        public State onStart() {
+            return RUNNING;
+        }
     }
 
     public static class Builder {

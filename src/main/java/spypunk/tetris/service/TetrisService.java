@@ -15,6 +15,8 @@ public interface TetrisService {
 
     void newInstance(Tetris tetris);
 
+    void startInstance(Tetris tetris);
+
     void updateInstance(Tetris tetris);
 
     void updateInstanceMovement(Tetris tetris, Movement movement);

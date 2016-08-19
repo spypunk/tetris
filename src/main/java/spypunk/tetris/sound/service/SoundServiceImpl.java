@@ -22,8 +22,6 @@ public class SoundServiceImpl implements SoundService {
 
     private SoundClip currentSoundClip;
 
-    private boolean muted;
-
     @Inject
     public SoundServiceImpl(final SoundClipCache soundClipCache) {
         this.soundClipCache = soundClipCache;
@@ -31,10 +29,6 @@ public class SoundServiceImpl implements SoundService {
 
     @Override
     public void playMusic(final Sound sound) {
-        if (muted) {
-            return;
-        }
-
         doPlayMusic(sound);
     }
 
@@ -53,10 +47,6 @@ public class SoundServiceImpl implements SoundService {
 
     @Override
     public void playSound(final Sound sound) {
-        if (muted) {
-            return;
-        }
-
         doPlaySound(sound);
     }
 
@@ -75,11 +65,9 @@ public class SoundServiceImpl implements SoundService {
     private void doPlayMusic(final Sound sound) {
         stopMusic();
 
-        final SoundClip clip = soundClipCache.getSoundClip(sound);
+        currentSoundClip = soundClipCache.getSoundClip(sound);
 
-        currentSoundClip = clip;
-
-        clip.play();
+        currentSoundClip.play();
     }
 
     private void doPauseMusic() {
@@ -89,8 +77,6 @@ public class SoundServiceImpl implements SoundService {
     }
 
     private void doMute() {
-        muted = !muted;
-
         if (currentSoundClip != null) {
             currentSoundClip.mute();
         }

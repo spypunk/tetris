@@ -41,8 +41,9 @@ public class TetrisServiceImplTest {
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
         Assert.assertNotNull(tetrisInstance);
-        Assert.assertNotNull(tetrisInstance.getNextShape());
+        Assert.assertNull(tetrisInstance.getCurrentShape());
+        Assert.assertNull(tetrisInstance.getNextShape());
         Assert.assertEquals(48, tetrisInstance.getSpeed());
-        Assert.assertEquals(State.RUNNING, tetrisInstance.getState());
+        Assert.assertEquals(State.NEW, tetrisInstance.getState());
     }
 }
