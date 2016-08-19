@@ -27,6 +27,8 @@ public class ShapeFactoryImpl implements ShapeFactory {
 
     private static final int INITIAL_ROTATION = 0;
 
+    private static final int MAX_START_X = 7;
+
     private final Random random = new Random();
 
     private final List<ShapeType> shapeTypes = Lists.newArrayList(ShapeType.values());
@@ -35,13 +37,17 @@ public class ShapeFactoryImpl implements ShapeFactory {
     public Shape createRandomShape() {
         final ShapeType shapeType = getRandomShapeType();
 
+        final int dx = random.nextInt(MAX_START_X);
+
         final Rectangle boundingBox = new Rectangle(shapeType.getBoundingBox());
+
+        boundingBox.translate(dx, 0);
 
         final Shape shape = Shape.Builder.instance().setBoundingBox(boundingBox).setShapeType(shapeType)
                 .setCurrentRotation(INITIAL_ROTATION).build();
 
         final List<Block> blocks = shapeType.getRotations().get(INITIAL_ROTATION).stream()
-                .map(location -> new Point(location.x, location.y))
+                .map(location -> new Point(location.x + dx, location.y))
                 .map(location -> Block.Builder.instance().setLocation(location).setShape(shape).build())
                 .collect(Collectors.toList());
 

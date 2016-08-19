@@ -15,7 +15,6 @@ import java.awt.Point;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -39,8 +38,6 @@ import spypunk.tetris.model.TetrisInstance.State;
 @Singleton
 public class TetrisServiceImpl implements TetrisService {
 
-    private static final int MAX_START_X = 7;
-
     private static final int ROWS_PER_LEVEL = 10;
 
     private final ShapeFactory shapeFactory;
@@ -48,8 +45,6 @@ public class TetrisServiceImpl implements TetrisService {
     private final Map<Integer, Integer> scorePerRows = ImmutableMap.of(1, 40, 2, 100, 3, 300, 4, 1200);
 
     private final Map<Integer, Integer> levelSpeeds = createLevelSpeeds();
-
-    private final Random random = new Random();
 
     @Inject
     public TetrisServiceImpl(final ShapeFactory shapeFactory) {
@@ -192,22 +187,11 @@ public class TetrisServiceImpl implements TetrisService {
     private void getNextShape(final TetrisInstance tetrisInstance) {
         final Shape currentShape = tetrisInstance.getNextShape();
 
-        randomizeShapeStartX(currentShape);
-
         tetrisInstance.setCurrentShape(currentShape);
         tetrisInstance.setCurrentShapeLocked(false);
         tetrisInstance.setNextShape(shapeFactory.createRandomShape());
 
         updateStatistics(tetrisInstance);
-    }
-
-    private void randomizeShapeStartX(final Shape shape) {
-        final int dx = random.nextInt(MAX_START_X);
-
-        shape.getBoundingBox().translate(dx, 0);
-
-        shape.getBlocks()
-                .forEach(block -> block.getLocation().translate(dx, 0));
     }
 
     private void updateStatistics(final TetrisInstance tetrisInstance) {
