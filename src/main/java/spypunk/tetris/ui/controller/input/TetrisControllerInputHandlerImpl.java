@@ -99,7 +99,7 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
 
     @Override
     public void onMute() {
-        onInput(InputType.MOVEMENT);
+        onInput(InputType.MUTE);
     }
 
     @Override
