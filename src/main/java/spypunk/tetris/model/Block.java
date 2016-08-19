@@ -57,9 +57,4 @@ public class Block {
     public void setLocation(final Point location) {
         this.location = location;
     }
-
-    @Override
-    public String toString() {
-        return "Block [location=" + location + "]";
-    }
 }
