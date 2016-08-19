@@ -21,7 +21,7 @@ public enum FontType {
 
         private final String fileName;
 
-        private Font() {
+        Font() {
             fileName = name().toLowerCase() + ".ttf";
         }
     }
@@ -30,7 +30,7 @@ public enum FontType {
 
     private final Font font;
 
-    private FontType(final float size, final Font font) {
+    FontType(final float size, final Font font) {
         this.size = size;
         this.font = font;
     }
