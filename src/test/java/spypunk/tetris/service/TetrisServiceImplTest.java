@@ -10,6 +10,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.model.Shape;
+import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.model.TetrisInstance.State;
@@ -45,5 +46,13 @@ public class TetrisServiceImplTest {
         Assert.assertNull(tetrisInstance.getNextShape());
         Assert.assertEquals(48, tetrisInstance.getSpeed());
         Assert.assertEquals(State.NEW, tetrisInstance.getState());
+        Assert.assertEquals(0, tetrisInstance.getLevel());
+        Assert.assertEquals(0, tetrisInstance.getScore());
+        Assert.assertEquals(0, tetrisInstance.getCompletedRows());
+        Assert.assertEquals(0, tetrisInstance.getCurrentGravityFrame());
+
+        for (ShapeType shapeType : ShapeType.values()) {
+            Assert.assertEquals(tetrisInstance.getStatistics().get(shapeType), new Integer(0));
+        }
     }
 }
