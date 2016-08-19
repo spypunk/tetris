@@ -10,17 +10,29 @@ package spypunk.tetris.ui.font;
 
 public enum FontType {
 
-    DEFAULT(30F, FontConstants.NEUTRONIUM),
-    URL(10F, FontConstants.RUSSO_ONE),
-    FROZEN(42F, FontConstants.NEUTRONIUM);
+    DEFAULT(30F, Font.NEUTRONIUM),
+    URL(10F, Font.RUSSO_ONE),
+    FROZEN(42F, Font.NEUTRONIUM);
+
+    private enum Font {
+
+        NEUTRONIUM,
+        RUSSO_ONE;
+
+        private final String fileName;
+
+        private Font() {
+            fileName = name().toLowerCase() + ".ttf";
+        }
+    }
 
     private final float size;
 
-    private final String fileName;
+    private final Font font;
 
-    private FontType(final float size, final String fontName) {
+    private FontType(final float size, final Font font) {
         this.size = size;
-        fileName = fontName + ".ttf";
+        this.font = font;
     }
 
     public float getSize() {
@@ -28,6 +40,6 @@ public enum FontType {
     }
 
     public String getFileName() {
-        return fileName;
+        return font.fileName;
     }
 }
