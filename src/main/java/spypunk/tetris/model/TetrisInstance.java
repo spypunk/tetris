@@ -37,10 +37,6 @@ public class TetrisInstance {
         public State onPause() {
             return this;
         }
-
-        public State onStart() {
-            return RUNNING;
-        }
     }
 
     public static class Builder {
@@ -103,6 +99,8 @@ public class TetrisInstance {
     private int currentGravityFrame;
 
     private int currentMovementScore;
+
+    private boolean currentShapeLocked;
 
     private List<TetrisEvent> tetrisEvents = Lists.newArrayList();
 
@@ -208,5 +206,13 @@ public class TetrisInstance {
 
     public void setTetrisEvents(final List<TetrisEvent> tetrisEvents) {
         this.tetrisEvents = tetrisEvents;
+    }
+
+    public boolean isCurrentShapeLocked() {
+        return currentShapeLocked;
+    }
+
+    public void setCurrentShapeLocked(final boolean currentShapeLocked) {
+        this.currentShapeLocked = currentShapeLocked;
     }
 }
