@@ -8,22 +8,37 @@
 
 package spypunk.tetris;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.ConfigurationException;
+import com.google.inject.CreationException;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.ProvisionException;
 
+import spypunk.tetris.exception.TetrisException;
 import spypunk.tetris.guice.TetrisModule;
 import spypunk.tetris.ui.controller.TetrisController;
 
 public class Main {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     private Main() {
         throw new IllegalAccessError();
     }
 
     public static void main(final String[] args) {
-        final Injector injector = Guice.createInjector(new TetrisModule());
-        final TetrisController tetrisController = injector.getInstance(TetrisController.class);
-        tetrisController.start();
+        try {
+            final Injector injector = Guice.createInjector(new TetrisModule());
+            final TetrisController tetrisController = injector.getInstance(TetrisController.class);
+
+            tetrisController.start();
+        } catch (CreationException | ConfigurationException | ProvisionException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new TetrisException(e);
+        }
     }
 
 }

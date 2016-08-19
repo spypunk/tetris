@@ -8,9 +8,7 @@
 
 package spypunk.tetris.sound;
 
-import java.io.Closeable;
-
-public interface SoundClip extends Closeable {
+public interface SoundClip {
 
     void play();
 
@@ -19,7 +17,4 @@ public interface SoundClip extends Closeable {
     void stop();
 
     void mute();
-
-    @Override
-    void close();
 }

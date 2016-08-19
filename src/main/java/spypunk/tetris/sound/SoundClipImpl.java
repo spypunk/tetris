@@ -18,11 +18,14 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 
-import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import spypunk.tetris.exception.TetrisException;
 
 public class SoundClipImpl implements SoundClip {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SoundClipImpl.class);
 
     private final AudioFormat audioFormat;
 
@@ -52,7 +55,7 @@ public class SoundClipImpl implements SoundClip {
             clip.open(audioInputStream);
             volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
         } catch (LineUnavailableException | IOException e) {
-            close();
+            LOGGER.error(e.getMessage(), e);
             throw new TetrisException(e);
         }
     }
@@ -100,15 +103,6 @@ public class SoundClipImpl implements SoundClip {
         if (pausedNeeded) {
             pause();
         }
-    }
-
-    @Override
-    public void close() {
-        if (clip != null) {
-            clip.close();
-        }
-
-        IOUtils.closeQuietly(audioInputStream);
     }
 
     private void resume() {
