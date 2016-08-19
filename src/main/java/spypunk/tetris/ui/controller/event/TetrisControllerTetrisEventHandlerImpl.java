@@ -1,5 +1,6 @@
 package spypunk.tetris.ui.controller.event;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -7,6 +8,8 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import org.apache.commons.collections.CollectionUtils;
 
 import com.google.common.collect.Maps;
 
@@ -34,6 +37,10 @@ public class TetrisControllerTetrisEventHandlerImpl implements TetrisControllerT
 
     @Override
     public List<TetrisControllerCommand> handleEvents(final List<TetrisEvent> tetrisEvents) {
+        if (CollectionUtils.isEmpty(tetrisEvents)) {
+            return Collections.emptyList();
+        }
+
         return tetrisEvents.stream().map(tetrisControllerCommands::get).map(Supplier::get).collect(Collectors.toList());
     }
 

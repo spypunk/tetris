@@ -8,15 +8,22 @@
 
 package spypunk.tetris.ui.controller;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
+
+import org.apache.commons.collections.CollectionUtils;
 
 import spypunk.tetris.factory.GameLoopFactory;
 import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.gameloop.GameLoop;
 import spypunk.tetris.gameloop.GameLoopListener;
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.model.TetrisEvent;
 import spypunk.tetris.service.TetrisService;
+import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
 import spypunk.tetris.ui.factory.TetrisViewFactory;
@@ -73,13 +80,14 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
     @Override
     public void onUpdate() {
-        tetrisControllerInputHandler.handleInput()
-                .forEach(tetrisControllerCommand -> tetrisControllerCommand.execute(tetris));
+        executeTetrisControllerCommands(tetrisControllerInputHandler.handleInput());
 
         tetrisService.updateInstance(tetris);
 
-        tetrisControllerTetrisEventHandler.handleEvents(tetris.getTetrisInstance().getTetrisEvents())
-                .forEach(tetrisControllerCommand -> tetrisControllerCommand.execute(tetris));
+        final List<TetrisEvent> tetrisEvents = tetris.getTetrisInstance().getTetrisEvents();
+
+        executeTetrisControllerCommands(
+            tetrisControllerTetrisEventHandler.handleEvents(tetrisEvents));
     }
 
     @Override
@@ -95,5 +103,13 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
     @Override
     public void onKeyReleased(final int keyCode) {
         tetrisControllerInputHandler.onKeyReleased(keyCode);
+    }
+
+    private void executeTetrisControllerCommands(final Collection<TetrisControllerCommand> tetrisControllerCommands) {
+        if (CollectionUtils.isEmpty(tetrisControllerCommands)) {
+            return;
+        }
+
+        tetrisControllerCommands.forEach(tetrisControllerCommand -> tetrisControllerCommand.execute(tetris));
     }
 }
