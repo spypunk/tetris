@@ -20,12 +20,6 @@ public enum Sound {
     ROWS_COMPLETED(Format.MP3, false);
 
     public enum Format {
-        WAV {
-            @Override
-            public AudioFileReader getFileReader() {
-                return new com.sun.media.sound.WaveFileReader();
-            }
-        },
         MP3 {
             @Override
             public AudioFileReader getFileReader() {
