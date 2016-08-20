@@ -65,6 +65,7 @@
 						<manifestEntries>
 							<Built-By></Built-By>
 						</manifestEntries>
+						<addMavenDescriptor>false</addMavenDescriptor>
 					</archive>
 				</configuration>
 			</plugin>
@@ -95,14 +96,15 @@
 			<version>1.7.21</version>
 		</dependency>
 		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.5</version>
-		</dependency>
-		<dependency>
 			<groupId>com.googlecode.soundlibs</groupId>
 			<artifactId>mp3spi</artifactId>
 			<version>1.9.5.4</version>
+			<exclusions>
+				<exclusion>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -122,6 +124,10 @@
 				<exclusion>
 					<artifactId>slf4j-jdk14</artifactId>
 					<groupId>org.slf4j</groupId>
+				</exclusion>
+				<exclusion>
+					<groupId>junit</groupId>
+					<artifactId>junit</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
