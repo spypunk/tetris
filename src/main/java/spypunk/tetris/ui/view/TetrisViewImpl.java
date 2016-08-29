@@ -26,7 +26,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.font.FontType;
 import spypunk.tetris.ui.font.cache.FontCache;
@@ -100,7 +102,8 @@ public class TetrisViewImpl implements TetrisView {
     public TetrisViewImpl(final TetrisController tetrisController,
             final TetrisInstanceView tetrisInstanceView,
             final FontCache fontCache,
-            final Tetris tetris) {
+            final Tetris tetris,
+            final ImageCache imageCache) {
         this.tetrisInstanceView = tetrisInstanceView;
 
         final URI projectURI = tetris.getProjectURI();
@@ -125,6 +128,7 @@ public class TetrisViewImpl implements TetrisView {
         frame.setResizable(false);
         frame.addWindowListener(new TetrisViewWindowListener(tetrisController));
         frame.addKeyListener(new TetrisViewKeyAdapter(tetrisController));
+        frame.setIconImage(imageCache.getShapeImage(ShapeType.I));
 
         frame.add(tetrisInstanceView, BorderLayout.CENTER);
         frame.add(urlPanel, BorderLayout.SOUTH);

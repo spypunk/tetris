@@ -45,7 +45,7 @@ public class TetrisViewFactoryImpl implements TetrisViewFactory {
     public TetrisView createTetrisView(final Tetris tetris) {
         final TetrisInstanceView tetrisInstanceView = createTetrisInstanceView(tetris);
 
-        return new TetrisViewImpl(tetrisController, tetrisInstanceView, fontCache, tetris);
+        return new TetrisViewImpl(tetrisController, tetrisInstanceView, fontCache, tetris, imageCache);
     }
 
     private TetrisInstanceView createTetrisInstanceView(final Tetris tetris) {
