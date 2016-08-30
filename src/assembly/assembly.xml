@@ -46,7 +46,7 @@
 			<directory>${project.basedir}/src/main/resources/img/icons</directory>
 			<outputDirectory></outputDirectory>
 			<includes>
-				<include>tetris.png</include>
+				<include>icon.png</include>
 			</includes>
 		</fileSet>
 	</fileSets>

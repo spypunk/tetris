@@ -31,7 +31,7 @@ public class ImageCacheImpl implements ImageCache {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageCacheImpl.class);
 
-    private static final String TETRIS_ICON_FILENAME = "tetris";
+    private static final String TETRIS_ICON_FILENAME = "icon";
 
     private static final String ICONS_FOLDER = "/img/icons/";
 
