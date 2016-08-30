@@ -31,13 +31,24 @@ public class ImageCacheImpl implements ImageCache {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageCacheImpl.class);
 
+    private static final String TETRIS_ICON_FILENAME = "tetris";
+
+    private static final String ICONS_FOLDER = "/img/icons/";
+
     private static final String BLOCKS_FOLDER = "/img/blocks/";
 
     private static final String SHAPES_FOLDER = "/img/shapes/";
 
+    private final Image tetrisIcon = createImage(String.format("%s%s.png", ICONS_FOLDER, TETRIS_ICON_FILENAME));
+
     private final Map<ShapeType, Image> blockImages = createBlockImages();
 
     private final Map<ShapeType, Image> shapeImages = createShapeImages();
+
+    @Override
+    public Image getTetrisIcon() {
+        return tetrisIcon;
+    }
 
     @Override
     public Image getBlockImage(final ShapeType shapeType) {
@@ -52,6 +63,10 @@ public class ImageCacheImpl implements ImageCache {
     private static Image createImage(final String imageFolder, final ShapeType shapeType) {
         final String resourceName = String.format("%s%s.png", imageFolder, shapeType.name());
 
+        return createImage(resourceName);
+    }
+
+    private static Image createImage(final String resourceName) {
         try (InputStream inputStream = ImageCacheImpl.class.getResourceAsStream(resourceName)) {
             return ImageIO.read(inputStream);
         } catch (final IOException e) {

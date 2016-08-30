@@ -14,6 +14,8 @@ import spypunk.tetris.model.ShapeType;
 
 public interface ImageCache {
 
+    Image getTetrisIcon();
+
     Image getBlockImage(ShapeType shapeType);
 
     Image getShapeImage(ShapeType shapeType);
