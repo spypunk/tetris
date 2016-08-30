@@ -42,5 +42,12 @@
 				<include>README.md</include>
 			</includes>
 		</fileSet>
+		<fileSet>
+			<directory>${project.basedir}/src/main/resources/img/icons</directory>
+			<outputDirectory></outputDirectory>
+			<includes>
+				<include>tetris.png</include>
+			</includes>
+		</fileSet>
 	</fileSets>
 </assembly>
