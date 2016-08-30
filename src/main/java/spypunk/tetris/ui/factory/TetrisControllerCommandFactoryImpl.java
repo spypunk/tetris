@@ -85,4 +85,14 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     public TetrisControllerCommand createRowsCompletedTetrisControllerCommand() {
         return tetris -> soundService.playSound(Sound.ROWS_COMPLETED);
     }
+
+    @Override
+    public TetrisControllerCommand createIncreaseVolumeTetrisControllerCommand() {
+        return tetris -> soundService.increaseVolume();
+    }
+
+    @Override
+    public TetrisControllerCommand createDecreaseVolumeTetrisControllerCommand() {
+        return tetris -> soundService.decreaseVolume();
+    }
 }

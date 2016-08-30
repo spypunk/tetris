@@ -27,6 +27,8 @@ public class SoundClipImpl implements SoundClip {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SoundClipImpl.class);
 
+    private static final float VOLUME_DELTA = 5F;
+
     private final AudioFormat audioFormat;
 
     private final Clip clip;
@@ -43,6 +45,10 @@ public class SoundClipImpl implements SoundClip {
 
     private boolean muted;
 
+    private float minimumVolume;
+
+    private float maximumVolume;
+
     private float currentVolume;
 
     private boolean stopped = true;
@@ -56,6 +62,9 @@ public class SoundClipImpl implements SoundClip {
             audioInputStream = AudioSystem.getAudioInputStream(audioFormat, inputStream);
             clip.open(audioInputStream);
             volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            maximumVolume = volumeControl.getValue();
+            minimumVolume = volumeControl.getMinimum();
+            currentVolume = maximumVolume;
         } catch (LineUnavailableException | IOException e) {
             LOGGER.error(e.getMessage(), e);
             throw new TetrisException(e);
@@ -98,7 +107,7 @@ public class SoundClipImpl implements SoundClip {
         }
 
         if (muted) {
-            volumeControl.setValue(volumeControl.getMinimum());
+            volumeControl.setValue(minimumVolume);
         } else {
             volumeControl.setValue(currentVolume);
         }
@@ -106,6 +115,28 @@ public class SoundClipImpl implements SoundClip {
         if (pausedNeeded) {
             pause();
         }
+    }
+
+    @Override
+    public void increaseVolume() {
+        updateVolume(VOLUME_DELTA);
+    }
+
+    @Override
+    public void decreaseVolume() {
+        updateVolume(-VOLUME_DELTA);
+    }
+
+    private void updateVolume(final float delta) {
+        currentVolume += delta;
+
+        if (currentVolume < minimumVolume) {
+            currentVolume = minimumVolume;
+        } else if (currentVolume > maximumVolume) {
+            currentVolume = maximumVolume;
+        }
+
+        volumeControl.setValue(currentVolume);
     }
 
     private void resume() {

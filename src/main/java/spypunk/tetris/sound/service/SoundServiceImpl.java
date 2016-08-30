@@ -55,6 +55,16 @@ public class SoundServiceImpl implements SoundService {
         soundClipCache.getAllSoundClips().forEach(SoundClip::mute);
     }
 
+    @Override
+    public void increaseVolume() {
+        soundClipCache.getAllSoundClips().forEach(SoundClip::increaseVolume);
+    }
+
+    @Override
+    public void decreaseVolume() {
+        soundClipCache.getAllSoundClips().forEach(SoundClip::decreaseVolume);
+    }
+
     private void doPlaySound(final Sound sound) {
         final SoundClip clip = soundClipCache.getSoundClip(sound);
 

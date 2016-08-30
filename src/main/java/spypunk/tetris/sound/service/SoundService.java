@@ -21,4 +21,8 @@ public interface SoundService {
     void stopMusic();
 
     void mute();
+
+    void increaseVolume();
+
+    void decreaseVolume();
 }

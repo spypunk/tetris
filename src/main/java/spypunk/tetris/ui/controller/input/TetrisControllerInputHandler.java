@@ -14,23 +14,21 @@ import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 
 public interface TetrisControllerInputHandler {
 
+    enum InputType {
+        MOVE_LEFT,
+        MOVE_RIGHT,
+        MOVE_DOWN,
+        ROTATE_CW,
+        PAUSE,
+        NEW_GAME,
+        MUTE,
+        INCREASE_VOLUME,
+        DECREASE_VOLUME
+    }
+
     void onKeyPressed(int keyCode);
 
     void onKeyReleased(int keyCode);
-
-    void onMoveLeft();
-
-    void onMoveRight();
-
-    void onMoveDown();
-
-    void onRotate();
-
-    void onNewGame();
-
-    void onPause();
-
-    void onMute();
 
     List<TetrisControllerCommand> handleInput();
 }
