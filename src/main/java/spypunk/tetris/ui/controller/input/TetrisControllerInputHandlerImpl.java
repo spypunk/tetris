@@ -40,13 +40,13 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
     public TetrisControllerInputHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory) {
         this.tetrisControllerCommandFactory = tetrisControllerCommandFactory;
 
-        pressedKeyHandlers.put(KeyEvent.VK_LEFT, () -> onMovement(Movement.LEFT, InputType.MOVE_LEFT));
-        pressedKeyHandlers.put(KeyEvent.VK_RIGHT, () -> onMovement(Movement.RIGHT, InputType.MOVE_RIGHT));
-        pressedKeyHandlers.put(KeyEvent.VK_DOWN, () -> onMovement(Movement.DOWN, InputType.MOVE_DOWN));
+        pressedKeyHandlers.put(KeyEvent.VK_LEFT, () -> onMovement(Movement.LEFT));
+        pressedKeyHandlers.put(KeyEvent.VK_RIGHT, () -> onMovement(Movement.RIGHT));
+        pressedKeyHandlers.put(KeyEvent.VK_DOWN, () -> onMovement(Movement.DOWN));
 
         releasedKeyHandlers.put(KeyEvent.VK_SPACE, () -> onInput(InputType.NEW_GAME));
         releasedKeyHandlers.put(KeyEvent.VK_P, () -> onInput(InputType.PAUSE));
-        releasedKeyHandlers.put(KeyEvent.VK_UP, () -> onMovement(Movement.ROTATE_CW, InputType.ROTATE_CW));
+        releasedKeyHandlers.put(KeyEvent.VK_UP, () -> onMovement(Movement.ROTATE_CW));
         releasedKeyHandlers.put(KeyEvent.VK_M, () -> onInput(InputType.MUTE));
         releasedKeyHandlers.put(KeyEvent.VK_PAGE_UP, () -> onInput(InputType.INCREASE_VOLUME));
         releasedKeyHandlers.put(KeyEvent.VK_PAGE_DOWN, () -> onInput(InputType.DECREASE_VOLUME));
@@ -63,7 +63,7 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
     }
 
     @Override
-    public List<TetrisControllerCommand> handleInput() {
+    public List<TetrisControllerCommand> handleInputs() {
 
         final List<TetrisControllerCommand> tetrisControllerCommands = Lists.newArrayList();
 
@@ -89,18 +89,21 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
                     .add(tetrisControllerCommandFactory.createDecreaseVolumeTetrisControllerCommand());
         }
 
-        reset();
-
         return tetrisControllerCommands;
+    }
+
+    @Override
+    public void reset() {
+        bitSet.clear();
+        movement = null;
     }
 
     private void onInput(final InputType inputType) {
         bitSet.set(inputType.ordinal());
     }
 
-    private void onMovement(final Movement movement, final InputType inputType) {
+    private void onMovement(final Movement movement) {
         this.movement = movement;
-        onInput(inputType);
     }
 
     private boolean isInputTriggered(final InputType inputType) {
@@ -111,10 +114,5 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
         if (keyHandlers.containsKey(keyCode)) {
             keyHandlers.get(keyCode).run();
         }
-    }
-
-    private void reset() {
-        bitSet.clear();
-        movement = null;
     }
 }

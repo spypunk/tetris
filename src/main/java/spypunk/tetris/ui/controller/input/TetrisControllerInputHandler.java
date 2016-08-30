@@ -30,5 +30,7 @@ public interface TetrisControllerInputHandler {
 
     void onKeyReleased(int keyCode);
 
-    List<TetrisControllerCommand> handleInput();
+    List<TetrisControllerCommand> handleInputs();
+
+    void reset();
 }

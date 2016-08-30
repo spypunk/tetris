@@ -80,7 +80,9 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
     @Override
     public void onUpdate() {
-        executeTetrisControllerCommands(tetrisControllerInputHandler.handleInput());
+        executeTetrisControllerCommands(tetrisControllerInputHandler.handleInputs());
+
+        tetrisControllerInputHandler.reset();
 
         tetrisService.updateInstance(tetris);
 
