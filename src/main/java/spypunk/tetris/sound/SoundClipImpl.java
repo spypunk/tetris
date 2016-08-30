@@ -45,6 +45,8 @@ public class SoundClipImpl implements SoundClip {
 
     private float currentVolume;
 
+    private boolean stopped = true;
+
     public SoundClipImpl(final AudioInputStream inputStream, final boolean loop) {
         audioFormat = getOutFormat(inputStream.getFormat());
         this.loop = loop;
@@ -81,6 +83,7 @@ public class SoundClipImpl implements SoundClip {
     @Override
     public void stop() {
         clip.stop();
+        stopped = true;
         currentFramePosition = 0;
     }
 
@@ -88,7 +91,7 @@ public class SoundClipImpl implements SoundClip {
     public void mute() {
         muted = !muted;
 
-        final boolean pausedNeeded = !paused;
+        final boolean pausedNeeded = !stopped && !paused;
 
         if (pausedNeeded) {
             pause();
@@ -115,6 +118,7 @@ public class SoundClipImpl implements SoundClip {
         }
 
         paused = false;
+        stopped = false;
     }
 
     private AudioFormat getOutFormat(final AudioFormat inFormat) {

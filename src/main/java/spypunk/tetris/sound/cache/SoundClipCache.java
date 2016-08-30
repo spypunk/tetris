@@ -8,11 +8,14 @@
 
 package spypunk.tetris.sound.cache;
 
+import java.util.Collection;
+
 import spypunk.tetris.sound.Sound;
 import spypunk.tetris.sound.SoundClip;
 
-@FunctionalInterface
 public interface SoundClipCache {
 
     SoundClip getSoundClip(Sound sound);
+
+    Collection<SoundClip> getAllSoundClips();
 }

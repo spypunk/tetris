@@ -20,7 +20,7 @@ public class SoundServiceImpl implements SoundService {
 
     private final SoundClipCache soundClipCache;
 
-    private SoundClip currentSoundClip;
+    private SoundClip currentMusicSoundClip;
 
     @Inject
     public SoundServiceImpl(final SoundClipCache soundClipCache) {
@@ -39,9 +39,9 @@ public class SoundServiceImpl implements SoundService {
 
     @Override
     public void stopMusic() {
-        if (currentSoundClip != null) {
-            currentSoundClip.stop();
-            currentSoundClip = null;
+        if (currentMusicSoundClip != null) {
+            currentMusicSoundClip.stop();
+            currentMusicSoundClip = null;
         }
     }
 
@@ -52,7 +52,7 @@ public class SoundServiceImpl implements SoundService {
 
     @Override
     public void mute() {
-        doMute();
+        soundClipCache.getAllSoundClips().forEach(SoundClip::mute);
     }
 
     private void doPlaySound(final Sound sound) {
@@ -65,20 +65,14 @@ public class SoundServiceImpl implements SoundService {
     private void doPlayMusic(final Sound sound) {
         stopMusic();
 
-        currentSoundClip = soundClipCache.getSoundClip(sound);
+        currentMusicSoundClip = soundClipCache.getSoundClip(sound);
 
-        currentSoundClip.play();
+        currentMusicSoundClip.play();
     }
 
     private void doPauseMusic() {
-        if (currentSoundClip != null) {
-            currentSoundClip.pause();
-        }
-    }
-
-    private void doMute() {
-        if (currentSoundClip != null) {
-            currentSoundClip.mute();
+        if (currentMusicSoundClip != null) {
+            currentMusicSoundClip.pause();
         }
     }
 }

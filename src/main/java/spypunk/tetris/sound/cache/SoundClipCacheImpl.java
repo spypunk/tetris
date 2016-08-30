@@ -11,6 +11,7 @@ package spypunk.tetris.sound.cache;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -43,6 +44,11 @@ public class SoundClipCacheImpl implements SoundClipCache {
     @Override
     public SoundClip getSoundClip(final Sound sound) {
         return soundClips.get(sound);
+    }
+
+    @Override
+    public Collection<SoundClip> getAllSoundClips() {
+        return soundClips.values();
     }
 
     private static SoundClip createSoundClip(final Sound sound) {
