@@ -107,6 +107,11 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
         tetrisControllerInputHandler.onKeyReleased(keyCode);
     }
 
+    @Override
+    public TetrisView getTetrisView() {
+        return tetrisView;
+    }
+
     private void executeTetrisControllerCommands(final Collection<TetrisControllerCommand> tetrisControllerCommands) {
         if (CollectionUtils.isEmpty(tetrisControllerCommands)) {
             return;

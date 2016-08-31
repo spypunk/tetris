@@ -11,4 +11,6 @@ package spypunk.tetris.ui.view;
 public interface TetrisView extends View {
 
     void show();
+
+    void setMute(boolean mute);
 }

@@ -12,7 +12,6 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -29,7 +28,6 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import spypunk.tetris.model.Tetris;
-import spypunk.tetris.sound.service.SoundService;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.font.FontType;
@@ -104,8 +102,6 @@ public class TetrisViewImpl implements TetrisView {
 
     private final JLabel muteLabel;
 
-    private final SoundService soundService;
-
     private final ImageIcon muteImageIcon;
 
     private final ImageIcon unmuteImageIcon;
@@ -114,18 +110,15 @@ public class TetrisViewImpl implements TetrisView {
             final TetrisInstanceView tetrisInstanceView,
             final FontCache fontCache,
             final Tetris tetris,
-            final ImageCache imageCache,
-            final SoundService soundService) {
+            final ImageCache imageCache) {
         this.tetrisInstanceView = tetrisInstanceView;
-        this.soundService = soundService;
 
         muteImageIcon = new ImageIcon(imageCache.getIcon(Icon.MUTE));
         unmuteImageIcon = new ImageIcon(imageCache.getIcon(Icon.UNMUTE));
 
         final URI projectURI = tetris.getProjectURI();
 
-        muteLabel = new JLabel();
-        muteLabel.setPreferredSize(new Dimension(16, 16));
+        muteLabel = new JLabel(unmuteImageIcon);
 
         final JLabel urlLabel = new JLabel(projectURI.getHost() + projectURI.getPath());
 
@@ -169,10 +162,13 @@ public class TetrisViewImpl implements TetrisView {
         SwingUtils.doInAWTThread(this::doUpdate, true);
     }
 
+    @Override
+    public void setMute(final boolean mute) {
+        muteLabel.setIcon(mute ? muteImageIcon : unmuteImageIcon);
+    }
+
     private void doUpdate() {
         tetrisInstanceView.update();
-
-        muteLabel.setIcon(soundService.isMute() ? muteImageIcon : unmuteImageIcon);
 
         frame.repaint();
     }
