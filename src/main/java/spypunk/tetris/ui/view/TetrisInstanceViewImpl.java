@@ -69,6 +69,8 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     private final int blockY;
 
+    private final JLabel imageLabel;
+
     public TetrisInstanceViewImpl(final FontCache fontCache,
             final TetrisInstanceStatisticsView tetrisInstanceStatisticsView,
             final TetrisInstanceInfoView tetrisInstanceInfoView,
@@ -93,14 +95,15 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
         image = new BufferedImage(gridRectangle.width + 1, gridRectangle.height + 1,
                 BufferedImage.TYPE_INT_ARGB);
 
-        final JLabel label = new JLabel(new ImageIcon(image));
+        imageLabel = new JLabel(new ImageIcon(image));
 
         setLayout(new BorderLayout(BLOCK_SIZE, 0));
         setBackground(Color.BLACK);
         setOpaque(true);
         setBorder(BorderFactory.createEmptyBorder(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE));
+        setIgnoreRepaint(true);
 
-        add(label, BorderLayout.CENTER);
+        add(imageLabel, BorderLayout.CENTER);
         add(tetrisInstanceStatisticsView, BorderLayout.WEST);
         add(tetrisInstanceInfoView, BorderLayout.EAST);
     }
@@ -115,6 +118,8 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
         tetrisInstanceStatisticsView.update();
         tetrisInstanceInfoView.update();
+
+        imageLabel.repaint();
     }
 
     private void renderBlocks(final Graphics2D graphics) {

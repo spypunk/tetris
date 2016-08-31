@@ -164,12 +164,14 @@ public class TetrisViewImpl implements TetrisView {
 
     @Override
     public void setMute(final boolean mute) {
+        SwingUtils.doInAWTThread(() -> doSetMute(mute), false);
+    }
+
+    private void doSetMute(final boolean mute) {
         muteLabel.setIcon(mute ? muteImageIcon : unmuteImageIcon);
     }
 
     private void doUpdate() {
         tetrisInstanceView.update();
-
-        frame.repaint();
     }
 }

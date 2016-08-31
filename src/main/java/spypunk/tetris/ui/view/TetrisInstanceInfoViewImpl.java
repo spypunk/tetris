@@ -25,7 +25,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 import com.google.common.collect.Lists;
 
@@ -90,7 +89,7 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
 
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
-        final JLabel label = new JLabel(new ImageIcon(image));
+        setIcon(new ImageIcon(image));
 
         levelRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE);
         scoreRectangle = new Rectangle(0, BLOCK_SIZE * 4, BLOCK_SIZE * 6, BLOCK_SIZE);
@@ -111,7 +110,7 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
         setLayout(new GridBagLayout());
         setBackground(Color.BLACK);
         setOpaque(true);
-        add(label);
+        setIgnoreRepaint(true);
     }
 
     @Override
@@ -127,6 +126,8 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
         renderRows(graphics, tetrisInstance);
 
         renderNextShape(graphics, tetrisInstance);
+
+        repaint();
     }
 
     private Rectangle createLabelRectangle(final Rectangle rectangle) {

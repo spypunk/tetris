@@ -25,7 +25,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 import com.google.common.collect.Lists;
 
@@ -102,12 +101,12 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
         image = new BufferedImage(statisticsRectangle.width + 1, statisticsRectangle.height + BLOCK_SIZE + 1,
                 BufferedImage.TYPE_INT_ARGB);
 
-        final JLabel label = new JLabel(new ImageIcon(image));
+        setIcon(new ImageIcon(image));
 
         setLayout(new GridBagLayout());
         setBackground(Color.BLACK);
         setOpaque(true);
-        add(label);
+        setIgnoreRepaint(true);
     }
 
     @Override
@@ -143,6 +142,8 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
             statisticsRectangle.height);
 
         shapeTypes.forEach(shapeType -> renderStatistic(graphics, shapeType));
+
+        repaint();
     }
 
     private void renderStatistic(final Graphics2D graphics, final ShapeType shapeType) {
