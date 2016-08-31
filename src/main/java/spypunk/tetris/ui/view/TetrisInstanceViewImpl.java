@@ -99,7 +99,6 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
         setBackground(Color.BLACK);
         setOpaque(true);
         setBorder(BorderFactory.createEmptyBorder(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE));
-        setIgnoreRepaint(true);
 
         add(label, BorderLayout.CENTER);
         add(tetrisInstanceStatisticsView, BorderLayout.WEST);
@@ -116,8 +115,6 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
         tetrisInstanceStatisticsView.update();
         tetrisInstanceInfoView.update();
-
-        repaint();
     }
 
     private void renderBlocks(final Graphics2D graphics) {

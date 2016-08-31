@@ -11,10 +11,11 @@ package spypunk.tetris.ui.cache;
 import java.awt.Image;
 
 import spypunk.tetris.model.ShapeType;
+import spypunk.tetris.ui.icon.Icon;
 
 public interface ImageCache {
 
-    Image getTetrisIcon();
+    Image getIcon(Icon icon);
 
     Image getBlockImage(ShapeType shapeType);
 

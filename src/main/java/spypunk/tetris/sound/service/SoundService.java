@@ -25,4 +25,6 @@ public interface SoundService {
     void increaseVolume();
 
     void decreaseVolume();
+
+    boolean isMute();
 }

@@ -25,13 +25,12 @@ import com.google.common.collect.Lists;
 
 import spypunk.tetris.exception.TetrisException;
 import spypunk.tetris.model.ShapeType;
+import spypunk.tetris.ui.icon.Icon;
 
 @Singleton
 public class ImageCacheImpl implements ImageCache {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageCacheImpl.class);
-
-    private static final String TETRIS_ICON_FILENAME = "icon";
 
     private static final String ICONS_FOLDER = "/img/icons/";
 
@@ -39,15 +38,15 @@ public class ImageCacheImpl implements ImageCache {
 
     private static final String SHAPES_FOLDER = "/img/shapes/";
 
-    private final Image tetrisIcon = createImage(String.format("%s%s.png", ICONS_FOLDER, TETRIS_ICON_FILENAME));
+    private final Map<Icon, Image> icons = createIcons();
 
     private final Map<ShapeType, Image> blockImages = createBlockImages();
 
     private final Map<ShapeType, Image> shapeImages = createShapeImages();
 
     @Override
-    public Image getTetrisIcon() {
-        return tetrisIcon;
+    public Image getIcon(final Icon icon) {
+        return icons.get(icon);
     }
 
     @Override
@@ -66,6 +65,12 @@ public class ImageCacheImpl implements ImageCache {
         return createImage(resourceName);
     }
 
+    private static Image createIcon(final Icon icon) {
+        final String resourceName = String.format("%s%s.png", ICONS_FOLDER, icon.name().toLowerCase());
+
+        return createImage(resourceName);
+    }
+
     private static Image createImage(final String resourceName) {
         try (InputStream inputStream = ImageCacheImpl.class.getResourceAsStream(resourceName)) {
             return ImageIO.read(inputStream);
@@ -73,6 +78,11 @@ public class ImageCacheImpl implements ImageCache {
             LOGGER.error(e.getMessage(), e);
             throw new TetrisException(e);
         }
+    }
+
+    private static Map<Icon, Image> createIcons() {
+        return Lists.newArrayList(Icon.values()).stream().collect(Collectors.toMap(Function.identity(),
+            ImageCacheImpl::createIcon));
     }
 
     private static Map<ShapeType, Image> createShapeImages() {

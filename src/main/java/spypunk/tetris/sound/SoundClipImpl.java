@@ -43,7 +43,7 @@ public class SoundClipImpl implements SoundClip {
 
     private long currentFramePosition;
 
-    private boolean muted;
+    private boolean mute;
 
     private float minimumVolume;
 
@@ -98,7 +98,7 @@ public class SoundClipImpl implements SoundClip {
 
     @Override
     public void mute() {
-        muted = !muted;
+        mute = !mute;
 
         final boolean pausedNeeded = !stopped && !paused;
 
@@ -106,7 +106,7 @@ public class SoundClipImpl implements SoundClip {
             pause();
         }
 
-        if (muted) {
+        if (mute) {
             volumeControl.setValue(minimumVolume);
         } else {
             volumeControl.setValue(currentVolume);
@@ -125,6 +125,11 @@ public class SoundClipImpl implements SoundClip {
     @Override
     public void decreaseVolume() {
         updateVolume(-VOLUME_DELTA);
+    }
+
+    @Override
+    public boolean isMute() {
+        return mute;
     }
 
     private void updateVolume(final float delta) {

@@ -21,4 +21,6 @@ public interface SoundClip {
     void increaseVolume();
 
     void decreaseVolume();
+
+    boolean isMute();
 }

@@ -12,6 +12,7 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -21,16 +22,19 @@ import java.awt.event.WindowEvent;
 import java.net.URI;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.sound.service.SoundService;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.font.FontType;
 import spypunk.tetris.ui.font.cache.FontCache;
+import spypunk.tetris.ui.icon.Icon;
 import spypunk.tetris.ui.util.SwingUtils;
 
 public class TetrisViewImpl implements TetrisView {
@@ -98,27 +102,45 @@ public class TetrisViewImpl implements TetrisView {
 
     private final TetrisInstanceView tetrisInstanceView;
 
+    private final JLabel muteLabel;
+
+    private final SoundService soundService;
+
+    private final ImageIcon muteImageIcon;
+
+    private final ImageIcon unmuteImageIcon;
+
     public TetrisViewImpl(final TetrisController tetrisController,
             final TetrisInstanceView tetrisInstanceView,
             final FontCache fontCache,
             final Tetris tetris,
-            final ImageCache imageCache) {
+            final ImageCache imageCache,
+            final SoundService soundService) {
         this.tetrisInstanceView = tetrisInstanceView;
+        this.soundService = soundService;
+
+        muteImageIcon = new ImageIcon(imageCache.getIcon(Icon.MUTE));
+        unmuteImageIcon = new ImageIcon(imageCache.getIcon(Icon.UNMUTE));
 
         final URI projectURI = tetris.getProjectURI();
+
+        muteLabel = new JLabel();
+        muteLabel.setPreferredSize(new Dimension(16, 16));
+
         final JLabel urlLabel = new JLabel(projectURI.getHost() + projectURI.getPath());
 
         urlLabel.setFont(fontCache.getFont(FontType.URL));
         urlLabel.setForeground(DEFAULT_FONT_COLOR);
         urlLabel.addMouseListener(new URLLabelMouseAdapter(tetrisController, urlLabel));
 
-        final JPanel urlPanel = new JPanel(new BorderLayout());
+        final JPanel bottomPanel = new JPanel(new BorderLayout());
 
-        urlPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
-        urlPanel.setBackground(Color.BLACK);
-        urlPanel.setOpaque(true);
+        bottomPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+        bottomPanel.setBackground(Color.BLACK);
+        bottomPanel.setOpaque(true);
 
-        urlPanel.add(urlLabel, BorderLayout.EAST);
+        bottomPanel.add(muteLabel, BorderLayout.WEST);
+        bottomPanel.add(urlLabel, BorderLayout.EAST);
 
         frame = new JFrame(tetris.getName() + " " + tetris.getVersion());
 
@@ -127,10 +149,11 @@ public class TetrisViewImpl implements TetrisView {
         frame.setResizable(false);
         frame.addWindowListener(new TetrisViewWindowListener(tetrisController));
         frame.addKeyListener(new TetrisViewKeyAdapter(tetrisController));
-        frame.setIconImage(imageCache.getTetrisIcon());
+        frame.setIconImage(imageCache.getIcon(Icon.ICON));
+        frame.setIgnoreRepaint(true);
 
         frame.add(tetrisInstanceView, BorderLayout.CENTER);
-        frame.add(urlPanel, BorderLayout.SOUTH);
+        frame.add(bottomPanel, BorderLayout.SOUTH);
         frame.pack();
 
         frame.setLocationRelativeTo(null);
@@ -148,5 +171,9 @@ public class TetrisViewImpl implements TetrisView {
 
     private void doUpdate() {
         tetrisInstanceView.update();
+
+        muteLabel.setIcon(soundService.isMute() ? muteImageIcon : unmuteImageIcon);
+
+        frame.repaint();
     }
 }
