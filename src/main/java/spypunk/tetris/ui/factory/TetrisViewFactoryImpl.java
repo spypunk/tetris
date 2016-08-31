@@ -15,12 +15,12 @@ import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.font.cache.FontCache;
+import spypunk.tetris.ui.view.TetrisInstanceGridView;
+import spypunk.tetris.ui.view.TetrisInstanceGridViewImpl;
 import spypunk.tetris.ui.view.TetrisInstanceInfoView;
 import spypunk.tetris.ui.view.TetrisInstanceInfoViewImpl;
 import spypunk.tetris.ui.view.TetrisInstanceStatisticsView;
 import spypunk.tetris.ui.view.TetrisInstanceStatisticsViewImpl;
-import spypunk.tetris.ui.view.TetrisInstanceView;
-import spypunk.tetris.ui.view.TetrisInstanceViewImpl;
 import spypunk.tetris.ui.view.TetrisView;
 import spypunk.tetris.ui.view.TetrisViewImpl;
 
@@ -43,17 +43,17 @@ public class TetrisViewFactoryImpl implements TetrisViewFactory {
 
     @Override
     public TetrisView createTetrisView(final Tetris tetris) {
-        final TetrisInstanceView tetrisInstanceView = createTetrisInstanceView(tetris);
-
-        return new TetrisViewImpl(tetrisController, tetrisInstanceView, fontCache, tetris, imageCache);
-    }
-
-    private TetrisInstanceView createTetrisInstanceView(final Tetris tetris) {
+        final TetrisInstanceGridView tetrisInstanceGridView = createTetrisInstanceGridView(tetris);
         final TetrisInstanceStatisticsView tetrisInstanceStatisticsView = createTetrisInstanceStatisticsView(tetris);
         final TetrisInstanceInfoView tetrisInstanceInfoView = createTetrisInstanceInfoView(tetris);
 
-        return new TetrisInstanceViewImpl(fontCache, tetrisInstanceStatisticsView,
-                tetrisInstanceInfoView, imageCache, tetris);
+        return new TetrisViewImpl(tetrisController, fontCache, tetris, imageCache, tetrisInstanceGridView,
+                tetrisInstanceStatisticsView, tetrisInstanceInfoView);
+    }
+
+    private TetrisInstanceGridViewImpl createTetrisInstanceGridView(final Tetris tetris) {
+        return new TetrisInstanceGridViewImpl(fontCache, imageCache,
+                tetris);
     }
 
     private TetrisInstanceStatisticsView createTetrisInstanceStatisticsView(final Tetris tetris) {

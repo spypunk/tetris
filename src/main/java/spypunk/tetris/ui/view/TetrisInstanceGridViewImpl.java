@@ -12,18 +12,16 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 
 import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.model.Block;
@@ -37,7 +35,7 @@ import spypunk.tetris.ui.font.FontType;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
-public class TetrisInstanceViewImpl extends TetrisInstanceView {
+public class TetrisInstanceGridViewImpl extends TetrisInstanceGridView {
 
     private static final long serialVersionUID = -3487901883637598196L;
 
@@ -53,10 +51,6 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     private final Tetris tetris;
 
-    private final TetrisInstanceStatisticsView tetrisInstanceStatisticsView;
-
-    private final TetrisInstanceInfoView tetrisInstanceInfoView;
-
     private final Rectangle gridRectangle;
 
     private final Rectangle frozenGridRectangle;
@@ -69,15 +63,9 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
 
     private final int blockY;
 
-    private final JLabel imageLabel;
-
-    public TetrisInstanceViewImpl(final FontCache fontCache,
-            final TetrisInstanceStatisticsView tetrisInstanceStatisticsView,
-            final TetrisInstanceInfoView tetrisInstanceInfoView,
+    public TetrisInstanceGridViewImpl(final FontCache fontCache,
             final ImageCache imageCache,
             final Tetris tetris) {
-        this.tetrisInstanceStatisticsView = tetrisInstanceStatisticsView;
-        this.tetrisInstanceInfoView = tetrisInstanceInfoView;
         this.imageCache = imageCache;
         this.tetris = tetris;
 
@@ -95,31 +83,18 @@ public class TetrisInstanceViewImpl extends TetrisInstanceView {
         image = new BufferedImage(gridRectangle.width + 1, gridRectangle.height + 1,
                 BufferedImage.TYPE_INT_ARGB);
 
-        imageLabel = new JLabel(new ImageIcon(image));
-
-        setLayout(new BorderLayout(BLOCK_SIZE, 0));
+        setIcon(new ImageIcon(image));
+        setLayout(new GridBagLayout());
         setBackground(Color.BLACK);
         setOpaque(true);
-        setBorder(BorderFactory.createEmptyBorder(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE));
         setIgnoreRepaint(true);
-
-        add(imageLabel, BorderLayout.CENTER);
-        add(tetrisInstanceStatisticsView, BorderLayout.WEST);
-        add(tetrisInstanceInfoView, BorderLayout.EAST);
     }
 
     @Override
     public void update() {
-        if (tetris.getTetrisInstance() == null) {
-            return;
-        }
-
         SwingUtils.doInGraphics(image, this::renderBlocks);
 
-        tetrisInstanceStatisticsView.update();
-        tetrisInstanceInfoView.update();
-
-        imageLabel.repaint();
+        repaint();
     }
 
     private void renderBlocks(final Graphics2D graphics) {

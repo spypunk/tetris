@@ -8,6 +8,7 @@
 
 package spypunk.tetris.ui.view;
 
+import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.BorderLayout;
@@ -98,7 +99,11 @@ public class TetrisViewImpl implements TetrisView {
 
     private final JFrame frame;
 
-    private final TetrisInstanceView tetrisInstanceView;
+    private final TetrisInstanceStatisticsView tetrisInstanceStatisticsView;
+
+    private final TetrisInstanceInfoView tetrisInstanceInfoView;
+
+    private final TetrisInstanceGridView tetrisInstanceGridView;
 
     private final JLabel muteLabel;
 
@@ -107,11 +112,14 @@ public class TetrisViewImpl implements TetrisView {
     private final ImageIcon unmuteImageIcon;
 
     public TetrisViewImpl(final TetrisController tetrisController,
-            final TetrisInstanceView tetrisInstanceView,
             final FontCache fontCache,
             final Tetris tetris,
-            final ImageCache imageCache) {
-        this.tetrisInstanceView = tetrisInstanceView;
+            final ImageCache imageCache, final TetrisInstanceGridView tetrisInstanceGridView,
+            final TetrisInstanceStatisticsView tetrisInstanceStatisticsView,
+            final TetrisInstanceInfoView tetrisInstanceInfoView) {
+        this.tetrisInstanceStatisticsView = tetrisInstanceStatisticsView;
+        this.tetrisInstanceInfoView = tetrisInstanceInfoView;
+        this.tetrisInstanceGridView = tetrisInstanceGridView;
 
         muteImageIcon = new ImageIcon(imageCache.getIcon(Icon.MUTE));
         unmuteImageIcon = new ImageIcon(imageCache.getIcon(Icon.UNMUTE));
@@ -135,6 +143,16 @@ public class TetrisViewImpl implements TetrisView {
         bottomPanel.add(muteLabel, BorderLayout.WEST);
         bottomPanel.add(urlLabel, BorderLayout.EAST);
 
+        final JPanel centerPanel = new JPanel(new BorderLayout(BLOCK_SIZE, 0));
+
+        centerPanel.setBackground(Color.BLACK);
+        centerPanel.setOpaque(true);
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE));
+
+        centerPanel.add(tetrisInstanceGridView, BorderLayout.CENTER);
+        centerPanel.add(tetrisInstanceStatisticsView, BorderLayout.WEST);
+        centerPanel.add(tetrisInstanceInfoView, BorderLayout.EAST);
+
         frame = new JFrame(tetris.getName() + " " + tetris.getVersion());
 
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -143,9 +161,8 @@ public class TetrisViewImpl implements TetrisView {
         frame.addWindowListener(new TetrisViewWindowListener(tetrisController));
         frame.addKeyListener(new TetrisViewKeyAdapter(tetrisController));
         frame.setIconImage(imageCache.getIcon(Icon.ICON));
-        frame.setIgnoreRepaint(true);
 
-        frame.add(tetrisInstanceView, BorderLayout.CENTER);
+        frame.add(centerPanel, BorderLayout.CENTER);
         frame.add(bottomPanel, BorderLayout.SOUTH);
         frame.pack();
 
@@ -172,6 +189,8 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     private void doUpdate() {
-        tetrisInstanceView.update();
+        tetrisInstanceGridView.update();
+        tetrisInstanceStatisticsView.update();
+        tetrisInstanceInfoView.update();
     }
 }

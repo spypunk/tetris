@@ -8,9 +8,9 @@
 
 package spypunk.tetris.ui.view;
 
-import javax.swing.JPanel;
+import javax.swing.JLabel;
 
-public abstract class TetrisInstanceView extends JPanel implements View {
+public abstract class TetrisInstanceGridView extends JLabel implements View {
 
-    private static final long serialVersionUID = -3531269720487220440L;
+    private static final long serialVersionUID = -3254277544172916051L;
 }
