@@ -1,5 +1,5 @@
 # tetris - Just another Tetris™ clone
-[![License](https://img.shields.io/badge/license-WTFPL-blue.svg)](http://www.wtfpl.net/) ![Maturity](https://img.shields.io/badge/maturity-stable-green.svg) [![Release](https://img.shields.io/badge/latest%20release-1.0.0-green.svg)](https://github.com/spypunk/tetris/releases/tag/1.0.0) ![Java](https://img.shields.io/badge/java-8-red.svg) ![Maven](https://img.shields.io/badge/maven-3-orange.svg) [![Build Status](https://travis-ci.org/spypunk/tetris.svg?branch=master)](https://travis-ci.org/spypunk/tetris) [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/fold_left.svg?style=social&label=Follow)](https://twitter.com/spypunkk)
+[![License](https://img.shields.io/badge/license-WTFPL-blue.svg)](http://www.wtfpl.net/) ![Maturity](https://img.shields.io/badge/maturity-stable-green.svg) [![Release](https://img.shields.io/badge/latest%20release-1.1.0-green.svg)](https://github.com/spypunk/tetris/releases/tag/1.1.0) ![Java](https://img.shields.io/badge/java-8-red.svg) ![Maven](https://img.shields.io/badge/maven-3-orange.svg) [![Build Status](https://travis-ci.org/spypunk/tetris.svg?branch=master)](https://travis-ci.org/spypunk/tetris) [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/fold_left.svg?style=social&label=Follow)](https://twitter.com/spypunkk)
 ## How it looks ?
 
 ![alt tag](img/screenshot.png)
@@ -10,23 +10,27 @@
 
 You will need a Java JDK 8+ and maven 3+.
 
+Execute **mvn clean package assembly:single** to build the release package.
+
 ## How to play ?
 
-### Controls
+- SPACE - Start a new game
 
-LEFT - Move the current shape to the left
+- LEFT - Move the current shape to the left
 
-RIGHT - Move the current shape to the right
+- RIGHT - Move the current shape to the right
 
-DOWN - Move the current shape down
+- DOWN - Move the current shape down
 
-UP - Rotate the current shape clockwise
+- UP - Rotate the current shape clockwise
 
-SPACE - Start a new game
+- P - Pause the current game
 
-P - Pause the current game
+- M - Mute sound
 
-M - Mute / Unmute sounds
+- PAGE UP - Increase the volume
+
+- PAGE DOWN - Decrease the volume
 
 ## What about license ?
 
