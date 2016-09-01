@@ -15,12 +15,12 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
 import spypunk.tetris.constants.TetrisConstants;
@@ -50,17 +50,11 @@ public class TetrisInstanceGridViewImpl extends TetrisInstanceGridView {
 
     private final Tetris tetris;
 
-    private final Rectangle gridRectangle;
-
-    private final Rectangle frozenGridRectangle;
-
     private final ImageCache imageCache;
 
     private final Font frozenFont;
 
-    private final int blockX;
-
-    private final int blockY;
+    private final Rectangle imageRectangle;
 
     public TetrisInstanceGridViewImpl(final FontCache fontCache,
             final ImageCache imageCache,
@@ -70,20 +64,15 @@ public class TetrisInstanceGridViewImpl extends TetrisInstanceGridView {
 
         frozenFont = fontCache.getFont(FontType.FROZEN);
 
-        gridRectangle = new Rectangle(0, 0, TetrisConstants.WIDTH * BLOCK_SIZE + 1,
-                TetrisConstants.HEIGHT * BLOCK_SIZE + 1);
+        imageRectangle = new Rectangle(0, 0, TetrisConstants.WIDTH * BLOCK_SIZE,
+                TetrisConstants.HEIGHT * BLOCK_SIZE);
 
-        frozenGridRectangle = new Rectangle(gridRectangle.x + 1, gridRectangle.y + 1, gridRectangle.width - 1,
-                gridRectangle.height - 1);
-
-        blockX = gridRectangle.x + 1;
-        blockY = gridRectangle.y + 1;
-
-        image = new BufferedImage(gridRectangle.width + 1, gridRectangle.height + 1,
+        image = new BufferedImage(imageRectangle.width,
+                imageRectangle.height,
                 BufferedImage.TYPE_INT_ARGB);
 
+        setBorder(BorderFactory.createLineBorder(DEFAULT_BORDER_COLOR));
         setIcon(new ImageIcon(image));
-        setLayout(new GridBagLayout());
         setIgnoreRepaint(true);
     }
 
@@ -95,11 +84,6 @@ public class TetrisInstanceGridViewImpl extends TetrisInstanceGridView {
 
     private void renderBlocks(final Graphics2D graphics) {
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
-
-        graphics.setColor(DEFAULT_BORDER_COLOR);
-
-        graphics.drawRect(gridRectangle.x, gridRectangle.y, gridRectangle.width,
-            gridRectangle.height);
 
         final State state = tetrisInstance.getState();
 
@@ -122,24 +106,24 @@ public class TetrisInstanceGridViewImpl extends TetrisInstanceGridView {
         final ShapeType shapeType = block.getShape().getShapeType();
         final Image blockImage = imageCache.getBlockImage(shapeType);
         final Point location = block.getLocation();
-        final int x1 = blockX + location.x * BLOCK_SIZE;
-        final int y1 = blockY + location.y * BLOCK_SIZE;
+        final int x1 = location.x * BLOCK_SIZE;
+        final int y1 = location.y * BLOCK_SIZE;
         final Rectangle rectangle = new Rectangle(x1, y1, BLOCK_SIZE, BLOCK_SIZE);
 
         SwingUtils.drawImage(graphics, blockImage, rectangle);
     }
 
     private void renderTetrisNew(final Graphics2D graphics) {
-        SwingUtils.renderCenteredText(graphics, PRESS_SPACE, gridRectangle,
+        SwingUtils.renderCenteredText(graphics, PRESS_SPACE, imageRectangle,
             frozenFont, DEFAULT_FONT_COLOR);
     }
 
     private void renderTetrisFrozen(final Graphics2D graphics, final State state) {
         graphics.setColor(TETRIS_FROZEN_FG_COLOR);
-        graphics.fillRect(frozenGridRectangle.x, frozenGridRectangle.y, frozenGridRectangle.width,
-            frozenGridRectangle.height);
+        graphics.fillRect(imageRectangle.x, imageRectangle.y, imageRectangle.width,
+            imageRectangle.height);
 
-        SwingUtils.renderCenteredText(graphics, State.GAME_OVER.equals(state) ? GAME_OVER : PAUSE, gridRectangle,
+        SwingUtils.renderCenteredText(graphics, State.GAME_OVER.equals(state) ? GAME_OVER : PAUSE, imageRectangle,
             frozenFont, DEFAULT_FONT_COLOR);
     }
 }
