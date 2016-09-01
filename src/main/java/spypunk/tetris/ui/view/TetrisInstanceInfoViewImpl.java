@@ -12,7 +12,6 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
@@ -108,8 +107,6 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
                     Collectors.toMap(Function.identity(), this::createShapeTypeImageRectangle));
 
         setLayout(new GridBagLayout());
-        setBackground(Color.BLACK);
-        setOpaque(true);
         setIgnoreRepaint(true);
     }
 

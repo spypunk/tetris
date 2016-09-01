@@ -25,7 +25,6 @@ import javax.swing.ImageIcon;
 
 import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.model.Block;
-import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisInstance;
@@ -85,8 +84,6 @@ public class TetrisInstanceGridViewImpl extends TetrisInstanceGridView {
 
         setIcon(new ImageIcon(image));
         setLayout(new GridBagLayout());
-        setBackground(Color.BLACK);
-        setOpaque(true);
         setIgnoreRepaint(true);
     }
 
@@ -105,20 +102,19 @@ public class TetrisInstanceGridViewImpl extends TetrisInstanceGridView {
         graphics.drawRect(gridRectangle.x, gridRectangle.y, gridRectangle.width,
             gridRectangle.height);
 
-        tetrisInstance.getBlocks().values().stream()
-                .forEach(block -> renderBlock(graphics, block));
-
-        final Shape currentShape = tetrisInstance.getCurrentShape();
-
-        if (currentShape != null) {
-            currentShape.getBlocks().stream().forEach(block -> renderBlock(graphics, block));
-        }
-
         final State state = tetrisInstance.getState();
 
         if (State.NEW.equals(state)) {
             renderTetrisNew(graphics);
-        } else if (!State.RUNNING.equals(state)) {
+            return;
+        }
+
+        tetrisInstance.getBlocks().values().stream()
+                .forEach(block -> renderBlock(graphics, block));
+
+        tetrisInstance.getCurrentShape().getBlocks().stream().forEach(block -> renderBlock(graphics, block));
+
+        if (!State.RUNNING.equals(state)) {
             renderTetrisFrozen(graphics, state);
         }
     }

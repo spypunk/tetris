@@ -138,7 +138,6 @@ public class TetrisViewImpl implements TetrisView {
 
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
         bottomPanel.setBackground(Color.BLACK);
-        bottomPanel.setOpaque(true);
 
         bottomPanel.add(muteLabel, BorderLayout.WEST);
         bottomPanel.add(urlLabel, BorderLayout.EAST);
@@ -146,7 +145,6 @@ public class TetrisViewImpl implements TetrisView {
         final JPanel centerPanel = new JPanel(new BorderLayout(BLOCK_SIZE, 0));
 
         centerPanel.setBackground(Color.BLACK);
-        centerPanel.setOpaque(true);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE));
 
         centerPanel.add(tetrisInstanceGridView, BorderLayout.CENTER);
