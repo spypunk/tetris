@@ -12,8 +12,6 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
@@ -25,10 +23,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 import com.google.common.collect.Lists;
 
@@ -75,8 +70,6 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
 
     private final BufferedImage image;
 
-    private final BufferedImage labelImage;
-
     private final Tetris tetris;
 
     private final Rectangle statisticsRectangle;
@@ -97,44 +90,25 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
 
         shapeTypes = Lists.newArrayList(ShapeType.values());
 
-        statisticsRectangle = new Rectangle(0, 0, BLOCK_SIZE * 6, BLOCK_SIZE * 15);
+        statisticsRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE * 15);
         statisticsLabelRectangle = new Rectangle(0, 0, statisticsRectangle.width, BLOCK_SIZE);
 
         statisticsRows = shapeTypes.stream()
                 .collect(
                     Collectors.toMap(Function.identity(), shapeType -> createStatisticRow(imageCache, shapeType)));
 
-        labelImage = new BufferedImage(statisticsLabelRectangle.width, statisticsLabelRectangle.height,
+        image = new BufferedImage(statisticsRectangle.width + 1, statisticsRectangle.height + BLOCK_SIZE + 1,
                 BufferedImage.TYPE_INT_ARGB);
 
-        image = new BufferedImage(statisticsRectangle.width, statisticsRectangle.height,
-                BufferedImage.TYPE_INT_ARGB);
-
-        final JLabel statistics = new JLabel(new ImageIcon(image));
-
-        statistics.setBorder(BorderFactory.createLineBorder(DEFAULT_BORDER_COLOR));
-
-        final JLabel statisticsLabel = new JLabel(new ImageIcon(labelImage));
-
-        final JPanel contentPanel = new JPanel(new BorderLayout());
-
-        contentPanel.setBackground(Color.BLACK);
-
-        contentPanel.add(statisticsLabel, BorderLayout.NORTH);
-        contentPanel.add(statistics, BorderLayout.CENTER);
+        setIcon(new ImageIcon(image));
 
         setLayout(new GridBagLayout());
         setIgnoreRepaint(true);
-        setBackground(Color.BLACK);
-
-        add(contentPanel);
     }
 
     @Override
     public void update() {
-        SwingUtils.doInGraphics(labelImage, this::renderStatisticsLabel);
         SwingUtils.doInGraphics(image, this::renderStatistics);
-
         repaint();
     }
 
@@ -156,12 +130,15 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
                 textContainerRectangle);
     }
 
-    private void renderStatisticsLabel(final Graphics2D graphics) {
+    private void renderStatistics(final Graphics2D graphics) {
         SwingUtils.renderCenteredText(graphics, STATISTICS,
             statisticsLabelRectangle, defaultFont, DEFAULT_FONT_COLOR);
-    }
 
-    private void renderStatistics(final Graphics2D graphics) {
+        graphics.setColor(DEFAULT_BORDER_COLOR);
+
+        graphics.drawRect(statisticsRectangle.x, statisticsRectangle.y, statisticsRectangle.width,
+            statisticsRectangle.height);
+
         shapeTypes.forEach(shapeType -> renderStatistic(graphics, shapeType));
     }
 
