@@ -15,10 +15,7 @@ import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 public interface TetrisControllerInputHandler {
 
     enum InputType {
-        MOVE_LEFT,
-        MOVE_RIGHT,
-        MOVE_DOWN,
-        ROTATE_CW,
+        MOVEMENT,
         PAUSE,
         NEW_GAME,
         MUTE,

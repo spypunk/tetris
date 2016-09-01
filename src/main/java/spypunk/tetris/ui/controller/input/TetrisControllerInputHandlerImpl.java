@@ -12,6 +12,8 @@ import java.awt.event.KeyEvent;
 import java.util.BitSet;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -26,20 +28,20 @@ import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 @Singleton
 public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHandler {
 
-    private final TetrisControllerCommandFactory tetrisControllerCommandFactory;
-
     private final Map<Integer, Runnable> pressedKeyHandlers = Maps.newHashMap();
 
     private final Map<Integer, Runnable> releasedKeyHandlers = Maps.newHashMap();
 
     private final BitSet bitSet = new BitSet();
 
+    private final Map<InputType, Supplier<TetrisControllerCommand>> inputTypeHandlers = Maps.newHashMap();
+
+    private final List<InputType> inputTypes = Lists.newArrayList(InputType.values());
+
     private Movement movement;
 
     @Inject
     public TetrisControllerInputHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory) {
-        this.tetrisControllerCommandFactory = tetrisControllerCommandFactory;
-
         pressedKeyHandlers.put(KeyEvent.VK_LEFT, () -> onMovement(Movement.LEFT));
         pressedKeyHandlers.put(KeyEvent.VK_RIGHT, () -> onMovement(Movement.RIGHT));
         pressedKeyHandlers.put(KeyEvent.VK_DOWN, () -> onMovement(Movement.DOWN));
@@ -50,6 +52,16 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
         releasedKeyHandlers.put(KeyEvent.VK_M, () -> onInput(InputType.MUTE));
         releasedKeyHandlers.put(KeyEvent.VK_PAGE_UP, () -> onInput(InputType.INCREASE_VOLUME));
         releasedKeyHandlers.put(KeyEvent.VK_PAGE_DOWN, () -> onInput(InputType.DECREASE_VOLUME));
+
+        inputTypeHandlers.put(InputType.NEW_GAME, tetrisControllerCommandFactory::createNewGameTetrisControllerCommand);
+        inputTypeHandlers.put(InputType.PAUSE, tetrisControllerCommandFactory::createPauseTetrisControllerCommand);
+        inputTypeHandlers.put(InputType.MOVEMENT,
+            () -> tetrisControllerCommandFactory.createMovementTetrisControllerCommand(movement));
+        inputTypeHandlers.put(InputType.MUTE, tetrisControllerCommandFactory::createMuteTetrisControllerCommand);
+        inputTypeHandlers.put(InputType.INCREASE_VOLUME,
+            tetrisControllerCommandFactory::createIncreaseVolumeTetrisControllerCommand);
+        inputTypeHandlers.put(InputType.DECREASE_VOLUME,
+            tetrisControllerCommandFactory::createDecreaseVolumeTetrisControllerCommand);
     }
 
     @Override
@@ -64,32 +76,8 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
 
     @Override
     public List<TetrisControllerCommand> handleInputs() {
-
-        final List<TetrisControllerCommand> tetrisControllerCommands = Lists.newArrayList();
-
-        if (isInputTriggered(InputType.NEW_GAME)) {
-            tetrisControllerCommands
-                    .add(tetrisControllerCommandFactory.createNewGameTetrisControllerCommand());
-        } else if (isInputTriggered(InputType.PAUSE)) {
-            tetrisControllerCommands
-                    .add(tetrisControllerCommandFactory.createPauseTetrisControllerCommand());
-        } else if (movement != null) {
-            tetrisControllerCommands
-                    .add(tetrisControllerCommandFactory.createMovementTetrisControllerCommand(movement));
-        }
-
-        if (isInputTriggered(InputType.MUTE)) {
-            tetrisControllerCommands
-                    .add(tetrisControllerCommandFactory.createMuteTetrisControllerCommand());
-        } else if (isInputTriggered(InputType.INCREASE_VOLUME)) {
-            tetrisControllerCommands
-                    .add(tetrisControllerCommandFactory.createIncreaseVolumeTetrisControllerCommand());
-        } else if (isInputTriggered(InputType.DECREASE_VOLUME)) {
-            tetrisControllerCommands
-                    .add(tetrisControllerCommandFactory.createDecreaseVolumeTetrisControllerCommand());
-        }
-
-        return tetrisControllerCommands;
+        return inputTypes.stream().filter(this::isInputTriggered)
+                .map(inputType -> inputTypeHandlers.get(inputType).get()).collect(Collectors.toList());
     }
 
     @Override
@@ -103,6 +91,7 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
     }
 
     private void onMovement(final Movement movement) {
+        onInput(InputType.MOVEMENT);
         this.movement = movement;
     }
 
