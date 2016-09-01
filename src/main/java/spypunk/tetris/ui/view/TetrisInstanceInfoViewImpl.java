@@ -14,7 +14,6 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -88,8 +87,6 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
 
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
-        setIcon(new ImageIcon(image));
-
         levelRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE);
         scoreRectangle = new Rectangle(0, BLOCK_SIZE * 4, BLOCK_SIZE * 6, BLOCK_SIZE);
         rowsRectangle = new Rectangle(0, BLOCK_SIZE * 7, BLOCK_SIZE * 6, BLOCK_SIZE);
@@ -106,7 +103,7 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
                 .collect(
                     Collectors.toMap(Function.identity(), this::createShapeTypeImageRectangle));
 
-        setLayout(new GridBagLayout());
+        setIcon(new ImageIcon(image));
         setIgnoreRepaint(true);
     }
 

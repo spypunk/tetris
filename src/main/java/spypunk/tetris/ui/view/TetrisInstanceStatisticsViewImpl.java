@@ -14,7 +14,6 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -101,8 +100,6 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
                 BufferedImage.TYPE_INT_ARGB);
 
         setIcon(new ImageIcon(image));
-
-        setLayout(new GridBagLayout());
         setIgnoreRepaint(true);
     }
 
