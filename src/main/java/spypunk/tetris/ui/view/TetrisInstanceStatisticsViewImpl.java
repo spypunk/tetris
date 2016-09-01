@@ -109,6 +109,7 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
     @Override
     public void update() {
         SwingUtils.doInGraphics(image, this::renderStatistics);
+        repaint();
     }
 
     private StatisticsRow createStatisticRow(final ImageCache imageCache, final ShapeType shapeType) {
@@ -139,8 +140,6 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
             statisticsRectangle.height);
 
         shapeTypes.forEach(shapeType -> renderStatistic(graphics, shapeType));
-
-        repaint();
     }
 
     private void renderStatistic(final Graphics2D graphics, final ShapeType shapeType) {

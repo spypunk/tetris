@@ -113,6 +113,7 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
     @Override
     public void update() {
         SwingUtils.doInGraphics(image, this::doUpdate);
+        repaint();
     }
 
     private void doUpdate(final Graphics2D graphics) {
@@ -123,8 +124,6 @@ public class TetrisInstanceInfoViewImpl extends TetrisInstanceInfoView {
         renderRows(graphics, tetrisInstance);
 
         renderNextShape(graphics, tetrisInstance);
-
-        repaint();
     }
 
     private Rectangle createLabelRectangle(final Rectangle rectangle) {

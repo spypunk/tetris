@@ -90,7 +90,6 @@ public class TetrisInstanceGridViewImpl extends TetrisInstanceGridView {
     @Override
     public void update() {
         SwingUtils.doInGraphics(image, this::renderBlocks);
-
         repaint();
     }
 
