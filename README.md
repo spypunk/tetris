@@ -2,6 +2,7 @@
 [![License](https://img.shields.io/badge/license-WTFPL-blue.svg)](http://www.wtfpl.net/) ![Maturity](https://img.shields.io/badge/maturity-stable-green.svg) [![Release](https://img.shields.io/badge/latest%20release-1.2.0-green.svg)](https://github.com/spypunk/tetris/releases/tag/1.2.0) ![Java](https://img.shields.io/badge/java-8-red.svg) ![Maven](https://img.shields.io/badge/maven-3-orange.svg) [![Build Status](https://travis-ci.org/spypunk/tetris.svg?branch=master)](https://travis-ci.org/spypunk/tetris) [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/fold_left.svg?style=social&label=Follow)](https://twitter.com/spypunkk)
 ## How it looks ?
 
+![alt tag](img/screenshot_start.png)
 ![alt tag](img/screenshot.png)
 ![alt tag](img/screenshot_pause.png)
 ![alt tag](img/screenshot_gameover.png)
