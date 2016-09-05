@@ -12,7 +12,7 @@ import java.net.URI;
 
 public class Tetris {
 
-    public static class Builder {
+    public static final class Builder {
 
         private final Tetris tetris = new Tetris();
 

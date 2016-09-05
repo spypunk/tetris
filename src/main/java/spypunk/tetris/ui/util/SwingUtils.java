@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 import spypunk.tetris.exception.TetrisException;
 
-public class SwingUtils {
+public final class SwingUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SwingUtils.class);
 

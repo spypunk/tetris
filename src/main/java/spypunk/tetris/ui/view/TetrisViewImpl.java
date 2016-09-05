@@ -42,7 +42,7 @@ public class TetrisViewImpl implements TetrisView {
 
         private final TetrisController tetrisController;
 
-        public TetrisViewWindowListener(final TetrisController tetrisController) {
+        TetrisViewWindowListener(final TetrisController tetrisController) {
             this.tetrisController = tetrisController;
         }
 
@@ -56,7 +56,7 @@ public class TetrisViewImpl implements TetrisView {
 
         private final TetrisController tetrisController;
 
-        public TetrisViewKeyAdapter(final TetrisController tetrisController) {
+        TetrisViewKeyAdapter(final TetrisController tetrisController) {
             this.tetrisController = tetrisController;
         }
 
@@ -76,7 +76,7 @@ public class TetrisViewImpl implements TetrisView {
         private final TetrisController tetrisController;
         private final JLabel urlLabel;
 
-        public URLLabelMouseAdapter(final TetrisController tetrisController, final JLabel urlLabel) {
+        URLLabelMouseAdapter(final TetrisController tetrisController, final JLabel urlLabel) {
             this.tetrisController = tetrisController;
             this.urlLabel = urlLabel;
         }

@@ -10,7 +10,7 @@ package spypunk.tetris.ui.constants;
 
 import java.awt.Color;
 
-public class TetrisUIConstants {
+public final class TetrisUIConstants {
 
     public static final int BLOCK_SIZE = 32;
 

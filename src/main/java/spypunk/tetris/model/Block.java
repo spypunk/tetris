@@ -12,7 +12,7 @@ import java.awt.Point;
 
 public class Block {
 
-    public static class Builder {
+    public static final class Builder {
 
         private final Block block = new Block();
 

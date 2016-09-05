@@ -43,7 +43,7 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
 
         private final Rectangle textContainerRectangle;
 
-        public StatisticsRow(final Image image, final Rectangle imageRectangle,
+        StatisticsRow(final Image image, final Rectangle imageRectangle,
                 final Rectangle textContainerRectangle) {
             this.image = image;
             this.imageRectangle = imageRectangle;

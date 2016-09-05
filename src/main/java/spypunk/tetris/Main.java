@@ -21,7 +21,7 @@ import spypunk.tetris.exception.TetrisException;
 import spypunk.tetris.guice.TetrisModule;
 import spypunk.tetris.ui.controller.TetrisController;
 
-public class Main {
+public final class Main {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 

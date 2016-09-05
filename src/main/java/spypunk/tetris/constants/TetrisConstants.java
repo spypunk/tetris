@@ -10,7 +10,7 @@ package spypunk.tetris.constants;
 
 import java.awt.Point;
 
-public class TetrisConstants {
+public final class TetrisConstants {
 
     public static final int WIDTH = 10;
 
