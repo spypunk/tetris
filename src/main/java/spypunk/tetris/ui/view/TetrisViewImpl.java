@@ -103,7 +103,7 @@ public class TetrisViewImpl implements TetrisView {
 
     private final TetrisInstanceInfoView tetrisInstanceInfoView;
 
-    private final TetrisInstanceGridView tetrisInstanceGridView;
+    private final AbstractTetrisInstanceView tetrisInstanceGridView;
 
     private final JLabel muteLabel;
 
@@ -115,9 +115,9 @@ public class TetrisViewImpl implements TetrisView {
             final FontCache fontCache,
             final ImageCache imageCache,
             final Tetris tetris) {
-        tetrisInstanceStatisticsView = new TetrisInstanceStatisticsViewImpl(fontCache, imageCache, tetris);
-        tetrisInstanceInfoView = new TetrisInstanceInfoViewImpl(fontCache, imageCache, tetris);
-        tetrisInstanceGridView = new TetrisInstanceGridViewImpl(fontCache, imageCache, tetris);
+        tetrisInstanceStatisticsView = new TetrisInstanceStatisticsView(fontCache, imageCache, tetris);
+        tetrisInstanceInfoView = new TetrisInstanceInfoView(fontCache, imageCache, tetris);
+        tetrisInstanceGridView = new TetrisInstanceGridView(fontCache, imageCache, tetris);
 
         muteImageIcon = new ImageIcon(imageCache.getIcon(Icon.MUTE));
         unmuteImageIcon = new ImageIcon(imageCache.getIcon(Icon.UNMUTE));
