@@ -77,6 +77,12 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
             getCommandsFromKeys(releasedKeysBitSet, releasedKeyCodesHandlers));
     }
 
+    @Override
+    public void reset() {
+        pressedKeysBitSet.clear();
+        releasedKeysBitSet.clear();
+    }
+
     private List<TetrisControllerCommand> getCommandsFromKeys(final BitSet bitSet,
             final Map<Integer, Supplier<TetrisControllerCommand>> keyCodesHandlers) {
 
@@ -91,12 +97,6 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
     private TetrisControllerCommand getCommandFromKeyCode(
             final Map<Integer, Supplier<TetrisControllerCommand>> keyCodesHandlers, final Integer keyCode) {
         return keyCodesHandlers.get(keyCode).get();
-    }
-
-    @Override
-    public void reset() {
-        pressedKeysBitSet.clear();
-        releasedKeysBitSet.clear();
     }
 
     private boolean isKeyTriggered(final int keyCode, final BitSet bitSet) {
