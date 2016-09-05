@@ -73,11 +73,15 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
     public List<TetrisControllerCommand> handleInputs() {
         final List<TetrisControllerCommand> commands = Lists.newArrayList();
 
-        commands.addAll(
-            getCommandsFromKeys(pressedKeysBitSet, pressedKeyCodesHandlers));
+        if (!pressedKeysBitSet.isEmpty()) {
+            commands.addAll(
+                getCommandsFromKeys(pressedKeysBitSet, pressedKeyCodesHandlers));
+        }
 
-        commands.addAll(
-            getCommandsFromKeys(releasedKeysBitSet, releasedKeyCodesHandlers));
+        if (!releasedKeysBitSet.isEmpty()) {
+            commands.addAll(
+                getCommandsFromKeys(releasedKeysBitSet, releasedKeyCodesHandlers));
+        }
 
         return commands;
     }
