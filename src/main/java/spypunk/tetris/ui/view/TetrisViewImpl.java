@@ -113,13 +113,11 @@ public class TetrisViewImpl implements TetrisView {
 
     public TetrisViewImpl(final TetrisController tetrisController,
             final FontCache fontCache,
-            final Tetris tetris,
-            final ImageCache imageCache, final TetrisInstanceGridView tetrisInstanceGridView,
-            final TetrisInstanceStatisticsView tetrisInstanceStatisticsView,
-            final TetrisInstanceInfoView tetrisInstanceInfoView) {
-        this.tetrisInstanceStatisticsView = tetrisInstanceStatisticsView;
-        this.tetrisInstanceInfoView = tetrisInstanceInfoView;
-        this.tetrisInstanceGridView = tetrisInstanceGridView;
+            final ImageCache imageCache,
+            final Tetris tetris) {
+        tetrisInstanceStatisticsView = new TetrisInstanceStatisticsViewImpl(fontCache, imageCache, tetris);
+        tetrisInstanceInfoView = new TetrisInstanceInfoViewImpl(fontCache, imageCache, tetris);
+        tetrisInstanceGridView = new TetrisInstanceGridViewImpl(fontCache, imageCache, tetris);
 
         muteImageIcon = new ImageIcon(imageCache.getIcon(Icon.MUTE));
         unmuteImageIcon = new ImageIcon(imageCache.getIcon(Icon.UNMUTE));
