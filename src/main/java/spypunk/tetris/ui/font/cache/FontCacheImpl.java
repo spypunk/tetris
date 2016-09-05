@@ -31,7 +31,7 @@ public class FontCacheImpl implements FontCache {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FontCacheImpl.class);
 
-    private static final String FONTS_FOLDER = "/font/";
+    private static final String FONTS_FOLDER = "/font/".intern();
 
     private final Map<FontType, Font> fonts = createFonts();
 

@@ -32,11 +32,11 @@ public class ImageCacheImpl implements ImageCache {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageCacheImpl.class);
 
-    private static final String ICONS_FOLDER = "/img/icons/";
+    private static final String ICONS_FOLDER = "/img/icons/".intern();
 
-    private static final String BLOCKS_FOLDER = "/img/blocks/";
+    private static final String BLOCKS_FOLDER = "/img/blocks/".intern();
 
-    private static final String SHAPES_FOLDER = "/img/shapes/";
+    private static final String SHAPES_FOLDER = "/img/shapes/".intern();
 
     private final Map<Icon, Image> icons = createIcons();
 

@@ -65,7 +65,7 @@ public class TetrisInstanceStatisticsViewImpl extends TetrisInstanceStatisticsVi
 
     private static final long serialVersionUID = 288335810615538818L;
 
-    private static final String STATISTICS = "STATISTICS";
+    private static final String STATISTICS = "STATISTICS".intern();
 
     private final BufferedImage image;
 
