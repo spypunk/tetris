@@ -103,7 +103,7 @@ public class TetrisViewImpl implements TetrisView {
 
     private final TetrisInstanceInfoView tetrisInstanceInfoView;
 
-    private final AbstractTetrisInstanceView tetrisInstanceGridView;
+    private final TetrisInstanceGridView tetrisInstanceGridView;
 
     private final JLabel muteLabel;
 
