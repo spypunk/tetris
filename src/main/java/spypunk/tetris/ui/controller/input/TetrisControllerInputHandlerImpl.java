@@ -10,12 +10,14 @@ package spypunk.tetris.ui.controller.input;
 
 import java.awt.event.KeyEvent;
 import java.util.BitSet;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.Lists;
+import org.apache.commons.collections4.ListUtils;
+
 import com.google.common.collect.Maps;
 
 import spypunk.tetris.model.Movement;
@@ -71,23 +73,17 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
 
     @Override
     public List<TetrisControllerCommand> handleInputs() {
-        final List<TetrisControllerCommand> commands = Lists.newArrayList();
-
-        if (!pressedKeysBitSet.isEmpty()) {
-            commands.addAll(
-                getCommandsFromKeys(pressedKeysBitSet, pressedKeyCodesHandlers));
-        }
-
-        if (!releasedKeysBitSet.isEmpty()) {
-            commands.addAll(
-                getCommandsFromKeys(releasedKeysBitSet, releasedKeyCodesHandlers));
-        }
-
-        return commands;
+        return ListUtils.union(getCommandsFromKeys(pressedKeysBitSet, pressedKeyCodesHandlers),
+            getCommandsFromKeys(releasedKeysBitSet, releasedKeyCodesHandlers));
     }
 
     private List<TetrisControllerCommand> getCommandsFromKeys(final BitSet bitSet,
             final Map<Integer, Supplier<TetrisControllerCommand>> keyCodesHandlers) {
+
+        if (bitSet.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         return keyCodesHandlers.keySet().stream().filter(keyCode -> isKeyTriggered(keyCode, bitSet))
                 .map(keyCode -> getCommandFromKeyCode(keyCodesHandlers, keyCode)).collect(Collectors.toList());
     }
