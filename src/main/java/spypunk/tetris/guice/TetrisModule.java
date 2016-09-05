@@ -26,10 +26,6 @@ import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.cache.ImageCacheImpl;
 import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.controller.TetrisControllerImpl;
-import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
-import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandlerImpl;
-import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
-import spypunk.tetris.ui.controller.input.TetrisControllerInputHandlerImpl;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactoryImpl;
 import spypunk.tetris.ui.factory.TetrisViewFactory;
@@ -49,9 +45,7 @@ public class TetrisModule extends AbstractModule {
         bind(TetrisFactory.class).to(TetrisFactoryImpl.class);
         bind(FontCache.class).to(FontCacheImpl.class);
         bind(GameLoopFactory.class).to(GameLoopFactoryImpl.class);
-        bind(TetrisControllerInputHandler.class).to(TetrisControllerInputHandlerImpl.class);
         bind(TetrisControllerCommandFactory.class).to(TetrisControllerCommandFactoryImpl.class);
-        bind(TetrisControllerTetrisEventHandler.class).to(TetrisControllerTetrisEventHandlerImpl.class);
         bind(SoundService.class).to(SoundServiceImpl.class);
         bind(SoundClipCache.class).to(SoundClipCacheImpl.class);
     }

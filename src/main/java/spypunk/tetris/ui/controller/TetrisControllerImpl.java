@@ -25,7 +25,10 @@ import spypunk.tetris.model.TetrisEvent;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
+import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandlerImpl;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
+import spypunk.tetris.ui.controller.input.TetrisControllerInputHandlerImpl;
+import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 import spypunk.tetris.ui.factory.TetrisViewFactory;
 import spypunk.tetris.ui.util.SwingUtils;
 import spypunk.tetris.ui.view.TetrisView;
@@ -48,11 +51,11 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
     @Inject
     public TetrisControllerImpl(final TetrisFactory tetrisFactory, final TetrisViewFactory tetrisViewFactory,
             final GameLoopFactory gameLoopFactory, final TetrisService tetrisService,
-            final TetrisControllerInputHandler tetrisControllerInputHandler,
-            final TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler) {
+            final TetrisControllerCommandFactory tetrisControllerCommandFactory) {
         this.tetrisService = tetrisService;
-        this.tetrisControllerInputHandler = tetrisControllerInputHandler;
-        this.tetrisControllerTetrisEventHandler = tetrisControllerTetrisEventHandler;
+        tetrisControllerInputHandler = new TetrisControllerInputHandlerImpl(tetrisControllerCommandFactory);
+        tetrisControllerTetrisEventHandler = new TetrisControllerTetrisEventHandlerImpl(
+                tetrisControllerCommandFactory);
 
         tetris = tetrisFactory.createTetris();
         tetrisView = tetrisViewFactory.createTetrisView(tetris);
