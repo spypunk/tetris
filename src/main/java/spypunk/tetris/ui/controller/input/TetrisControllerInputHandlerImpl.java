@@ -28,80 +28,83 @@ import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 @Singleton
 public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHandler {
 
-    private final Map<Integer, Runnable> pressedKeyHandlers = Maps.newHashMap();
+    private final BitSet pressedKeysBitSet = new BitSet();
 
-    private final Map<Integer, Runnable> releasedKeyHandlers = Maps.newHashMap();
+    private final BitSet releasedKeysBitSet = new BitSet();
 
-    private final BitSet bitSet = new BitSet();
+    private final Map<Integer, Supplier<TetrisControllerCommand>> pressedKeyCodesHandlers = Maps.newHashMap();
 
-    private final Map<InputType, Supplier<TetrisControllerCommand>> inputTypeHandlers = Maps.newHashMap();
-
-    private final List<InputType> inputTypes = Lists.newArrayList(InputType.values());
-
-    private Movement movement;
+    private final Map<Integer, Supplier<TetrisControllerCommand>> releasedKeyCodesHandlers = Maps.newHashMap();
 
     @Inject
     public TetrisControllerInputHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory) {
-        pressedKeyHandlers.put(KeyEvent.VK_LEFT, () -> onMovement(Movement.LEFT));
-        pressedKeyHandlers.put(KeyEvent.VK_RIGHT, () -> onMovement(Movement.RIGHT));
-        pressedKeyHandlers.put(KeyEvent.VK_DOWN, () -> onMovement(Movement.DOWN));
+        pressedKeyCodesHandlers.put(KeyEvent.VK_LEFT,
+            () -> tetrisControllerCommandFactory.createMovementTetrisControllerCommand(Movement.LEFT));
 
-        releasedKeyHandlers.put(KeyEvent.VK_SPACE, () -> onInput(InputType.NEW_GAME));
-        releasedKeyHandlers.put(KeyEvent.VK_P, () -> onInput(InputType.PAUSE));
-        releasedKeyHandlers.put(KeyEvent.VK_UP, () -> onMovement(Movement.ROTATE_CW));
-        releasedKeyHandlers.put(KeyEvent.VK_M, () -> onInput(InputType.MUTE));
-        releasedKeyHandlers.put(KeyEvent.VK_PAGE_UP, () -> onInput(InputType.INCREASE_VOLUME));
-        releasedKeyHandlers.put(KeyEvent.VK_PAGE_DOWN, () -> onInput(InputType.DECREASE_VOLUME));
+        pressedKeyCodesHandlers.put(KeyEvent.VK_RIGHT,
+            () -> tetrisControllerCommandFactory.createMovementTetrisControllerCommand(Movement.RIGHT));
 
-        inputTypeHandlers.put(InputType.NEW_GAME, tetrisControllerCommandFactory::createNewGameTetrisControllerCommand);
-        inputTypeHandlers.put(InputType.PAUSE, tetrisControllerCommandFactory::createPauseTetrisControllerCommand);
-        inputTypeHandlers.put(InputType.MOVEMENT,
-            () -> tetrisControllerCommandFactory.createMovementTetrisControllerCommand(movement));
-        inputTypeHandlers.put(InputType.MUTE, tetrisControllerCommandFactory::createMuteTetrisControllerCommand);
-        inputTypeHandlers.put(InputType.INCREASE_VOLUME,
+        pressedKeyCodesHandlers.put(KeyEvent.VK_DOWN,
+            () -> tetrisControllerCommandFactory.createMovementTetrisControllerCommand(Movement.DOWN));
+
+        releasedKeyCodesHandlers.put(KeyEvent.VK_SPACE,
+            tetrisControllerCommandFactory::createNewGameTetrisControllerCommand);
+
+        releasedKeyCodesHandlers.put(KeyEvent.VK_P, tetrisControllerCommandFactory::createPauseTetrisControllerCommand);
+
+        releasedKeyCodesHandlers.put(KeyEvent.VK_UP,
+            () -> tetrisControllerCommandFactory.createMovementTetrisControllerCommand(Movement.ROTATE_CW));
+
+        releasedKeyCodesHandlers.put(KeyEvent.VK_M, tetrisControllerCommandFactory::createMuteTetrisControllerCommand);
+
+        releasedKeyCodesHandlers.put(KeyEvent.VK_PAGE_UP,
             tetrisControllerCommandFactory::createIncreaseVolumeTetrisControllerCommand);
-        inputTypeHandlers.put(InputType.DECREASE_VOLUME,
+
+        releasedKeyCodesHandlers.put(KeyEvent.VK_PAGE_DOWN,
             tetrisControllerCommandFactory::createDecreaseVolumeTetrisControllerCommand);
     }
 
     @Override
     public void onKeyPressed(final int keyCode) {
-        onKeyEvent(pressedKeyHandlers, keyCode);
+        pressedKeysBitSet.set(keyCode);
     }
 
     @Override
     public void onKeyReleased(final int keyCode) {
-        onKeyEvent(releasedKeyHandlers, keyCode);
+        releasedKeysBitSet.set(keyCode);
     }
 
     @Override
     public List<TetrisControllerCommand> handleInputs() {
-        return inputTypes.stream().filter(this::isInputTriggered)
-                .map(inputType -> inputTypeHandlers.get(inputType).get()).collect(Collectors.toList());
+        final List<TetrisControllerCommand> commands = Lists.newArrayList();
+
+        commands.addAll(
+            getCommandsFromKeys(pressedKeysBitSet, pressedKeyCodesHandlers));
+
+        commands.addAll(
+            getCommandsFromKeys(releasedKeysBitSet, releasedKeyCodesHandlers));
+
+        return commands;
+    }
+
+    private List<TetrisControllerCommand> getCommandsFromKeys(final BitSet bitSet,
+            final Map<Integer, Supplier<TetrisControllerCommand>> keyCodesHandlers) {
+        return keyCodesHandlers.keySet().stream().filter(keyCode -> isKeyTriggered(keyCode, bitSet))
+                .map(keyCode -> getCommandFromKeyCode(keyCodesHandlers, keyCode)).collect(Collectors.toList());
+    }
+
+    private TetrisControllerCommand getCommandFromKeyCode(
+            final Map<Integer, Supplier<TetrisControllerCommand>> keyCodesHandlers, final Integer keyCode) {
+        return keyCodesHandlers.get(keyCode).get();
     }
 
     @Override
     public void reset() {
-        bitSet.clear();
-        movement = null;
+        pressedKeysBitSet.clear();
+        releasedKeysBitSet.clear();
     }
 
-    private void onInput(final InputType inputType) {
-        bitSet.set(inputType.ordinal());
-    }
-
-    private void onMovement(final Movement movement) {
-        onInput(InputType.MOVEMENT);
-        this.movement = movement;
-    }
-
-    private boolean isInputTriggered(final InputType inputType) {
-        return bitSet.get(inputType.ordinal());
-    }
-
-    private void onKeyEvent(final Map<Integer, Runnable> keyHandlers, final int keyCode) {
-        if (keyHandlers.containsKey(keyCode)) {
-            keyHandlers.get(keyCode).run();
-        }
+    private boolean isKeyTriggered(final int keyCode, final BitSet bitSet) {
+        return bitSet.get(keyCode);
     }
 }
