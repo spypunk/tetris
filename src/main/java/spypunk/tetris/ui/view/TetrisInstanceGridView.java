@@ -19,8 +19,11 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
+
+import com.google.common.collect.Maps;
 
 import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.model.Block;
@@ -56,6 +59,8 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
     private final int blockX;
 
     private final int blockY;
+
+    private final Map<Point, Rectangle> blockRectanglesCache = Maps.newHashMap();
 
     public TetrisInstanceGridView(final FontCache fontCache,
             final ImageCache imageCache,
@@ -116,11 +121,27 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
         final ShapeType shapeType = block.getShape().getShapeType();
         final Image blockImage = imageCache.getBlockImage(shapeType);
         final Point location = block.getLocation();
-        final int x1 = blockX + location.x * BLOCK_SIZE;
-        final int y1 = blockY + location.y * BLOCK_SIZE;
-        final Rectangle rectangle = new Rectangle(x1, y1, BLOCK_SIZE, BLOCK_SIZE);
+
+        final Rectangle rectangle = getBlockRectangle(location);
 
         SwingUtils.drawImage(graphics, blockImage, rectangle);
+    }
+
+    private Rectangle getBlockRectangle(final Point location) {
+        Rectangle rectangle;
+
+        if (!blockRectanglesCache.containsKey(location)) {
+            final int x1 = blockX + location.x * BLOCK_SIZE;
+            final int y1 = blockY + location.y * BLOCK_SIZE;
+
+            rectangle = new Rectangle(x1, y1, BLOCK_SIZE, BLOCK_SIZE);
+
+            blockRectanglesCache.put(location, rectangle);
+        } else {
+            rectangle = blockRectanglesCache.get(location);
+        }
+
+        return rectangle;
     }
 
     private void renderTetrisNew(final Graphics2D graphics) {
