@@ -50,8 +50,6 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
             tetrisService.startInstance(tetris);
 
             soundService.playMusic(Sound.BACKGROUND);
-
-            tetrisController.getTetrisView().onTetrisInstanceChanged(tetris);
         };
     }
 
@@ -65,8 +63,6 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
             if (State.RUNNING.equals(state) || State.PAUSED.equals(state)) {
                 soundService.pauseMusic();
             }
-
-            tetrisController.getTetrisView().onTetrisInstanceGridChanged();
         };
     }
 
@@ -84,16 +80,13 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     public TetrisControllerCommand createMuteTetrisControllerCommand() {
         return tetris -> {
             soundService.mute();
-            tetrisController.getTetrisView().onMuteChanged(soundService.isMute());
+            tetrisController.getTetrisView().setMute(soundService.isMute());
         };
     }
 
     @Override
     public TetrisControllerCommand createGameOverTetrisControllerCommand() {
-        return tetris -> {
-            soundService.playMusic(Sound.GAME_OVER);
-            tetrisController.getTetrisView().onTetrisInstanceGridChanged();
-        };
+        return tetris -> soundService.playMusic(Sound.GAME_OVER);
     }
 
     @Override
@@ -109,40 +102,5 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     @Override
     public TetrisControllerCommand createDecreaseVolumeTetrisControllerCommand() {
         return tetris -> soundService.decreaseVolume();
-    }
-
-    @Override
-    public TetrisControllerCommand createNewShapeTetrisControllerCommand() {
-        return tetris -> tetrisController.getTetrisView().onTetrisInstanceGridChanged();
-    }
-
-    @Override
-    public TetrisControllerCommand createShapeMovedTetrisControllerCommand() {
-        return tetris -> tetrisController.getTetrisView().onTetrisInstanceGridChanged();
-    }
-
-    @Override
-    public TetrisControllerCommand createLevelUpdatedTetrisControllerCommand() {
-        return tetris -> tetrisController.getTetrisView().onTetrisInstanceInfoChanged();
-    }
-
-    @Override
-    public TetrisControllerCommand createScoreUpdatedTetrisControllerCommand() {
-        return tetris -> tetrisController.getTetrisView().onTetrisInstanceInfoChanged();
-    }
-
-    @Override
-    public TetrisControllerCommand createRowsUpdatedTetrisControllerCommand() {
-        return tetris -> tetrisController.getTetrisView().onTetrisInstanceInfoChanged();
-    }
-
-    @Override
-    public TetrisControllerCommand createNextShapeUpdatedTetrisControllerCommand() {
-        return tetris -> tetrisController.getTetrisView().onTetrisInstanceInfoChanged();
-    }
-
-    @Override
-    public TetrisControllerCommand createStatisticsUpdatedTetrisControllerCommand() {
-        return tetris -> tetrisController.getTetrisView().onTetrisInstanceStatisticsChanged();
     }
 }

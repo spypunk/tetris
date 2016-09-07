@@ -8,19 +8,9 @@
 
 package spypunk.tetris.ui.view;
 
-import spypunk.tetris.model.Tetris;
-
 public interface TetrisView extends View {
 
     void show();
 
-    void onMuteChanged(boolean mute);
-
-    void onTetrisInstanceChanged(Tetris tetris);
-
-    void onTetrisInstanceStatisticsChanged();
-
-    void onTetrisInstanceGridChanged();
-
-    void onTetrisInstanceInfoChanged();
+    void setMute(boolean mute);
 }

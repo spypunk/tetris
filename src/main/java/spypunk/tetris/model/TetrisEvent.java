@@ -10,13 +10,6 @@ package spypunk.tetris.model;
 
 public enum TetrisEvent {
 
-    NEW_SHAPE,
-    SHAPE_MOVED,
-    STATISTICS_UPDATED,
-    NEXT_SHAPE_UPDATED,
-    LEVEL_UPDATED,
-    SCORE_UPDATED,
-    ROWS_UPDATED,
     SHAPE_LOCKED,
     ROWS_COMPLETED,
     GAME_OVER

@@ -192,9 +192,6 @@ public class TetrisServiceImpl implements TetrisService {
         tetrisInstance.setNextShape(shapeFactory.createRandomShape());
 
         updateStatistics(tetrisInstance);
-
-        tetrisInstance.getTetrisEvents().add(TetrisEvent.NEW_SHAPE);
-        tetrisInstance.getTetrisEvents().add(TetrisEvent.NEXT_SHAPE_UPDATED);
     }
 
     private void updateStatistics(final TetrisInstance tetrisInstance) {
@@ -203,8 +200,6 @@ public class TetrisServiceImpl implements TetrisService {
         final Integer count = statistics.get(shapeType);
 
         statistics.put(shapeType, count + 1);
-
-        tetrisInstance.getTetrisEvents().add(TetrisEvent.STATISTICS_UPDATED);
     }
 
     private boolean isGameOver(final TetrisInstance tetrisInstance) {
@@ -230,12 +225,10 @@ public class TetrisServiceImpl implements TetrisService {
 
         tetrisInstance.setCompletedRows(tetrisInstance.getCompletedRows() + completedRows);
 
-        tetrisInstance.getTetrisEvents().add(TetrisEvent.ROWS_COMPLETED);
-        tetrisInstance.getTetrisEvents().add(TetrisEvent.ROWS_UPDATED);
-
         updateScoreWithCompletedRows(tetrisInstance, completedRows);
-
         updateLevel(tetrisInstance);
+
+        tetrisInstance.getTetrisEvents().add(TetrisEvent.ROWS_COMPLETED);
     }
 
     private void updateLevel(final TetrisInstance tetrisInstance) {
@@ -244,8 +237,6 @@ public class TetrisServiceImpl implements TetrisService {
 
         if (completedRows >= ROWS_PER_LEVEL * nextLevel) {
             tetrisInstance.setLevel(nextLevel);
-
-            tetrisInstance.getTetrisEvents().add(TetrisEvent.LEVEL_UPDATED);
 
             final int speed = getLevelSpeed(nextLevel);
 
@@ -258,14 +249,10 @@ public class TetrisServiceImpl implements TetrisService {
         final int score = tetrisInstance.getScore();
 
         tetrisInstance.setScore(score + rowsScore * (tetrisInstance.getLevel() + 1));
-
-        tetrisInstance.getTetrisEvents().add(TetrisEvent.SCORE_UPDATED);
     }
 
     private void updateScoreWithCompletedMovement(final TetrisInstance tetrisInstance) {
         tetrisInstance.setScore(tetrisInstance.getScore() + 1);
-
-        tetrisInstance.getTetrisEvents().add(TetrisEvent.SCORE_UPDATED);
     }
 
     private void clearCompleteRow(final TetrisInstance tetrisInstance, final Integer row) {
@@ -296,8 +283,6 @@ public class TetrisServiceImpl implements TetrisService {
         final Shape newShape = movement.apply(currentShape);
 
         tetrisInstance.setCurrentShape(newShape);
-
-        tetrisInstance.getTetrisEvents().add(TetrisEvent.SHAPE_MOVED);
 
         checkShapeIsLocked(tetrisInstance);
     }

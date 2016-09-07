@@ -36,27 +36,6 @@ public class TetrisControllerTetrisEventHandlerImpl implements TetrisControllerT
 
         tetrisControllerCommands.put(TetrisEvent.ROWS_COMPLETED,
             tetrisControllerCommandFactory::createRowsCompletedTetrisControllerCommand);
-
-        tetrisControllerCommands.put(TetrisEvent.LEVEL_UPDATED,
-            tetrisControllerCommandFactory::createLevelUpdatedTetrisControllerCommand);
-
-        tetrisControllerCommands.put(TetrisEvent.NEW_SHAPE,
-            tetrisControllerCommandFactory::createNewShapeTetrisControllerCommand);
-
-        tetrisControllerCommands.put(TetrisEvent.NEXT_SHAPE_UPDATED,
-            tetrisControllerCommandFactory::createNextShapeUpdatedTetrisControllerCommand);
-
-        tetrisControllerCommands.put(TetrisEvent.ROWS_UPDATED,
-            tetrisControllerCommandFactory::createRowsUpdatedTetrisControllerCommand);
-
-        tetrisControllerCommands.put(TetrisEvent.SCORE_UPDATED,
-            tetrisControllerCommandFactory::createScoreUpdatedTetrisControllerCommand);
-
-        tetrisControllerCommands.put(TetrisEvent.SHAPE_MOVED,
-            tetrisControllerCommandFactory::createShapeMovedTetrisControllerCommand);
-
-        tetrisControllerCommands.put(TetrisEvent.STATISTICS_UPDATED,
-            tetrisControllerCommandFactory::createStatisticsUpdatedTetrisControllerCommand);
     }
 
     @Override
