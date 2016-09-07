@@ -111,6 +111,12 @@ public class TetrisViewImpl implements TetrisView {
 
     private final ImageIcon unmuteImageIcon;
 
+    private boolean tetrisInstanceStatisticsChanged;
+
+    private boolean tetrisInstanceGridChanged;
+
+    private boolean tetrisInstanceInfoChanged;
+
     public TetrisViewImpl(final TetrisController tetrisController,
             final FontCache fontCache,
             final ImageCache imageCache,
@@ -172,11 +178,13 @@ public class TetrisViewImpl implements TetrisView {
 
     @Override
     public void update() {
-        SwingUtils.doInAWTThread(this::doUpdate, true);
+        if (tetrisInstanceGridChanged || tetrisInstanceInfoChanged || tetrisInstanceStatisticsChanged) {
+            SwingUtils.doInAWTThread(this::doUpdate, true);
+        }
     }
 
     @Override
-    public void setMute(final boolean mute) {
+    public void onMuteChanged(final boolean mute) {
         SwingUtils.doInAWTThread(() -> doSetMute(mute), false);
     }
 
@@ -184,9 +192,42 @@ public class TetrisViewImpl implements TetrisView {
         muteLabel.setIcon(mute ? muteImageIcon : unmuteImageIcon);
     }
 
+    @Override
+    public void onTetrisInstanceChanged(final Tetris tetris) {
+        onTetrisInstanceGridChanged();
+        onTetrisInstanceInfoChanged();
+        onTetrisInstanceStatisticsChanged();
+    }
+
+    @Override
+    public void onTetrisInstanceStatisticsChanged() {
+        tetrisInstanceStatisticsChanged = true;
+    }
+
+    @Override
+    public void onTetrisInstanceGridChanged() {
+        tetrisInstanceGridChanged = true;
+    }
+
+    @Override
+    public void onTetrisInstanceInfoChanged() {
+        tetrisInstanceInfoChanged = true;
+    }
+
     private void doUpdate() {
-        tetrisInstanceGridView.update();
-        tetrisInstanceStatisticsView.update();
-        tetrisInstanceInfoView.update();
+        if (tetrisInstanceGridChanged) {
+            tetrisInstanceGridView.update();
+            tetrisInstanceGridChanged = false;
+        }
+
+        if (tetrisInstanceInfoChanged) {
+            tetrisInstanceInfoView.update();
+            tetrisInstanceInfoChanged = false;
+        }
+
+        if (tetrisInstanceStatisticsChanged) {
+            tetrisInstanceStatisticsView.update();
+            tetrisInstanceStatisticsChanged = false;
+        }
     }
 }

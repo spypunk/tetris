@@ -30,4 +30,18 @@ public interface TetrisControllerCommandFactory {
     TetrisControllerCommand createIncreaseVolumeTetrisControllerCommand();
 
     TetrisControllerCommand createDecreaseVolumeTetrisControllerCommand();
+
+    TetrisControllerCommand createNewShapeTetrisControllerCommand();
+
+    TetrisControllerCommand createShapeMovedTetrisControllerCommand();
+
+    TetrisControllerCommand createLevelUpdatedTetrisControllerCommand();
+
+    TetrisControllerCommand createScoreUpdatedTetrisControllerCommand();
+
+    TetrisControllerCommand createRowsUpdatedTetrisControllerCommand();
+
+    TetrisControllerCommand createNextShapeUpdatedTetrisControllerCommand();
+
+    TetrisControllerCommand createStatisticsUpdatedTetrisControllerCommand();
 }
