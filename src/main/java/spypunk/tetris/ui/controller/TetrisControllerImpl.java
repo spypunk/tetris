@@ -93,10 +93,7 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
         executeTetrisControllerCommands(
             tetrisControllerTetrisEventHandler.handleEvents(tetrisEvents));
-    }
 
-    @Override
-    public void onRender() {
         tetrisView.update();
     }
 

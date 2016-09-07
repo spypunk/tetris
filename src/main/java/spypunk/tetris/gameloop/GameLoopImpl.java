@@ -53,7 +53,6 @@ public final class GameLoopImpl implements GameLoop, Runnable {
             lastTick = newTick;
 
             gameLoopListener.onUpdate();
-            gameLoopListener.onRender();
         }
     }
 }
