@@ -41,13 +41,18 @@ public final class GameLoopImpl implements GameLoop, Runnable {
 
     @Override
     public void run() {
-        long nextTick = System.currentTimeMillis();
+        long lastTick = System.currentTimeMillis();
 
         while (running) {
-            for (; System.currentTimeMillis() > nextTick; nextTick += SKIP_TICKS) {
-                gameLoopListener.onUpdate();
+            long newTick = System.currentTimeMillis();
+
+            for (; newTick - lastTick < SKIP_TICKS; newTick = System
+                    .currentTimeMillis()) {
             }
 
+            lastTick = newTick;
+
+            gameLoopListener.onUpdate();
             gameLoopListener.onRender();
         }
     }
