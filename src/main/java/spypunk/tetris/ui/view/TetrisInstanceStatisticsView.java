@@ -11,6 +11,7 @@ package spypunk.tetris.ui.view;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.ZERO;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -28,6 +29,7 @@ import com.google.common.collect.Lists;
 
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.FontType;
 import spypunk.tetris.ui.font.cache.FontCache;
@@ -137,8 +139,15 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
 
     private void renderStatistic(final Graphics2D graphics, final ShapeType shapeType) {
         final StatisticsRow statisticsRow = statisticsRows.get(shapeType);
-        final Map<ShapeType, Integer> statistics = tetris.getTetrisInstance().getStatistics();
-        final String value = String.valueOf(statistics.get(shapeType));
+        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+        String value;
+
+        if (tetrisInstance == null) {
+            value = ZERO;
+        } else {
+            final Map<ShapeType, Integer> statistics = tetrisInstance.getStatistics();
+            value = String.valueOf(statistics.get(shapeType));
+        }
 
         SwingUtils.drawImage(graphics, statisticsRow.getImage(), statisticsRow.getImageRectangle());
 

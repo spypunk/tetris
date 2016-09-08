@@ -49,7 +49,6 @@ public class TetrisInstance {
     private boolean hardDropEnabled;
 
     public enum State {
-        NEW,
         RUNNING {
             @Override
             public State onPause() {

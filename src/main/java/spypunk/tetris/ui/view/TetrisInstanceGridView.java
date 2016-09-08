@@ -100,9 +100,7 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
         graphics.drawRect(gridRectangle.x, gridRectangle.y, gridRectangle.width,
             gridRectangle.height);
 
-        final State state = tetrisInstance.getState();
-
-        if (State.NEW.equals(state)) {
+        if (tetrisInstance == null) {
             renderTetrisNew(graphics);
             return;
         }
@@ -111,6 +109,8 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
                 .forEach(block -> renderBlock(graphics, block));
 
         tetrisInstance.getCurrentShape().getBlocks().stream().forEach(block -> renderBlock(graphics, block));
+
+        final State state = tetrisInstance.getState();
 
         if (!State.RUNNING.equals(state)) {
             renderTetrisFrozen(graphics, state);

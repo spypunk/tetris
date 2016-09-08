@@ -22,6 +22,7 @@ import spypunk.tetris.gameloop.GameLoop;
 import spypunk.tetris.gameloop.GameLoopListener;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisEvent;
+import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
@@ -64,8 +65,6 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
     @Override
     public void start() {
-        tetrisService.newInstance(tetris);
-
         tetrisView.show();
 
         gameLoop.start();
@@ -87,12 +86,16 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
         tetrisControllerInputHandler.reset();
 
-        tetrisService.updateInstance(tetris);
+        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
-        final List<TetrisEvent> tetrisEvents = tetris.getTetrisInstance().getTetrisEvents();
+        if (tetrisInstance != null) {
+            tetrisService.updateInstance(tetris);
 
-        executeTetrisControllerCommands(
-            tetrisControllerTetrisEventHandler.handleEvents(tetrisEvents));
+            final List<TetrisEvent> tetrisEvents = tetrisInstance.getTetrisEvents();
+
+            executeTetrisControllerCommands(
+                tetrisControllerTetrisEventHandler.handleEvents(tetrisEvents));
+        }
 
         tetrisView.update();
     }

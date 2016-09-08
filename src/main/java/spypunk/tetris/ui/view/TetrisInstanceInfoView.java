@@ -11,6 +11,7 @@ package spypunk.tetris.ui.view;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.ZERO;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -30,7 +31,6 @@ import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisInstance;
-import spypunk.tetris.model.TetrisInstance.State;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.FontType;
 import spypunk.tetris.ui.font.cache.FontCache;
@@ -131,21 +131,23 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
 
     private void renderRows(final Graphics2D graphics, final TetrisInstance tetrisInstance) {
         renderInfo(graphics, rowsRectangle, rowsLabelRectangle, ROWS,
-            String.valueOf(tetrisInstance.getCompletedRows()));
+            tetrisInstance != null ? String.valueOf(tetrisInstance.getCompletedRows()) : ZERO);
     }
 
     private void renderScore(final Graphics2D graphics, final TetrisInstance tetrisInstance) {
-        renderInfo(graphics, scoreRectangle, scoreLabelRectangle, SCORE, String.valueOf(tetrisInstance.getScore()));
+        renderInfo(graphics, scoreRectangle, scoreLabelRectangle, SCORE,
+            tetrisInstance != null ? String.valueOf(tetrisInstance.getScore()) : ZERO);
     }
 
     private void renderLevel(final Graphics2D graphics, final TetrisInstance tetrisInstance) {
-        renderInfo(graphics, levelRectangle, levelLabelRectangle, LEVEL, String.valueOf(tetrisInstance.getLevel()));
+        renderInfo(graphics, levelRectangle, levelLabelRectangle, LEVEL,
+            tetrisInstance != null ? String.valueOf(tetrisInstance.getLevel()) : ZERO);
     }
 
     private void renderNextShape(final Graphics2D graphics, final TetrisInstance tetrisInstance) {
         renderLabelAndRectangle(graphics, nextShapeRectangle, nextShapeLabelRectangle, NEXT_SHAPE);
 
-        if (State.NEW.equals(tetrisInstance.getState())) {
+        if (tetrisInstance == null) {
             return;
         }
 

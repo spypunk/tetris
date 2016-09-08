@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import spypunk.tetris.model.Movement;
-import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.model.TetrisInstance.State;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.sound.Sound;
@@ -40,14 +39,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     @Override
     public TetrisControllerCommand createNewGameTetrisControllerCommand() {
         return tetris -> {
-
-            final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
-
-            if (!State.NEW.equals(tetrisInstance.getState())) {
-                tetrisService.newInstance(tetris);
-            }
-
-            tetrisService.startInstance(tetris);
+            tetrisService.newInstance(tetris);
 
             soundService.playMusic(Sound.BACKGROUND);
         };
