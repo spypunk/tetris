@@ -87,7 +87,7 @@ public class TetrisServiceImpl implements TetrisService {
 
         if (handleNextShape(tetrisInstance)) {
             if (tetrisInstance.isHardDropEnabled()) {
-                moveShapeDown(tetrisInstance);
+                handleHardDrop(tetrisInstance);
             } else if (handleMovement(tetrisInstance)) {
                 handleGravity(tetrisInstance);
             }
@@ -119,6 +119,11 @@ public class TetrisServiceImpl implements TetrisService {
                 && !tetrisInstance.isHardDropEnabled()) {
             tetrisInstance.setHardDropEnabled(true);
         }
+    }
+
+    private void handleHardDrop(final TetrisInstance tetrisInstance) {
+        moveShapeDown(tetrisInstance);
+        updateScoreWithCompletedMovement(tetrisInstance);
     }
 
     private boolean handleNextShape(final TetrisInstance tetrisInstance) {
@@ -153,11 +158,11 @@ public class TetrisServiceImpl implements TetrisService {
         final boolean isDownMovement = Movement.DOWN.equals(movement);
 
         if (isDownMovement || canShapeMove(tetrisInstance, movement)) {
+            moveShape(tetrisInstance, movement);
+
             if (isDownMovement) {
                 updateScoreWithCompletedMovement(tetrisInstance);
             }
-
-            moveShape(tetrisInstance, movement);
 
             return !tetrisInstance.isCurrentShapeLocked();
         }
