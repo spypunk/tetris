@@ -111,7 +111,8 @@ public class TetrisServiceImpl implements TetrisService {
     public void updateInstanceMovement(final Tetris tetris, final Movement movement) {
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
-        if (isTetrisInstanceRunning(tetrisInstance) && !tetrisInstance.isCurrentShapeLocked()) {
+        if (isTetrisInstanceRunning(tetrisInstance) && !tetrisInstance.isCurrentShapeLocked()
+                && !tetrisInstance.isHardDropEnabled()) {
             tetrisInstance.setMovement(Optional.of(movement));
         }
     }
