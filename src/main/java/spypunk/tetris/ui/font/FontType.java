@@ -14,18 +14,6 @@ public enum FontType {
     URL(10F, Font.RUSSO_ONE),
     FROZEN(42F, Font.NEUTRONIUM);
 
-    private enum Font {
-
-        NEUTRONIUM,
-        RUSSO_ONE;
-
-        private final String fileName;
-
-        Font() {
-            fileName = name().toLowerCase() + ".ttf";
-        }
-    }
-
     private final float size;
 
     private final Font font;
@@ -40,6 +28,6 @@ public enum FontType {
     }
 
     public String getFileName() {
-        return font.fileName;
+        return font.getFileName();
     }
 }

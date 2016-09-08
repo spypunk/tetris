@@ -32,6 +32,8 @@ public class ImageCacheImpl implements ImageCache {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ImageCacheImpl.class);
 
+    private static final String IMAGE_FILE_PATTERN = "%s%s.png";
+
     private static final String ICONS_FOLDER = "/img/icons/".intern();
 
     private static final String BLOCKS_FOLDER = "/img/blocks/".intern();
@@ -60,18 +62,16 @@ public class ImageCacheImpl implements ImageCache {
     }
 
     private static Image createImage(final String imageFolder, final ShapeType shapeType) {
-        final String resourceName = String.format("%s%s.png", imageFolder, shapeType.name());
-
-        return createImage(resourceName);
+        return createImage(imageFolder, shapeType.name());
     }
 
     private static Image createIcon(final Icon icon) {
-        final String resourceName = String.format("%s%s.png", ICONS_FOLDER, icon.name().toLowerCase());
-
-        return createImage(resourceName);
+        return createImage(ICONS_FOLDER, icon.name().toLowerCase());
     }
 
-    private static Image createImage(final String resourceName) {
+    private static Image createImage(final String imageFolder, final String fileName) {
+        final String resourceName = String.format(IMAGE_FILE_PATTERN, imageFolder, fileName);
+
         try (InputStream inputStream = ImageCacheImpl.class.getResourceAsStream(resourceName)) {
             return ImageIO.read(inputStream);
         } catch (final IOException e) {
