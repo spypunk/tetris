@@ -12,6 +12,14 @@ import java.net.URI;
 
 public class Tetris {
 
+    private String name;
+
+    private String version;
+
+    private URI projectURI;
+
+    private TetrisInstance tetrisInstance;
+
     public static final class Builder {
 
         private final Tetris tetris = new Tetris();
@@ -43,14 +51,6 @@ public class Tetris {
         }
 
     }
-
-    private String name;
-
-    private String version;
-
-    private URI projectURI;
-
-    private TetrisInstance tetrisInstance;
 
     public String getName() {
         return name;
