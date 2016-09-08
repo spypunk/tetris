@@ -91,8 +91,12 @@ public class TetrisServiceImpl implements TetrisService {
 
         tetrisInstance.setCurrentGravityFrame(tetrisInstance.getCurrentGravityFrame() + 1);
 
-        if (handleNextShape(tetrisInstance) && handleMovement(tetrisInstance)) {
-            handleGravity(tetrisInstance);
+        if (handleNextShape(tetrisInstance)) {
+            if (tetrisInstance.isHardDropEnabled()) {
+                moveShapeDown(tetrisInstance);
+            } else if (handleMovement(tetrisInstance)) {
+                handleGravity(tetrisInstance);
+            }
         }
     }
 
@@ -109,6 +113,16 @@ public class TetrisServiceImpl implements TetrisService {
 
         if (isTetrisInstanceRunning(tetrisInstance) && !tetrisInstance.isCurrentShapeLocked()) {
             tetrisInstance.setMovement(Optional.of(movement));
+        }
+    }
+
+    @Override
+    public void triggerInstanceHardDrop(final Tetris tetris) {
+        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+
+        if (isTetrisInstanceRunning(tetrisInstance) && !tetrisInstance.isCurrentShapeLocked()
+                && !tetrisInstance.isHardDropEnabled()) {
+            tetrisInstance.setHardDropEnabled(true);
         }
     }
 
@@ -161,7 +175,7 @@ public class TetrisServiceImpl implements TetrisService {
             return;
         }
 
-        moveShape(tetrisInstance, Movement.DOWN);
+        moveShapeDown(tetrisInstance);
 
         resetCurrentGravityFrame(tetrisInstance);
     }
@@ -182,6 +196,8 @@ public class TetrisServiceImpl implements TetrisService {
             tetrisInstance.getTetrisEvents().add(TetrisEvent.SHAPE_LOCKED);
             tetrisInstance.setCurrentShapeLocked(true);
         }
+
+        tetrisInstance.setHardDropEnabled(false);
     }
 
     private void getNextShape(final TetrisInstance tetrisInstance) {
@@ -346,5 +362,9 @@ public class TetrisServiceImpl implements TetrisService {
 
     private int getLevelSpeed(final int level) {
         return level < 29 ? levelSpeeds.get(level) : 1;
+    }
+
+    private void moveShapeDown(final TetrisInstance tetrisInstance) {
+        moveShape(tetrisInstance, Movement.DOWN);
     }
 }

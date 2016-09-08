@@ -46,6 +46,8 @@ public class TetrisInstance {
 
     private List<TetrisEvent> tetrisEvents = Lists.newArrayList();
 
+    private boolean hardDropEnabled;
+
     public enum State {
         NEW,
         RUNNING {
@@ -214,5 +216,13 @@ public class TetrisInstance {
 
     public void setCurrentShapeLocked(final boolean currentShapeLocked) {
         this.currentShapeLocked = currentShapeLocked;
+    }
+
+    public boolean isHardDropEnabled() {
+        return hardDropEnabled;
+    }
+
+    public void setHardDropEnabled(final boolean hardDropEnabled) {
+        this.hardDropEnabled = hardDropEnabled;
     }
 }

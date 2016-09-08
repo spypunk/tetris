@@ -59,6 +59,9 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
 
         releasedKeyCodesHandlers.put(KeyEvent.VK_PAGE_DOWN,
             tetrisControllerCommandFactory::createDecreaseVolumeTetrisControllerCommand);
+
+        releasedKeyCodesHandlers.put(KeyEvent.VK_CONTROL,
+            tetrisControllerCommandFactory::createHardDropTetrisControllerCommand);
     }
 
     @Override

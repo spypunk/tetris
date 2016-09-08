@@ -103,4 +103,9 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     public TetrisControllerCommand createDecreaseVolumeTetrisControllerCommand() {
         return tetris -> soundService.decreaseVolume();
     }
+
+    @Override
+    public TetrisControllerCommand createHardDropTetrisControllerCommand() {
+        return tetrisService::triggerInstanceHardDrop;
+    }
 }

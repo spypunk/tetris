@@ -21,5 +21,7 @@ public interface TetrisService {
 
     void updateInstanceMovement(Tetris tetris, Movement movement);
 
+    void triggerInstanceHardDrop(Tetris tetris);
+
     void pauseInstance(Tetris tetris);
 }

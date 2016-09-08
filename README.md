@@ -25,6 +25,8 @@ Execute **mvn clean package assembly:single** to build the release package.
 
 - UP - Rotate the current shape clockwise
 
+- CTRL - "Hard drop" current shape
+
 - P - Pause the current game
 
 - M - Mute sound
