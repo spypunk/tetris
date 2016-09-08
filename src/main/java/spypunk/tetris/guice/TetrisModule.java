@@ -16,8 +16,8 @@ import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.factory.ShapeFactoryImpl;
 import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.factory.TetrisFactoryImpl;
-import spypunk.tetris.service.TetrisService;
-import spypunk.tetris.service.TetrisServiceImpl;
+import spypunk.tetris.service.TetrisInstanceService;
+import spypunk.tetris.service.TetrisInstanceServiceImpl;
 import spypunk.tetris.sound.cache.SoundClipCache;
 import spypunk.tetris.sound.cache.SoundClipCacheImpl;
 import spypunk.tetris.sound.service.SoundService;
@@ -26,6 +26,10 @@ import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.cache.ImageCacheImpl;
 import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.controller.TetrisControllerImpl;
+import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
+import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandlerImpl;
+import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
+import spypunk.tetris.ui.controller.input.TetrisControllerInputHandlerImpl;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactoryImpl;
 import spypunk.tetris.ui.factory.TetrisViewFactory;
@@ -37,7 +41,7 @@ public class TetrisModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(TetrisService.class).to(TetrisServiceImpl.class);
+        bind(TetrisInstanceService.class).to(TetrisInstanceServiceImpl.class);
         bind(ShapeFactory.class).to(ShapeFactoryImpl.class);
         bind(TetrisController.class).to(TetrisControllerImpl.class);
         bind(TetrisViewFactory.class).to(TetrisViewFactoryImpl.class);
@@ -48,5 +52,7 @@ public class TetrisModule extends AbstractModule {
         bind(TetrisControllerCommandFactory.class).to(TetrisControllerCommandFactoryImpl.class);
         bind(SoundService.class).to(SoundServiceImpl.class);
         bind(SoundClipCache.class).to(SoundClipCacheImpl.class);
+        bind(TetrisControllerInputHandler.class).to(TetrisControllerInputHandlerImpl.class);
+        bind(TetrisControllerTetrisEventHandler.class).to(TetrisControllerTetrisEventHandlerImpl.class);
     }
 }

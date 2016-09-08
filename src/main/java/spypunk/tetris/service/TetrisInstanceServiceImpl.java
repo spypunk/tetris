@@ -36,7 +36,7 @@ import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.model.TetrisInstance.State;
 
 @Singleton
-public class TetrisServiceImpl implements TetrisService {
+public class TetrisInstanceServiceImpl implements TetrisInstanceService {
 
     private static final int ROWS_PER_LEVEL = 10;
 
@@ -47,12 +47,12 @@ public class TetrisServiceImpl implements TetrisService {
     private final Map<Integer, Integer> levelSpeeds = createLevelSpeeds();
 
     @Inject
-    public TetrisServiceImpl(final ShapeFactory shapeFactory) {
+    public TetrisInstanceServiceImpl(final ShapeFactory shapeFactory) {
         this.shapeFactory = shapeFactory;
     }
 
     @Override
-    public void newInstance(final Tetris tetris) {
+    public void create(final Tetris tetris) {
         final Map<ShapeType, Integer> statistics = Lists.newArrayList(ShapeType.values()).stream()
                 .collect(Collectors.toMap(shapeType -> shapeType, shapeType -> 0));
 
@@ -70,13 +70,7 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     @Override
-    public void updateInstance(final Tetris tetris) {
-        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
-
-        if (tetrisInstance == null) {
-            return;
-        }
-
+    public void update(final TetrisInstance tetrisInstance) {
         tetrisInstance.getTetrisEvents().clear();
 
         if (!isTetrisInstanceRunning(tetrisInstance)) {
@@ -95,16 +89,12 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     @Override
-    public void pauseInstance(final Tetris tetris) {
-        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
-
+    public void pause(final TetrisInstance tetrisInstance) {
         tetrisInstance.setState(tetrisInstance.getState().onPause());
     }
 
     @Override
-    public void updateInstanceMovement(final Tetris tetris, final Movement movement) {
-        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
-
+    public void triggerMovement(final TetrisInstance tetrisInstance, final Movement movement) {
         if (isTetrisInstanceRunning(tetrisInstance) && !tetrisInstance.isCurrentShapeLocked()
                 && !tetrisInstance.isHardDropEnabled()) {
             tetrisInstance.setMovement(Optional.of(movement));
@@ -112,9 +102,7 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     @Override
-    public void triggerInstanceHardDrop(final Tetris tetris) {
-        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
-
+    public void triggerHardDrop(final TetrisInstance tetrisInstance) {
         if (isTetrisInstanceRunning(tetrisInstance) && !tetrisInstance.isCurrentShapeLocked()
                 && !tetrisInstance.isHardDropEnabled()) {
             tetrisInstance.setHardDropEnabled(true);

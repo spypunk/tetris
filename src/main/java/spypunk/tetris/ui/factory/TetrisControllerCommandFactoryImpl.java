@@ -12,8 +12,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import spypunk.tetris.model.Movement;
+import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.model.TetrisInstance.State;
-import spypunk.tetris.service.TetrisService;
+import spypunk.tetris.service.TetrisInstanceService;
 import spypunk.tetris.sound.Sound;
 import spypunk.tetris.sound.service.SoundService;
 import spypunk.tetris.ui.controller.TetrisController;
@@ -22,14 +23,15 @@ import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 @Singleton
 public class TetrisControllerCommandFactoryImpl implements TetrisControllerCommandFactory {
 
-    private final TetrisService tetrisService;
+    private final TetrisInstanceService tetrisService;
 
     private final SoundService soundService;
 
     private final TetrisController tetrisController;
 
     @Inject
-    public TetrisControllerCommandFactoryImpl(final TetrisService tetrisService, final SoundService soundService,
+    public TetrisControllerCommandFactoryImpl(final TetrisInstanceService tetrisService,
+            final SoundService soundService,
             final TetrisController tetrisController) {
         this.tetrisService = tetrisService;
         this.soundService = soundService;
@@ -39,7 +41,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     @Override
     public TetrisControllerCommand createNewGameTetrisControllerCommand() {
         return tetris -> {
-            tetrisService.newInstance(tetris);
+            tetrisService.create(tetris);
 
             soundService.playMusic(Sound.BACKGROUND);
         };
@@ -48,9 +50,11 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     @Override
     public TetrisControllerCommand createPauseTetrisControllerCommand() {
         return tetris -> {
-            tetrisService.pauseInstance(tetris);
+            final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
-            final State state = tetris.getTetrisInstance().getState();
+            tetrisService.pause(tetrisInstance);
+
+            final State state = tetrisInstance.getState();
 
             if (State.RUNNING.equals(state) || State.PAUSED.equals(state)) {
                 soundService.pauseMusic();
@@ -60,7 +64,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     @Override
     public TetrisControllerCommand createMovementTetrisControllerCommand(final Movement movement) {
-        return tetris -> tetrisService.updateInstanceMovement(tetris, movement);
+        return tetris -> tetrisService.triggerMovement(tetris.getTetrisInstance(), movement);
     }
 
     @Override
@@ -98,6 +102,6 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     @Override
     public TetrisControllerCommand createHardDropTetrisControllerCommand() {
-        return tetrisService::triggerInstanceHardDrop;
+        return tetris -> tetrisService.triggerHardDrop(tetris.getTetrisInstance());
     }
 }

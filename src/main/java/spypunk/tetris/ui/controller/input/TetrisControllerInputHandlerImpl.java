@@ -16,6 +16,9 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import org.apache.commons.collections4.ListUtils;
 
 import com.google.common.collect.Maps;
@@ -24,6 +27,7 @@ import spypunk.tetris.model.Movement;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 
+@Singleton
 public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHandler {
 
     private final BitSet pressedKeysBitSet = new BitSet();
@@ -34,6 +38,7 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
 
     private final Map<Integer, Supplier<TetrisControllerCommand>> releasedKeyCodesHandlers = Maps.newHashMap();
 
+    @Inject
     public TetrisControllerInputHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory) {
         pressedKeyCodesHandlers.put(KeyEvent.VK_LEFT,
             () -> tetrisControllerCommandFactory.createMovementTetrisControllerCommand(Movement.LEFT));

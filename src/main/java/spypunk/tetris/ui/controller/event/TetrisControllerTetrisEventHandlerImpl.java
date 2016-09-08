@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import org.apache.commons.collections4.CollectionUtils;
 
 import com.google.common.collect.Maps;
@@ -22,11 +25,13 @@ import spypunk.tetris.model.TetrisEvent;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 
+@Singleton
 public class TetrisControllerTetrisEventHandlerImpl implements TetrisControllerTetrisEventHandler {
 
     private final Map<TetrisEvent, Supplier<TetrisControllerCommand>> tetrisControllerCommands = Maps
             .newHashMap();
 
+    @Inject
     public TetrisControllerTetrisEventHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory) {
         tetrisControllerCommands.put(TetrisEvent.SHAPE_LOCKED,
             tetrisControllerCommandFactory::createShapeLockedTetrisControllerCommand);
