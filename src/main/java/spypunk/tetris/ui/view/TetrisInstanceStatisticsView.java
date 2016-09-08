@@ -35,6 +35,20 @@ import spypunk.tetris.ui.util.SwingUtils;
 
 public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
 
+    private static final long serialVersionUID = 288335810615538818L;
+
+    private static final String STATISTICS = "STATISTICS".intern();
+
+    private final Rectangle statisticsRectangle;
+
+    private final Rectangle statisticsLabelRectangle;
+
+    private final Map<ShapeType, StatisticsRow> statisticsRows;
+
+    private final List<ShapeType> shapeTypes;
+
+    private final Font defaultFont;
+
     private static class StatisticsRow {
 
         private final Image image;
@@ -62,20 +76,6 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
             return textContainerRectangle;
         }
     }
-
-    private static final long serialVersionUID = 288335810615538818L;
-
-    private static final String STATISTICS = "STATISTICS".intern();
-
-    private final Rectangle statisticsRectangle;
-
-    private final Rectangle statisticsLabelRectangle;
-
-    private final Map<ShapeType, StatisticsRow> statisticsRows;
-
-    private final List<ShapeType> shapeTypes;
-
-    private final Font defaultFont;
 
     public TetrisInstanceStatisticsView(final FontCache fontCache,
             final ImageCache imageCache, final Tetris tetris) {

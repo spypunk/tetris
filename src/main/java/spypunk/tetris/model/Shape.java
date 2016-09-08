@@ -13,6 +13,14 @@ import java.util.List;
 
 public class Shape {
 
+    private ShapeType shapeType;
+
+    private Rectangle boundingBox;
+
+    private int currentRotation;
+
+    private List<Block> blocks;
+
     public static final class Builder {
 
         private final Shape shape = new Shape();
@@ -48,14 +56,6 @@ public class Shape {
             return shape;
         }
     }
-
-    private ShapeType shapeType;
-
-    private Rectangle boundingBox;
-
-    private int currentRotation;
-
-    private List<Block> blocks;
 
     public ShapeType getShapeType() {
         return shapeType;

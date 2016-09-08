@@ -18,6 +18,34 @@ import com.google.common.collect.Maps;
 
 public class TetrisInstance {
 
+    private Map<Point, Block> blocks = Maps.newHashMap();
+
+    private Shape currentShape;
+
+    private Shape nextShape;
+
+    private Optional<Movement> movement = Optional.empty();
+
+    private Map<ShapeType, Integer> statistics;
+
+    private int level;
+
+    private int score;
+
+    private int completedRows;
+
+    private int speed;
+
+    private State state;
+
+    private int currentGravityFrame;
+
+    private int currentMovementScore;
+
+    private boolean currentShapeLocked;
+
+    private List<TetrisEvent> tetrisEvents = Lists.newArrayList();
+
     public enum State {
         NEW,
         RUNNING {
@@ -75,34 +103,6 @@ public class TetrisInstance {
         }
 
     }
-
-    private Map<Point, Block> blocks = Maps.newHashMap();
-
-    private Shape currentShape;
-
-    private Shape nextShape;
-
-    private Optional<Movement> movement = Optional.empty();
-
-    private Map<ShapeType, Integer> statistics;
-
-    private int level;
-
-    private int score;
-
-    private int completedRows;
-
-    private int speed;
-
-    private State state;
-
-    private int currentGravityFrame;
-
-    private int currentMovementScore;
-
-    private boolean currentShapeLocked;
-
-    private List<TetrisEvent> tetrisEvents = Lists.newArrayList();
 
     public Map<Point, Block> getBlocks() {
         return blocks;

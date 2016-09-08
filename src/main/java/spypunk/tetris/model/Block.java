@@ -12,6 +12,10 @@ import java.awt.Point;
 
 public class Block {
 
+    private Shape shape;
+
+    private Point location;
+
     public static final class Builder {
 
         private final Block block = new Block();
@@ -37,10 +41,6 @@ public class Block {
             return block;
         }
     }
-
-    private Shape shape;
-
-    private Point location;
 
     public Shape getShape() {
         return shape;

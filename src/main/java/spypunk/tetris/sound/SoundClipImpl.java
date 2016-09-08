@@ -29,11 +29,7 @@ public class SoundClipImpl implements SoundClip {
 
     private static final float VOLUME_DELTA = 5F;
 
-    private final AudioFormat audioFormat;
-
     private final Clip clip;
-
-    private final AudioInputStream audioInputStream;
 
     private final boolean loop;
 
@@ -54,13 +50,17 @@ public class SoundClipImpl implements SoundClip {
     private boolean stopped = true;
 
     public SoundClipImpl(final AudioInputStream inputStream, final boolean loop) {
-        audioFormat = getOutFormat(inputStream.getFormat());
         this.loop = loop;
 
         try {
             clip = AudioSystem.getClip();
-            audioInputStream = AudioSystem.getAudioInputStream(audioFormat, inputStream);
+
+            final AudioFormat audioFormat = getOutFormat(inputStream.getFormat());
+            final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFormat,
+                inputStream);
+
             clip.open(audioInputStream);
+
             volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             maximumVolume = volumeControl.getValue();
             minimumVolume = volumeControl.getMinimum();

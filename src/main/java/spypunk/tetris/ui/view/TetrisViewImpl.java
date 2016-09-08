@@ -38,6 +38,20 @@ import spypunk.tetris.ui.util.SwingUtils;
 
 public class TetrisViewImpl implements TetrisView {
 
+    private final JFrame frame;
+
+    private final TetrisInstanceStatisticsView tetrisInstanceStatisticsView;
+
+    private final TetrisInstanceInfoView tetrisInstanceInfoView;
+
+    private final TetrisInstanceGridView tetrisInstanceGridView;
+
+    private final JLabel muteLabel;
+
+    private final ImageIcon muteImageIcon;
+
+    private final ImageIcon unmuteImageIcon;
+
     private final class TetrisViewWindowListener extends WindowAdapter {
 
         private final TetrisController tetrisController;
@@ -96,20 +110,6 @@ public class TetrisViewImpl implements TetrisView {
             urlLabel.setForeground(DEFAULT_FONT_COLOR);
         }
     }
-
-    private final JFrame frame;
-
-    private final TetrisInstanceStatisticsView tetrisInstanceStatisticsView;
-
-    private final TetrisInstanceInfoView tetrisInstanceInfoView;
-
-    private final TetrisInstanceGridView tetrisInstanceGridView;
-
-    private final JLabel muteLabel;
-
-    private final ImageIcon muteImageIcon;
-
-    private final ImageIcon unmuteImageIcon;
 
     public TetrisViewImpl(final TetrisController tetrisController,
             final FontCache fontCache,
