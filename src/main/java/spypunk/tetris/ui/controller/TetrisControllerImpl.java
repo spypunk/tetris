@@ -34,7 +34,7 @@ import spypunk.tetris.ui.view.TetrisView;
 @Singleton
 public class TetrisControllerImpl implements TetrisController, GameLoopListener {
 
-    private final TetrisInstanceService tetrisService;
+    private final TetrisInstanceService tetrisInstanceService;
 
     private final TetrisView tetrisView;
 
@@ -48,10 +48,10 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
 
     @Inject
     public TetrisControllerImpl(final TetrisFactory tetrisFactory, final TetrisViewFactory tetrisViewFactory,
-            final GameLoopFactory gameLoopFactory, final TetrisInstanceService tetrisService,
+            final GameLoopFactory gameLoopFactory, final TetrisInstanceService tetrisInstanceService,
             final TetrisControllerInputHandler tetrisControllerInputHandler,
             final TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler) {
-        this.tetrisService = tetrisService;
+        this.tetrisInstanceService = tetrisInstanceService;
         this.tetrisControllerInputHandler = tetrisControllerInputHandler;
         this.tetrisControllerTetrisEventHandler = tetrisControllerTetrisEventHandler;
 
@@ -86,7 +86,7 @@ public class TetrisControllerImpl implements TetrisController, GameLoopListener 
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
         if (tetrisInstance != null) {
-            tetrisService.update(tetrisInstance);
+            tetrisInstanceService.update(tetrisInstance);
 
             final List<TetrisEvent> tetrisEvents = tetrisInstance.getTetrisEvents();
 

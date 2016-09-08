@@ -23,17 +23,17 @@ import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 @Singleton
 public class TetrisControllerCommandFactoryImpl implements TetrisControllerCommandFactory {
 
-    private final TetrisInstanceService tetrisService;
+    private final TetrisInstanceService tetrisInstanceService;
 
     private final SoundService soundService;
 
     private final TetrisController tetrisController;
 
     @Inject
-    public TetrisControllerCommandFactoryImpl(final TetrisInstanceService tetrisService,
+    public TetrisControllerCommandFactoryImpl(final TetrisInstanceService tetrisInstanceService,
             final SoundService soundService,
             final TetrisController tetrisController) {
-        this.tetrisService = tetrisService;
+        this.tetrisInstanceService = tetrisInstanceService;
         this.soundService = soundService;
         this.tetrisController = tetrisController;
     }
@@ -41,7 +41,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     @Override
     public TetrisControllerCommand createNewGameTetrisControllerCommand() {
         return tetris -> {
-            tetrisService.create(tetris);
+            tetrisInstanceService.create(tetris);
 
             soundService.playMusic(Sound.BACKGROUND);
         };
@@ -52,7 +52,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
         return tetris -> {
             final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
-            tetrisService.pause(tetrisInstance);
+            tetrisInstanceService.pause(tetrisInstance);
 
             final State state = tetrisInstance.getState();
 
@@ -64,7 +64,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     @Override
     public TetrisControllerCommand createMovementTetrisControllerCommand(final Movement movement) {
-        return tetris -> tetrisService.triggerMovement(tetris.getTetrisInstance(), movement);
+        return tetris -> tetrisInstanceService.triggerMovement(tetris.getTetrisInstance(), movement);
     }
 
     @Override
@@ -102,6 +102,6 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     @Override
     public TetrisControllerCommand createHardDropTetrisControllerCommand() {
-        return tetris -> tetrisService.triggerHardDrop(tetris.getTetrisInstance());
+        return tetris -> tetrisInstanceService.triggerHardDrop(tetris.getTetrisInstance());
     }
 }
