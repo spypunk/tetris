@@ -8,7 +8,7 @@
 
 package spypunk.tetris.gameloop;
 
-public interface GameLoop {
+public interface TetrisControllerGameLoop {
 
     void start();
 

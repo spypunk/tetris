@@ -23,4 +23,6 @@ public interface TetrisController {
     void onKeyReleased(int keyCode);
 
     TetrisView getTetrisView();
+
+    void onGameLoopUpdate();
 }

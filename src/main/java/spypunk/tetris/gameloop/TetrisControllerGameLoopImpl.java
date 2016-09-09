@@ -9,8 +9,15 @@
 package spypunk.tetris.gameloop;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public final class GameLoopImpl implements GameLoop, Runnable {
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import spypunk.tetris.ui.controller.TetrisController;
+
+@Singleton
+public final class TetrisControllerGameLoopImpl implements TetrisControllerGameLoop, Runnable {
 
     private static final int TICKS_PER_SECOND = 60;
 
@@ -18,13 +25,14 @@ public final class GameLoopImpl implements GameLoop, Runnable {
 
     private final ExecutorService executorService;
 
-    private final GameLoopListener gameLoopListener;
+    private final TetrisController tetrisController;
 
     private volatile boolean running;
 
-    public GameLoopImpl(final ExecutorService executorService, final GameLoopListener gameLoopListener) {
-        this.executorService = executorService;
-        this.gameLoopListener = gameLoopListener;
+    @Inject
+    public TetrisControllerGameLoopImpl(final TetrisController tetrisController) {
+        executorService = Executors.newSingleThreadExecutor();
+        this.tetrisController = tetrisController;
     }
 
     @Override
@@ -48,11 +56,12 @@ public final class GameLoopImpl implements GameLoop, Runnable {
 
             for (; newTick - lastTick < SKIP_TICKS; newTick = System
                     .currentTimeMillis()) {
+                // Do nothing here
             }
 
             lastTick = newTick;
 
-            gameLoopListener.onUpdate();
+            tetrisController.onGameLoopUpdate();
         }
     }
 }

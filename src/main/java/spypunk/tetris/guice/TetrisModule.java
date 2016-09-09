@@ -10,12 +10,12 @@ package spypunk.tetris.guice;
 
 import com.google.inject.AbstractModule;
 
-import spypunk.tetris.factory.GameLoopFactory;
-import spypunk.tetris.factory.GameLoopFactoryImpl;
 import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.factory.ShapeFactoryImpl;
 import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.factory.TetrisFactoryImpl;
+import spypunk.tetris.gameloop.TetrisControllerGameLoop;
+import spypunk.tetris.gameloop.TetrisControllerGameLoopImpl;
 import spypunk.tetris.service.TetrisInstanceService;
 import spypunk.tetris.service.TetrisInstanceServiceImpl;
 import spypunk.tetris.sound.cache.SoundClipCache;
@@ -48,11 +48,11 @@ public class TetrisModule extends AbstractModule {
         bind(ImageCache.class).to(ImageCacheImpl.class);
         bind(TetrisFactory.class).to(TetrisFactoryImpl.class);
         bind(FontCache.class).to(FontCacheImpl.class);
-        bind(GameLoopFactory.class).to(GameLoopFactoryImpl.class);
         bind(TetrisControllerCommandFactory.class).to(TetrisControllerCommandFactoryImpl.class);
         bind(SoundService.class).to(SoundServiceImpl.class);
         bind(SoundClipCache.class).to(SoundClipCacheImpl.class);
         bind(TetrisControllerInputHandler.class).to(TetrisControllerInputHandlerImpl.class);
         bind(TetrisControllerTetrisEventHandler.class).to(TetrisControllerTetrisEventHandlerImpl.class);
+        bind(TetrisControllerGameLoop.class).to(TetrisControllerGameLoopImpl.class);
     }
 }
