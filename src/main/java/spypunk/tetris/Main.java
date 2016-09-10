@@ -29,9 +29,7 @@ public final class Main {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    private static final String USER_HOME_KEY = "user.home".intern();
-
-    private static final String USER_HOME = System.getProperty(USER_HOME_KEY).intern();
+    private static final String USER_HOME = System.getProperty("user.home").intern();
 
     private static final String ERROR_TITLE = "Error".intern();
 
