@@ -17,13 +17,13 @@ import javax.inject.Singleton;
 import org.apache.commons.collections4.CollectionUtils;
 
 import spypunk.tetris.factory.TetrisFactory;
-import spypunk.tetris.gameloop.TetrisControllerGameLoop;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisEvent;
 import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.service.TetrisInstanceService;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
+import spypunk.tetris.ui.controller.gameloop.TetrisControllerGameLoop;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
 import spypunk.tetris.ui.factory.TetrisViewFactory;
 import spypunk.tetris.ui.util.SwingUtils;

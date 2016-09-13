@@ -6,7 +6,7 @@
  * as published by Sam Hocevar. See the COPYING file for more details.
  */
 
-package spypunk.tetris.gameloop;
+package spypunk.tetris.ui.controller.gameloop;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
