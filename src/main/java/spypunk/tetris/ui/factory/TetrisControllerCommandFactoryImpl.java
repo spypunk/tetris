@@ -52,19 +52,27 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
         return tetris -> {
             final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
-            tetrisInstanceService.pause(tetrisInstance);
+            if (tetrisInstance != null) {
+                tetrisInstanceService.pause(tetrisInstance);
 
-            final State state = tetrisInstance.getState();
+                final State state = tetrisInstance.getState();
 
-            if (State.RUNNING.equals(state) || State.PAUSED.equals(state)) {
-                soundService.pauseMusic();
+                if (State.RUNNING.equals(state) || State.PAUSED.equals(state)) {
+                    soundService.pauseMusic();
+                }
             }
         };
     }
 
     @Override
     public TetrisControllerCommand createMovementTetrisControllerCommand(final Movement movement) {
-        return tetris -> tetrisInstanceService.triggerMovement(tetris.getTetrisInstance(), movement);
+        return tetris -> {
+            final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+
+            if (tetrisInstance != null) {
+                tetrisInstanceService.triggerMovement(tetrisInstance, movement);
+            }
+        };
     }
 
     @Override
@@ -102,6 +110,12 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     @Override
     public TetrisControllerCommand createHardDropTetrisControllerCommand() {
-        return tetris -> tetrisInstanceService.triggerHardDrop(tetris.getTetrisInstance());
+        return tetris -> {
+            final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+
+            if (tetrisInstance != null) {
+                tetrisInstanceService.triggerHardDrop(tetris.getTetrisInstance());
+            }
+        };
     }
 }
