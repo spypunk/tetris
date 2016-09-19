@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) 
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.0] - 2016-09-19
+### Added
+- New application icon added
+
 ## [1.6.1] - 2016-09-13
 ### Fixed
 - Null pointer when instance is not started and keys are pressed
