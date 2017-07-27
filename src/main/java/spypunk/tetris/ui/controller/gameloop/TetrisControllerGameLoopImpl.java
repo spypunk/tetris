@@ -14,10 +14,15 @@ import java.util.concurrent.Executors;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import spypunk.tetris.ui.controller.TetrisController;
 
 @Singleton
 public final class TetrisControllerGameLoopImpl implements TetrisControllerGameLoop, Runnable {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TetrisControllerGameLoopImpl.class);
 
     private static final int TICKS_PER_SECOND = 60;
 
@@ -56,7 +61,14 @@ public final class TetrisControllerGameLoopImpl implements TetrisControllerGameL
 
             for (; newTick - lastTick < SKIP_TICKS; newTick = System
                     .currentTimeMillis()) {
-                // Do nothing here
+
+                try {
+                    Thread.sleep(1);
+                } catch (final InterruptedException e) {
+                    LOGGER.error(e.getMessage(), e);
+                    Thread.currentThread().interrupt();
+                    stop();
+                }
             }
 
             lastTick = newTick;
