@@ -22,4 +22,6 @@ public interface TetrisService {
     void triggerHardDrop(Tetris tetris);
 
     void pause(Tetris tetris);
+
+    void mute(Tetris tetris, boolean mute);
 }
