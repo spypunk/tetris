@@ -1,54 +1,55 @@
-<!-- Copyright © 2016-2017 spypunk <spypunk@gmail.com> This work is free. You 
-	can redistribute it and/or modify it under the terms of the Do What The Fuck 
-	You Want To Public License, Version 2, as published by Sam Hocevar. See the 
+<!-- Copyright © 2016-2017 spypunk <spypunk@gmail.com> This work is free. You
+	can redistribute it and/or modify it under the terms of the Do What The Fuck
+	You Want To Public License, Version 2, as published by Sam Hocevar. See the
 	COPYING file for more details. -->
 
 <assembly>
-	<id>bin</id>
-	<formats>
-		<format>zip</format>
-	</formats>
-	<dependencySets>
-		<dependencySet>
-			<useProjectArtifact>false</useProjectArtifact>
-			<outputDirectory>lib</outputDirectory>
-			<unpack>false</unpack>
-		</dependencySet>
-	</dependencySets>
+    <id>bin</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <dependencySets>
+        <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory>lib</outputDirectory>
+            <unpack>false</unpack>
+        </dependencySet>
+    </dependencySets>
 
-	<fileSets>
-		<fileSet>
-			<directory>${project.build.scriptSourceDirectory}</directory>
-			<outputDirectory></outputDirectory>
-			<fileMode>755</fileMode>
-			<includes>
-				<include>*</include>
-			</includes>
-		</fileSet>
-		<fileSet>
-			<directory>${project.build.directory}</directory>
-			<outputDirectory></outputDirectory>
-			<includes>
-				<include>*.jar</include>
-			</includes>
-		</fileSet>
-		<fileSet>
-			<directory>${project.basedir}</directory>
-			<outputDirectory></outputDirectory>
-			<includes>
-				<include>AUTHORS</include>
-				<include>COPYING</include>
-				<include>CREDITS</include>
-				<include>README.md</include>
-				<include>CHANGELOG.md</include>
-			</includes>
-		</fileSet>
-		<fileSet>
-			<directory>${project.basedir}/src/main/resources/img/icons</directory>
-			<outputDirectory></outputDirectory>
-			<includes>
-				<include>icon.png</include>
-			</includes>
-		</fileSet>
-	</fileSets>
+    <fileSets>
+        <fileSet>
+            <directory>${project.build.scriptSourceDirectory}</directory>
+            <outputDirectory></outputDirectory>
+            <fileMode>755</fileMode>
+            <includes>
+                <include>*</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <outputDirectory></outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}</directory>
+            <outputDirectory></outputDirectory>
+            <includes>
+                <include>AUTHORS</include>
+                <include>COPYING</include>
+                <include>CREDITS</include>
+                <include>README.md</include>
+                <include>CHANGELOG.md</include>
+                <include>CODE_OF_CONDUCT.md</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.basedir}/src/main/resources/img/icons</directory>
+            <outputDirectory></outputDirectory>
+            <includes>
+                <include>icon.png</include>
+            </includes>
+        </fileSet>
+    </fileSets>
 </assembly>
