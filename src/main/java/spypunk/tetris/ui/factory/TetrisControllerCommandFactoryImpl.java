@@ -74,7 +74,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     public TetrisControllerCommand createMuteTetrisControllerCommand() {
         return tetris -> {
             soundService.mute();
-            tetrisController.getTetrisView().setMute(soundService.isMute());
+            tetris.setMute(soundService.isMute());
         };
     }
 

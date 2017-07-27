@@ -52,6 +52,8 @@ public class TetrisViewImpl implements TetrisView {
 
     private final ImageIcon unmuteImageIcon;
 
+    private final Tetris tetris;
+
     private final class TetrisViewWindowListener extends WindowAdapter {
 
         private final TetrisController tetrisController;
@@ -115,6 +117,8 @@ public class TetrisViewImpl implements TetrisView {
             final FontCache fontCache,
             final ImageCache imageCache,
             final Tetris tetris) {
+        this.tetris = tetris;
+
         tetrisInstanceStatisticsView = new TetrisInstanceStatisticsView(fontCache, imageCache, tetris);
         tetrisInstanceInfoView = new TetrisInstanceInfoView(fontCache, imageCache, tetris);
         tetrisInstanceGridView = new TetrisInstanceGridView(fontCache, imageCache, tetris);
@@ -175,16 +179,9 @@ public class TetrisViewImpl implements TetrisView {
         SwingUtils.doInAWTThread(this::doUpdate, true);
     }
 
-    @Override
-    public void setMute(final boolean mute) {
-        SwingUtils.doInAWTThread(() -> doSetMute(mute), false);
-    }
-
-    private void doSetMute(final boolean mute) {
-        muteLabel.setIcon(mute ? muteImageIcon : unmuteImageIcon);
-    }
-
     private void doUpdate() {
+        muteLabel.setIcon(tetris.isMute() ? muteImageIcon : unmuteImageIcon);
+
         tetrisInstanceGridView.update();
         tetrisInstanceStatisticsView.update();
         tetrisInstanceInfoView.update();

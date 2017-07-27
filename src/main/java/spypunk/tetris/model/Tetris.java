@@ -43,6 +43,8 @@ public class Tetris {
 
     private State state;
 
+    private boolean mute;
+
     public static final class Builder {
 
         private final Tetris tetris = new Tetris();
@@ -118,5 +120,13 @@ public class Tetris {
 
     public void setState(final State state) {
         this.state = state;
+    }
+
+    public boolean isMute() {
+        return mute;
+    }
+
+    public void setMute(final boolean mute) {
+        this.mute = mute;
     }
 }
