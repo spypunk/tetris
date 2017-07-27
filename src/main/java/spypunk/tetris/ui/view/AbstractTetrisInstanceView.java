@@ -8,11 +8,13 @@
 
 package spypunk.tetris.ui.view;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JLabel;
 
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.ui.util.SwingUtils;
 
 public abstract class AbstractTetrisInstanceView extends JLabel implements View {
 
@@ -21,4 +23,12 @@ public abstract class AbstractTetrisInstanceView extends JLabel implements View 
     protected transient BufferedImage image;
 
     protected Tetris tetris;
+
+    @Override
+    public void update() {
+        SwingUtils.doInGraphics(image, this::doUpdate);
+        repaint();
+    }
+
+    protected abstract void doUpdate(final Graphics2D graphics);
 }

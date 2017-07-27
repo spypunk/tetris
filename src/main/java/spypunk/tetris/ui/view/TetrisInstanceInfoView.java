@@ -105,16 +105,10 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
     }
 
     @Override
-    public void update() {
-        SwingUtils.doInGraphics(image, this::doUpdate);
-        repaint();
-    }
-
-    private void doUpdate(final Graphics2D graphics) {
+    protected void doUpdate(final Graphics2D graphics) {
         renderLevel(graphics);
         renderScore(graphics);
         renderRows(graphics);
-
         renderNextShape(graphics);
     }
 

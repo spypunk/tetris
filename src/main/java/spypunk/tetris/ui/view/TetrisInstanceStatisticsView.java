@@ -102,12 +102,6 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
         setIgnoreRepaint(true);
     }
 
-    @Override
-    public void update() {
-        SwingUtils.doInGraphics(image, this::renderStatistics);
-        repaint();
-    }
-
     private StatisticsRow createStatisticRow(final ImageCache imageCache, final ShapeType shapeType) {
         final Image shapeImage = imageCache.getShapeImage(shapeType);
         final Rectangle imageContainerRectangle = new Rectangle(statisticsRectangle.x,
@@ -126,7 +120,8 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
                 textContainerRectangle);
     }
 
-    private void renderStatistics(final Graphics2D graphics) {
+    @Override
+    protected void doUpdate(final Graphics2D graphics) {
         SwingUtils.renderCenteredText(graphics, STATISTICS,
             statisticsLabelRectangle, defaultFont, DEFAULT_FONT_COLOR);
 

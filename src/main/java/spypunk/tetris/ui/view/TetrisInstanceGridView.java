@@ -87,12 +87,7 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
     }
 
     @Override
-    public void update() {
-        SwingUtils.doInGraphics(image, this::renderBlocks);
-        repaint();
-    }
-
-    private void renderBlocks(final Graphics2D graphics) {
+    protected void doUpdate(final Graphics2D graphics) {
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
         graphics.setColor(DEFAULT_BORDER_COLOR);
