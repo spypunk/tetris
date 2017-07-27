@@ -30,6 +30,7 @@ import com.google.common.collect.Lists;
 import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.FontType;
@@ -110,13 +111,11 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
     }
 
     private void doUpdate(final Graphics2D graphics) {
-        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+        renderLevel(graphics);
+        renderScore(graphics);
+        renderRows(graphics);
 
-        renderLevel(graphics, tetrisInstance);
-        renderScore(graphics, tetrisInstance);
-        renderRows(graphics, tetrisInstance);
-
-        renderNextShape(graphics, tetrisInstance);
+        renderNextShape(graphics);
     }
 
     private Rectangle createLabelRectangle(final Rectangle rectangle) {
@@ -129,27 +128,32 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
         return SwingUtils.getCenteredImageRectangle(shapeTypeImage, nextShapeRectangle);
     }
 
-    private void renderRows(final Graphics2D graphics, final TetrisInstance tetrisInstance) {
+    private void renderRows(final Graphics2D graphics) {
         renderInfo(graphics, rowsRectangle, rowsLabelRectangle, ROWS,
-            tetrisInstance != null ? String.valueOf(tetrisInstance.getCompletedRows()) : ZERO);
+            !tetris.getState().equals(State.STOPPED) ? String.valueOf(tetris.getTetrisInstance().getCompletedRows())
+                    : ZERO);
     }
 
-    private void renderScore(final Graphics2D graphics, final TetrisInstance tetrisInstance) {
+    private void renderScore(final Graphics2D graphics) {
         renderInfo(graphics, scoreRectangle, scoreLabelRectangle, SCORE,
-            tetrisInstance != null ? String.valueOf(tetrisInstance.getScore()) : ZERO);
+            !tetris.getState().equals(State.STOPPED) ? String.valueOf(tetris.getTetrisInstance().getScore()) : ZERO);
     }
 
-    private void renderLevel(final Graphics2D graphics, final TetrisInstance tetrisInstance) {
+    private void renderLevel(final Graphics2D graphics) {
         renderInfo(graphics, levelRectangle, levelLabelRectangle, LEVEL,
-            tetrisInstance != null ? String.valueOf(tetrisInstance.getLevel()) : ZERO);
+            !tetris.getState().equals(State.STOPPED) ? String.valueOf(tetris.getTetrisInstance().getLevel()) : ZERO);
     }
 
-    private void renderNextShape(final Graphics2D graphics, final TetrisInstance tetrisInstance) {
+    private void renderNextShape(final Graphics2D graphics) {
         renderLabelAndRectangle(graphics, nextShapeRectangle, nextShapeLabelRectangle, NEXT_SHAPE);
 
-        if (tetrisInstance == null) {
+        final State tetrisState = tetris.getState();
+
+        if (tetrisState.equals(State.STOPPED)) {
             return;
         }
+
+        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
         final Shape nextShape = tetrisInstance.getNextShape();
         final ShapeType shapeType = nextShape.getShapeType();

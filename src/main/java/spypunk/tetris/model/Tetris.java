@@ -12,6 +12,27 @@ import java.net.URI;
 
 public class Tetris {
 
+    public enum State {
+        STOPPED,
+        RUNNING {
+            @Override
+            public State onPause() {
+                return PAUSED;
+            }
+        },
+        PAUSED {
+            @Override
+            public State onPause() {
+                return RUNNING;
+            }
+        },
+        GAME_OVER;
+
+        public State onPause() {
+            return this;
+        }
+    }
+
     private String name;
 
     private String version;
@@ -19,6 +40,8 @@ public class Tetris {
     private URI projectURI;
 
     private TetrisInstance tetrisInstance;
+
+    private State state;
 
     public static final class Builder {
 
@@ -43,6 +66,11 @@ public class Tetris {
 
         public Builder setProjectURI(final URI projectURI) {
             tetris.setProjectURI(projectURI);
+            return this;
+        }
+
+        public Builder setState(final State state) {
+            tetris.setState(state);
             return this;
         }
 
@@ -82,5 +110,13 @@ public class Tetris {
 
     public void setTetrisInstance(final TetrisInstance tetrisInstance) {
         this.tetrisInstance = tetrisInstance;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(final State state) {
+        this.state = state;
     }
 }

@@ -14,8 +14,8 @@ import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.factory.ShapeFactoryImpl;
 import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.factory.TetrisFactoryImpl;
-import spypunk.tetris.service.TetrisInstanceService;
-import spypunk.tetris.service.TetrisInstanceServiceImpl;
+import spypunk.tetris.service.TetrisService;
+import spypunk.tetris.service.TetrisServiceImpl;
 import spypunk.tetris.sound.cache.SoundClipCache;
 import spypunk.tetris.sound.cache.SoundClipCacheImpl;
 import spypunk.tetris.sound.service.SoundService;
@@ -41,7 +41,7 @@ public class TetrisModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(TetrisInstanceService.class).to(TetrisInstanceServiceImpl.class);
+        bind(TetrisService.class).to(TetrisServiceImpl.class);
         bind(ShapeFactory.class).to(ShapeFactoryImpl.class);
         bind(TetrisController.class).to(TetrisControllerImpl.class);
         bind(TetrisViewFactory.class).to(TetrisViewFactoryImpl.class);

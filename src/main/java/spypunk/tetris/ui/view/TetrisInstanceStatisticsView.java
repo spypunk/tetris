@@ -29,6 +29,7 @@ import com.google.common.collect.Lists;
 
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.FontType;
@@ -142,7 +143,9 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
         String value;
 
-        if (tetrisInstance == null) {
+        final State tetrisState = tetris.getState();
+
+        if (tetrisState.equals(State.STOPPED)) {
             value = ZERO;
         } else {
             final Map<ShapeType, Integer> statistics = tetrisInstance.getStatistics();

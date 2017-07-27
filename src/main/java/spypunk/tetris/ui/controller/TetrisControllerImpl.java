@@ -18,9 +18,10 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.model.TetrisEvent;
 import spypunk.tetris.model.TetrisInstance;
-import spypunk.tetris.service.TetrisInstanceService;
+import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
 import spypunk.tetris.ui.controller.gameloop.TetrisControllerGameLoop;
@@ -32,7 +33,7 @@ import spypunk.tetris.ui.view.TetrisView;
 @Singleton
 public class TetrisControllerImpl implements TetrisController {
 
-    private final TetrisInstanceService tetrisInstanceService;
+    private final TetrisService tetrisService;
 
     private final TetrisView tetrisView;
 
@@ -46,10 +47,10 @@ public class TetrisControllerImpl implements TetrisController {
 
     @Inject
     public TetrisControllerImpl(final TetrisFactory tetrisFactory, final TetrisViewFactory tetrisViewFactory,
-            final TetrisControllerGameLoop tetrisControllerGameLoop, final TetrisInstanceService tetrisInstanceService,
+            final TetrisControllerGameLoop tetrisControllerGameLoop, final TetrisService tetrisService,
             final TetrisControllerInputHandler tetrisControllerInputHandler,
             final TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler) {
-        this.tetrisInstanceService = tetrisInstanceService;
+        this.tetrisService = tetrisService;
         this.tetrisControllerInputHandler = tetrisControllerInputHandler;
         this.tetrisControllerTetrisEventHandler = tetrisControllerTetrisEventHandler;
         this.tetrisControllerGameLoop = tetrisControllerGameLoop;
@@ -81,10 +82,10 @@ public class TetrisControllerImpl implements TetrisController {
 
         tetrisControllerInputHandler.reset();
 
-        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+        tetrisService.update(tetris);
 
-        if (tetrisInstance != null) {
-            tetrisInstanceService.update(tetrisInstance);
+        if (!tetris.getState().equals(State.STOPPED)) {
+            final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
             final List<TetrisEvent> tetrisEvents = tetrisInstance.getTetrisEvents();
 

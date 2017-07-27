@@ -10,17 +10,16 @@ package spypunk.tetris.service;
 
 import spypunk.tetris.model.Movement;
 import spypunk.tetris.model.Tetris;
-import spypunk.tetris.model.TetrisInstance;
 
-public interface TetrisInstanceService {
+public interface TetrisService {
 
-    void create(Tetris tetris);
+    void start(Tetris tetris);
 
-    void update(TetrisInstance tetrisInstance);
+    void update(Tetris tetris);
 
-    void triggerMovement(TetrisInstance tetrisInstance, Movement movement);
+    void triggerMovement(Tetris tetris, Movement movement);
 
-    void triggerHardDrop(TetrisInstance tetrisInstance);
+    void triggerHardDrop(Tetris tetris);
 
-    void pause(TetrisInstance tetrisInstance);
+    void pause(Tetris tetris);
 }

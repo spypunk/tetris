@@ -36,8 +36,6 @@ public class TetrisInstance {
 
     private int speed;
 
-    private State state;
-
     private int currentGravityFrame;
 
     private int currentMovementScore;
@@ -47,26 +45,6 @@ public class TetrisInstance {
     private List<TetrisEvent> tetrisEvents = Lists.newArrayList();
 
     private boolean hardDropEnabled;
-
-    public enum State {
-        RUNNING {
-            @Override
-            public State onPause() {
-                return PAUSED;
-            }
-        },
-        PAUSED {
-            @Override
-            public State onPause() {
-                return RUNNING;
-            }
-        },
-        GAME_OVER;
-
-        public State onPause() {
-            return this;
-        }
-    }
 
     public static final class Builder {
 
@@ -86,11 +64,6 @@ public class TetrisInstance {
 
         public Builder setStatistics(final Map<ShapeType, Integer> statistics) {
             tetrisInstance.setStatistics(statistics);
-            return this;
-        }
-
-        public Builder setState(final State state) {
-            tetrisInstance.setState(state);
             return this;
         }
 
@@ -175,14 +148,6 @@ public class TetrisInstance {
 
     public void setSpeed(final int speed) {
         this.speed = speed;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(final State state) {
-        this.state = state;
     }
 
     public int getCurrentGravityFrame() {

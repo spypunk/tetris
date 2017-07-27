@@ -29,8 +29,8 @@ import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.model.Block;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.model.TetrisInstance;
-import spypunk.tetris.model.TetrisInstance.State;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.FontType;
 import spypunk.tetris.ui.font.cache.FontCache;
@@ -100,8 +100,10 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
         graphics.drawRect(gridRectangle.x, gridRectangle.y, gridRectangle.width,
             gridRectangle.height);
 
-        if (tetrisInstance == null) {
-            renderTetrisNew(graphics);
+        final State tetrisState = tetris.getState();
+
+        if (tetrisState.equals(State.STOPPED)) {
+            renderTetrisStopped(graphics);
             return;
         }
 
@@ -110,10 +112,8 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
 
         tetrisInstance.getCurrentShape().getBlocks().stream().forEach(block -> renderBlock(graphics, block));
 
-        final State state = tetrisInstance.getState();
-
-        if (!State.RUNNING.equals(state)) {
-            renderTetrisFrozen(graphics, state);
+        if (!State.RUNNING.equals(tetrisState)) {
+            renderTetrisFrozen(graphics, tetrisState);
         }
     }
 
@@ -144,7 +144,7 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
         return rectangle;
     }
 
-    private void renderTetrisNew(final Graphics2D graphics) {
+    private void renderTetrisStopped(final Graphics2D graphics) {
         SwingUtils.renderCenteredText(graphics, PRESS_SPACE, gridRectangle,
             frozenFont, DEFAULT_FONT_COLOR);
     }

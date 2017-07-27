@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import spypunk.tetris.Main;
 import spypunk.tetris.exception.TetrisException;
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.model.Tetris.State;
 
 @Singleton
 public class TetrisFactoryImpl implements TetrisFactory {
@@ -58,6 +59,7 @@ public class TetrisFactoryImpl implements TetrisFactory {
 
     @Override
     public Tetris createTetris() {
-        return Tetris.Builder.instance().setName(name).setVersion(version).setProjectURI(uri).build();
+        return Tetris.Builder.instance().setName(name).setVersion(version).setProjectURI(uri).setState(State.STOPPED)
+                .build();
     }
 }
