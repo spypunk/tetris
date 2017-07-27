@@ -18,9 +18,7 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.model.Tetris;
-import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.model.TetrisEvent;
-import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
@@ -84,14 +82,12 @@ public class TetrisControllerImpl implements TetrisController {
 
         tetrisService.update(tetris);
 
-        if (!tetris.getState().equals(State.STOPPED)) {
-            final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+        final List<TetrisEvent> tetrisEvents = tetris.getTetrisEvents();
 
-            final List<TetrisEvent> tetrisEvents = tetrisInstance.getTetrisEvents();
+        executeTetrisControllerCommands(
+            tetrisControllerTetrisEventHandler.handleEvents(tetrisEvents));
 
-            executeTetrisControllerCommands(
-                tetrisControllerTetrisEventHandler.handleEvents(tetrisEvents));
-        }
+        tetrisEvents.clear();
 
         tetrisView.update();
     }

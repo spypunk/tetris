@@ -9,6 +9,9 @@
 package spypunk.tetris.model;
 
 import java.net.URI;
+import java.util.List;
+
+import com.google.common.collect.Lists;
 
 public class Tetris {
 
@@ -44,6 +47,8 @@ public class Tetris {
     private State state;
 
     private boolean mute;
+
+    private List<TetrisEvent> tetrisEvents = Lists.newArrayList();
 
     public static final class Builder {
 
@@ -128,5 +133,13 @@ public class Tetris {
 
     public void setMute(final boolean mute) {
         this.mute = mute;
+    }
+
+    public List<TetrisEvent> getTetrisEvents() {
+        return tetrisEvents;
+    }
+
+    public void setTetrisEvents(final List<TetrisEvent> tetrisEvents) {
+        this.tetrisEvents = tetrisEvents;
     }
 }

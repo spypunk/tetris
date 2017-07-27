@@ -78,8 +78,6 @@ public class TetrisServiceImpl implements TetrisService {
 
         final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
 
-        tetrisInstance.getTetrisEvents().clear();
-
         tetrisInstance.setCurrentGravityFrame(tetrisInstance.getCurrentGravityFrame() + 1);
 
         if (handleNextShape(tetris)) {
@@ -136,7 +134,7 @@ public class TetrisServiceImpl implements TetrisService {
         }
 
         if (isTimeToHandleGravity(tetrisInstance)) {
-            clearCompleteRows(tetrisInstance);
+            clearCompleteRows(tetris);
             getNextShape(tetrisInstance);
             checkShapeIsLocked(tetris);
 
@@ -200,10 +198,10 @@ public class TetrisServiceImpl implements TetrisService {
 
         if (isGameOver(tetrisInstance)) {
             tetris.setState(State.GAME_OVER);
-            tetrisInstance.getTetrisEvents().add(TetrisEvent.GAME_OVER);
+            tetris.getTetrisEvents().add(TetrisEvent.GAME_OVER);
         } else {
             resetCurrentGravityFrame(tetrisInstance);
-            tetrisInstance.getTetrisEvents().add(TetrisEvent.SHAPE_LOCKED);
+            tetris.getTetrisEvents().add(TetrisEvent.SHAPE_LOCKED);
             tetrisInstance.setCurrentShapeLocked(true);
         }
 
@@ -237,7 +235,9 @@ public class TetrisServiceImpl implements TetrisService {
         return tetrisInstance.getCurrentGravityFrame() > tetrisInstance.getSpeed();
     }
 
-    private void clearCompleteRows(final TetrisInstance tetrisInstance) {
+    private void clearCompleteRows(final Tetris tetris) {
+        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
+
         final List<Integer> completeRows = IntStream.range(0, HEIGHT)
                 .filter(row -> isRowComplete(tetrisInstance, row)).boxed().collect(Collectors.toList());
 
@@ -254,7 +254,7 @@ public class TetrisServiceImpl implements TetrisService {
         updateScoreWithCompletedRows(tetrisInstance, completedRows);
         updateLevel(tetrisInstance);
 
-        tetrisInstance.getTetrisEvents().add(TetrisEvent.ROWS_COMPLETED);
+        tetris.getTetrisEvents().add(TetrisEvent.ROWS_COMPLETED);
     }
 
     private void updateLevel(final TetrisInstance tetrisInstance) {
