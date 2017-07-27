@@ -29,18 +29,24 @@ public class SoundServiceImpl implements SoundService {
 
     @Override
     public void playMusic(final Sound sound) {
-        doPlayMusic(sound);
+        stopMusic();
+
+        currentMusicSoundClip = soundClipCache.getSoundClip(sound);
+
+        currentMusicSoundClip.play();
     }
 
     @Override
     public void pauseMusic() {
-        doPauseMusic();
+        if (currentMusicSoundClip != null) {
+            currentMusicSoundClip.pause();
+        }
     }
 
     @Override
     public void resumeMusic() {
         if (currentMusicSoundClip != null) {
-            currentMusicSoundClip.resume();
+            currentMusicSoundClip.play();
         }
     }
 
@@ -54,7 +60,10 @@ public class SoundServiceImpl implements SoundService {
 
     @Override
     public void playSound(final Sound sound) {
-        doPlaySound(sound);
+        final SoundClip clip = soundClipCache.getSoundClip(sound);
+
+        clip.stop();
+        clip.play();
     }
 
     @Override
@@ -75,26 +84,5 @@ public class SoundServiceImpl implements SoundService {
     @Override
     public void decreaseVolume() {
         soundClipCache.getAllSoundClips().forEach(SoundClip::decreaseVolume);
-    }
-
-    private void doPlaySound(final Sound sound) {
-        final SoundClip clip = soundClipCache.getSoundClip(sound);
-
-        clip.stop();
-        clip.play();
-    }
-
-    private void doPlayMusic(final Sound sound) {
-        stopMusic();
-
-        currentMusicSoundClip = soundClipCache.getSoundClip(sound);
-
-        currentMusicSoundClip.play();
-    }
-
-    private void doPauseMusic() {
-        if (currentMusicSoundClip != null) {
-            currentMusicSoundClip.pause();
-        }
     }
 }
