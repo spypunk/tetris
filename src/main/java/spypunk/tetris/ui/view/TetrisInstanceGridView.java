@@ -40,13 +40,13 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
 
     private static final long serialVersionUID = -3487901883637598196L;
 
-    private static final String PAUSE = "PAUSE".intern();
+    private static final String PAUSE = "PAUSE";
 
     private static final Color TETRIS_FROZEN_FG_COLOR = new Color(30, 30, 30, 200);
 
-    private static final String GAME_OVER = "GAME OVER".intern();
+    private static final String GAME_OVER = "GAME OVER";
 
-    private static final String PRESS_SPACE = "PRESS SPACE".intern();
+    private static final String PRESS_SPACE = "PRESS SPACE";
 
     private final Rectangle gridRectangle;
 

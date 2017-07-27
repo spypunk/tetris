@@ -37,7 +37,7 @@ public class SoundClipCacheImpl implements SoundClipCache {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SoundClipCacheImpl.class);
 
-    private static final String SOUNDS_FOLDER = "/sound/".intern();
+    private static final String SOUNDS_FOLDER = "/sound/";
 
     private final Map<Sound, SoundClip> soundClips = createSoundClips();
 

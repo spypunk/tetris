@@ -45,13 +45,13 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
 
     private static final int WIDTH = 1 + BLOCK_SIZE * 6;
 
-    private static final String SCORE = "SCORE".intern();
+    private static final String SCORE = "SCORE";
 
-    private static final String LEVEL = "LEVEL".intern();
+    private static final String LEVEL = "LEVEL";
 
-    private static final String NEXT_SHAPE = "NEXT".intern();
+    private static final String NEXT_SHAPE = "NEXT";
 
-    private static final String ROWS = "ROWS".intern();
+    private static final String ROWS = "ROWS";
 
     private final Rectangle levelRectangle;
 

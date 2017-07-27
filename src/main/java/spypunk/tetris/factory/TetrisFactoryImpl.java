@@ -28,13 +28,13 @@ public class TetrisFactoryImpl implements TetrisFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    private static final String NAME_KEY = "name".intern();
+    private static final String NAME_KEY = "name";
 
-    private static final String VERSION_KEY = "version".intern();
+    private static final String VERSION_KEY = "version";
 
-    private static final String URL_KEY = "url".intern();
+    private static final String URL_KEY = "url";
 
-    private static final String TETRIS_PROPERTIES = "/tetris.properties".intern();
+    private static final String TETRIS_PROPERTIES = "/tetris.properties";
 
     private final String name;
 

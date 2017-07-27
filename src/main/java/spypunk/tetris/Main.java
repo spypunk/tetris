@@ -29,17 +29,14 @@ public final class Main {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    private static final String USER_HOME = System.getProperty("user.home").intern();
+    private static final String USER_HOME = System.getProperty("user.home");
 
-    private static final String ERROR_TITLE = "Error".intern();
+    private static final String ERROR_TITLE = "Error";
 
-    private static final String ERROR_MESSAGE_TEMPLATE = "An error occurred, check the log file %s%s.spypunk-tetris%stetris.log for more information"
-            .intern();
+    private static final String ERROR_MESSAGE_TEMPLATE = "An error occurred, check the log file %s%s.spypunk-tetris%stetris.log for more information";
 
-    private static final String ERROR_MESSAGE = String
-            .format(ERROR_MESSAGE_TEMPLATE,
-                USER_HOME, File.separator, File.separator)
-            .intern();
+    private static final String ERROR_MESSAGE = String.format(ERROR_MESSAGE_TEMPLATE, USER_HOME, File.separator,
+        File.separator);
 
     private Main() {
         throw new IllegalAccessError();

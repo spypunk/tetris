@@ -34,11 +34,11 @@ public class ImageCacheImpl implements ImageCache {
 
     private static final String IMAGE_FILE_PATTERN = "%s%s.png";
 
-    private static final String ICONS_FOLDER = "/img/icons/".intern();
+    private static final String ICONS_FOLDER = "/img/icons/";
 
-    private static final String BLOCKS_FOLDER = "/img/blocks/".intern();
+    private static final String BLOCKS_FOLDER = "/img/blocks/";
 
-    private static final String SHAPES_FOLDER = "/img/shapes/".intern();
+    private static final String SHAPES_FOLDER = "/img/shapes/";
 
     private final Map<Icon, Image> icons = createIcons();
 

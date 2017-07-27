@@ -40,7 +40,7 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
 
     private static final long serialVersionUID = 288335810615538818L;
 
-    private static final String STATISTICS = "STATISTICS".intern();
+    private static final String STATISTICS = "STATISTICS";
 
     private final Rectangle statisticsRectangle;
 
