@@ -46,7 +46,7 @@ public class Tetris {
 
     private State state;
 
-    private boolean mute;
+    private boolean muted;
 
     private List<TetrisEvent> tetrisEvents = Lists.newArrayList();
 
@@ -127,19 +127,19 @@ public class Tetris {
         this.state = state;
     }
 
-    public boolean isMute() {
-        return mute;
-    }
-
-    public void setMute(final boolean mute) {
-        this.mute = mute;
-    }
-
     public List<TetrisEvent> getTetrisEvents() {
         return tetrisEvents;
     }
 
     public void setTetrisEvents(final List<TetrisEvent> tetrisEvents) {
         this.tetrisEvents = tetrisEvents;
+    }
+
+    public boolean isMuted() {
+        return muted;
+    }
+
+    public void setMuted(final boolean muted) {
+        this.muted = muted;
     }
 }

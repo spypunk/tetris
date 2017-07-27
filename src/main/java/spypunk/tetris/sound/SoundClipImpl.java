@@ -35,19 +35,13 @@ public class SoundClipImpl implements SoundClip {
 
     private final FloatControl volumeControl;
 
-    private boolean paused;
-
     private long currentFramePosition;
-
-    private boolean mute;
 
     private float minimumVolume;
 
     private float maximumVolume;
 
     private float currentVolume;
-
-    private boolean stopped = true;
 
     public SoundClipImpl(final AudioInputStream inputStream, final boolean loop) {
         this.loop = loop;
@@ -73,48 +67,41 @@ public class SoundClipImpl implements SoundClip {
 
     @Override
     public void play() {
-        resume();
+        clip.setMicrosecondPosition(currentFramePosition);
+
+        if (loop) {
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } else {
+            clip.start();
+        }
     }
 
     @Override
     public void pause() {
-        if (paused) {
-            resume();
-        } else {
-            currentFramePosition = clip.getMicrosecondPosition();
+        currentFramePosition = clip.getMicrosecondPosition();
 
-            clip.stop();
+        clip.stop();
+    }
 
-            paused = true;
-        }
+    @Override
+    public void resume() {
+        play();
     }
 
     @Override
     public void stop() {
         clip.stop();
-        stopped = true;
         currentFramePosition = 0;
     }
 
     @Override
     public void mute() {
-        mute = !mute;
+        volumeControl.setValue(minimumVolume);
+    }
 
-        final boolean pausedNeeded = !stopped && !paused;
-
-        if (pausedNeeded) {
-            pause();
-        }
-
-        if (mute) {
-            volumeControl.setValue(minimumVolume);
-        } else {
-            volumeControl.setValue(currentVolume);
-        }
-
-        if (pausedNeeded) {
-            pause();
-        }
+    @Override
+    public void unMute() {
+        volumeControl.setValue(currentVolume);
     }
 
     @Override
@@ -127,11 +114,6 @@ public class SoundClipImpl implements SoundClip {
         updateVolume(-VOLUME_DELTA);
     }
 
-    @Override
-    public boolean isMute() {
-        return mute;
-    }
-
     private void updateVolume(final float delta) {
         currentVolume += delta;
 
@@ -142,19 +124,6 @@ public class SoundClipImpl implements SoundClip {
         }
 
         volumeControl.setValue(currentVolume);
-    }
-
-    private void resume() {
-        clip.setMicrosecondPosition(currentFramePosition);
-
-        if (loop) {
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        } else {
-            clip.start();
-        }
-
-        paused = false;
-        stopped = false;
     }
 
     private AudioFormat getOutFormat(final AudioFormat inFormat) {

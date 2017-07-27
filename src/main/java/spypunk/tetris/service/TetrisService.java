@@ -23,5 +23,5 @@ public interface TetrisService {
 
     void pause(Tetris tetris);
 
-    void mute(Tetris tetris, boolean mute);
+    void mute(Tetris tetris);
 }

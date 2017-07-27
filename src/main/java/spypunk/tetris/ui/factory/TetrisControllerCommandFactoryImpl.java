@@ -49,8 +49,10 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
             final State state = tetris.getState();
 
-            if (State.RUNNING.equals(state) || State.PAUSED.equals(state)) {
+            if (State.PAUSED.equals(state)) {
                 soundService.pauseMusic();
+            } else if (State.RUNNING.equals(state)) {
+                soundService.resumeMusic();
             }
         };
     }
@@ -68,8 +70,13 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     @Override
     public TetrisControllerCommand createMuteTetrisControllerCommand() {
         return tetris -> {
-            soundService.mute();
-            tetrisService.mute(tetris, soundService.isMute());
+            tetrisService.mute(tetris);
+
+            if (tetris.isMuted()) {
+                soundService.mute();
+            } else {
+                soundService.unMute();
+            }
         };
     }
 

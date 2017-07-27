@@ -14,13 +14,15 @@ public interface SoundClip {
 
     void pause();
 
+    void resume();
+
     void stop();
 
     void mute();
 
+    void unMute();
+
     void increaseVolume();
 
     void decreaseVolume();
-
-    boolean isMute();
 }

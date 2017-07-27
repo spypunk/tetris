@@ -180,7 +180,7 @@ public class TetrisViewImpl implements TetrisView {
     }
 
     private void doUpdate() {
-        muteLabel.setIcon(tetris.isMute() ? muteImageIcon : unmuteImageIcon);
+        muteLabel.setIcon(tetris.isMuted() ? muteImageIcon : unmuteImageIcon);
 
         tetrisInstanceGridView.update();
         tetrisInstanceStatisticsView.update();

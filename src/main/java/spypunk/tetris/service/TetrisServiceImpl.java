@@ -115,8 +115,8 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     @Override
-    public void mute(final Tetris tetris, final boolean mute) {
-        tetris.setMute(mute);
+    public void mute(final Tetris tetris) {
+        tetris.setMuted(!tetris.isMuted());
     }
 
     private void handleHardDrop(final Tetris tetris) {

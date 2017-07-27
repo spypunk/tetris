@@ -38,6 +38,13 @@ public class SoundServiceImpl implements SoundService {
     }
 
     @Override
+    public void resumeMusic() {
+        if (currentMusicSoundClip != null) {
+            currentMusicSoundClip.resume();
+        }
+    }
+
+    @Override
     public void stopMusic() {
         if (currentMusicSoundClip != null) {
             currentMusicSoundClip.stop();
@@ -56,6 +63,11 @@ public class SoundServiceImpl implements SoundService {
     }
 
     @Override
+    public void unMute() {
+        soundClipCache.getAllSoundClips().forEach(SoundClip::unMute);
+    }
+
+    @Override
     public void increaseVolume() {
         soundClipCache.getAllSoundClips().forEach(SoundClip::increaseVolume);
     }
@@ -63,11 +75,6 @@ public class SoundServiceImpl implements SoundService {
     @Override
     public void decreaseVolume() {
         soundClipCache.getAllSoundClips().forEach(SoundClip::decreaseVolume);
-    }
-
-    @Override
-    public boolean isMute() {
-        return soundClipCache.getAllSoundClips().stream().allMatch(SoundClip::isMute);
     }
 
     private void doPlaySound(final Sound sound) {
