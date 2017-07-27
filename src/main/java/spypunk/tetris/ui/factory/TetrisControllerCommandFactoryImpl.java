@@ -57,9 +57,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     @Override
     public TetrisControllerCommand createMovementTetrisControllerCommand(final Movement movement) {
-        return tetris -> {
-            tetrisService.triggerMovement(tetris, movement);
-        };
+        return tetris -> tetrisService.triggerMovement(tetris, movement);
     }
 
     @Override
