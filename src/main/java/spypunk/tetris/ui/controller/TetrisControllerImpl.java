@@ -14,8 +14,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import spypunk.tetris.factory.TetrisFactory;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisEvent;
@@ -60,7 +58,6 @@ public class TetrisControllerImpl implements TetrisController {
     @Override
     public void start() {
         tetrisView.show();
-
         tetrisControllerGameLoop.start();
     }
 
@@ -102,16 +99,7 @@ public class TetrisControllerImpl implements TetrisController {
         tetrisControllerInputHandler.onKeyReleased(keyCode);
     }
 
-    @Override
-    public TetrisView getTetrisView() {
-        return tetrisView;
-    }
-
     private void executeTetrisControllerCommands(final Collection<TetrisControllerCommand> tetrisControllerCommands) {
-        if (CollectionUtils.isEmpty(tetrisControllerCommands)) {
-            return;
-        }
-
         tetrisControllerCommands.forEach(tetrisControllerCommand -> tetrisControllerCommand.execute(tetris));
     }
 }

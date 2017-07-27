@@ -46,7 +46,7 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
 
     private final Rectangle statisticsLabelRectangle;
 
-    private final Map<ShapeType, StatisticsRow> statisticsRows;
+    private final transient Map<ShapeType, StatisticsRow> statisticsRows;
 
     private final List<ShapeType> shapeTypes;
 

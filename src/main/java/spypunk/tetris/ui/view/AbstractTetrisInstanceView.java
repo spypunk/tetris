@@ -22,7 +22,7 @@ public abstract class AbstractTetrisInstanceView extends JLabel implements View 
 
     protected transient BufferedImage image;
 
-    protected Tetris tetris;
+    protected transient Tetris tetris;
 
     @Override
     public void update() {

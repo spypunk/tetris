@@ -52,7 +52,7 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
 
     private final Rectangle frozenGridRectangle;
 
-    private final ImageCache imageCache;
+    private final transient ImageCache imageCache;
 
     private final Font frozenFont;
 

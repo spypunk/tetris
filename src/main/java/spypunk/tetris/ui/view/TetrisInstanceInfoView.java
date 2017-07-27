@@ -41,9 +41,9 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
 
     private static final long serialVersionUID = 7458148358359765406L;
 
-    private static final int HEIGHT = 1 + BLOCK_SIZE * 16;
+    private static final int VIEW_HEIGHT = 1 + BLOCK_SIZE * 16;
 
-    private static final int WIDTH = 1 + BLOCK_SIZE * 6;
+    private static final int VIEW_WIDTH = 1 + BLOCK_SIZE * 6;
 
     private static final String SCORE = "SCORE";
 
@@ -71,7 +71,7 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
 
     private final Map<ShapeType, Rectangle> shapeTypeImageRectangles;
 
-    private final ImageCache imageCache;
+    private final transient ImageCache imageCache;
 
     private final Font defaultFont;
 
@@ -82,7 +82,7 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
 
         defaultFont = fontCache.getFont(FontType.DEFAULT);
 
-        image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        image = new BufferedImage(VIEW_WIDTH, VIEW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
         levelRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE);
         scoreRectangle = new Rectangle(0, BLOCK_SIZE * 4, BLOCK_SIZE * 6, BLOCK_SIZE);
