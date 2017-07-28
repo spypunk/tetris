@@ -40,7 +40,7 @@ import spypunk.tetris.ui.icon.Icon;
 import spypunk.tetris.ui.util.SwingUtils;
 
 @Singleton
-public class TetrisViewImpl implements TetrisView {
+public class TetrisViewImpl extends AbstractView implements TetrisView {
 
     private final JFrame frame;
 
@@ -55,8 +55,6 @@ public class TetrisViewImpl implements TetrisView {
     private final ImageIcon muteImageIcon;
 
     private final ImageIcon unmuteImageIcon;
-
-    private final Tetris tetris;
 
     private final class TetrisViewWindowListener extends WindowAdapter {
 
@@ -125,8 +123,8 @@ public class TetrisViewImpl implements TetrisView {
             final TetrisInstanceStatisticsView tetrisInstanceStatisticsView,
             final TetrisInstanceInfoView tetrisInstanceInfoView,
             final TetrisInstanceGridView tetrisInstanceGridView) {
+        super(fontCache, imageCache, tetris);
 
-        this.tetris = tetris;
         this.tetrisInstanceStatisticsView = tetrisInstanceStatisticsView;
         this.tetrisInstanceInfoView = tetrisInstanceInfoView;
         this.tetrisInstanceGridView = tetrisInstanceGridView;
@@ -157,9 +155,9 @@ public class TetrisViewImpl implements TetrisView {
         centerPanel.setBackground(Color.BLACK);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE));
 
-        centerPanel.add(tetrisInstanceGridView, BorderLayout.CENTER);
-        centerPanel.add(tetrisInstanceStatisticsView, BorderLayout.WEST);
-        centerPanel.add(tetrisInstanceInfoView, BorderLayout.EAST);
+        centerPanel.add(tetrisInstanceGridView.getComponent(), BorderLayout.CENTER);
+        centerPanel.add(tetrisInstanceStatisticsView.getComponent(), BorderLayout.WEST);
+        centerPanel.add(tetrisInstanceInfoView.getComponent(), BorderLayout.EAST);
 
         frame = new JFrame(tetris.getName() + " " + tetris.getVersion());
 

@@ -18,12 +18,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.ImageIcon;
 
 import com.google.common.collect.Maps;
 
@@ -42,8 +40,6 @@ import spypunk.tetris.ui.util.SwingUtils;
 @Singleton
 public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
 
-    private static final long serialVersionUID = -3487901883637598196L;
-
     private static final String PAUSE = "PAUSE";
 
     private static final Color TETRIS_FROZEN_FG_COLOR = new Color(30, 30, 30, 200);
@@ -55,8 +51,6 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
     private final Rectangle gridRectangle;
 
     private final Rectangle frozenGridRectangle;
-
-    private final transient ImageCache imageCache;
 
     private final Font frozenFont;
 
@@ -70,8 +64,7 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
     public TetrisInstanceGridView(final FontCache fontCache,
             final ImageCache imageCache,
             final @TetrisProvider Tetris tetris) {
-        this.imageCache = imageCache;
-        this.tetris = tetris;
+        super(fontCache, imageCache, tetris);
 
         frozenFont = fontCache.getFont(FontType.FROZEN);
 
@@ -84,11 +77,7 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
         blockX = gridRectangle.x + 1;
         blockY = gridRectangle.y + 1;
 
-        image = new BufferedImage(gridRectangle.width + 1, gridRectangle.height + 1,
-                BufferedImage.TYPE_INT_ARGB);
-
-        setIcon(new ImageIcon(image));
-        setIgnoreRepaint(true);
+        initializeComponent(gridRectangle.width + 1, gridRectangle.height + 1);
     }
 
     @Override

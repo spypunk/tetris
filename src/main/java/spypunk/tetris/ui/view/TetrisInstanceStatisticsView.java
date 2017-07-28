@@ -17,7 +17,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.ImageIcon;
 
 import com.google.common.collect.Lists;
 
@@ -42,15 +40,13 @@ import spypunk.tetris.ui.util.SwingUtils;
 @Singleton
 public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
 
-    private static final long serialVersionUID = 288335810615538818L;
-
     private static final String STATISTICS = "STATISTICS";
 
     private final Rectangle statisticsRectangle;
 
     private final Rectangle statisticsLabelRectangle;
 
-    private final transient Map<ShapeType, StatisticsRow> statisticsRows;
+    private final Map<ShapeType, StatisticsRow> statisticsRows;
 
     private final List<ShapeType> shapeTypes;
 
@@ -87,7 +83,7 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
     @Inject
     public TetrisInstanceStatisticsView(final FontCache fontCache,
             final ImageCache imageCache, final @TetrisProvider Tetris tetris) {
-        this.tetris = tetris;
+        super(fontCache, imageCache, tetris);
 
         defaultFont = fontCache.getFont(FontType.DEFAULT);
 
@@ -100,11 +96,7 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
                 .collect(
                     Collectors.toMap(Function.identity(), shapeType -> createStatisticRow(imageCache, shapeType)));
 
-        image = new BufferedImage(statisticsRectangle.width + 1, statisticsRectangle.height + BLOCK_SIZE + 1,
-                BufferedImage.TYPE_INT_ARGB);
-
-        setIcon(new ImageIcon(image));
-        setIgnoreRepaint(true);
+        initializeComponent(statisticsRectangle.width + 1, statisticsRectangle.height + BLOCK_SIZE + 1);
     }
 
     private StatisticsRow createStatisticRow(final ImageCache imageCache, final ShapeType shapeType) {

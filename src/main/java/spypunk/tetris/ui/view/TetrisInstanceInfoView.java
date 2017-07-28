@@ -17,7 +17,6 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.ImageIcon;
 
 import com.google.common.collect.Lists;
 
@@ -42,8 +40,6 @@ import spypunk.tetris.ui.util.SwingUtils;
 
 @Singleton
 public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
-
-    private static final long serialVersionUID = 7458148358359765406L;
 
     private static final int VIEW_HEIGHT = 1 + BLOCK_SIZE * 16;
 
@@ -75,19 +71,14 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
 
     private final Map<ShapeType, Rectangle> shapeTypeImageRectangles;
 
-    private final transient ImageCache imageCache;
-
     private final Font defaultFont;
 
     @Inject
     public TetrisInstanceInfoView(final FontCache fontCache,
             final ImageCache imageCache, final @TetrisProvider Tetris tetris) {
-        this.tetris = tetris;
-        this.imageCache = imageCache;
+        super(fontCache, imageCache, tetris);
 
         defaultFont = fontCache.getFont(FontType.DEFAULT);
-
-        image = new BufferedImage(VIEW_WIDTH, VIEW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 
         levelRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE);
         scoreRectangle = new Rectangle(0, BLOCK_SIZE * 4, BLOCK_SIZE * 6, BLOCK_SIZE);
@@ -105,8 +96,7 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
                 .collect(
                     Collectors.toMap(Function.identity(), this::createShapeTypeImageRectangle));
 
-        setIcon(new ImageIcon(image));
-        setIgnoreRepaint(true);
+        initializeComponent(VIEW_WIDTH, VIEW_HEIGHT);
     }
 
     @Override

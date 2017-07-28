@@ -8,26 +8,47 @@
 
 package spypunk.tetris.ui.view;
 
+import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.ui.cache.ImageCache;
+import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
-public abstract class AbstractTetrisInstanceView extends JLabel implements View {
+public abstract class AbstractTetrisInstanceView extends AbstractView {
 
-    private static final long serialVersionUID = -3254277544172916051L;
+    protected JLabel component;
 
-    protected transient BufferedImage image;
+    protected AbstractTetrisInstanceView(final FontCache fontCache, final ImageCache imageCache, final Tetris tetris) {
+        super(fontCache, imageCache, tetris);
+    }
 
-    protected transient Tetris tetris;
+    protected void initializeComponent(final int width, final int height) {
+        component = new JLabel();
+
+        final BufferedImage image = new BufferedImage(width, height,
+                BufferedImage.TYPE_INT_ARGB);
+
+        component.setIcon(new ImageIcon(image));
+        component.setIgnoreRepaint(true);
+    }
 
     @Override
     public void update() {
+        final BufferedImage image = (BufferedImage) ((ImageIcon) component.getIcon()).getImage();
+
         SwingUtils.doInGraphics(image, this::doUpdate);
-        repaint();
+
+        component.repaint();
+    }
+
+    public Component getComponent() {
+        return component;
     }
 
     protected abstract void doUpdate(final Graphics2D graphics);
