@@ -57,11 +57,10 @@ public final class TetrisControllerGameLoopImpl implements TetrisControllerGameL
 
         while (running) {
             long currentTick = System.currentTimeMillis();
-            final long nextTick = currentTick + SKIP_TICKS;
 
             tetrisController.onGameLoopUpdate();
 
-            for (; currentTick < nextTick; currentTick = System
+            for (final long nextTick = currentTick + SKIP_TICKS; currentTick < nextTick; currentTick = System
                     .currentTimeMillis()) {
 
                 try {
