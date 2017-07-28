@@ -18,7 +18,6 @@ import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.sound.Sound;
 import spypunk.tetris.sound.service.SoundService;
-import spypunk.tetris.ui.controller.TetrisController;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 
 @Singleton
@@ -33,7 +32,6 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     @Inject
     public TetrisControllerCommandFactoryImpl(final TetrisService tetrisService,
             final SoundService soundService,
-            final TetrisController tetrisController,
             @TetrisProvider final Tetris tetris) {
         this.tetrisService = tetrisService;
         this.soundService = soundService;
