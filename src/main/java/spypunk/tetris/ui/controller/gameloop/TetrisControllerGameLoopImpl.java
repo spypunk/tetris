@@ -62,15 +62,18 @@ public final class TetrisControllerGameLoopImpl implements TetrisControllerGameL
 
             for (final long nextTick = currentTick + SKIP_TICKS; currentTick < nextTick; currentTick = System
                     .currentTimeMillis()) {
-
-                try {
-                    Thread.sleep(1);
-                } catch (final InterruptedException e) {
-                    LOGGER.error(e.getMessage(), e);
-                    Thread.currentThread().interrupt();
-                    stop();
-                }
+                waitMore();
             }
+        }
+    }
+
+    private void waitMore() {
+        try {
+            Thread.sleep(1);
+        } catch (final InterruptedException e) {
+            LOGGER.error(e.getMessage(), e);
+            Thread.currentThread().interrupt();
+            stop();
         }
     }
 }
