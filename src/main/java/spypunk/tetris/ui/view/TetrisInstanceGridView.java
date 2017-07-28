@@ -21,11 +21,14 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 
 import com.google.common.collect.Maps;
 
 import spypunk.tetris.constants.TetrisConstants;
+import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Block;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
@@ -36,6 +39,7 @@ import spypunk.tetris.ui.font.FontType;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
+@Singleton
 public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
 
     private static final long serialVersionUID = -3487901883637598196L;
@@ -62,9 +66,10 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
 
     private final Map<Point, Rectangle> blockRectanglesCache = Maps.newHashMap();
 
+    @Inject
     public TetrisInstanceGridView(final FontCache fontCache,
             final ImageCache imageCache,
-            final Tetris tetris) {
+            final @TetrisProvider Tetris tetris) {
         this.imageCache = imageCache;
         this.tetris = tetris;
 

@@ -23,10 +23,13 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.ImageIcon;
 
 import com.google.common.collect.Lists;
 
+import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
@@ -37,6 +40,7 @@ import spypunk.tetris.ui.font.FontType;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
+@Singleton
 public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
 
     private static final long serialVersionUID = 7458148358359765406L;
@@ -75,8 +79,9 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
 
     private final Font defaultFont;
 
+    @Inject
     public TetrisInstanceInfoView(final FontCache fontCache,
-            final ImageCache imageCache, final Tetris tetris) {
+            final ImageCache imageCache, final @TetrisProvider Tetris tetris) {
         this.tetris = tetris;
         this.imageCache = imageCache;
 
