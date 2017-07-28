@@ -17,7 +17,7 @@ public interface TetrisControllerCommandFactory {
 
     TetrisControllerCommand createPauseTetrisControllerCommand();
 
-    TetrisControllerCommand createMovementTetrisControllerCommand(Movement movement);
+    TetrisControllerCommand createMoveTetrisControllerCommand(Movement movement);
 
     TetrisControllerCommand createShapeLockedTetrisControllerCommand();
 

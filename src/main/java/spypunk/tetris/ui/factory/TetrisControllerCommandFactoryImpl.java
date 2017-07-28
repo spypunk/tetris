@@ -62,8 +62,8 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     }
 
     @Override
-    public TetrisControllerCommand createMovementTetrisControllerCommand(final Movement movement) {
-        return () -> tetrisService.triggerMovement(movement);
+    public TetrisControllerCommand createMoveTetrisControllerCommand(final Movement movement) {
+        return () -> tetrisService.move(movement);
     }
 
     @Override
@@ -96,16 +96,16 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     @Override
     public TetrisControllerCommand createIncreaseVolumeTetrisControllerCommand() {
-        return () -> soundService.increaseVolume();
+        return soundService::increaseVolume;
     }
 
     @Override
     public TetrisControllerCommand createDecreaseVolumeTetrisControllerCommand() {
-        return () -> soundService.decreaseVolume();
+        return soundService::decreaseVolume;
     }
 
     @Override
     public TetrisControllerCommand createHardDropTetrisControllerCommand() {
-        return () -> tetrisService.triggerHardDrop();
+        return tetrisService::hardDrop;
     }
 }

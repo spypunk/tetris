@@ -41,13 +41,13 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
     @Inject
     public TetrisControllerInputHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory) {
         pressedKeyCodesHandlers.put(KeyEvent.VK_LEFT,
-            () -> tetrisControllerCommandFactory.createMovementTetrisControllerCommand(Movement.LEFT));
+            () -> tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.LEFT));
 
         pressedKeyCodesHandlers.put(KeyEvent.VK_RIGHT,
-            () -> tetrisControllerCommandFactory.createMovementTetrisControllerCommand(Movement.RIGHT));
+            () -> tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.RIGHT));
 
         pressedKeyCodesHandlers.put(KeyEvent.VK_DOWN,
-            () -> tetrisControllerCommandFactory.createMovementTetrisControllerCommand(Movement.DOWN));
+            () -> tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.DOWN));
 
         releasedKeyCodesHandlers.put(KeyEvent.VK_SPACE,
             tetrisControllerCommandFactory::createNewGameTetrisControllerCommand);
@@ -55,7 +55,7 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
         releasedKeyCodesHandlers.put(KeyEvent.VK_P, tetrisControllerCommandFactory::createPauseTetrisControllerCommand);
 
         releasedKeyCodesHandlers.put(KeyEvent.VK_UP,
-            () -> tetrisControllerCommandFactory.createMovementTetrisControllerCommand(Movement.ROTATE_CW));
+            () -> tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.ROTATE_CW));
 
         releasedKeyCodesHandlers.put(KeyEvent.VK_M, tetrisControllerCommandFactory::createMuteTetrisControllerCommand);
 

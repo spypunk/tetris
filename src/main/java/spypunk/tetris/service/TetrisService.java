@@ -16,9 +16,9 @@ public interface TetrisService {
 
     void update();
 
-    void triggerMovement(Movement movement);
+    void move(Movement movement);
 
-    void triggerHardDrop();
+    void hardDrop();
 
     void pause();
 

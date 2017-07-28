@@ -99,7 +99,7 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     @Override
-    public void triggerMovement(final Movement movement) {
+    public void move(final Movement movement) {
         if (isTetrisRunning() && !tetrisInstance.isCurrentShapeLocked()
                 && !tetrisInstance.isHardDropEnabled()) {
             tetrisInstance.setMovement(Optional.of(movement));
@@ -107,7 +107,7 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     @Override
-    public void triggerHardDrop() {
+    public void hardDrop() {
         if (isTetrisRunning() && !tetrisInstance.isCurrentShapeLocked()
                 && !tetrisInstance.isHardDropEnabled()) {
             tetrisInstance.setHardDropEnabled(true);
@@ -227,7 +227,7 @@ public class TetrisServiceImpl implements TetrisService {
 
     private void clearCompleteRows() {
         final List<Integer> completeRows = IntStream.range(0, HEIGHT)
-                .filter(row -> isRowComplete(row)).boxed().collect(Collectors.toList());
+                .filter(this::isRowComplete).sorted().boxed().collect(Collectors.toList());
 
         final int completedRows = completeRows.size();
 
@@ -235,7 +235,7 @@ public class TetrisServiceImpl implements TetrisService {
             return;
         }
 
-        completeRows.forEach(row -> clearCompleteRow(row));
+        completeRows.forEach(this::clearCompleteRow);
 
         tetrisInstance.setCompletedRows(tetrisInstance.getCompletedRows() + completedRows);
 
@@ -280,7 +280,7 @@ public class TetrisServiceImpl implements TetrisService {
                 .forEach(column -> clearBlockAt(new Point(column, row)));
 
         blocksToMoveDown.forEach(block -> clearBlockAt(block.getLocation()));
-        blocksToMoveDown.forEach(block -> moveBlockDown(block));
+        blocksToMoveDown.forEach(this::moveBlockDown);
     }
 
     private void clearBlockAt(final Point location) {
@@ -318,7 +318,7 @@ public class TetrisServiceImpl implements TetrisService {
         final Shape currentShape = tetrisInstance.getCurrentShape();
         final Shape newShape = movement.apply(currentShape);
 
-        return newShape.getBlocks().stream().allMatch(block -> canBlockMove(block));
+        return newShape.getBlocks().stream().allMatch(this::canBlockMove);
     }
 
     private boolean canBlockMove(final Block block) {
