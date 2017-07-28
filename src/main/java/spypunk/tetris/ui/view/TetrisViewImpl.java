@@ -21,6 +21,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URI;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -28,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.controller.TetrisController;
@@ -36,6 +39,7 @@ import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.icon.Icon;
 import spypunk.tetris.ui.util.SwingUtils;
 
+@Singleton
 public class TetrisViewImpl implements TetrisView {
 
     private final JFrame frame;
@@ -113,10 +117,11 @@ public class TetrisViewImpl implements TetrisView {
         }
     }
 
+    @Inject
     public TetrisViewImpl(final TetrisController tetrisController,
             final FontCache fontCache,
             final ImageCache imageCache,
-            final Tetris tetris) {
+            final @TetrisProvider Tetris tetris) {
         this.tetris = tetris;
 
         tetrisInstanceStatisticsView = new TetrisInstanceStatisticsView(fontCache, imageCache, tetris);

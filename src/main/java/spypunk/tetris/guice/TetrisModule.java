@@ -8,12 +8,28 @@
 
 package spypunk.tetris.guice;
 
-import com.google.inject.AbstractModule;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
+import java.net.URI;
+import java.util.Properties;
 
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.BindingAnnotation;
+import com.google.inject.Provides;
+
+import spypunk.tetris.Main;
+import spypunk.tetris.exception.TetrisException;
 import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.factory.ShapeFactoryImpl;
-import spypunk.tetris.factory.TetrisFactory;
-import spypunk.tetris.factory.TetrisFactoryImpl;
+import spypunk.tetris.model.Tetris;
+import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.service.TetrisServiceImpl;
 import spypunk.tetris.sound.cache.SoundClipCache;
@@ -32,21 +48,55 @@ import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandlerImpl;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactoryImpl;
-import spypunk.tetris.ui.factory.TetrisViewFactory;
-import spypunk.tetris.ui.factory.TetrisViewFactoryImpl;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.font.cache.FontCacheImpl;
+import spypunk.tetris.ui.view.TetrisView;
+import spypunk.tetris.ui.view.TetrisViewImpl;
 
 public class TetrisModule extends AbstractModule {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+
+    private static final String NAME_KEY = "name";
+
+    private static final String VERSION_KEY = "version";
+
+    private static final String URL_KEY = "url";
+
+    private static final String TETRIS_PROPERTIES = "/tetris.properties";
+
+    private final String name;
+
+    private final String version;
+
+    private final URI uri;
+
+    private final Tetris tetris;
+
+    public TetrisModule() {
+        try (InputStream inputStream = TetrisModule.class.getResource(TETRIS_PROPERTIES).openStream()) {
+            final Properties properties = new Properties();
+
+            properties.load(inputStream);
+
+            name = properties.getProperty(NAME_KEY);
+            version = properties.getProperty(VERSION_KEY);
+            uri = URI.create(properties.getProperty(URL_KEY));
+        } catch (final IOException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new TetrisException(e);
+        }
+
+        tetris = Tetris.Builder.instance().setName(name).setVersion(version).setProjectURI(uri).setState(State.STOPPED)
+                .build();
+    }
 
     @Override
     protected void configure() {
         bind(TetrisService.class).to(TetrisServiceImpl.class);
         bind(ShapeFactory.class).to(ShapeFactoryImpl.class);
         bind(TetrisController.class).to(TetrisControllerImpl.class);
-        bind(TetrisViewFactory.class).to(TetrisViewFactoryImpl.class);
         bind(ImageCache.class).to(ImageCacheImpl.class);
-        bind(TetrisFactory.class).to(TetrisFactoryImpl.class);
         bind(FontCache.class).to(FontCacheImpl.class);
         bind(TetrisControllerCommandFactory.class).to(TetrisControllerCommandFactoryImpl.class);
         bind(SoundService.class).to(SoundServiceImpl.class);
@@ -54,5 +104,18 @@ public class TetrisModule extends AbstractModule {
         bind(TetrisControllerInputHandler.class).to(TetrisControllerInputHandlerImpl.class);
         bind(TetrisControllerTetrisEventHandler.class).to(TetrisControllerTetrisEventHandlerImpl.class);
         bind(TetrisControllerGameLoop.class).to(TetrisControllerGameLoopImpl.class);
+        bind(TetrisView.class).to(TetrisViewImpl.class);
+    }
+
+    @Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD })
+    @BindingAnnotation
+    public @interface TetrisProvider {
+    }
+
+    @Provides
+    @TetrisProvider
+    @Inject
+    public Tetris getTetris() {
+        return tetris;
     }
 }

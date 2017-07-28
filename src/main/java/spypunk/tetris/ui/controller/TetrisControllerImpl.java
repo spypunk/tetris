@@ -14,7 +14,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import spypunk.tetris.factory.TetrisFactory;
+import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisEvent;
 import spypunk.tetris.service.TetrisService;
@@ -22,7 +22,6 @@ import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
 import spypunk.tetris.ui.controller.gameloop.TetrisControllerGameLoop;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
-import spypunk.tetris.ui.factory.TetrisViewFactory;
 import spypunk.tetris.ui.util.SwingUtils;
 import spypunk.tetris.ui.view.TetrisView;
 
@@ -42,17 +41,18 @@ public class TetrisControllerImpl implements TetrisController {
     private final TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler;
 
     @Inject
-    public TetrisControllerImpl(final TetrisFactory tetrisFactory, final TetrisViewFactory tetrisViewFactory,
-            final TetrisControllerGameLoop tetrisControllerGameLoop, final TetrisService tetrisService,
+    public TetrisControllerImpl(final TetrisControllerGameLoop tetrisControllerGameLoop,
+            final TetrisService tetrisService,
             final TetrisControllerInputHandler tetrisControllerInputHandler,
-            final TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler) {
+            final TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler,
+            final @TetrisProvider Tetris tetris,
+            final TetrisView tetrisView) {
         this.tetrisService = tetrisService;
         this.tetrisControllerInputHandler = tetrisControllerInputHandler;
         this.tetrisControllerTetrisEventHandler = tetrisControllerTetrisEventHandler;
         this.tetrisControllerGameLoop = tetrisControllerGameLoop;
-
-        tetris = tetrisFactory.createTetris();
-        tetrisView = tetrisViewFactory.createTetrisView(tetris);
+        this.tetris = tetris;
+        this.tetrisView = tetrisView;
     }
 
     @Override
