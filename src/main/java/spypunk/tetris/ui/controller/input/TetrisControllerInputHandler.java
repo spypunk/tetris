@@ -8,10 +8,6 @@
 
 package spypunk.tetris.ui.controller.input;
 
-import java.util.List;
-
-import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
-
 public interface TetrisControllerInputHandler {
 
     enum InputType {
@@ -27,7 +23,5 @@ public interface TetrisControllerInputHandler {
 
     void onKeyReleased(int keyCode);
 
-    List<TetrisControllerCommand> handleInputs();
-
-    void reset();
+    void handleInputs();
 }

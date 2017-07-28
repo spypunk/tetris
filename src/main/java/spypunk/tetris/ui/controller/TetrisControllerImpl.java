@@ -8,17 +8,12 @@
 
 package spypunk.tetris.ui.controller;
 
-import java.util.Collection;
-import java.util.List;
-
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Tetris;
-import spypunk.tetris.model.TetrisEvent;
 import spypunk.tetris.service.TetrisService;
-import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
 import spypunk.tetris.ui.controller.gameloop.TetrisControllerGameLoop;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
@@ -73,18 +68,11 @@ public class TetrisControllerImpl implements TetrisController {
 
     @Override
     public void onGameLoopUpdate() {
-        executeTetrisControllerCommands(tetrisControllerInputHandler.handleInputs());
-
-        tetrisControllerInputHandler.reset();
+        tetrisControllerInputHandler.handleInputs();
 
         tetrisService.update(tetris);
 
-        final List<TetrisEvent> tetrisEvents = tetris.getTetrisEvents();
-
-        executeTetrisControllerCommands(
-            tetrisControllerTetrisEventHandler.handleEvents(tetrisEvents));
-
-        tetrisEvents.clear();
+        tetrisControllerTetrisEventHandler.handleEvents();
 
         tetrisView.update();
     }
@@ -97,9 +85,5 @@ public class TetrisControllerImpl implements TetrisController {
     @Override
     public void onKeyReleased(final int keyCode) {
         tetrisControllerInputHandler.onKeyReleased(keyCode);
-    }
-
-    private void executeTetrisControllerCommands(final Collection<TetrisControllerCommand> tetrisControllerCommands) {
-        tetrisControllerCommands.forEach(tetrisControllerCommand -> tetrisControllerCommand.execute(tetris));
     }
 }

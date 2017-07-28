@@ -23,7 +23,9 @@ import org.apache.commons.collections4.ListUtils;
 
 import com.google.common.collect.Maps;
 
+import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Movement;
+import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 
@@ -38,8 +40,14 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
 
     private final Map<Integer, Supplier<TetrisControllerCommand>> releasedKeyCodesHandlers = Maps.newHashMap();
 
+    private final Tetris tetris;
+
     @Inject
-    public TetrisControllerInputHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory) {
+    public TetrisControllerInputHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory,
+            @TetrisProvider final Tetris tetris) {
+
+        this.tetris = tetris;
+
         pressedKeyCodesHandlers.put(KeyEvent.VK_LEFT,
             () -> tetrisControllerCommandFactory.createMovementTetrisControllerCommand(Movement.LEFT));
 
@@ -80,13 +88,11 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
     }
 
     @Override
-    public List<TetrisControllerCommand> handleInputs() {
-        return ListUtils.union(getCommandsFromKeys(pressedKeysBitSet, pressedKeyCodesHandlers),
-            getCommandsFromKeys(releasedKeysBitSet, releasedKeyCodesHandlers));
-    }
+    public void handleInputs() {
+        ListUtils.union(getCommandsFromKeys(pressedKeysBitSet, pressedKeyCodesHandlers),
+            getCommandsFromKeys(releasedKeysBitSet, releasedKeyCodesHandlers))
+                .forEach(command -> command.execute(tetris));
 
-    @Override
-    public void reset() {
         pressedKeysBitSet.clear();
         releasedKeysBitSet.clear();
     }

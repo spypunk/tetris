@@ -8,19 +8,17 @@
 
 package spypunk.tetris.ui.controller.event;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import com.google.common.collect.Maps;
 
+import spypunk.tetris.guice.TetrisModule.TetrisProvider;
+import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisEvent;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
@@ -31,8 +29,14 @@ public class TetrisControllerTetrisEventHandlerImpl implements TetrisControllerT
     private final Map<TetrisEvent, Supplier<TetrisControllerCommand>> tetrisControllerCommands = Maps
             .newHashMap();
 
+    private final Tetris tetris;
+
     @Inject
-    public TetrisControllerTetrisEventHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory) {
+    public TetrisControllerTetrisEventHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory,
+            @TetrisProvider final Tetris tetris) {
+
+        this.tetris = tetris;
+
         tetrisControllerCommands.put(TetrisEvent.SHAPE_LOCKED,
             tetrisControllerCommandFactory::createShapeLockedTetrisControllerCommand);
 
@@ -44,12 +48,12 @@ public class TetrisControllerTetrisEventHandlerImpl implements TetrisControllerT
     }
 
     @Override
-    public List<TetrisControllerCommand> handleEvents(final List<TetrisEvent> tetrisEvents) {
-        if (CollectionUtils.isEmpty(tetrisEvents)) {
-            return Collections.emptyList();
-        }
+    public void handleEvents() {
+        final List<TetrisEvent> tetrisEvents = tetris.getTetrisEvents();
 
-        return tetrisEvents.stream().map(tetrisControllerCommands::get).map(Supplier::get).collect(Collectors.toList());
+        tetrisEvents.stream().map(tetrisControllerCommands::get).map(Supplier::get)
+                .forEach(command -> command.execute(tetris));
+
+        tetrisEvents.clear();
     }
-
 }
