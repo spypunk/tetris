@@ -54,12 +54,14 @@ public final class TetrisControllerGameLoopImpl implements TetrisControllerGameL
 
     @Override
     public void run() {
-        long lastTick = System.currentTimeMillis();
 
         while (running) {
-            long newTick = System.currentTimeMillis();
+            long currentTick = System.currentTimeMillis();
+            final long nextTick = currentTick + SKIP_TICKS;
 
-            for (; newTick - lastTick < SKIP_TICKS; newTick = System
+            tetrisController.onGameLoopUpdate();
+
+            for (; currentTick < nextTick; currentTick = System
                     .currentTimeMillis()) {
 
                 try {
@@ -70,10 +72,6 @@ public final class TetrisControllerGameLoopImpl implements TetrisControllerGameL
                     stop();
                 }
             }
-
-            lastTick = newTick;
-
-            tetrisController.onGameLoopUpdate();
         }
     }
 }
