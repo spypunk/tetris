@@ -44,7 +44,7 @@ public class Tetris {
 
     private TetrisInstance tetrisInstance;
 
-    private State state;
+    private State state = State.STOPPED;
 
     private boolean muted;
 
@@ -73,11 +73,6 @@ public class Tetris {
 
         public Builder setProjectURI(final URI projectURI) {
             tetris.setProjectURI(projectURI);
-            return this;
-        }
-
-        public Builder setState(final State state) {
-            tetris.setState(state);
             return this;
         }
 

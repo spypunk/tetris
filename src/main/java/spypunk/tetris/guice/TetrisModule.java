@@ -29,7 +29,6 @@ import spypunk.tetris.exception.TetrisException;
 import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.factory.ShapeFactoryImpl;
 import spypunk.tetris.model.Tetris;
-import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.service.TetrisServiceImpl;
 import spypunk.tetris.sound.cache.SoundClipCache;
@@ -85,7 +84,7 @@ public class TetrisModule extends AbstractModule {
             throw new TetrisException(e);
         }
 
-        tetris = Tetris.Builder.instance().setName(name).setVersion(version).setProjectURI(uri).setState(State.STOPPED)
+        tetris = Tetris.Builder.instance().setName(name).setVersion(version).setProjectURI(uri)
                 .build();
     }
 
