@@ -52,7 +52,7 @@ public class TetrisControllerTetrisEventHandlerImpl implements TetrisControllerT
         final List<TetrisEvent> tetrisEvents = tetris.getTetrisEvents();
 
         tetrisEvents.stream().map(tetrisControllerCommands::get).map(Supplier::get)
-                .forEach(command -> command.execute(tetris));
+                .forEach(TetrisControllerCommand::execute);
 
         tetrisEvents.clear();
     }

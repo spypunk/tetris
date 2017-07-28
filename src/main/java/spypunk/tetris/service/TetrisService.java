@@ -9,19 +9,18 @@
 package spypunk.tetris.service;
 
 import spypunk.tetris.model.Movement;
-import spypunk.tetris.model.Tetris;
 
 public interface TetrisService {
 
-    void start(Tetris tetris);
+    void start();
 
-    void update(Tetris tetris);
+    void update();
 
-    void triggerMovement(Tetris tetris, Movement movement);
+    void triggerMovement(Movement movement);
 
-    void triggerHardDrop(Tetris tetris);
+    void triggerHardDrop();
 
-    void pause(Tetris tetris);
+    void pause();
 
-    void mute(Tetris tetris);
+    void mute();
 }

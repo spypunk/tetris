@@ -11,7 +11,9 @@ package spypunk.tetris.ui.factory;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Movement;
+import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.sound.Sound;
@@ -26,26 +28,30 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     private final SoundService soundService;
 
+    private final Tetris tetris;
+
     @Inject
     public TetrisControllerCommandFactoryImpl(final TetrisService tetrisService,
             final SoundService soundService,
-            final TetrisController tetrisController) {
+            final TetrisController tetrisController,
+            @TetrisProvider final Tetris tetris) {
         this.tetrisService = tetrisService;
         this.soundService = soundService;
+        this.tetris = tetris;
     }
 
     @Override
     public TetrisControllerCommand createNewGameTetrisControllerCommand() {
-        return tetris -> {
-            tetrisService.start(tetris);
+        return () -> {
+            tetrisService.start();
             soundService.playMusic(Sound.BACKGROUND);
         };
     }
 
     @Override
     public TetrisControllerCommand createPauseTetrisControllerCommand() {
-        return tetris -> {
-            tetrisService.pause(tetris);
+        return () -> {
+            tetrisService.pause();
 
             final State state = tetris.getState();
 
@@ -59,18 +65,18 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     @Override
     public TetrisControllerCommand createMovementTetrisControllerCommand(final Movement movement) {
-        return tetris -> tetrisService.triggerMovement(tetris, movement);
+        return () -> tetrisService.triggerMovement(movement);
     }
 
     @Override
     public TetrisControllerCommand createShapeLockedTetrisControllerCommand() {
-        return tetris -> soundService.playSound(Sound.SHAPE_LOCKED);
+        return () -> soundService.playSound(Sound.SHAPE_LOCKED);
     }
 
     @Override
     public TetrisControllerCommand createMuteTetrisControllerCommand() {
-        return tetris -> {
-            tetrisService.mute(tetris);
+        return () -> {
+            tetrisService.mute();
 
             if (tetris.isMuted()) {
                 soundService.mute();
@@ -82,26 +88,26 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     @Override
     public TetrisControllerCommand createGameOverTetrisControllerCommand() {
-        return tetris -> soundService.playMusic(Sound.GAME_OVER);
+        return () -> soundService.playMusic(Sound.GAME_OVER);
     }
 
     @Override
     public TetrisControllerCommand createRowsCompletedTetrisControllerCommand() {
-        return tetris -> soundService.playSound(Sound.ROWS_COMPLETED);
+        return () -> soundService.playSound(Sound.ROWS_COMPLETED);
     }
 
     @Override
     public TetrisControllerCommand createIncreaseVolumeTetrisControllerCommand() {
-        return tetris -> soundService.increaseVolume();
+        return () -> soundService.increaseVolume();
     }
 
     @Override
     public TetrisControllerCommand createDecreaseVolumeTetrisControllerCommand() {
-        return tetris -> soundService.decreaseVolume();
+        return () -> soundService.decreaseVolume();
     }
 
     @Override
     public TetrisControllerCommand createHardDropTetrisControllerCommand() {
-        return tetrisService::triggerHardDrop;
+        return () -> tetrisService.triggerHardDrop();
     }
 }

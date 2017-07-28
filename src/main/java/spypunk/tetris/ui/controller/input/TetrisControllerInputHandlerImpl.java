@@ -23,9 +23,7 @@ import org.apache.commons.collections4.ListUtils;
 
 import com.google.common.collect.Maps;
 
-import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Movement;
-import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 
@@ -40,14 +38,8 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
 
     private final Map<Integer, Supplier<TetrisControllerCommand>> releasedKeyCodesHandlers = Maps.newHashMap();
 
-    private final Tetris tetris;
-
     @Inject
-    public TetrisControllerInputHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory,
-            @TetrisProvider final Tetris tetris) {
-
-        this.tetris = tetris;
-
+    public TetrisControllerInputHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory) {
         pressedKeyCodesHandlers.put(KeyEvent.VK_LEFT,
             () -> tetrisControllerCommandFactory.createMovementTetrisControllerCommand(Movement.LEFT));
 
@@ -91,7 +83,7 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
     public void handleInputs() {
         ListUtils.union(getCommandsFromKeys(pressedKeysBitSet, pressedKeyCodesHandlers),
             getCommandsFromKeys(releasedKeysBitSet, releasedKeyCodesHandlers))
-                .forEach(command -> command.execute(tetris));
+                .forEach(TetrisControllerCommand::execute);
 
         pressedKeysBitSet.clear();
         releasedKeysBitSet.clear();

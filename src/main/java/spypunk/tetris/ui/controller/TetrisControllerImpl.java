@@ -70,7 +70,7 @@ public class TetrisControllerImpl implements TetrisController {
     public void onGameLoopUpdate() {
         tetrisControllerInputHandler.handleInputs();
 
-        tetrisService.update(tetris);
+        tetrisService.update();
 
         tetrisControllerTetrisEventHandler.handleEvents();
 
