@@ -8,6 +8,8 @@
     <groupId>spypunk</groupId>
     <artifactId>tetris</artifactId>
     <version>1.8.0-SNAPSHOT</version>
+    <name>Tetris</name>
+    <description>Just another Tetris™ clone</description>
     <url>https://github.com/spypunk/tetris</url>
 
     <licenses>
@@ -23,6 +25,13 @@
             <url>https://github.com/spypunk</url>
         </developer>
     </developers>
+
+    <scm>
+        <url>git@github.com:spypunk/tetris.git</url>
+        <connection>scm:git:https://github.com/spypunk/tetris.git</connection>
+        <developerConnection>scm:git:git@github.com:spypunk/tetris.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 
     <prerequisites>
         <maven>3.0</maven>
