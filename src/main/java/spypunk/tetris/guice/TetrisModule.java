@@ -65,15 +65,13 @@ public class TetrisModule extends AbstractModule {
 
     private static final String TETRIS_PROPERTIES = "/tetris.properties";
 
-    private final String name;
-
-    private final String version;
-
-    private final URI uri;
-
     private final Tetris tetris;
 
     public TetrisModule() {
+        String name;
+        String version;
+        URI uri;
+
         try (InputStream inputStream = TetrisModule.class.getResource(TETRIS_PROPERTIES).openStream()) {
             final Properties properties = new Properties();
 
