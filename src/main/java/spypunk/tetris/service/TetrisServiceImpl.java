@@ -217,7 +217,7 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private boolean isGameOver() {
-        return tetris.getTetrisInstance().getBlocks().values().stream()
+        return tetrisInstance.getBlocks().values().stream()
                 .anyMatch(block -> block.getLocation().y == 0);
     }
 
@@ -284,7 +284,7 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private void clearBlockAt(final Point location) {
-        tetris.getTetrisInstance().getBlocks().remove(location);
+        tetrisInstance.getBlocks().remove(location);
     }
 
     private boolean isRowComplete(final int row) {
@@ -338,7 +338,7 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private void resetCurrentGravityFrame() {
-        tetris.getTetrisInstance().setCurrentGravityFrame(0);
+        tetrisInstance.setCurrentGravityFrame(0);
     }
 
     private static Map<Integer, Integer> createLevelSpeeds() {
