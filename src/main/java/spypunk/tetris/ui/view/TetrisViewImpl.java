@@ -182,10 +182,6 @@ public class TetrisViewImpl extends AbstractView implements TetrisView {
 
     @Override
     public void update() {
-        SwingUtils.doInAWTThread(this::doUpdate, true);
-    }
-
-    private void doUpdate() {
         muteLabel.setIcon(tetris.isMuted() ? muteImageIcon : unmuteImageIcon);
 
         tetrisInstanceGridView.update();
