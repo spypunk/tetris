@@ -84,8 +84,7 @@ public class TetrisModule extends AbstractModule {
             throw new TetrisException(e);
         }
 
-        tetris = Tetris.Builder.instance().setName(name).setVersion(version).setProjectURI(uri)
-                .build();
+        tetris = new Tetris(name, version, uri);
     }
 
     @Override

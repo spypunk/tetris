@@ -12,7 +12,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+
+import spypunk.tetris.model.Shape.Block;
 
 public enum Movement {
 
@@ -48,18 +49,13 @@ public enum Movement {
                 nextRotationIndex = 0;
             }
 
-            final Shape newShape = Shape.Builder.instance().setBoundingBox(newBoundingBox)
-                    .setCurrentRotation(nextRotationIndex).setShapeType(shape.getShapeType()).build();
+            final Shape newShape = new Shape(shape.getShapeType(), newBoundingBox, nextRotationIndex);
 
             final Set<Point> rotation = rotations.get(nextRotationIndex);
 
-            final List<Block> blocks = rotation.stream()
-                    .map(location -> Block.Builder.instance()
-                            .setLocation(new Point(location.x + newBoundingBox.x, location.y + newBoundingBox.y))
-                            .setShape(newShape).build())
-                    .collect(Collectors.toList());
-
-            newShape.setBlocks(blocks);
+            rotation.stream()
+                    .forEach(location -> newShape.new Block(
+                            new Point(location.x + newBoundingBox.x, location.y + newBoundingBox.y)));
 
             return newShape;
         }
@@ -79,18 +75,14 @@ public enum Movement {
 
         newBoundingBox.setLocation(apply(boundingBox.getLocation()));
 
-        final Shape newShape = Shape.Builder.instance().setBoundingBox(newBoundingBox)
-                .setCurrentRotation(shape.getCurrentRotation()).setShapeType(shape.getShapeType()).build();
+        final Shape newShape = new Shape(shape.getShapeType(), newBoundingBox, shape.getCurrentRotation());
 
-        final List<Block> blocks = shape.getBlocks().stream().map(block -> apply(block, newShape))
-                .collect(Collectors.toList());
-
-        newShape.setBlocks(blocks);
+        shape.getBlocks().stream().forEach(block -> apply(block, newShape));
 
         return newShape;
     }
 
-    protected Block apply(final Block block, final Shape newShape) {
-        return Block.Builder.instance().setLocation(apply(block.getLocation())).setShape(newShape).build();
+    protected void apply(final Block block, final Shape newShape) {
+        newShape.new Block(apply(block.getLocation()));
     }
 }

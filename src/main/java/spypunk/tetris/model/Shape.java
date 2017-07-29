@@ -8,85 +8,64 @@
 
 package spypunk.tetris.model;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 public class Shape {
 
-    private ShapeType shapeType;
+    public class Block {
 
-    private Rectangle boundingBox;
+        private Point location;
 
-    private int currentRotation;
+        public Block(final Point location) {
+            this.location = location;
 
-    private List<Block> blocks;
-
-    public static final class Builder {
-
-        private final Shape shape = new Shape();
-
-        private Builder() {
+            getShape().blocks.add(this);
         }
 
-        public static Builder instance() {
-            return new Builder();
+        public Shape getShape() {
+            return Shape.this;
         }
 
-        public Builder setShapeType(final ShapeType shapeType) {
-            shape.setShapeType(shapeType);
-            return this;
+        public Point getLocation() {
+            return location;
         }
 
-        public Builder setBlocks(final List<Block> blocks) {
-            shape.setBlocks(blocks);
-            return this;
+        public void setLocation(final Point location) {
+            this.location = location;
         }
+    }
 
-        public Builder setBoundingBox(final Rectangle boundingBox) {
-            shape.setBoundingBox(boundingBox);
-            return this;
-        }
+    private final ShapeType shapeType;
 
-        public Builder setCurrentRotation(final int currentRotation) {
-            shape.setCurrentRotation(currentRotation);
-            return this;
-        }
+    private final Rectangle boundingBox;
 
-        public Shape build() {
-            return shape;
-        }
+    private final int currentRotation;
+
+    private final List<Block> blocks = Lists.newArrayList();
+
+    public Shape(final ShapeType shapeType, final Rectangle boundingBox, final int currentRotation) {
+        this.shapeType = shapeType;
+        this.boundingBox = boundingBox;
+        this.currentRotation = currentRotation;
     }
 
     public ShapeType getShapeType() {
         return shapeType;
     }
 
-    public void setShapeType(final ShapeType shapeType) {
-        this.shapeType = shapeType;
-    }
-
     public List<Block> getBlocks() {
         return blocks;
-    }
-
-    public void setBlocks(final List<Block> blocks) {
-        this.blocks = blocks;
     }
 
     public Rectangle getBoundingBox() {
         return boundingBox;
     }
 
-    public void setBoundingBox(final Rectangle boundingBox) {
-        this.boundingBox = boundingBox;
-    }
-
     public int getCurrentRotation() {
         return currentRotation;
     }
-
-    public void setCurrentRotation(final int currentRotation) {
-        this.currentRotation = currentRotation;
-    }
-
 }

@@ -11,20 +11,24 @@ package spypunk.tetris.model;
 import java.awt.Point;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
+import spypunk.tetris.model.Shape.Block;
 
 public class TetrisInstance {
 
-    private Map<Point, Block> blocks = Maps.newHashMap();
+    private final Map<Point, Block> blocks = Maps.newHashMap();
+
+    private final Map<ShapeType, Integer> statistics;
 
     private Shape currentShape;
 
     private Shape nextShape;
 
     private Optional<Movement> movement = Optional.empty();
-
-    private Map<ShapeType, Integer> statistics;
 
     private int level;
 
@@ -42,44 +46,13 @@ public class TetrisInstance {
 
     private boolean hardDropEnabled;
 
-    public static final class Builder {
-
-        private final TetrisInstance tetrisInstance = new TetrisInstance();
-
-        private Builder() {
-        }
-
-        public static Builder instance() {
-            return new Builder();
-        }
-
-        public Builder setNextShape(final Shape nextShape) {
-            tetrisInstance.setNextShape(nextShape);
-            return this;
-        }
-
-        public Builder setStatistics(final Map<ShapeType, Integer> statistics) {
-            tetrisInstance.setStatistics(statistics);
-            return this;
-        }
-
-        public Builder setSpeed(final int speed) {
-            tetrisInstance.setSpeed(speed);
-            return this;
-        }
-
-        public TetrisInstance build() {
-            return tetrisInstance;
-        }
-
+    public TetrisInstance() {
+        statistics = Lists.newArrayList(ShapeType.values()).stream()
+                .collect(Collectors.toMap(shapeType -> shapeType, shapeType -> 0));
     }
 
     public Map<Point, Block> getBlocks() {
         return blocks;
-    }
-
-    public void setBlocks(final Map<Point, Block> blocks) {
-        this.blocks = blocks;
     }
 
     public Shape getCurrentShape() {
@@ -108,10 +81,6 @@ public class TetrisInstance {
 
     public Map<ShapeType, Integer> getStatistics() {
         return statistics;
-    }
-
-    public void setStatistics(final Map<ShapeType, Integer> statistics) {
-        this.statistics = statistics;
     }
 
     public int getLevel() {

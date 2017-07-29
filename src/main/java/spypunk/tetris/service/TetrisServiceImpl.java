@@ -22,14 +22,13 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.guice.TetrisModule.TetrisProvider;
-import spypunk.tetris.model.Block;
 import spypunk.tetris.model.Movement;
 import spypunk.tetris.model.Shape;
+import spypunk.tetris.model.Shape.Block;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
@@ -59,14 +58,11 @@ public class TetrisServiceImpl implements TetrisService {
 
     @Override
     public void start() {
-        final Map<ShapeType, Integer> statistics = Lists.newArrayList(ShapeType.values()).stream()
-                .collect(Collectors.toMap(shapeType -> shapeType, shapeType -> 0));
-
         final int speed = getLevelSpeed(0);
 
-        tetrisInstance = TetrisInstance.Builder.instance()
-                .setStatistics(statistics).setSpeed(speed).build();
+        tetrisInstance = new TetrisInstance();
 
+        tetrisInstance.setSpeed(speed);
         tetrisInstance.setNextShape(shapeFactory.createRandomShape());
 
         getNextShape();

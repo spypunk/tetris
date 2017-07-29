@@ -36,11 +36,13 @@ public class Tetris {
         }
     }
 
-    private String name;
+    private final String name;
 
-    private String version;
+    private final String version;
 
-    private URI projectURI;
+    private final URI projectURI;
+
+    private final List<TetrisEvent> tetrisEvents = Lists.newArrayList();
 
     private TetrisInstance tetrisInstance;
 
@@ -48,62 +50,22 @@ public class Tetris {
 
     private boolean muted;
 
-    private List<TetrisEvent> tetrisEvents = Lists.newArrayList();
-
-    public static final class Builder {
-
-        private final Tetris tetris = new Tetris();
-
-        private Builder() {
-        }
-
-        public static Builder instance() {
-            return new Builder();
-        }
-
-        public Builder setName(final String name) {
-            tetris.setName(name);
-            return this;
-        }
-
-        public Builder setVersion(final String version) {
-            tetris.setVersion(version);
-            return this;
-        }
-
-        public Builder setProjectURI(final URI projectURI) {
-            tetris.setProjectURI(projectURI);
-            return this;
-        }
-
-        public Tetris build() {
-            return tetris;
-        }
-
+    public Tetris(final String name, final String version, final URI projectURI) {
+        this.name = name;
+        this.version = version;
+        this.projectURI = projectURI;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(final String name) {
-        this.name = name;
-    }
-
     public String getVersion() {
         return version;
     }
 
-    public void setVersion(final String version) {
-        this.version = version;
-    }
-
     public URI getProjectURI() {
         return projectURI;
-    }
-
-    public void setProjectURI(final URI projectURI) {
-        this.projectURI = projectURI;
     }
 
     public TetrisInstance getTetrisInstance() {
@@ -124,10 +86,6 @@ public class Tetris {
 
     public List<TetrisEvent> getTetrisEvents() {
         return tetrisEvents;
-    }
-
-    public void setTetrisEvents(final List<TetrisEvent> tetrisEvents) {
-        this.tetrisEvents = tetrisEvents;
     }
 
     public boolean isMuted() {

@@ -27,7 +27,7 @@ import com.google.common.collect.Maps;
 
 import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.guice.TetrisModule.TetrisProvider;
-import spypunk.tetris.model.Block;
+import spypunk.tetris.model.Shape.Block;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;

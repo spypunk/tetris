@@ -12,13 +12,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import javax.inject.Singleton;
 
 import com.google.common.collect.Lists;
 
-import spypunk.tetris.model.Block;
 import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 
@@ -43,15 +41,10 @@ public class ShapeFactoryImpl implements ShapeFactory {
 
         boundingBox.translate(dx, 0);
 
-        final Shape shape = Shape.Builder.instance().setBoundingBox(boundingBox).setShapeType(shapeType)
-                .setCurrentRotation(INITIAL_ROTATION).build();
+        final Shape shape = new Shape(shapeType, boundingBox, INITIAL_ROTATION);
 
-        final List<Block> blocks = shapeType.getRotations().get(INITIAL_ROTATION).stream()
-                .map(location -> new Point(location.x + dx, location.y))
-                .map(location -> Block.Builder.instance().setLocation(location).setShape(shape).build())
-                .collect(Collectors.toList());
-
-        shape.setBlocks(blocks);
+        shapeType.getRotations().get(INITIAL_ROTATION).stream()
+                .forEach(location -> shape.new Block(new Point(location.x + dx, location.y)));
 
         return shape;
     }
