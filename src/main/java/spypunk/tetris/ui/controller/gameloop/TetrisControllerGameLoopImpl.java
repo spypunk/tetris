@@ -36,7 +36,8 @@ public final class TetrisControllerGameLoopImpl implements TetrisControllerGameL
 
     @Inject
     public TetrisControllerGameLoopImpl(final TetrisController tetrisController) {
-        executorService = Executors.newSingleThreadExecutor();
+        executorService = Executors
+                .newSingleThreadExecutor(runnable -> new Thread(runnable, "TetrisControllerGameLoop"));
         this.tetrisController = tetrisController;
     }
 
