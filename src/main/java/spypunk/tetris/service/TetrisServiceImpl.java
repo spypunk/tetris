@@ -196,7 +196,7 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private boolean isTimeToApplyGravity() {
-        return tetrisInstance.getCurrentGravityFrame() > tetrisInstance.getSpeed();
+        return tetrisInstance.getCurrentGravityFrame() == tetrisInstance.getSpeed();
     }
 
     private void clearCompleteRows() {
