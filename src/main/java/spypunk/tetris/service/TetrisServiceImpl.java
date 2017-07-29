@@ -201,7 +201,7 @@ public class TetrisServiceImpl implements TetrisService {
 
     private void clearCompleteRows() {
         final List<Integer> completeRows = IntStream.range(0, HEIGHT)
-                .filter(this::isRowComplete).sorted().boxed().collect(Collectors.toList());
+                .filter(this::isRowComplete).boxed().collect(Collectors.toList());
 
         final int completedRows = completeRows.size();
 
@@ -225,10 +225,7 @@ public class TetrisServiceImpl implements TetrisService {
 
         if (completedRows >= ROWS_PER_LEVEL * nextLevel) {
             tetrisInstance.setLevel(nextLevel);
-
-            final int speed = getLevelSpeed(nextLevel);
-
-            tetrisInstance.setSpeed(speed);
+            tetrisInstance.setSpeed(getLevelSpeed(nextLevel));
         }
     }
 
@@ -243,7 +240,7 @@ public class TetrisServiceImpl implements TetrisService {
         tetrisInstance.setScore(score + rowsScore * (tetrisInstance.getLevel() + 1));
     }
 
-    private void clearCompleteRow(final Integer row) {
+    private void clearCompleteRow(final int row) {
         final Map<Point, Block> blocks = tetrisInstance.getBlocks();
 
         final List<Block> blocksToMoveDown = blocks.values().stream()
@@ -302,9 +299,7 @@ public class TetrisServiceImpl implements TetrisService {
             return false;
         }
 
-        final Block nextLocationBlock = tetrisInstance.getBlocks().get(location);
-
-        return nextLocationBlock == null;
+        return !tetrisInstance.getBlocks().containsKey(location);
     }
 
     private boolean isTetrisRunning() {
@@ -317,7 +312,6 @@ public class TetrisServiceImpl implements TetrisService {
 
     private static Map<Integer, Integer> createLevelSpeeds() {
         final int initialSpeed = 48;
-
         final Map<Integer, Integer> levelSpeeds = Maps.newHashMap();
 
         levelSpeeds.put(0, initialSpeed);
