@@ -16,6 +16,14 @@ import com.google.common.collect.Lists;
 
 public class Shape {
 
+    private final ShapeType shapeType;
+
+    private final Rectangle boundingBox;
+
+    private final int currentRotation;
+
+    private final List<Block> blocks = Lists.newArrayList();
+
     public class Block {
 
         private Point location;
@@ -38,14 +46,6 @@ public class Shape {
             this.location = location;
         }
     }
-
-    private final ShapeType shapeType;
-
-    private final Rectangle boundingBox;
-
-    private final int currentRotation;
-
-    private final List<Block> blocks = Lists.newArrayList();
 
     public Shape(final ShapeType shapeType, final Rectangle boundingBox, final int currentRotation) {
         this.shapeType = shapeType;
