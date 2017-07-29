@@ -84,14 +84,14 @@ public class TetrisServiceImpl implements TetrisService {
 
     @Override
     public void move(final Movement movement) {
-        if (isTetrisRunning()) {
+        if (isMovementAllowed()) {
             tetrisInstance.setMovement(Optional.of(movement));
         }
     }
 
     @Override
     public void hardDrop() {
-        if (isTetrisRunning()) {
+        if (isMovementAllowed()) {
             tetrisInstance.setHardDropEnabled(true);
         }
     }
@@ -124,7 +124,7 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private void applyMovement() {
-        if (!canTryToMove()) {
+        if (!isMovementAllowed()) {
             return;
         }
 
@@ -336,7 +336,7 @@ public class TetrisServiceImpl implements TetrisService {
         return level < 29 ? levelSpeeds.get(level) : 1;
     }
 
-    private boolean canTryToMove() {
+    private boolean isMovementAllowed() {
         return isTetrisRunning() && !tetrisInstance.isCurrentShapeLocked();
     }
 }
