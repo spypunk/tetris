@@ -13,7 +13,6 @@ import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -34,39 +33,40 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
 
     private final BitSet releasedKeysBitSet = new BitSet();
 
-    private final Map<Integer, Supplier<TetrisControllerCommand>> pressedKeyCodesHandlers = Maps.newHashMap();
+    private final Map<Integer, TetrisControllerCommand> pressedKeyCodesHandlers = Maps.newHashMap();
 
-    private final Map<Integer, Supplier<TetrisControllerCommand>> releasedKeyCodesHandlers = Maps.newHashMap();
+    private final Map<Integer, TetrisControllerCommand> releasedKeyCodesHandlers = Maps.newHashMap();
 
     @Inject
     public TetrisControllerInputHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory) {
         pressedKeyCodesHandlers.put(KeyEvent.VK_LEFT,
-            () -> tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.LEFT));
+            tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.LEFT));
 
         pressedKeyCodesHandlers.put(KeyEvent.VK_RIGHT,
-            () -> tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.RIGHT));
+            tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.RIGHT));
 
         pressedKeyCodesHandlers.put(KeyEvent.VK_DOWN,
-            () -> tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.DOWN));
+            tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.DOWN));
 
         releasedKeyCodesHandlers.put(KeyEvent.VK_SPACE,
-            tetrisControllerCommandFactory::createNewGameTetrisControllerCommand);
+            tetrisControllerCommandFactory.createNewGameTetrisControllerCommand());
 
-        releasedKeyCodesHandlers.put(KeyEvent.VK_P, tetrisControllerCommandFactory::createPauseTetrisControllerCommand);
+        releasedKeyCodesHandlers.put(KeyEvent.VK_P,
+            tetrisControllerCommandFactory.createPauseTetrisControllerCommand());
 
         releasedKeyCodesHandlers.put(KeyEvent.VK_UP,
-            () -> tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.ROTATE_CW));
+            tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.ROTATE_CW));
 
-        releasedKeyCodesHandlers.put(KeyEvent.VK_M, tetrisControllerCommandFactory::createMuteTetrisControllerCommand);
+        releasedKeyCodesHandlers.put(KeyEvent.VK_M, tetrisControllerCommandFactory.createMuteTetrisControllerCommand());
 
         releasedKeyCodesHandlers.put(KeyEvent.VK_PAGE_UP,
-            tetrisControllerCommandFactory::createIncreaseVolumeTetrisControllerCommand);
+            tetrisControllerCommandFactory.createIncreaseVolumeTetrisControllerCommand());
 
         releasedKeyCodesHandlers.put(KeyEvent.VK_PAGE_DOWN,
-            tetrisControllerCommandFactory::createDecreaseVolumeTetrisControllerCommand);
+            tetrisControllerCommandFactory.createDecreaseVolumeTetrisControllerCommand());
 
         releasedKeyCodesHandlers.put(KeyEvent.VK_CONTROL,
-            tetrisControllerCommandFactory::createHardDropTetrisControllerCommand);
+            tetrisControllerCommandFactory.createHardDropTetrisControllerCommand());
     }
 
     @Override
@@ -90,22 +90,13 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
     }
 
     private List<TetrisControllerCommand> getCommandsFromKeys(final BitSet bitSet,
-            final Map<Integer, Supplier<TetrisControllerCommand>> keyCodesHandlers) {
+            final Map<Integer, TetrisControllerCommand> keyCodesHandlers) {
 
         if (bitSet.isEmpty()) {
             return Collections.emptyList();
         }
 
-        return keyCodesHandlers.keySet().stream().filter(keyCode -> isKeyTriggered(keyCode, bitSet))
-                .map(keyCode -> getCommandFromKeyCode(keyCodesHandlers, keyCode)).collect(Collectors.toList());
-    }
-
-    private TetrisControllerCommand getCommandFromKeyCode(
-            final Map<Integer, Supplier<TetrisControllerCommand>> keyCodesHandlers, final Integer keyCode) {
-        return keyCodesHandlers.get(keyCode).get();
-    }
-
-    private boolean isKeyTriggered(final int keyCode, final BitSet bitSet) {
-        return bitSet.get(keyCode);
+        return keyCodesHandlers.keySet().stream().filter(bitSet::get)
+                .map(keyCodesHandlers::get).collect(Collectors.toList());
     }
 }

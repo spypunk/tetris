@@ -10,7 +10,6 @@ package spypunk.tetris.ui.controller.event;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -26,7 +25,7 @@ import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 @Singleton
 public class TetrisControllerTetrisEventHandlerImpl implements TetrisControllerTetrisEventHandler {
 
-    private final Map<TetrisEvent, Supplier<TetrisControllerCommand>> tetrisControllerCommands = Maps
+    private final Map<TetrisEvent, TetrisControllerCommand> tetrisControllerCommands = Maps
             .newHashMap();
 
     private final Tetris tetris;
@@ -38,21 +37,20 @@ public class TetrisControllerTetrisEventHandlerImpl implements TetrisControllerT
         this.tetris = tetris;
 
         tetrisControllerCommands.put(TetrisEvent.SHAPE_LOCKED,
-            tetrisControllerCommandFactory::createShapeLockedTetrisControllerCommand);
+            tetrisControllerCommandFactory.createShapeLockedTetrisControllerCommand());
 
         tetrisControllerCommands.put(TetrisEvent.GAME_OVER,
-            tetrisControllerCommandFactory::createGameOverTetrisControllerCommand);
+            tetrisControllerCommandFactory.createGameOverTetrisControllerCommand());
 
         tetrisControllerCommands.put(TetrisEvent.ROWS_COMPLETED,
-            tetrisControllerCommandFactory::createRowsCompletedTetrisControllerCommand);
+            tetrisControllerCommandFactory.createRowsCompletedTetrisControllerCommand());
     }
 
     @Override
     public void handleEvents() {
         final List<TetrisEvent> tetrisEvents = tetris.getTetrisEvents();
 
-        tetrisEvents.stream().map(tetrisControllerCommands::get).map(Supplier::get)
-                .forEach(TetrisControllerCommand::execute);
+        tetrisEvents.stream().map(tetrisControllerCommands::get).forEach(TetrisControllerCommand::execute);
 
         tetrisEvents.clear();
     }
