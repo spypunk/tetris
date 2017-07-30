@@ -39,6 +39,10 @@ public final class SwingUtils {
         throw new IllegalAccessError();
     }
 
+    public static void doInAWTThread(final Runnable runnable) {
+        doInAWTThread(runnable, false);
+    }
+
     public static void doInAWTThread(final Runnable runnable, final boolean wait) {
         if (wait) {
             try {

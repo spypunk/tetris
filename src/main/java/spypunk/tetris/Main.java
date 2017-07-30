@@ -48,7 +48,7 @@ public final class Main {
             injector.getInstance(TetrisController.class).start();
         } catch (CreationException | ConfigurationException | ProvisionException e) {
             LOGGER.error(e.getMessage(), e);
-            SwingUtils.doInAWTThread(Main::showErrorDialog, false);
+            SwingUtils.doInAWTThread(Main::showErrorDialog);
         }
     }
 
