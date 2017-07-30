@@ -90,13 +90,8 @@ public class SoundClipImpl implements SoundClip {
     }
 
     @Override
-    public void mute() {
-        volumeControl.setValue(minimumVolume);
-    }
-
-    @Override
-    public void unMute() {
-        volumeControl.setValue(currentVolume);
+    public void setMuted(final boolean muted) {
+        volumeControl.setValue(muted ? minimumVolume : currentVolume);
     }
 
     @Override

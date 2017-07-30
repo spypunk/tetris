@@ -22,9 +22,7 @@ public interface SoundService {
 
     void stopMusic();
 
-    void mute();
-
-    void unMute();
+    void setMuted(boolean muted);
 
     void increaseVolume();
 

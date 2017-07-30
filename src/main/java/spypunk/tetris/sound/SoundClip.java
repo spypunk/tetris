@@ -16,9 +16,7 @@ public interface SoundClip {
 
     void stop();
 
-    void mute();
-
-    void unMute();
+    void setMuted(boolean muted);
 
     void increaseVolume();
 

@@ -67,13 +67,8 @@ public class SoundServiceImpl implements SoundService {
     }
 
     @Override
-    public void mute() {
-        soundClipCache.getAllSoundClips().forEach(SoundClip::mute);
-    }
-
-    @Override
-    public void unMute() {
-        soundClipCache.getAllSoundClips().forEach(SoundClip::unMute);
+    public void setMuted(final boolean muted) {
+        soundClipCache.getAllSoundClips().forEach(soundClip -> soundClip.setMuted(muted));
     }
 
     @Override
