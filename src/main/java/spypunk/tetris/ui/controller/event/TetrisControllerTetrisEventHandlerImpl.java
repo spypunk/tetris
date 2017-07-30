@@ -37,13 +37,13 @@ public class TetrisControllerTetrisEventHandlerImpl implements TetrisControllerT
         this.tetris = tetris;
 
         tetrisControllerCommands.put(TetrisEvent.SHAPE_LOCKED,
-            tetrisControllerCommandFactory.createShapeLockedTetrisControllerCommand());
+            tetrisControllerCommandFactory.createShapeLockedCommand());
 
         tetrisControllerCommands.put(TetrisEvent.GAME_OVER,
-            tetrisControllerCommandFactory.createGameOverTetrisControllerCommand());
+            tetrisControllerCommandFactory.createGameOverCommand());
 
         tetrisControllerCommands.put(TetrisEvent.ROWS_COMPLETED,
-            tetrisControllerCommandFactory.createRowsCompletedTetrisControllerCommand());
+            tetrisControllerCommandFactory.createRowsCompletedCommand());
     }
 
     @Override

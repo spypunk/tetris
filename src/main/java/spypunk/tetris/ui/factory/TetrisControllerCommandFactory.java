@@ -13,23 +13,23 @@ import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 
 public interface TetrisControllerCommandFactory {
 
-    TetrisControllerCommand createNewGameTetrisControllerCommand();
+    TetrisControllerCommand createNewGameCommand();
 
-    TetrisControllerCommand createPauseTetrisControllerCommand();
+    TetrisControllerCommand createPauseCommand();
 
-    TetrisControllerCommand createMoveTetrisControllerCommand(Movement movement);
+    TetrisControllerCommand createMoveCommand(Movement movement);
 
-    TetrisControllerCommand createShapeLockedTetrisControllerCommand();
+    TetrisControllerCommand createShapeLockedCommand();
 
-    TetrisControllerCommand createMuteTetrisControllerCommand();
+    TetrisControllerCommand createMuteCommand();
 
-    TetrisControllerCommand createGameOverTetrisControllerCommand();
+    TetrisControllerCommand createGameOverCommand();
 
-    TetrisControllerCommand createRowsCompletedTetrisControllerCommand();
+    TetrisControllerCommand createRowsCompletedCommand();
 
-    TetrisControllerCommand createIncreaseVolumeTetrisControllerCommand();
+    TetrisControllerCommand createIncreaseVolumeCommand();
 
-    TetrisControllerCommand createDecreaseVolumeTetrisControllerCommand();
+    TetrisControllerCommand createDecreaseVolumeCommand();
 
-    TetrisControllerCommand createHardDropTetrisControllerCommand();
+    TetrisControllerCommand createHardDropCommand();
 }

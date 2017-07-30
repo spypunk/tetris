@@ -44,7 +44,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     }
 
     @Override
-    public TetrisControllerCommand createNewGameTetrisControllerCommand() {
+    public TetrisControllerCommand createNewGameCommand() {
         return () -> {
             tetrisService.start();
             soundService.playMusic(Sound.BACKGROUND);
@@ -52,7 +52,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     }
 
     @Override
-    public TetrisControllerCommand createPauseTetrisControllerCommand() {
+    public TetrisControllerCommand createPauseCommand() {
         return () -> {
             tetrisService.pause();
 
@@ -67,17 +67,17 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     }
 
     @Override
-    public TetrisControllerCommand createMoveTetrisControllerCommand(final Movement movement) {
+    public TetrisControllerCommand createMoveCommand(final Movement movement) {
         return () -> tetrisService.move(movement);
     }
 
     @Override
-    public TetrisControllerCommand createShapeLockedTetrisControllerCommand() {
+    public TetrisControllerCommand createShapeLockedCommand() {
         return () -> soundService.playSound(Sound.SHAPE_LOCKED);
     }
 
     @Override
-    public TetrisControllerCommand createMuteTetrisControllerCommand() {
+    public TetrisControllerCommand createMuteCommand() {
         return () -> {
             tetrisService.mute();
 
@@ -89,27 +89,27 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     }
 
     @Override
-    public TetrisControllerCommand createGameOverTetrisControllerCommand() {
+    public TetrisControllerCommand createGameOverCommand() {
         return () -> soundService.playMusic(Sound.GAME_OVER);
     }
 
     @Override
-    public TetrisControllerCommand createRowsCompletedTetrisControllerCommand() {
+    public TetrisControllerCommand createRowsCompletedCommand() {
         return () -> soundService.playSound(Sound.ROWS_COMPLETED);
     }
 
     @Override
-    public TetrisControllerCommand createIncreaseVolumeTetrisControllerCommand() {
+    public TetrisControllerCommand createIncreaseVolumeCommand() {
         return soundService::increaseVolume;
     }
 
     @Override
-    public TetrisControllerCommand createDecreaseVolumeTetrisControllerCommand() {
+    public TetrisControllerCommand createDecreaseVolumeCommand() {
         return soundService::decreaseVolume;
     }
 
     @Override
-    public TetrisControllerCommand createHardDropTetrisControllerCommand() {
+    public TetrisControllerCommand createHardDropCommand() {
         return tetrisService::hardDrop;
     }
 }

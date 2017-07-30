@@ -40,33 +40,33 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
     @Inject
     public TetrisControllerInputHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory) {
         pressedKeyCodesHandlers.put(KeyEvent.VK_LEFT,
-            tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.LEFT));
+            tetrisControllerCommandFactory.createMoveCommand(Movement.LEFT));
 
         pressedKeyCodesHandlers.put(KeyEvent.VK_RIGHT,
-            tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.RIGHT));
+            tetrisControllerCommandFactory.createMoveCommand(Movement.RIGHT));
 
         pressedKeyCodesHandlers.put(KeyEvent.VK_DOWN,
-            tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.DOWN));
+            tetrisControllerCommandFactory.createMoveCommand(Movement.DOWN));
 
         releasedKeyCodesHandlers.put(KeyEvent.VK_SPACE,
-            tetrisControllerCommandFactory.createNewGameTetrisControllerCommand());
+            tetrisControllerCommandFactory.createNewGameCommand());
 
         releasedKeyCodesHandlers.put(KeyEvent.VK_P,
-            tetrisControllerCommandFactory.createPauseTetrisControllerCommand());
+            tetrisControllerCommandFactory.createPauseCommand());
 
         releasedKeyCodesHandlers.put(KeyEvent.VK_UP,
-            tetrisControllerCommandFactory.createMoveTetrisControllerCommand(Movement.ROTATE_CW));
+            tetrisControllerCommandFactory.createMoveCommand(Movement.ROTATE_CW));
 
-        releasedKeyCodesHandlers.put(KeyEvent.VK_M, tetrisControllerCommandFactory.createMuteTetrisControllerCommand());
+        releasedKeyCodesHandlers.put(KeyEvent.VK_M, tetrisControllerCommandFactory.createMuteCommand());
 
         releasedKeyCodesHandlers.put(KeyEvent.VK_PAGE_UP,
-            tetrisControllerCommandFactory.createIncreaseVolumeTetrisControllerCommand());
+            tetrisControllerCommandFactory.createIncreaseVolumeCommand());
 
         releasedKeyCodesHandlers.put(KeyEvent.VK_PAGE_DOWN,
-            tetrisControllerCommandFactory.createDecreaseVolumeTetrisControllerCommand());
+            tetrisControllerCommandFactory.createDecreaseVolumeCommand());
 
         releasedKeyCodesHandlers.put(KeyEvent.VK_CONTROL,
-            tetrisControllerCommandFactory.createHardDropTetrisControllerCommand());
+            tetrisControllerCommandFactory.createHardDropCommand());
     }
 
     @Override
