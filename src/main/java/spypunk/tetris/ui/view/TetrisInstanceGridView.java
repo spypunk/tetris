@@ -13,7 +13,6 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
@@ -33,7 +32,6 @@ import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.ui.cache.ImageCache;
-import spypunk.tetris.ui.font.FontType;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
@@ -52,8 +50,6 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
 
     private final Rectangle frozenGridRectangle;
 
-    private final Font frozenFont;
-
     private final int blockX;
 
     private final int blockY;
@@ -65,8 +61,6 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
             final ImageCache imageCache,
             final @TetrisProvider Tetris tetris) {
         super(fontCache, imageCache, tetris);
-
-        frozenFont = fontCache.getFont(FontType.FROZEN);
 
         gridRectangle = new Rectangle(0, 0, TetrisConstants.WIDTH * BLOCK_SIZE + 1,
                 TetrisConstants.HEIGHT * BLOCK_SIZE + 1);
@@ -110,7 +104,6 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
         final ShapeType shapeType = block.getShape().getShapeType();
         final Image blockImage = imageCache.getBlockImage(shapeType);
         final Point location = block.getLocation();
-
         final Rectangle rectangle = getBlockRectangle(location);
 
         SwingUtils.drawImage(graphics, blockImage, rectangle);
@@ -135,7 +128,7 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
 
     private void renderTetrisStopped(final Graphics2D graphics) {
         SwingUtils.renderCenteredText(graphics, PRESS_SPACE, gridRectangle,
-            frozenFont, DEFAULT_FONT_COLOR);
+            fontCache.getFrozenFont(), DEFAULT_FONT_COLOR);
     }
 
     private void renderTetrisFrozen(final Graphics2D graphics, final State state) {
@@ -144,6 +137,6 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
             frozenGridRectangle.height);
 
         SwingUtils.renderCenteredText(graphics, State.GAME_OVER.equals(state) ? GAME_OVER : PAUSE, gridRectangle,
-            frozenFont, DEFAULT_FONT_COLOR);
+            fontCache.getFrozenFont(), DEFAULT_FONT_COLOR);
     }
 }

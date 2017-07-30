@@ -34,7 +34,6 @@ import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.controller.TetrisController;
-import spypunk.tetris.ui.font.FontType;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.icon.Icon;
 import spypunk.tetris.ui.util.SwingUtils;
@@ -138,7 +137,7 @@ public class TetrisViewImpl extends AbstractView implements TetrisView {
 
         final JLabel urlLabel = new JLabel(projectURI.getHost() + projectURI.getPath());
 
-        urlLabel.setFont(fontCache.getFont(FontType.URL));
+        urlLabel.setFont(fontCache.getURLFont());
         urlLabel.setForeground(DEFAULT_FONT_COLOR);
         urlLabel.addMouseListener(new URLLabelMouseAdapter(tetrisController, urlLabel));
 
@@ -177,12 +176,14 @@ public class TetrisViewImpl extends AbstractView implements TetrisView {
 
     @Override
     public void show() {
-        SwingUtils.doInAWTThread(() -> frame.setVisible(true), true);
+        SwingUtils.doInAWTThread(() -> frame.setVisible(true), false);
     }
 
     @Override
     public void update() {
-        muteLabel.setIcon(tetris.isMuted() ? muteImageIcon : unmuteImageIcon);
+        final boolean muted = tetris.isMuted();
+
+        SwingUtils.doInAWTThread(() -> muteLabel.setIcon(muted ? muteImageIcon : unmuteImageIcon), false);
 
         tetrisInstanceGridView.update();
         tetrisInstanceStatisticsView.update();

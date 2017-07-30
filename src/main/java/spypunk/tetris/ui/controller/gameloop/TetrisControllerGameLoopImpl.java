@@ -55,7 +55,6 @@ public final class TetrisControllerGameLoopImpl implements TetrisControllerGameL
 
     @Override
     public void run() {
-
         while (running) {
             long currentTick = System.currentTimeMillis();
 

@@ -13,7 +13,6 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.ZERO;
 
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -33,7 +32,6 @@ import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.ui.cache.ImageCache;
-import spypunk.tetris.ui.font.FontType;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
@@ -49,8 +47,6 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
     private final Map<ShapeType, StatisticsRow> statisticsRows;
 
     private final List<ShapeType> shapeTypes;
-
-    private final Font defaultFont;
 
     private static class StatisticsRow {
 
@@ -85,8 +81,6 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
             final ImageCache imageCache, final @TetrisProvider Tetris tetris) {
         super(fontCache, imageCache, tetris);
 
-        defaultFont = fontCache.getFont(FontType.DEFAULT);
-
         shapeTypes = Lists.newArrayList(ShapeType.values());
 
         statisticsRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE * 15);
@@ -120,7 +114,7 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
     @Override
     protected void doUpdate(final Graphics2D graphics) {
         SwingUtils.renderCenteredText(graphics, STATISTICS,
-            statisticsLabelRectangle, defaultFont, DEFAULT_FONT_COLOR);
+            statisticsLabelRectangle, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
 
         graphics.setColor(DEFAULT_BORDER_COLOR);
 
@@ -147,6 +141,6 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
         SwingUtils.drawImage(graphics, statisticsRow.getImage(), statisticsRow.getImageRectangle());
 
         SwingUtils.renderCenteredText(graphics, value,
-            statisticsRow.getTextContainerRectangle(), defaultFont, DEFAULT_FONT_COLOR);
+            statisticsRow.getTextContainerRectangle(), fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
     }
 }

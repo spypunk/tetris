@@ -13,7 +13,6 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.ZERO;
 
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -34,7 +33,6 @@ import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.ui.cache.ImageCache;
-import spypunk.tetris.ui.font.FontType;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
@@ -71,14 +69,10 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
 
     private final Map<ShapeType, Rectangle> shapeTypeImageRectangles;
 
-    private final Font defaultFont;
-
     @Inject
     public TetrisInstanceInfoView(final FontCache fontCache,
             final ImageCache imageCache, final @TetrisProvider Tetris tetris) {
         super(fontCache, imageCache, tetris);
-
-        defaultFont = fontCache.getFont(FontType.DEFAULT);
 
         levelRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE);
         scoreRectangle = new Rectangle(0, BLOCK_SIZE * 4, BLOCK_SIZE * 6, BLOCK_SIZE);
@@ -157,14 +151,14 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
         renderLabelAndRectangle(graphics, rectangle, labelRectangle, title);
 
         SwingUtils.renderCenteredText(graphics, value,
-            rectangle, defaultFont, DEFAULT_FONT_COLOR);
+            rectangle, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
     }
 
     private void renderLabelAndRectangle(final Graphics2D graphics, final Rectangle rectangle,
             final Rectangle labelRectangle,
             final String label) {
         SwingUtils.renderCenteredText(graphics, label,
-            labelRectangle, defaultFont, DEFAULT_FONT_COLOR);
+            labelRectangle, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
 
         graphics.setColor(DEFAULT_BORDER_COLOR);
 
