@@ -12,6 +12,8 @@ public interface TetrisController {
 
     void start();
 
+    void onWindowOpened();
+
     void onWindowClosed();
 
     void onURLOpen();

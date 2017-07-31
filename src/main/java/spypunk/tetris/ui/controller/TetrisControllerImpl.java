@@ -53,6 +53,10 @@ public class TetrisControllerImpl implements TetrisController {
     @Override
     public void start() {
         tetrisView.show();
+    }
+
+    @Override
+    public void onWindowOpened() {
         tetrisControllerGameLoop.start();
     }
 

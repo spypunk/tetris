@@ -67,6 +67,11 @@ public class TetrisViewImpl extends AbstractView implements TetrisView {
         public void windowClosed(final WindowEvent e) {
             tetrisController.onWindowClosed();
         }
+
+        @Override
+        public void windowOpened(final WindowEvent e) {
+            tetrisController.onWindowOpened();
+        }
     }
 
     private static final class TetrisViewKeyAdapter extends KeyAdapter {
@@ -176,6 +181,8 @@ public class TetrisViewImpl extends AbstractView implements TetrisView {
 
     @Override
     public void show() {
+        update();
+
         SwingUtils.doInAWTThread(() -> frame.setVisible(true));
     }
 
