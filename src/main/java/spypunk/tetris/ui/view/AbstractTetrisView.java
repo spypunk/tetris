@@ -12,11 +12,13 @@ import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.cache.ImageCache;
+import spypunk.tetris.ui.constants.TetrisUIConstants;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
@@ -28,7 +30,7 @@ public abstract class AbstractTetrisView extends AbstractView {
         super(fontCache, imageCache, tetris);
     }
 
-    protected void initializeComponent(final int width, final int height) {
+    protected void initializeComponent(final int width, final int height, final boolean withBorders) {
         component = new JLabel();
 
         final BufferedImage image = new BufferedImage(width, height,
@@ -36,6 +38,14 @@ public abstract class AbstractTetrisView extends AbstractView {
 
         component.setIcon(new ImageIcon(image));
         component.setIgnoreRepaint(true);
+
+        if (withBorders) {
+            component.setBorder(BorderFactory.createLineBorder(TetrisUIConstants.DEFAULT_BORDER_COLOR));
+        }
+    }
+
+    protected void initializeComponent(final int width, final int height) {
+        initializeComponent(width, height, false);
     }
 
     @Override
