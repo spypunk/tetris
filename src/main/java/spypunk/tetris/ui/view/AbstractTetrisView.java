@@ -20,11 +20,11 @@ import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
-public abstract class AbstractTetrisInstanceView extends AbstractView {
+public abstract class AbstractTetrisView extends AbstractView {
 
     protected JLabel component;
 
-    protected AbstractTetrisInstanceView(final FontCache fontCache, final ImageCache imageCache, final Tetris tetris) {
+    protected AbstractTetrisView(final FontCache fontCache, final ImageCache imageCache, final Tetris tetris) {
         super(fontCache, imageCache, tetris);
     }
 

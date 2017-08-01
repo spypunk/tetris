@@ -28,14 +28,12 @@ import com.google.common.collect.Lists;
 import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
-import spypunk.tetris.model.Tetris.State;
-import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
 @Singleton
-public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
+public class TetrisStatisticsView extends AbstractTetrisView {
 
     private static final String STATISTICS = "STATISTICS";
 
@@ -76,7 +74,7 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
     }
 
     @Inject
-    public TetrisInstanceStatisticsView(final FontCache fontCache,
+    public TetrisStatisticsView(final FontCache fontCache,
             final ImageCache imageCache, final @TetrisProvider Tetris tetris) {
         super(fontCache, imageCache, tetris);
 
@@ -125,17 +123,7 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
 
     private void renderStatistic(final Graphics2D graphics, final ShapeType shapeType) {
         final StatisticsRow statisticsRow = statisticsRows.get(shapeType);
-        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
-        String value;
-
-        final State tetrisState = tetris.getState();
-
-        if (tetrisState.equals(State.STOPPED)) {
-            value = "0";
-        } else {
-            final Map<ShapeType, Integer> statistics = tetrisInstance.getStatistics();
-            value = String.valueOf(statistics.get(shapeType));
-        }
+        final String value = String.valueOf(tetris.getStatistics().get(shapeType));
 
         SwingUtils.drawImage(graphics, statisticsRow.getImage(), statisticsRow.getImageRectangle());
 

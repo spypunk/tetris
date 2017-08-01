@@ -43,11 +43,11 @@ public class TetrisViewImpl extends AbstractView implements TetrisView {
 
     private final JFrame frame;
 
-    private final TetrisInstanceStatisticsView tetrisInstanceStatisticsView;
+    private final TetrisStatisticsView tetrisStatisticsView;
 
-    private final TetrisInstanceInfoView tetrisInstanceInfoView;
+    private final TetrisInfoView tetrisInfoView;
 
-    private final TetrisInstanceGridView tetrisInstanceGridView;
+    private final TetrisGridView tetrisGridView;
 
     private final JLabel muteLabel;
 
@@ -124,14 +124,14 @@ public class TetrisViewImpl extends AbstractView implements TetrisView {
             final FontCache fontCache,
             final ImageCache imageCache,
             final @TetrisProvider Tetris tetris,
-            final TetrisInstanceStatisticsView tetrisInstanceStatisticsView,
-            final TetrisInstanceInfoView tetrisInstanceInfoView,
-            final TetrisInstanceGridView tetrisInstanceGridView) {
+            final TetrisStatisticsView tetrisStatisticsView,
+            final TetrisInfoView tetrisInfoView,
+            final TetrisGridView tetrisGridView) {
         super(fontCache, imageCache, tetris);
 
-        this.tetrisInstanceStatisticsView = tetrisInstanceStatisticsView;
-        this.tetrisInstanceInfoView = tetrisInstanceInfoView;
-        this.tetrisInstanceGridView = tetrisInstanceGridView;
+        this.tetrisStatisticsView = tetrisStatisticsView;
+        this.tetrisInfoView = tetrisInfoView;
+        this.tetrisGridView = tetrisGridView;
 
         muteImageIcon = new ImageIcon(imageCache.getIcon(Icon.MUTE));
         unmuteImageIcon = new ImageIcon(imageCache.getIcon(Icon.UNMUTE));
@@ -159,9 +159,9 @@ public class TetrisViewImpl extends AbstractView implements TetrisView {
         centerPanel.setBackground(Color.BLACK);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE));
 
-        centerPanel.add(tetrisInstanceGridView.getComponent(), BorderLayout.CENTER);
-        centerPanel.add(tetrisInstanceStatisticsView.getComponent(), BorderLayout.WEST);
-        centerPanel.add(tetrisInstanceInfoView.getComponent(), BorderLayout.EAST);
+        centerPanel.add(tetrisGridView.getComponent(), BorderLayout.CENTER);
+        centerPanel.add(tetrisStatisticsView.getComponent(), BorderLayout.WEST);
+        centerPanel.add(tetrisInfoView.getComponent(), BorderLayout.EAST);
 
         frame = new JFrame(tetris.getName() + " " + tetris.getVersion());
 
@@ -188,9 +188,9 @@ public class TetrisViewImpl extends AbstractView implements TetrisView {
 
     @Override
     public void update() {
-        tetrisInstanceGridView.update();
-        tetrisInstanceStatisticsView.update();
-        tetrisInstanceInfoView.update();
+        tetrisGridView.update();
+        tetrisStatisticsView.update();
+        tetrisInfoView.update();
     }
 
     @Override

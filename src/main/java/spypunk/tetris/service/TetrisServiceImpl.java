@@ -48,8 +48,6 @@ public class TetrisServiceImpl implements TetrisService {
 
     private final Tetris tetris;
 
-    private TetrisInstance tetrisInstance;
-
     @Inject
     public TetrisServiceImpl(final ShapeFactory shapeFactory, @TetrisProvider final Tetris tetris) {
         this.shapeFactory = shapeFactory;
@@ -60,12 +58,9 @@ public class TetrisServiceImpl implements TetrisService {
     public void start() {
         final int speed = getLevelSpeed(0);
 
-        tetrisInstance = new TetrisInstance();
-
-        tetrisInstance.setSpeed(speed);
-        tetrisInstance.setNextShape(shapeFactory.createRandomShape());
-
-        tetris.setTetrisInstance(tetrisInstance);
+        tetris.setTetrisInstance(new TetrisInstance());
+        tetris.setSpeed(speed);
+        tetris.setNextShape(shapeFactory.createRandomShape());
         tetris.setState(State.RUNNING);
 
         generateNextShape();
@@ -85,14 +80,14 @@ public class TetrisServiceImpl implements TetrisService {
     @Override
     public void move(final Movement movement) {
         if (isMovementAllowed()) {
-            tetrisInstance.setMovement(Optional.of(movement));
+            tetris.setMovement(Optional.of(movement));
         }
     }
 
     @Override
     public void hardDrop() {
         if (isMovementAllowed()) {
-            tetrisInstance.setHardDropEnabled(true);
+            tetris.setHardDropEnabled(true);
         }
     }
 
@@ -123,11 +118,11 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private boolean isCurrentShapeLocked() {
-        return tetrisInstance.isCurrentShapeLocked();
+        return tetris.isCurrentShapeLocked();
     }
 
     private void incrementGravityFrame() {
-        tetrisInstance.setCurrentGravityFrame(tetrisInstance.getCurrentGravityFrame() + 1);
+        tetris.setCurrentGravityFrame(tetris.getCurrentGravityFrame() + 1);
     }
 
     private void applyMovement() {
@@ -135,14 +130,14 @@ public class TetrisServiceImpl implements TetrisService {
             return;
         }
 
-        final Optional<Movement> optionalMovement = tetrisInstance.isHardDropEnabled()
+        final Optional<Movement> optionalMovement = tetris.isHardDropEnabled()
                 ? Optional.of(Movement.DOWN)
-                : tetrisInstance.getMovement();
+                : tetris.getMovement();
 
         if (optionalMovement.isPresent()) {
             final Movement movement = optionalMovement.get();
 
-            tetrisInstance.setMovement(Optional.empty());
+            tetris.setMovement(Optional.empty());
 
             final boolean isDownMovement = Movement.DOWN.equals(movement);
 
@@ -165,45 +160,45 @@ public class TetrisServiceImpl implements TetrisService {
             return;
         }
 
-        tetrisInstance.getCurrentShape().getBlocks()
-                .forEach(block -> tetrisInstance.getBlocks().put(block.getLocation(), block));
+        tetris.getCurrentShape().getBlocks()
+                .forEach(block -> tetris.getBlocks().put(block.getLocation(), block));
 
         if (isGameOver()) {
             tetris.setState(State.GAME_OVER);
             tetris.getTetrisEvents().add(TetrisEvent.GAME_OVER);
         } else {
             tetris.getTetrisEvents().add(TetrisEvent.SHAPE_LOCKED);
-            tetrisInstance.setCurrentShapeLocked(true);
+            tetris.setCurrentShapeLocked(true);
         }
 
-        tetrisInstance.setHardDropEnabled(false);
+        tetris.setHardDropEnabled(false);
     }
 
     private void generateNextShape() {
-        final Shape currentShape = tetrisInstance.getNextShape();
+        final Shape currentShape = tetris.getNextShape();
 
-        tetrisInstance.setCurrentShape(currentShape);
-        tetrisInstance.setCurrentShapeLocked(false);
-        tetrisInstance.setNextShape(shapeFactory.createRandomShape());
+        tetris.setCurrentShape(currentShape);
+        tetris.setCurrentShapeLocked(false);
+        tetris.setNextShape(shapeFactory.createRandomShape());
 
         updateStatistics();
     }
 
     private void updateStatistics() {
-        final ShapeType shapeType = tetrisInstance.getCurrentShape().getShapeType();
-        final Map<ShapeType, Integer> statistics = tetrisInstance.getStatistics();
+        final ShapeType shapeType = tetris.getCurrentShape().getShapeType();
+        final Map<ShapeType, Integer> statistics = tetris.getStatistics();
         final Integer count = statistics.get(shapeType);
 
         statistics.put(shapeType, count + 1);
     }
 
     private boolean isGameOver() {
-        return tetrisInstance.getBlocks().values().stream()
+        return tetris.getBlocks().values().stream()
                 .anyMatch(block -> block.getLocation().y == 0);
     }
 
     private boolean isTimeToApplyGravity() {
-        return tetrisInstance.getCurrentGravityFrame() == tetrisInstance.getSpeed();
+        return tetris.getCurrentGravityFrame() == tetris.getSpeed();
     }
 
     private void clearCompleteRows() {
@@ -218,7 +213,7 @@ public class TetrisServiceImpl implements TetrisService {
 
         completeRows.forEach(this::clearCompleteRow);
 
-        tetrisInstance.setCompletedRows(tetrisInstance.getCompletedRows() + completedRows);
+        tetris.setCompletedRows(tetris.getCompletedRows() + completedRows);
 
         updateScoreWithCompletedRows(completedRows);
         updateLevel();
@@ -227,28 +222,28 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private void updateLevel() {
-        final int completedRows = tetrisInstance.getCompletedRows();
-        final int nextLevel = tetrisInstance.getLevel() + 1;
+        final int completedRows = tetris.getCompletedRows();
+        final int nextLevel = tetris.getLevel() + 1;
 
         if (completedRows >= ROWS_PER_LEVEL * nextLevel) {
-            tetrisInstance.setLevel(nextLevel);
-            tetrisInstance.setSpeed(getLevelSpeed(nextLevel));
+            tetris.setLevel(nextLevel);
+            tetris.setSpeed(getLevelSpeed(nextLevel));
         }
     }
 
     private void updateScoreWithCompletedMovement() {
-        tetrisInstance.setScore(tetrisInstance.getScore() + 1);
+        tetris.setScore(tetris.getScore() + 1);
     }
 
     private void updateScoreWithCompletedRows(final int completedRows) {
         final Integer rowsScore = scorePerRows.get(completedRows);
-        final int score = tetrisInstance.getScore();
+        final int score = tetris.getScore();
 
-        tetrisInstance.setScore(score + rowsScore * (tetrisInstance.getLevel() + 1));
+        tetris.setScore(score + rowsScore * (tetris.getLevel() + 1));
     }
 
     private void clearCompleteRow(final int row) {
-        final Map<Point, Block> blocks = tetrisInstance.getBlocks();
+        final Map<Point, Block> blocks = tetris.getBlocks();
 
         final List<Block> blocksToMoveDown = blocks.values().stream()
                 .filter(block -> block.getLocation().y < row)
@@ -262,19 +257,19 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private void clearBlockAt(final Point location) {
-        tetrisInstance.getBlocks().remove(location);
+        tetris.getBlocks().remove(location);
     }
 
     private boolean isRowComplete(final int row) {
         return IntStream.range(0, WIDTH)
-                .allMatch(column -> tetrisInstance.getBlocks().containsKey(new Point(column, row)));
+                .allMatch(column -> tetris.getBlocks().containsKey(new Point(column, row)));
     }
 
     private void moveShape(final Movement movement) {
-        final Shape currentShape = tetrisInstance.getCurrentShape();
+        final Shape currentShape = tetris.getCurrentShape();
         final Shape newShape = movement.apply(currentShape);
 
-        tetrisInstance.setCurrentShape(newShape);
+        tetris.setCurrentShape(newShape);
 
         checkShapeLocked();
     }
@@ -289,11 +284,11 @@ public class TetrisServiceImpl implements TetrisService {
 
         block.setLocation(newLocation);
 
-        tetrisInstance.getBlocks().put(block.getLocation(), block);
+        tetris.getBlocks().put(block.getLocation(), block);
     }
 
     private boolean canShapeMove(final Movement movement) {
-        final Shape currentShape = tetrisInstance.getCurrentShape();
+        final Shape currentShape = tetris.getCurrentShape();
         final Shape newShape = movement.apply(currentShape);
 
         return newShape.getBlocks().stream().allMatch(this::canBlockMove);
@@ -306,7 +301,7 @@ public class TetrisServiceImpl implements TetrisService {
             return false;
         }
 
-        return !tetrisInstance.getBlocks().containsKey(location);
+        return !tetris.getBlocks().containsKey(location);
     }
 
     private boolean isTetrisRunning() {
@@ -314,7 +309,7 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private void resetCurrentGravityFrame() {
-        tetrisInstance.setCurrentGravityFrame(0);
+        tetris.setCurrentGravityFrame(0);
     }
 
     private static Map<Integer, Integer> createLevelSpeeds() {

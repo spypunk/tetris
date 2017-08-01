@@ -30,13 +30,12 @@ import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
-import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
 @Singleton
-public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
+public class TetrisInfoView extends AbstractTetrisView {
 
     private static final int VIEW_HEIGHT = 1 + BLOCK_SIZE * 16;
 
@@ -69,7 +68,7 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
     private final Map<ShapeType, Rectangle> shapeTypeImageRectangles;
 
     @Inject
-    public TetrisInstanceInfoView(final FontCache fontCache,
+    public TetrisInfoView(final FontCache fontCache,
             final ImageCache imageCache, final @TetrisProvider Tetris tetris) {
         super(fontCache, imageCache, tetris);
 
@@ -111,18 +110,15 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
     }
 
     private void renderRows(final Graphics2D graphics) {
-        renderInfo(graphics, rowsRectangle, rowsLabelRectangle, ROWS,
-            isTetrisStopped() ? 0 : tetris.getTetrisInstance().getCompletedRows());
+        renderInfo(graphics, rowsRectangle, rowsLabelRectangle, ROWS, tetris.getCompletedRows());
     }
 
     private void renderScore(final Graphics2D graphics) {
-        renderInfo(graphics, scoreRectangle, scoreLabelRectangle, SCORE,
-            isTetrisStopped() ? 0 : tetris.getTetrisInstance().getScore());
+        renderInfo(graphics, scoreRectangle, scoreLabelRectangle, SCORE, tetris.getScore());
     }
 
     private void renderLevel(final Graphics2D graphics) {
-        renderInfo(graphics, levelRectangle, levelLabelRectangle, LEVEL,
-            isTetrisStopped() ? 0 : tetris.getTetrisInstance().getLevel());
+        renderInfo(graphics, levelRectangle, levelLabelRectangle, LEVEL, tetris.getLevel());
     }
 
     private void renderNextShape(final Graphics2D graphics) {
@@ -134,9 +130,7 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
             return;
         }
 
-        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
-
-        final Shape nextShape = tetrisInstance.getNextShape();
+        final Shape nextShape = tetris.getNextShape();
         final ShapeType shapeType = nextShape.getShapeType();
         final Image shapeTypeImage = imageCache.getShapeImage(shapeType);
         final Rectangle rectangle = shapeTypeImageRectangles.get(shapeType);
@@ -162,9 +156,5 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
 
         graphics.drawRect(rectangle.x, rectangle.y, rectangle.width,
             rectangle.height);
-    }
-
-    private boolean isTetrisStopped() {
-        return tetris.getState().equals(State.STOPPED);
     }
 }

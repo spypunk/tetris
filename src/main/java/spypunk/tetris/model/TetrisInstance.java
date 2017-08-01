@@ -9,6 +9,7 @@
 package spypunk.tetris.model;
 
 import java.awt.Point;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,12 +18,17 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import spypunk.tetris.model.Shape.Block;
+import spypunk.tetris.model.Tetris.State;
 
 public class TetrisInstance {
 
     private final Map<Point, Block> blocks = Maps.newHashMap();
 
     private final Map<ShapeType, Integer> statistics;
+
+    private final List<TetrisEvent> tetrisEvents = Lists.newArrayList();
+
+    private State state = State.STOPPED;
 
     private Shape currentShape;
 
@@ -145,5 +151,17 @@ public class TetrisInstance {
 
     public void setHardDropEnabled(final boolean hardDropEnabled) {
         this.hardDropEnabled = hardDropEnabled;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(final State state) {
+        this.state = state;
+    }
+
+    public List<TetrisEvent> getTetrisEvents() {
+        return tetrisEvents;
     }
 }

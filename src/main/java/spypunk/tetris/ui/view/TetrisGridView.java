@@ -30,13 +30,12 @@ import spypunk.tetris.model.Shape.Block;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
-import spypunk.tetris.model.TetrisInstance;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
 @Singleton
-public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
+public class TetrisGridView extends AbstractTetrisView {
 
     private static final String PAUSE = "PAUSE";
 
@@ -57,7 +56,7 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
     private final Map<Point, Rectangle> blockRectanglesCache = Maps.newHashMap();
 
     @Inject
-    public TetrisInstanceGridView(final FontCache fontCache,
+    public TetrisGridView(final FontCache fontCache,
             final ImageCache imageCache,
             final @TetrisProvider Tetris tetris) {
         super(fontCache, imageCache, tetris);
@@ -76,8 +75,6 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
 
     @Override
     protected void doUpdate(final Graphics2D graphics) {
-        final TetrisInstance tetrisInstance = tetris.getTetrisInstance();
-
         graphics.setColor(DEFAULT_BORDER_COLOR);
 
         graphics.drawRect(gridRectangle.x, gridRectangle.y, gridRectangle.width,
@@ -90,10 +87,10 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
             return;
         }
 
-        tetrisInstance.getBlocks().values().stream()
+        tetris.getBlocks().values().stream()
                 .forEach(block -> renderBlock(graphics, block));
 
-        tetrisInstance.getCurrentShape().getBlocks().stream().forEach(block -> renderBlock(graphics, block));
+        tetris.getCurrentShape().getBlocks().stream().forEach(block -> renderBlock(graphics, block));
 
         if (!State.RUNNING.equals(tetrisState)) {
             renderTetrisNotRunning(graphics, tetrisState);

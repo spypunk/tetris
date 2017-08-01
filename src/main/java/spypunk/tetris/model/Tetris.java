@@ -8,10 +8,13 @@
 
 package spypunk.tetris.model;
 
+import java.awt.Point;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-import com.google.common.collect.Lists;
+import spypunk.tetris.model.Shape.Block;
 
 public class Tetris {
 
@@ -42,11 +45,7 @@ public class Tetris {
 
     private final URI projectURI;
 
-    private final List<TetrisEvent> tetrisEvents = Lists.newArrayList();
-
     private TetrisInstance tetrisInstance;
-
-    private State state = State.STOPPED;
 
     private boolean muted;
 
@@ -54,6 +53,8 @@ public class Tetris {
         this.name = name;
         this.version = version;
         this.projectURI = projectURI;
+
+        tetrisInstance = new TetrisInstance();
     }
 
     public String getName() {
@@ -68,24 +69,8 @@ public class Tetris {
         return projectURI;
     }
 
-    public TetrisInstance getTetrisInstance() {
-        return tetrisInstance;
-    }
-
     public void setTetrisInstance(final TetrisInstance tetrisInstance) {
         this.tetrisInstance = tetrisInstance;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(final State state) {
-        this.state = state;
-    }
-
-    public List<TetrisEvent> getTetrisEvents() {
-        return tetrisEvents;
     }
 
     public boolean isMuted() {
@@ -94,5 +79,113 @@ public class Tetris {
 
     public void setMuted(final boolean muted) {
         this.muted = muted;
+    }
+
+    public Map<Point, Block> getBlocks() {
+        return tetrisInstance.getBlocks();
+    }
+
+    public Shape getCurrentShape() {
+        return tetrisInstance.getCurrentShape();
+    }
+
+    public void setCurrentShape(final Shape currentShape) {
+        tetrisInstance.setCurrentShape(currentShape);
+    }
+
+    public Shape getNextShape() {
+        return tetrisInstance.getNextShape();
+    }
+
+    public void setNextShape(final Shape nextShape) {
+        tetrisInstance.setNextShape(nextShape);
+    }
+
+    public Optional<Movement> getMovement() {
+        return tetrisInstance.getMovement();
+    }
+
+    public void setMovement(final Optional<Movement> movement) {
+        tetrisInstance.setMovement(movement);
+    }
+
+    public Map<ShapeType, Integer> getStatistics() {
+        return tetrisInstance.getStatistics();
+    }
+
+    public int getLevel() {
+        return tetrisInstance.getLevel();
+    }
+
+    public void setLevel(final int level) {
+        tetrisInstance.setLevel(level);
+    }
+
+    public int getScore() {
+        return tetrisInstance.getScore();
+    }
+
+    public void setScore(final int score) {
+        tetrisInstance.setScore(score);
+    }
+
+    public int getCompletedRows() {
+        return tetrisInstance.getCompletedRows();
+    }
+
+    public void setCompletedRows(final int completedRows) {
+        tetrisInstance.setCompletedRows(completedRows);
+    }
+
+    public int getSpeed() {
+        return tetrisInstance.getSpeed();
+    }
+
+    public void setSpeed(final int speed) {
+        tetrisInstance.setSpeed(speed);
+    }
+
+    public int getCurrentGravityFrame() {
+        return tetrisInstance.getCurrentGravityFrame();
+    }
+
+    public void setCurrentGravityFrame(final int currentGravityFrame) {
+        tetrisInstance.setCurrentGravityFrame(currentGravityFrame);
+    }
+
+    public int getCurrentMovementScore() {
+        return tetrisInstance.getCurrentMovementScore();
+    }
+
+    public void setCurrentMovementScore(final int currentMovementScore) {
+        tetrisInstance.setCurrentMovementScore(currentMovementScore);
+    }
+
+    public boolean isCurrentShapeLocked() {
+        return tetrisInstance.isCurrentShapeLocked();
+    }
+
+    public void setCurrentShapeLocked(final boolean currentShapeLocked) {
+        tetrisInstance.setCurrentShapeLocked(currentShapeLocked);
+    }
+
+    public boolean isHardDropEnabled() {
+        return tetrisInstance.isHardDropEnabled();
+    }
+
+    public void setHardDropEnabled(final boolean hardDropEnabled) {
+        tetrisInstance.setHardDropEnabled(hardDropEnabled);
+    }
+
+    public State getState() {
+        return tetrisInstance.getState();
+    }
+
+    public void setState(final State state) {
+        tetrisInstance.setState(state);
+    }
+
+    public List<TetrisEvent> getTetrisEvents() {
+        return tetrisInstance.getTetrisEvents();
     }
 }
