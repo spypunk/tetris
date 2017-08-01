@@ -11,7 +11,6 @@ package spypunk.tetris.ui.view;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.ZERO;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -113,18 +112,17 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
 
     private void renderRows(final Graphics2D graphics) {
         renderInfo(graphics, rowsRectangle, rowsLabelRectangle, ROWS,
-            !tetris.getState().equals(State.STOPPED) ? String.valueOf(tetris.getTetrisInstance().getCompletedRows())
-                    : ZERO);
+            isTetrisStopped() ? 0 : tetris.getTetrisInstance().getCompletedRows());
     }
 
     private void renderScore(final Graphics2D graphics) {
         renderInfo(graphics, scoreRectangle, scoreLabelRectangle, SCORE,
-            !tetris.getState().equals(State.STOPPED) ? String.valueOf(tetris.getTetrisInstance().getScore()) : ZERO);
+            isTetrisStopped() ? 0 : tetris.getTetrisInstance().getScore());
     }
 
     private void renderLevel(final Graphics2D graphics) {
         renderInfo(graphics, levelRectangle, levelLabelRectangle, LEVEL,
-            !tetris.getState().equals(State.STOPPED) ? String.valueOf(tetris.getTetrisInstance().getLevel()) : ZERO);
+            isTetrisStopped() ? 0 : tetris.getTetrisInstance().getLevel());
     }
 
     private void renderNextShape(final Graphics2D graphics) {
@@ -147,10 +145,10 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
     }
 
     private void renderInfo(final Graphics2D graphics, final Rectangle rectangle, final Rectangle labelRectangle,
-            final String title, final String value) {
+            final String title, final int value) {
         renderLabelAndRectangle(graphics, rectangle, labelRectangle, title);
 
-        SwingUtils.renderCenteredText(graphics, value,
+        SwingUtils.renderCenteredText(graphics, String.valueOf(value),
             rectangle, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
     }
 
@@ -164,5 +162,9 @@ public class TetrisInstanceInfoView extends AbstractTetrisInstanceView {
 
         graphics.drawRect(rectangle.x, rectangle.y, rectangle.width,
             rectangle.height);
+    }
+
+    private boolean isTetrisStopped() {
+        return tetris.getState().equals(State.STOPPED);
     }
 }

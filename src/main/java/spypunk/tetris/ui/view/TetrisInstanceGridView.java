@@ -96,7 +96,7 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
         tetrisInstance.getCurrentShape().getBlocks().stream().forEach(block -> renderBlock(graphics, block));
 
         if (!State.RUNNING.equals(tetrisState)) {
-            renderTetrisFrozen(graphics, tetrisState);
+            renderTetrisNotRunning(graphics, tetrisState);
         }
     }
 
@@ -131,7 +131,7 @@ public class TetrisInstanceGridView extends AbstractTetrisInstanceView {
             fontCache.getFrozenFont(), DEFAULT_FONT_COLOR);
     }
 
-    private void renderTetrisFrozen(final Graphics2D graphics, final State state) {
+    private void renderTetrisNotRunning(final Graphics2D graphics, final State state) {
         graphics.setColor(TETRIS_FROZEN_FG_COLOR);
         graphics.fillRect(frozenGridRectangle.x, frozenGridRectangle.y, frozenGridRectangle.width,
             frozenGridRectangle.height);

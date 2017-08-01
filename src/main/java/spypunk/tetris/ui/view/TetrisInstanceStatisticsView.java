@@ -11,7 +11,6 @@ package spypunk.tetris.ui.view;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.ZERO;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -132,7 +131,7 @@ public class TetrisInstanceStatisticsView extends AbstractTetrisInstanceView {
         final State tetrisState = tetris.getState();
 
         if (tetrisState.equals(State.STOPPED)) {
-            value = ZERO;
+            value = "0";
         } else {
             final Map<ShapeType, Integer> statistics = tetrisInstance.getStatistics();
             value = String.valueOf(statistics.get(shapeType));

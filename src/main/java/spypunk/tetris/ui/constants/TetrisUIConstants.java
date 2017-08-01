@@ -18,8 +18,6 @@ public final class TetrisUIConstants {
 
     public static final Color DEFAULT_BORDER_COLOR = Color.GRAY;
 
-    public static final String ZERO = "0";
-
     private TetrisUIConstants() {
         throw new IllegalAccessError();
     }
