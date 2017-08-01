@@ -78,16 +78,10 @@ public class TetrisGridView extends AbstractTetrisView {
         final ShapeType shapeType = block.getShape().getShapeType();
         final Image blockImage = imageCache.getBlockImage(shapeType);
         final Point location = block.getLocation();
-        final Rectangle rectangle = getBlockRectangle(location);
+        final Rectangle rectangle = new Rectangle(location.x * BLOCK_SIZE, location.y * BLOCK_SIZE, BLOCK_SIZE,
+                BLOCK_SIZE);
 
         SwingUtils.drawImage(graphics, blockImage, rectangle);
-    }
-
-    private Rectangle getBlockRectangle(final Point location) {
-        final int x1 = location.x * BLOCK_SIZE;
-        final int y1 = location.y * BLOCK_SIZE;
-
-        return new Rectangle(x1, y1, BLOCK_SIZE, BLOCK_SIZE);
     }
 
     private void renderTetrisStopped(final Graphics2D graphics) {
