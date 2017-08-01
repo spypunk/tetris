@@ -35,7 +35,7 @@ public class TetrisGridView extends AbstractTetrisView {
 
     private static final String PAUSE = "PAUSE";
 
-    private static final Color TETRIS_FROZEN_FG_COLOR = new Color(30, 30, 30, 200);
+    private static final Color NOT_RUNNING_FG_COLOR = new Color(30, 30, 30, 200);
 
     private static final String GAME_OVER = "GAME OVER";
 
@@ -96,7 +96,7 @@ public class TetrisGridView extends AbstractTetrisView {
     }
 
     private void renderTetrisNotRunning(final Graphics2D graphics, final State state) {
-        graphics.setColor(TETRIS_FROZEN_FG_COLOR);
+        graphics.setColor(NOT_RUNNING_FG_COLOR);
         graphics.fillRect(gridRectangle.x, gridRectangle.y, gridRectangle.width,
             gridRectangle.height);
 
