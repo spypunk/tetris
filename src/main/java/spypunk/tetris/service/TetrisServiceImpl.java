@@ -68,7 +68,7 @@ public class TetrisServiceImpl implements TetrisService {
         tetris.setTetrisInstance(tetrisInstance);
         tetris.setState(State.RUNNING);
 
-        getNextShape();
+        generateNextShape();
     }
 
     @Override
@@ -106,21 +106,28 @@ public class TetrisServiceImpl implements TetrisService {
             return;
         }
 
-        tetrisInstance.setCurrentGravityFrame(tetrisInstance.getCurrentGravityFrame() + 1);
-
         if (!isTimeToApplyGravity()) {
+            incrementGravityFrame();
             return;
         }
 
-        if (tetrisInstance.isCurrentShapeLocked()) {
+        if (isCurrentShapeLocked()) {
             clearCompleteRows();
-            getNextShape();
+            generateNextShape();
             checkShapeLocked();
         } else {
             moveShapeDown();
         }
 
         resetCurrentGravityFrame();
+    }
+
+    private boolean isCurrentShapeLocked() {
+        return tetrisInstance.isCurrentShapeLocked();
+    }
+
+    private void incrementGravityFrame() {
+        tetrisInstance.setCurrentGravityFrame(tetrisInstance.getCurrentGravityFrame() + 1);
     }
 
     private void applyMovement() {
@@ -146,7 +153,7 @@ public class TetrisServiceImpl implements TetrisService {
                     updateScoreWithCompletedMovement();
                 }
 
-                if (tetrisInstance.isCurrentShapeLocked()) {
+                if (isCurrentShapeLocked()) {
                     resetCurrentGravityFrame();
                 }
             }
@@ -172,7 +179,7 @@ public class TetrisServiceImpl implements TetrisService {
         tetrisInstance.setHardDropEnabled(false);
     }
 
-    private void getNextShape() {
+    private void generateNextShape() {
         final Shape currentShape = tetrisInstance.getNextShape();
 
         tetrisInstance.setCurrentShape(currentShape);
@@ -331,6 +338,6 @@ public class TetrisServiceImpl implements TetrisService {
     }
 
     private boolean isMovementAllowed() {
-        return isTetrisRunning() && !tetrisInstance.isCurrentShapeLocked();
+        return isTetrisRunning() && !isCurrentShapeLocked();
     }
 }
