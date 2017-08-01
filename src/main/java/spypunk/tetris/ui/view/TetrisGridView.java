@@ -64,10 +64,8 @@ public class TetrisGridView extends AbstractTetrisView {
             return;
         }
 
-        tetris.getBlocks().values().stream()
-                .forEach(block -> renderBlock(graphics, block));
-
-        tetris.getCurrentShape().getBlocks().stream().forEach(block -> renderBlock(graphics, block));
+        tetris.getBlocks().values().forEach(block -> renderBlock(graphics, block));
+        tetris.getCurrentShape().getBlocks().forEach(block -> renderBlock(graphics, block));
 
         if (!State.RUNNING.equals(tetrisState)) {
             renderTetrisNotRunning(graphics, tetrisState);

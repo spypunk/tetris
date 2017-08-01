@@ -43,7 +43,7 @@ public class ShapeFactoryImpl implements ShapeFactory {
 
         final Shape shape = new Shape(shapeType, boundingBox, INITIAL_ROTATION);
 
-        shapeType.getRotations().get(INITIAL_ROTATION).stream()
+        shapeType.getRotations().get(INITIAL_ROTATION)
                 .forEach(location -> shape.new Block(new Point(location.x + dx, location.y)));
 
         return shape;

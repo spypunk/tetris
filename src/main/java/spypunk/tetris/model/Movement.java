@@ -53,9 +53,8 @@ public enum Movement {
 
             final Set<Point> rotation = rotations.get(nextRotationIndex);
 
-            rotation.stream()
-                    .forEach(location -> newShape.new Block(
-                            new Point(location.x + newBoundingBox.x, location.y + newBoundingBox.y)));
+            rotation.forEach(location -> newShape.new Block(
+                    new Point(location.x + newBoundingBox.x, location.y + newBoundingBox.y)));
 
             return newShape;
         }
@@ -77,7 +76,7 @@ public enum Movement {
 
         final Shape newShape = new Shape(shape.getShapeType(), newBoundingBox, shape.getCurrentRotation());
 
-        shape.getBlocks().stream().forEach(block -> apply(block, newShape));
+        shape.getBlocks().forEach(block -> apply(block, newShape));
 
         return newShape;
     }
