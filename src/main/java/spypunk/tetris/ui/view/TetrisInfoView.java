@@ -15,15 +15,13 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import com.google.common.collect.Lists;
 
 import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Shape;
@@ -82,11 +80,9 @@ public class TetrisInfoView extends AbstractTetrisView {
         rowsLabelRectangle = createLabelRectangle(rowsRectangle);
         nextShapeLabelRectangle = createLabelRectangle(nextShapeRectangle);
 
-        final List<ShapeType> shapeTypes = Lists.newArrayList(ShapeType.values());
-
-        shapeTypeImageRectangles = shapeTypes.stream()
-                .collect(
-                    Collectors.toMap(Function.identity(), this::createShapeTypeImageRectangle));
+        shapeTypeImageRectangles = Arrays.asList(ShapeType.values())
+                .stream()
+                .collect(Collectors.toMap(Function.identity(), this::createShapeTypeImageRectangle));
 
         initializeComponent(VIEW_WIDTH, VIEW_HEIGHT);
     }

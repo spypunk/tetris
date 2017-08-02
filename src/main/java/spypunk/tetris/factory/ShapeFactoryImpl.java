@@ -10,12 +10,9 @@ package spypunk.tetris.factory;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.List;
 import java.util.Random;
 
 import javax.inject.Singleton;
-
-import com.google.common.collect.Lists;
 
 import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
@@ -29,7 +26,7 @@ public class ShapeFactoryImpl implements ShapeFactory {
 
     private final Random random = new Random();
 
-    private final List<ShapeType> shapeTypes = Lists.newArrayList(ShapeType.values());
+    private final ShapeType[] shapeTypes = ShapeType.values();
 
     @Override
     public Shape createRandomShape() {
@@ -50,8 +47,6 @@ public class ShapeFactoryImpl implements ShapeFactory {
     }
 
     private ShapeType getRandomShapeType() {
-        final int shapeIndex = random.nextInt(shapeTypes.size());
-
-        return shapeTypes.get(shapeIndex);
+        return shapeTypes[random.nextInt(shapeTypes.length)];
     }
 }

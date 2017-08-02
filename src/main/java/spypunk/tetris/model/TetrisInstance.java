@@ -9,9 +9,11 @@
 package spypunk.tetris.model;
 
 import java.awt.Point;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
@@ -53,8 +55,8 @@ public class TetrisInstance {
     private boolean hardDropEnabled;
 
     public TetrisInstance() {
-        statistics = Lists.newArrayList(ShapeType.values()).stream()
-                .collect(Collectors.toMap(shapeType -> shapeType, shapeType -> 0));
+        statistics = Arrays.asList(ShapeType.values()).stream()
+                .collect(Collectors.toMap(Function.identity(), shapeType -> 0));
     }
 
     public Map<Point, Block> getBlocks() {

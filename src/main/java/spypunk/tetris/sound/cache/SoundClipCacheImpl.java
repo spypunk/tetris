@@ -11,6 +11,7 @@ package spypunk.tetris.sound.cache;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.function.Function;
@@ -23,8 +24,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
 
 import spypunk.tetris.exception.TetrisException;
 import spypunk.tetris.sound.Sound;
@@ -65,7 +64,7 @@ public class SoundClipCacheImpl implements SoundClipCache {
     }
 
     private static Map<Sound, SoundClip> createSoundClips() {
-        return Lists.newArrayList(Sound.values()).stream()
+        return Arrays.asList(Sound.values()).stream()
                 .collect(Collectors.toMap(Function.identity(), SoundClipCacheImpl::createSoundClip));
     }
 }

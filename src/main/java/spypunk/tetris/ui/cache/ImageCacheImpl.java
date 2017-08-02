@@ -11,6 +11,7 @@ package spypunk.tetris.ui.cache;
 import java.awt.Image;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -20,8 +21,6 @@ import javax.inject.Singleton;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.Lists;
 
 import spypunk.tetris.exception.TetrisException;
 import spypunk.tetris.model.ShapeType;
@@ -81,17 +80,17 @@ public class ImageCacheImpl implements ImageCache {
     }
 
     private static Map<Icon, Image> createIcons() {
-        return Lists.newArrayList(Icon.values()).stream().collect(Collectors.toMap(Function.identity(),
+        return Arrays.asList(Icon.values()).stream().collect(Collectors.toMap(Function.identity(),
             ImageCacheImpl::createIcon));
     }
 
     private static Map<ShapeType, Image> createShapeImages() {
-        return Lists.newArrayList(ShapeType.values()).stream().collect(Collectors.toMap(Function.identity(),
+        return Arrays.asList(ShapeType.values()).stream().collect(Collectors.toMap(Function.identity(),
             shapeType -> createImage(SHAPES_FOLDER, shapeType)));
     }
 
     private static Map<ShapeType, Image> createBlockImages() {
-        return Lists.newArrayList(ShapeType.values()).stream().collect(Collectors.toMap(Function.identity(),
+        return Arrays.asList(ShapeType.values()).stream().collect(Collectors.toMap(Function.identity(),
             shapeType -> createImage(BLOCKS_FOLDER, shapeType)));
     }
 }

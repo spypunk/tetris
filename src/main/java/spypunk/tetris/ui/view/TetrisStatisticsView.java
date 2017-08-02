@@ -15,6 +15,7 @@ import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -22,8 +23,6 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
-import com.google.common.collect.Lists;
 
 import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.ShapeType;
@@ -78,14 +77,14 @@ public class TetrisStatisticsView extends AbstractTetrisView {
             final ImageCache imageCache, final @TetrisProvider Tetris tetris) {
         super(fontCache, imageCache, tetris);
 
-        shapeTypes = Lists.newArrayList(ShapeType.values());
+        shapeTypes = Arrays.asList(ShapeType.values());
 
         statisticsRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE * 15);
         statisticsLabelRectangle = new Rectangle(0, 0, statisticsRectangle.width, BLOCK_SIZE);
 
-        statisticsRows = shapeTypes.stream()
-                .collect(
-                    Collectors.toMap(Function.identity(), shapeType -> createStatisticRow(imageCache, shapeType)));
+        statisticsRows = shapeTypes
+                .stream()
+                .collect(Collectors.toMap(Function.identity(), shapeType -> createStatisticRow(imageCache, shapeType)));
 
         initializeComponent(statisticsRectangle.width + 1, statisticsRectangle.height + BLOCK_SIZE + 1);
     }
