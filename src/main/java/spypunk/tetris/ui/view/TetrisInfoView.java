@@ -47,38 +47,56 @@ public class TetrisInfoView extends AbstractTetrisView {
 
     private static final String ROWS = "ROWS";
 
-    private final Rectangle levelRectangle;
-
-    private final Rectangle scoreRectangle;
-
-    private final Rectangle rowsRectangle;
-
-    private final Rectangle nextShapeRectangle;
-
-    private final Rectangle levelLabelRectangle;
-
-    private final Rectangle scoreLabelRectangle;
-
-    private final Rectangle rowsLabelRectangle;
-
-    private final Rectangle nextShapeLabelRectangle;
-
     private final Map<ShapeType, Rectangle> shapeTypeImageRectangles;
+
+    private final TetrisInfo rowsTetrisInfo;
+
+    private final TetrisInfo scoreTetrisInfo;
+
+    private final TetrisInfo levelTetrisInfo;
+
+    private final TetrisInfo nextShapeTetrisInfo;
+
+    private static class TetrisInfo {
+
+        public TetrisInfo(final Rectangle rectangle, final Rectangle titleRectangle, final String title) {
+            this.rectangle = rectangle;
+            this.titleRectangle = titleRectangle;
+            this.title = title;
+        }
+
+        private final Rectangle rectangle;
+
+        private final Rectangle titleRectangle;
+
+        private final String title;
+
+        private String value;
+
+        public void setValue(final int value) {
+            this.value = String.valueOf(value);
+        }
+    }
 
     @Inject
     public TetrisInfoView(final FontCache fontCache,
             final ImageCache imageCache, final @TetrisProvider Tetris tetris) {
         super(fontCache, imageCache, tetris);
 
-        levelRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE);
-        scoreRectangle = new Rectangle(0, BLOCK_SIZE * 4, BLOCK_SIZE * 6, BLOCK_SIZE);
-        rowsRectangle = new Rectangle(0, BLOCK_SIZE * 7, BLOCK_SIZE * 6, BLOCK_SIZE);
-        nextShapeRectangle = new Rectangle(0, BLOCK_SIZE * 10, BLOCK_SIZE * 6, BLOCK_SIZE * 6);
+        final Rectangle levelRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE);
+        final Rectangle scoreRectangle = new Rectangle(0, BLOCK_SIZE * 4, BLOCK_SIZE * 6, BLOCK_SIZE);
+        final Rectangle rowsRectangle = new Rectangle(0, BLOCK_SIZE * 7, BLOCK_SIZE * 6, BLOCK_SIZE);
+        final Rectangle nextShapeRectangle = new Rectangle(0, BLOCK_SIZE * 10, BLOCK_SIZE * 6, BLOCK_SIZE * 6);
 
-        levelLabelRectangle = createLabelRectangle(levelRectangle);
-        scoreLabelRectangle = createLabelRectangle(scoreRectangle);
-        rowsLabelRectangle = createLabelRectangle(rowsRectangle);
-        nextShapeLabelRectangle = createLabelRectangle(nextShapeRectangle);
+        final Rectangle levelTitleRectangle = createTitleRectangle(levelRectangle);
+        final Rectangle scoreTitleRectangle = createTitleRectangle(scoreRectangle);
+        final Rectangle rowsTitleRectangle = createTitleRectangle(rowsRectangle);
+        final Rectangle nextShapeTitleRectangle = createTitleRectangle(nextShapeRectangle);
+
+        rowsTetrisInfo = new TetrisInfo(rowsRectangle, rowsTitleRectangle, ROWS);
+        scoreTetrisInfo = new TetrisInfo(scoreRectangle, scoreTitleRectangle, SCORE);
+        levelTetrisInfo = new TetrisInfo(levelRectangle, levelTitleRectangle, LEVEL);
+        nextShapeTetrisInfo = new TetrisInfo(nextShapeRectangle, nextShapeTitleRectangle, NEXT_SHAPE);
 
         shapeTypeImageRectangles = Arrays.asList(ShapeType.values())
                 .stream()
@@ -89,36 +107,40 @@ public class TetrisInfoView extends AbstractTetrisView {
 
     @Override
     protected void doUpdate(final Graphics2D graphics) {
+        rowsTetrisInfo.setValue(tetris.getCompletedRows());
+        scoreTetrisInfo.setValue(tetris.getScore());
+        levelTetrisInfo.setValue(tetris.getLevel());
+
         renderLevel(graphics);
         renderScore(graphics);
         renderRows(graphics);
         renderNextShape(graphics);
     }
 
-    private Rectangle createLabelRectangle(final Rectangle rectangle) {
+    private Rectangle createTitleRectangle(final Rectangle rectangle) {
         return new Rectangle(0, rectangle.y - BLOCK_SIZE, rectangle.width,
                 BLOCK_SIZE);
     }
 
     private Rectangle createShapeTypeImageRectangle(final ShapeType shapeType) {
         final Image shapeTypeImage = imageCache.getShapeImage(shapeType);
-        return SwingUtils.getCenteredImageRectangle(shapeTypeImage, nextShapeRectangle);
+        return SwingUtils.getCenteredImageRectangle(shapeTypeImage, nextShapeTetrisInfo.rectangle);
     }
 
     private void renderRows(final Graphics2D graphics) {
-        renderInfo(graphics, rowsRectangle, rowsLabelRectangle, ROWS, tetris.getCompletedRows());
+        renderInfo(graphics, rowsTetrisInfo);
     }
 
     private void renderScore(final Graphics2D graphics) {
-        renderInfo(graphics, scoreRectangle, scoreLabelRectangle, SCORE, tetris.getScore());
+        renderInfo(graphics, scoreTetrisInfo);
     }
 
     private void renderLevel(final Graphics2D graphics) {
-        renderInfo(graphics, levelRectangle, levelLabelRectangle, LEVEL, tetris.getLevel());
+        renderInfo(graphics, levelTetrisInfo);
     }
 
     private void renderNextShape(final Graphics2D graphics) {
-        renderLabelAndRectangle(graphics, nextShapeRectangle, nextShapeLabelRectangle, NEXT_SHAPE);
+        renderInfoWithoutValue(graphics, nextShapeTetrisInfo);
 
         final State tetrisState = tetris.getState();
 
@@ -134,21 +156,20 @@ public class TetrisInfoView extends AbstractTetrisView {
         SwingUtils.drawImage(graphics, shapeTypeImage, rectangle);
     }
 
-    private void renderInfo(final Graphics2D graphics, final Rectangle rectangle, final Rectangle labelRectangle,
-            final String title, final int value) {
-        renderLabelAndRectangle(graphics, rectangle, labelRectangle, title);
+    private void renderInfo(final Graphics2D graphics, final TetrisInfo tetrisInfo) {
+        renderInfoWithoutValue(graphics, tetrisInfo);
 
-        SwingUtils.renderCenteredText(graphics, String.valueOf(value),
-            rectangle, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
+        SwingUtils.renderCenteredText(graphics, tetrisInfo.value,
+            tetrisInfo.rectangle, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
     }
 
-    private void renderLabelAndRectangle(final Graphics2D graphics, final Rectangle rectangle,
-            final Rectangle labelRectangle,
-            final String label) {
-        SwingUtils.renderCenteredText(graphics, label,
-            labelRectangle, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
+    private void renderInfoWithoutValue(final Graphics2D graphics, final TetrisInfo tetrisInfo) {
+        SwingUtils.renderCenteredText(graphics, tetrisInfo.title,
+            tetrisInfo.titleRectangle, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
 
         graphics.setColor(DEFAULT_BORDER_COLOR);
+
+        final Rectangle rectangle = tetrisInfo.rectangle;
 
         graphics.drawRect(rectangle.x, rectangle.y, rectangle.width,
             rectangle.height);
