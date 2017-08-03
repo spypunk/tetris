@@ -59,7 +59,7 @@ public class TetrisInfoView extends AbstractTetrisView {
 
         protected final String title;
 
-        public TetrisInfo(final Rectangle rectangle, final String title) {
+        TetrisInfo(final Rectangle rectangle, final String title) {
             this.rectangle = rectangle;
             this.title = title;
             titleRectangle = createTitleRectangle(rectangle);
@@ -81,7 +81,7 @@ public class TetrisInfoView extends AbstractTetrisView {
 
     private class ValueTetrisInfo extends TetrisInfo {
 
-        public ValueTetrisInfo(final Rectangle rectangle, final String title) {
+        ValueTetrisInfo(final Rectangle rectangle, final String title) {
             super(rectangle, title);
         }
 
@@ -97,7 +97,7 @@ public class TetrisInfoView extends AbstractTetrisView {
 
         private final Map<ShapeType, Pair<Image, Rectangle>> shapeTypeImageRectangles;
 
-        public NextShapeTetrisInfo() {
+        NextShapeTetrisInfo() {
             super(new Rectangle(0, BLOCK_SIZE * 10, BLOCK_SIZE * 6, BLOCK_SIZE * 6), NEXT_SHAPE);
 
             shapeTypeImageRectangles = Arrays.asList(ShapeType.values())

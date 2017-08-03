@@ -17,6 +17,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.apache.commons.collections4.CollectionUtils;
+
 import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.model.Shape.Block;
 import spypunk.tetris.model.ShapeType;
@@ -58,8 +60,8 @@ public class TetrisGridView extends AbstractTetrisView {
             return;
         }
 
-        tetris.getBlocks().values().forEach(block -> renderBlock(graphics, block));
-        tetris.getCurrentShape().getBlocks().forEach(block -> renderBlock(graphics, block));
+        CollectionUtils.union(tetris.getBlocks().values(), tetris.getCurrentShape().getBlocks())
+                .forEach(block -> renderBlock(graphics, block));
 
         if (!State.RUNNING.equals(tetrisState)) {
             renderTetrisNotRunning(graphics, tetrisState);

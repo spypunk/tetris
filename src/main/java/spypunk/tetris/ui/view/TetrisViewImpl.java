@@ -96,6 +96,7 @@ public class TetrisViewImpl extends AbstractView implements TetrisView {
     private static final class URLLabelMouseAdapter extends MouseAdapter {
 
         private final TetrisController tetrisController;
+
         private final JLabel urlLabel;
 
         URLLabelMouseAdapter(final TetrisController tetrisController, final JLabel urlLabel) {

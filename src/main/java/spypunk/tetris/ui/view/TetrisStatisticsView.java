@@ -17,8 +17,6 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import spypunk.tetris.model.ShapeType;
@@ -33,37 +31,36 @@ public class TetrisStatisticsView extends AbstractTetrisView {
 
     private final Rectangle statisticsRectangle;
 
-    private final Rectangle statisticsLabelRectangle;
+    private final Rectangle statisticsTitleRectangle;
 
-    private final Map<ShapeType, StatisticsRow> statisticsRows;
+    private final List<TetrisStatistic> tetrisStatistics;
 
-    private final List<ShapeType> shapeTypes;
-
-    private static class StatisticsRow {
+    private class TetrisStatistic {
 
         private final Image image;
 
         private final Rectangle imageRectangle;
 
-        private final Rectangle textContainerRectangle;
+        private final Rectangle textRectangle;
 
-        StatisticsRow(final Image image, final Rectangle imageRectangle,
-                final Rectangle textContainerRectangle) {
+        private final ShapeType shapeType;
+
+        TetrisStatistic(final Image image, final Rectangle imageRectangle,
+                final Rectangle textRectangle,
+                final ShapeType shapeType) {
             this.image = image;
             this.imageRectangle = imageRectangle;
-            this.textContainerRectangle = textContainerRectangle;
+            this.textRectangle = textRectangle;
+            this.shapeType = shapeType;
         }
 
-        public Image getImage() {
-            return image;
-        }
+        public void render(final Graphics2D graphics) {
+            final String value = String.valueOf(tetris.getStatistics().get(shapeType));
 
-        public Rectangle getImageRectangle() {
-            return imageRectangle;
-        }
+            SwingUtils.drawImage(graphics, image, imageRectangle);
 
-        public Rectangle getTextContainerRectangle() {
-            return textContainerRectangle;
+            SwingUtils.renderCenteredText(graphics, value,
+                textRectangle, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
         }
     }
 
@@ -71,20 +68,20 @@ public class TetrisStatisticsView extends AbstractTetrisView {
             final ImageCache imageCache, final Tetris tetris) {
         super(fontCache, imageCache, tetris);
 
-        shapeTypes = Arrays.asList(ShapeType.values());
-
         statisticsRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE * 15);
-        statisticsLabelRectangle = new Rectangle(0, 0, statisticsRectangle.width, BLOCK_SIZE);
+        statisticsTitleRectangle = new Rectangle(0, 0, statisticsRectangle.width, BLOCK_SIZE);
 
-        statisticsRows = shapeTypes
+        tetrisStatistics = Arrays.asList(ShapeType.values())
                 .stream()
-                .collect(Collectors.toMap(Function.identity(), shapeType -> createStatisticRow(imageCache, shapeType)));
+                .map(shapeType -> createTetrisStatistic(imageCache, shapeType))
+                .collect(Collectors.toList());
 
         initializeComponent(statisticsRectangle.width + 1, statisticsRectangle.height + BLOCK_SIZE + 1);
     }
 
-    private StatisticsRow createStatisticRow(final ImageCache imageCache, final ShapeType shapeType) {
+    private TetrisStatistic createTetrisStatistic(final ImageCache imageCache, final ShapeType shapeType) {
         final Image shapeImage = imageCache.getShapeImage(shapeType);
+
         final Rectangle imageContainerRectangle = new Rectangle(statisticsRectangle.x,
                 statisticsRectangle.y + shapeType.ordinal() * 2 * BLOCK_SIZE + BLOCK_SIZE,
                 statisticsRectangle.width / 2, BLOCK_SIZE);
@@ -93,34 +90,24 @@ public class TetrisStatisticsView extends AbstractTetrisView {
             imageContainerRectangle,
             0.5);
 
-        final Rectangle textContainerRectangle = new Rectangle(
+        final Rectangle textRectangle = new Rectangle(
                 statisticsRectangle.x + imageContainerRectangle.width,
                 imageContainerRectangle.y, imageContainerRectangle.width, imageContainerRectangle.height);
 
-        return new StatisticsRow(shapeImage, imageRectangle,
-                textContainerRectangle);
+        return new TetrisStatistic(shapeImage, imageRectangle,
+                textRectangle, shapeType);
     }
 
     @Override
     protected void doUpdate(final Graphics2D graphics) {
         SwingUtils.renderCenteredText(graphics, STATISTICS,
-            statisticsLabelRectangle, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
+            statisticsTitleRectangle, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
 
         graphics.setColor(DEFAULT_BORDER_COLOR);
 
         graphics.drawRect(statisticsRectangle.x, statisticsRectangle.y, statisticsRectangle.width,
             statisticsRectangle.height);
 
-        shapeTypes.forEach(shapeType -> renderStatistic(graphics, shapeType));
-    }
-
-    private void renderStatistic(final Graphics2D graphics, final ShapeType shapeType) {
-        final StatisticsRow statisticsRow = statisticsRows.get(shapeType);
-        final String value = String.valueOf(tetris.getStatistics().get(shapeType));
-
-        SwingUtils.drawImage(graphics, statisticsRow.getImage(), statisticsRow.getImageRectangle());
-
-        SwingUtils.renderCenteredText(graphics, value,
-            statisticsRow.getTextContainerRectangle(), fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
+        tetrisStatistics.forEach(tetrisStatistic -> tetrisStatistic.render(graphics));
     }
 }
