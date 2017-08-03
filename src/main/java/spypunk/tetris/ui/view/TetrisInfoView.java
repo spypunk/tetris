@@ -20,10 +20,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Shape;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
@@ -32,7 +28,6 @@ import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
-@Singleton
 public class TetrisInfoView extends AbstractTetrisView {
 
     private static final int VIEW_HEIGHT = 1 + BLOCK_SIZE * 16;
@@ -78,9 +73,8 @@ public class TetrisInfoView extends AbstractTetrisView {
         }
     }
 
-    @Inject
     public TetrisInfoView(final FontCache fontCache,
-            final ImageCache imageCache, final @TetrisProvider Tetris tetris) {
+            final ImageCache imageCache, final Tetris tetris) {
         super(fontCache, imageCache, tetris);
 
         final Rectangle levelRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE);

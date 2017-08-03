@@ -17,11 +17,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import spypunk.tetris.constants.TetrisConstants;
-import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Shape.Block;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
@@ -30,7 +26,6 @@ import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 
-@Singleton
 public class TetrisGridView extends AbstractTetrisView {
 
     private static final String PAUSE = "PAUSE";
@@ -43,10 +38,9 @@ public class TetrisGridView extends AbstractTetrisView {
 
     private final Rectangle gridRectangle;
 
-    @Inject
     public TetrisGridView(final FontCache fontCache,
             final ImageCache imageCache,
-            final @TetrisProvider Tetris tetris) {
+            final Tetris tetris) {
         super(fontCache, imageCache, tetris);
 
         gridRectangle = new Rectangle(0, 0, TetrisConstants.WIDTH * BLOCK_SIZE,

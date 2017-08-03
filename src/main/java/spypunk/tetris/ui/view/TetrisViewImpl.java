@@ -123,15 +123,12 @@ public class TetrisViewImpl extends AbstractView implements TetrisView {
     public TetrisViewImpl(final TetrisController tetrisController,
             final FontCache fontCache,
             final ImageCache imageCache,
-            final @TetrisProvider Tetris tetris,
-            final TetrisStatisticsView tetrisStatisticsView,
-            final TetrisInfoView tetrisInfoView,
-            final TetrisGridView tetrisGridView) {
+            final @TetrisProvider Tetris tetris) {
         super(fontCache, imageCache, tetris);
 
-        this.tetrisStatisticsView = tetrisStatisticsView;
-        this.tetrisInfoView = tetrisInfoView;
-        this.tetrisGridView = tetrisGridView;
+        tetrisStatisticsView = new TetrisStatisticsView(fontCache, imageCache, tetris);
+        tetrisInfoView = new TetrisInfoView(fontCache, imageCache, tetris);
+        tetrisGridView = new TetrisGridView(fontCache, imageCache, tetris);
 
         muteImageIcon = new ImageIcon(imageCache.getIcon(Icon.MUTE));
         unmuteImageIcon = new ImageIcon(imageCache.getIcon(Icon.UNMUTE));
