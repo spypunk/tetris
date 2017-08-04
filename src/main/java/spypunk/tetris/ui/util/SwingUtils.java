@@ -8,6 +8,9 @@
 
 package spypunk.tetris.ui.util;
 
+import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR;
+
 import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Font;
@@ -34,6 +37,21 @@ import spypunk.tetris.exception.TetrisException;
 public final class SwingUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SwingUtils.class);
+
+    public static class Text {
+
+        private final String value;
+
+        private final Font font;
+
+        private final Color fontColor;
+
+        public Text(final String value, final Font font, final Color fontColor) {
+            this.value = value;
+            this.font = font;
+            this.fontColor = fontColor;
+        }
+    }
 
     private SwingUtils() {
         throw new IllegalAccessError();
@@ -78,23 +96,6 @@ public final class SwingUtils {
         return getCenteredImageRectangle(image, rectangle, 1);
     }
 
-    public static Rectangle getCenteredTextRectangle(final Graphics2D graphics, final String text,
-            final Rectangle rectangle, final Font font) {
-        final Rectangle2D textBounds = getTextBounds(graphics, text, font);
-
-        final int x1 = (int) (rectangle.x + (rectangle.width - textBounds.getWidth()) / 2);
-        final int y1 = (int) (rectangle.y + (rectangle.height + textBounds.getHeight()) / 2);
-
-        return new Rectangle(x1, y1, (int) textBounds.getWidth(), (int) textBounds.getHeight());
-    }
-
-    public static Rectangle2D getTextBounds(final Graphics2D graphics, final String text, final Font font) {
-        final FontRenderContext frc = graphics.getFontRenderContext();
-        final GlyphVector gv = font.createGlyphVector(frc, text);
-
-        return gv.getVisualBounds();
-    }
-
     public static void drawImage(final Graphics2D graphics, final Image image,
             final Rectangle rectangle) {
         final int imageWidth = image.getWidth(null);
@@ -122,15 +123,13 @@ public final class SwingUtils {
         }
     }
 
-    public static void renderCenteredText(final Graphics2D graphics, final String text, final Rectangle rectangle,
-            final Font font,
-            final Color fontColor) {
-        graphics.setFont(font);
-        graphics.setColor(fontColor);
+    public static void renderCenteredText(final Graphics2D graphics, final Rectangle rectangle, final Text text) {
+        graphics.setFont(text.font);
+        graphics.setColor(text.fontColor);
 
-        final Rectangle textRectangle = SwingUtils.getCenteredTextRectangle(graphics, text, rectangle, font);
+        final Rectangle textRectangle = SwingUtils.getCenteredTextRectangle(graphics, rectangle, text);
 
-        graphics.drawString(text, textRectangle.x, textRectangle.y);
+        graphics.drawString(text.value, textRectangle.x, textRectangle.y);
     }
 
     public static void doInGraphics(final BufferedImage image, final Consumer<Graphics2D> consumer) {
@@ -144,5 +143,32 @@ public final class SwingUtils {
         consumer.accept(graphics);
 
         graphics.dispose();
+    }
+
+    public static void drawRectangleWithTitle(final Graphics2D graphics, final Rectangle rectangle, final Text text) {
+        final Rectangle titleRectangle = new Rectangle(0, rectangle.y - BLOCK_SIZE, rectangle.width,
+                BLOCK_SIZE);
+
+        SwingUtils.renderCenteredText(graphics, titleRectangle, text);
+
+        graphics.setColor(DEFAULT_BORDER_COLOR);
+        graphics.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    }
+
+    private static Rectangle getCenteredTextRectangle(final Graphics2D graphics, final Rectangle rectangle,
+            final Text text) {
+        final Rectangle2D textBounds = getTextBounds(graphics, text);
+
+        final int x1 = (int) (rectangle.x + (rectangle.width - textBounds.getWidth()) / 2);
+        final int y1 = (int) (rectangle.y + (rectangle.height + textBounds.getHeight()) / 2);
+
+        return new Rectangle(x1, y1, (int) textBounds.getWidth(), (int) textBounds.getHeight());
+    }
+
+    private static Rectangle2D getTextBounds(final Graphics2D graphics, final Text text) {
+        final FontRenderContext frc = graphics.getFontRenderContext();
+        final GlyphVector gv = text.font.createGlyphVector(frc, text.value);
+
+        return gv.getVisualBounds();
     }
 }

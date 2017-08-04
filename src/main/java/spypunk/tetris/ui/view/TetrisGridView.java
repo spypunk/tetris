@@ -17,8 +17,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.model.Shape.Block;
 import spypunk.tetris.model.ShapeType;
@@ -27,6 +25,7 @@ import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
+import spypunk.tetris.ui.util.SwingUtils.Text;
 
 public class TetrisGridView extends AbstractTetrisView {
 
@@ -40,6 +39,12 @@ public class TetrisGridView extends AbstractTetrisView {
 
     private final Rectangle gridRectangle;
 
+    private final Text tetrisStoppedText;
+
+    private final Text tetrisGameOverText;
+
+    private final Text tetrisPausedText;
+
     public TetrisGridView(final FontCache fontCache,
             final ImageCache imageCache,
             final Tetris tetris) {
@@ -47,6 +52,10 @@ public class TetrisGridView extends AbstractTetrisView {
 
         gridRectangle = new Rectangle(0, 0, TetrisConstants.WIDTH * BLOCK_SIZE,
                 TetrisConstants.HEIGHT * BLOCK_SIZE);
+
+        tetrisStoppedText = new Text(PRESS_SPACE, fontCache.getFrozenFont(), DEFAULT_FONT_COLOR);
+        tetrisGameOverText = new Text(GAME_OVER, fontCache.getFrozenFont(), DEFAULT_FONT_COLOR);
+        tetrisPausedText = new Text(PAUSE, fontCache.getFrozenFont(), DEFAULT_FONT_COLOR);
 
         initializeComponent(gridRectangle.width, gridRectangle.height, true);
     }
@@ -56,12 +65,12 @@ public class TetrisGridView extends AbstractTetrisView {
         final State tetrisState = tetris.getState();
 
         if (tetrisState.equals(State.STOPPED)) {
-            renderTetrisStopped(graphics);
+            SwingUtils.renderCenteredText(graphics, gridRectangle, tetrisStoppedText);
             return;
         }
 
-        CollectionUtils.union(tetris.getBlocks().values(), tetris.getCurrentShape().getBlocks())
-                .forEach(block -> renderBlock(graphics, block));
+        tetris.getBlocks().values().forEach(block -> renderBlock(graphics, block));
+        tetris.getCurrentShape().getBlocks().forEach(block -> renderBlock(graphics, block));
 
         if (!State.RUNNING.equals(tetrisState)) {
             renderTetrisNotRunning(graphics, tetrisState);
@@ -78,17 +87,12 @@ public class TetrisGridView extends AbstractTetrisView {
         SwingUtils.drawImage(graphics, blockImage, rectangle);
     }
 
-    private void renderTetrisStopped(final Graphics2D graphics) {
-        SwingUtils.renderCenteredText(graphics, PRESS_SPACE, gridRectangle,
-            fontCache.getFrozenFont(), DEFAULT_FONT_COLOR);
-    }
-
     private void renderTetrisNotRunning(final Graphics2D graphics, final State state) {
         graphics.setColor(NOT_RUNNING_FG_COLOR);
         graphics.fillRect(gridRectangle.x, gridRectangle.y, gridRectangle.width,
             gridRectangle.height);
 
-        SwingUtils.renderCenteredText(graphics, State.GAME_OVER.equals(state) ? GAME_OVER : PAUSE, gridRectangle,
-            fontCache.getFrozenFont(), DEFAULT_FONT_COLOR);
+        SwingUtils.renderCenteredText(graphics, gridRectangle,
+            State.GAME_OVER.equals(state) ? tetrisGameOverText : tetrisPausedText);
     }
 }

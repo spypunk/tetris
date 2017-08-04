@@ -9,7 +9,6 @@
 package spypunk.tetris.ui.view;
 
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.Graphics2D;
@@ -28,6 +27,7 @@ import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
+import spypunk.tetris.ui.util.SwingUtils.Text;
 
 public class TetrisInfoView extends AbstractTetrisView {
 
@@ -55,27 +55,16 @@ public class TetrisInfoView extends AbstractTetrisView {
 
         protected final Rectangle rectangle;
 
-        protected final Rectangle titleRectangle;
-
-        protected final String title;
+        private final Text titleText;
 
         TetrisInfo(final Rectangle rectangle, final String title) {
             this.rectangle = rectangle;
-            this.title = title;
-            titleRectangle = createTitleRectangle(rectangle);
+
+            titleText = new Text(title, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
         }
 
         public void render(final Graphics2D graphics) {
-            SwingUtils.renderCenteredText(graphics, title,
-                titleRectangle, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
-
-            graphics.setColor(DEFAULT_BORDER_COLOR);
-            graphics.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-        }
-
-        private Rectangle createTitleRectangle(final Rectangle rectangle) {
-            return new Rectangle(0, rectangle.y - BLOCK_SIZE, rectangle.width,
-                    BLOCK_SIZE);
+            SwingUtils.drawRectangleWithTitle(graphics, rectangle, titleText);
         }
     }
 
@@ -88,8 +77,9 @@ public class TetrisInfoView extends AbstractTetrisView {
         public void render(final Graphics2D graphics, final int value) {
             super.render(graphics);
 
-            SwingUtils.renderCenteredText(graphics, String.valueOf(value),
-                rectangle, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
+            final Text valueText = new Text(String.valueOf(value), fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
+
+            SwingUtils.renderCenteredText(graphics, rectangle, valueText);
         }
     }
 

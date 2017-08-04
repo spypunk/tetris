@@ -9,7 +9,6 @@
 package spypunk.tetris.ui.view;
 
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.Graphics2D;
@@ -24,6 +23,7 @@ import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
+import spypunk.tetris.ui.util.SwingUtils.Text;
 
 public class TetrisStatisticsView extends AbstractTetrisView {
 
@@ -31,9 +31,9 @@ public class TetrisStatisticsView extends AbstractTetrisView {
 
     private final Rectangle statisticsRectangle;
 
-    private final Rectangle statisticsTitleRectangle;
-
     private final List<TetrisStatistic> tetrisStatistics;
+
+    private final Text statisticsTitleText;
 
     private class TetrisStatistic {
 
@@ -59,8 +59,9 @@ public class TetrisStatisticsView extends AbstractTetrisView {
 
             SwingUtils.drawImage(graphics, image, imageRectangle);
 
-            SwingUtils.renderCenteredText(graphics, value,
-                textRectangle, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
+            final Text statisticText = new Text(value, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
+
+            SwingUtils.renderCenteredText(graphics, textRectangle, statisticText);
         }
     }
 
@@ -69,12 +70,13 @@ public class TetrisStatisticsView extends AbstractTetrisView {
         super(fontCache, imageCache, tetris);
 
         statisticsRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE * 15);
-        statisticsTitleRectangle = new Rectangle(0, 0, statisticsRectangle.width, BLOCK_SIZE);
 
         tetrisStatistics = Arrays.asList(ShapeType.values())
                 .stream()
                 .map(shapeType -> createTetrisStatistic(imageCache, shapeType))
                 .collect(Collectors.toList());
+
+        statisticsTitleText = new Text(STATISTICS, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
 
         initializeComponent(statisticsRectangle.width + 1, statisticsRectangle.height + BLOCK_SIZE + 1);
     }
@@ -86,9 +88,7 @@ public class TetrisStatisticsView extends AbstractTetrisView {
                 statisticsRectangle.y + shapeType.ordinal() * 2 * BLOCK_SIZE + BLOCK_SIZE,
                 statisticsRectangle.width / 2, BLOCK_SIZE);
 
-        final Rectangle imageRectangle = SwingUtils.getCenteredImageRectangle(shapeImage,
-            imageContainerRectangle,
-            0.5);
+        final Rectangle imageRectangle = SwingUtils.getCenteredImageRectangle(shapeImage, imageContainerRectangle, 0.5);
 
         final Rectangle textRectangle = new Rectangle(
                 statisticsRectangle.x + imageContainerRectangle.width,
@@ -100,13 +100,7 @@ public class TetrisStatisticsView extends AbstractTetrisView {
 
     @Override
     protected void doUpdate(final Graphics2D graphics) {
-        SwingUtils.renderCenteredText(graphics, STATISTICS,
-            statisticsTitleRectangle, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
-
-        graphics.setColor(DEFAULT_BORDER_COLOR);
-
-        graphics.drawRect(statisticsRectangle.x, statisticsRectangle.y, statisticsRectangle.width,
-            statisticsRectangle.height);
+        SwingUtils.drawRectangleWithTitle(graphics, statisticsRectangle, statisticsTitleText);
 
         tetrisStatistics.forEach(tetrisStatistic -> tetrisStatistic.render(graphics));
     }
