@@ -17,7 +17,10 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import spypunk.tetris.ui.controller.TetrisController;
+import spypunk.tetris.service.TetrisService;
+import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
+import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
+import spypunk.tetris.ui.view.TetrisView;
 
 @Singleton
 public final class TetrisControllerGameLoopImpl implements TetrisControllerGameLoop, Runnable {
@@ -30,15 +33,29 @@ public final class TetrisControllerGameLoopImpl implements TetrisControllerGameL
 
     private final ExecutorService executorService;
 
-    private final TetrisController tetrisController;
+    private final TetrisControllerInputHandler tetrisControllerInputHandler;
+
+    private final TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler;
+
+    private final TetrisService tetrisService;
+
+    private final TetrisView tetrisView;
 
     private volatile boolean running;
 
     @Inject
-    public TetrisControllerGameLoopImpl(final TetrisController tetrisController) {
+    public TetrisControllerGameLoopImpl(final TetrisService tetrisService,
+            final TetrisControllerInputHandler tetrisControllerInputHandler,
+            final TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler,
+            final TetrisView tetrisView) {
+
+        this.tetrisService = tetrisService;
+        this.tetrisControllerInputHandler = tetrisControllerInputHandler;
+        this.tetrisControllerTetrisEventHandler = tetrisControllerTetrisEventHandler;
+        this.tetrisView = tetrisView;
+
         executorService = Executors
                 .newSingleThreadExecutor(runnable -> new Thread(runnable, "TetrisControllerGameLoop"));
-        this.tetrisController = tetrisController;
     }
 
     @Override
@@ -58,13 +75,23 @@ public final class TetrisControllerGameLoopImpl implements TetrisControllerGameL
         while (running) {
             long currentTick = System.currentTimeMillis();
 
-            tetrisController.onGameLoopUpdate();
+            update();
 
             for (final long nextTick = currentTick + SKIP_TICKS; currentTick < nextTick; currentTick = System
                     .currentTimeMillis()) {
                 waitMore();
             }
         }
+    }
+
+    private void update() {
+        tetrisControllerInputHandler.handleInputs();
+
+        tetrisService.update();
+
+        tetrisControllerTetrisEventHandler.handleEvents();
+
+        tetrisView.update();
     }
 
     private void waitMore() {

@@ -13,8 +13,6 @@ import javax.inject.Singleton;
 
 import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Tetris;
-import spypunk.tetris.service.TetrisService;
-import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
 import spypunk.tetris.ui.controller.gameloop.TetrisControllerGameLoop;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
 import spypunk.tetris.ui.util.SwingUtils;
@@ -23,31 +21,24 @@ import spypunk.tetris.ui.view.TetrisView;
 @Singleton
 public class TetrisControllerImpl implements TetrisController {
 
-    private final TetrisService tetrisService;
-
-    private final TetrisView tetrisView;
-
     private final Tetris tetris;
 
     private final TetrisControllerGameLoop tetrisControllerGameLoop;
 
     private final TetrisControllerInputHandler tetrisControllerInputHandler;
 
-    private final TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler;
+    private final TetrisView tetrisView;
 
     @Inject
     public TetrisControllerImpl(final TetrisControllerGameLoop tetrisControllerGameLoop,
-            final TetrisService tetrisService,
             final TetrisControllerInputHandler tetrisControllerInputHandler,
-            final TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler,
-            final @TetrisProvider Tetris tetris,
-            final TetrisView tetrisView) {
-        this.tetrisService = tetrisService;
-        this.tetrisControllerInputHandler = tetrisControllerInputHandler;
-        this.tetrisControllerTetrisEventHandler = tetrisControllerTetrisEventHandler;
+            final TetrisView tetrisView,
+            final @TetrisProvider Tetris tetris) {
+
         this.tetrisControllerGameLoop = tetrisControllerGameLoop;
-        this.tetris = tetris;
+        this.tetrisControllerInputHandler = tetrisControllerInputHandler;
         this.tetrisView = tetrisView;
+        this.tetris = tetris;
     }
 
     @Override
@@ -68,17 +59,6 @@ public class TetrisControllerImpl implements TetrisController {
     @Override
     public void onURLOpen() {
         SwingUtils.openURI(tetris.getProjectURI());
-    }
-
-    @Override
-    public void onGameLoopUpdate() {
-        tetrisControllerInputHandler.handleInputs();
-
-        tetrisService.update();
-
-        tetrisControllerTetrisEventHandler.handleEvents();
-
-        tetrisView.update();
     }
 
     @Override
