@@ -12,7 +12,7 @@ public enum FontType {
 
     DEFAULT(30F, Font.NEUTRONIUM),
     URL(10F, Font.RUSSO_ONE),
-    FROZEN(42F, Font.NEUTRONIUM);
+    BIGGER(42F, Font.NEUTRONIUM);
 
     private final float size;
 

@@ -9,7 +9,6 @@
 package spypunk.tetris.ui.view;
 
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -60,7 +59,7 @@ public class TetrisInfoView extends AbstractTetrisView {
         TetrisInfo(final Rectangle rectangle, final String title) {
             this.rectangle = rectangle;
 
-            titleText = new Text(title, fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
+            titleText = new Text(title, fontCache.getDefaultFont());
         }
 
         public void render(final Graphics2D graphics) {
@@ -77,7 +76,7 @@ public class TetrisInfoView extends AbstractTetrisView {
         public void render(final Graphics2D graphics, final int value) {
             super.render(graphics);
 
-            final Text valueText = new Text(String.valueOf(value), fontCache.getDefaultFont(), DEFAULT_FONT_COLOR);
+            final Text valueText = new Text(String.valueOf(value), fontCache.getDefaultFont());
 
             SwingUtils.renderCenteredText(graphics, rectangle, valueText);
         }

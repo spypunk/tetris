@@ -10,6 +10,7 @@ package spypunk.tetris.ui.util;
 
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_BORDER_COLOR;
+import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.Color;
 import java.awt.Desktop;
@@ -46,10 +47,10 @@ public final class SwingUtils {
 
         private final Color fontColor;
 
-        public Text(final String value, final Font font, final Color fontColor) {
+        public Text(final String value, final Font font) {
             this.value = value;
             this.font = font;
-            this.fontColor = fontColor;
+            fontColor = DEFAULT_FONT_COLOR;
         }
     }
 

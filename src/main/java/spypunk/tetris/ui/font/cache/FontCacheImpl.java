@@ -56,8 +56,8 @@ public class FontCacheImpl implements FontCache {
     }
 
     @Override
-    public Font getFrozenFont() {
-        return getFont(FontType.FROZEN);
+    public Font getBiggerFont() {
+        return getFont(FontType.BIGGER);
     }
 
     @Override

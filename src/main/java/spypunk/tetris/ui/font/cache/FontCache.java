@@ -14,7 +14,7 @@ public interface FontCache {
 
     Font getDefaultFont();
 
-    Font getFrozenFont();
+    Font getBiggerFont();
 
     Font getURLFont();
 }

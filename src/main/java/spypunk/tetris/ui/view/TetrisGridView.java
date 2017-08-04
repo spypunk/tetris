@@ -9,7 +9,6 @@
 package spypunk.tetris.ui.view;
 
 import static spypunk.tetris.ui.constants.TetrisUIConstants.BLOCK_SIZE;
-import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -53,9 +52,9 @@ public class TetrisGridView extends AbstractTetrisView {
         gridRectangle = new Rectangle(0, 0, TetrisConstants.WIDTH * BLOCK_SIZE,
                 TetrisConstants.HEIGHT * BLOCK_SIZE);
 
-        tetrisStoppedText = new Text(PRESS_SPACE, fontCache.getFrozenFont(), DEFAULT_FONT_COLOR);
-        tetrisGameOverText = new Text(GAME_OVER, fontCache.getFrozenFont(), DEFAULT_FONT_COLOR);
-        tetrisPausedText = new Text(PAUSE, fontCache.getFrozenFont(), DEFAULT_FONT_COLOR);
+        tetrisStoppedText = new Text(PRESS_SPACE, fontCache.getBiggerFont());
+        tetrisGameOverText = new Text(GAME_OVER, fontCache.getBiggerFont());
+        tetrisPausedText = new Text(PAUSE, fontCache.getBiggerFont());
 
         initializeComponent(gridRectangle.width, gridRectangle.height, true);
     }
