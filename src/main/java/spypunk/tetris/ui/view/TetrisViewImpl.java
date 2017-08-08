@@ -164,7 +164,7 @@ public class TetrisViewImpl extends AbstractView implements TetrisView {
         frame = new JFrame(tetris.getName() + " " + tetris.getVersion());
 
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        frame.getContentPane().setLayout(new BorderLayout(0, 0));
+        frame.setLayout(new BorderLayout(0, 0));
         frame.setResizable(false);
         frame.addWindowListener(new TetrisViewWindowListener(tetrisController));
         frame.addKeyListener(new TetrisViewKeyAdapter(tetrisController));

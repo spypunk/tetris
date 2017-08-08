@@ -37,7 +37,6 @@ public abstract class AbstractTetrisView extends AbstractView {
                 BufferedImage.TYPE_INT_ARGB);
 
         component.setIcon(new ImageIcon(image));
-        component.setIgnoreRepaint(true);
 
         if (withBorders) {
             component.setBorder(BorderFactory.createLineBorder(TetrisUIConstants.DEFAULT_BORDER_COLOR));
