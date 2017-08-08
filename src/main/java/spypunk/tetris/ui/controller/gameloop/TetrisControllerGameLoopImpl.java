@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.ui.controller.event.TetrisControllerTetrisEventHandler;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
-import spypunk.tetris.ui.view.TetrisView;
+import spypunk.tetris.ui.view.TetrisMainView;
 
 @Singleton
 public final class TetrisControllerGameLoopImpl implements TetrisControllerGameLoop, Runnable {
@@ -39,7 +39,7 @@ public final class TetrisControllerGameLoopImpl implements TetrisControllerGameL
 
     private final TetrisService tetrisService;
 
-    private final TetrisView tetrisView;
+    private final TetrisMainView tetrisMainView;
 
     private volatile boolean running;
 
@@ -47,12 +47,12 @@ public final class TetrisControllerGameLoopImpl implements TetrisControllerGameL
     public TetrisControllerGameLoopImpl(final TetrisService tetrisService,
             final TetrisControllerInputHandler tetrisControllerInputHandler,
             final TetrisControllerTetrisEventHandler tetrisControllerTetrisEventHandler,
-            final TetrisView tetrisView) {
+            final TetrisMainView tetrisMainView) {
 
         this.tetrisService = tetrisService;
         this.tetrisControllerInputHandler = tetrisControllerInputHandler;
         this.tetrisControllerTetrisEventHandler = tetrisControllerTetrisEventHandler;
-        this.tetrisView = tetrisView;
+        this.tetrisMainView = tetrisMainView;
 
         executorService = Executors
                 .newSingleThreadExecutor(runnable -> new Thread(runnable, "TetrisControllerGameLoop"));
@@ -91,7 +91,7 @@ public final class TetrisControllerGameLoopImpl implements TetrisControllerGameL
 
         tetrisControllerTetrisEventHandler.handleEvents();
 
-        tetrisView.update();
+        tetrisMainView.update();
     }
 
     private void waitMore() {

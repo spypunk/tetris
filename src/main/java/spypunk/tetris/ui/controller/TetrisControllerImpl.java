@@ -16,7 +16,7 @@ import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.controller.gameloop.TetrisControllerGameLoop;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
 import spypunk.tetris.ui.util.SwingUtils;
-import spypunk.tetris.ui.view.TetrisView;
+import spypunk.tetris.ui.view.TetrisMainView;
 
 @Singleton
 public class TetrisControllerImpl implements TetrisController {
@@ -27,23 +27,23 @@ public class TetrisControllerImpl implements TetrisController {
 
     private final TetrisControllerInputHandler tetrisControllerInputHandler;
 
-    private final TetrisView tetrisView;
+    private final TetrisMainView tetrisMainView;
 
     @Inject
     public TetrisControllerImpl(final TetrisControllerGameLoop tetrisControllerGameLoop,
             final TetrisControllerInputHandler tetrisControllerInputHandler,
-            final TetrisView tetrisView,
+            final TetrisMainView tetrisMainView,
             final @TetrisProvider Tetris tetris) {
 
         this.tetrisControllerGameLoop = tetrisControllerGameLoop;
         this.tetrisControllerInputHandler = tetrisControllerInputHandler;
-        this.tetrisView = tetrisView;
+        this.tetrisMainView = tetrisMainView;
         this.tetris = tetris;
     }
 
     @Override
     public void start() {
-        tetrisView.show();
+        tetrisMainView.show();
     }
 
     @Override

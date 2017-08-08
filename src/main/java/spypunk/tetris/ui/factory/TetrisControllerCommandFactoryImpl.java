@@ -19,7 +19,7 @@ import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.sound.Sound;
 import spypunk.tetris.sound.service.SoundService;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
-import spypunk.tetris.ui.view.TetrisView;
+import spypunk.tetris.ui.view.TetrisMainView;
 
 @Singleton
 public class TetrisControllerCommandFactoryImpl implements TetrisControllerCommandFactory {
@@ -30,17 +30,17 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
     private final Tetris tetris;
 
-    private final TetrisView tetrisView;
+    private final TetrisMainView tetrisMainView;
 
     @Inject
     public TetrisControllerCommandFactoryImpl(final TetrisService tetrisService,
             final SoundService soundService,
             @TetrisProvider final Tetris tetris,
-            final TetrisView tetrisView) {
+            final TetrisMainView tetrisMainView) {
         this.tetrisService = tetrisService;
         this.soundService = soundService;
         this.tetris = tetris;
-        this.tetrisView = tetrisView;
+        this.tetrisMainView = tetrisMainView;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
 
             final boolean muted = tetris.isMuted();
 
-            tetrisView.setMuted(muted);
+            tetrisMainView.setMuted(muted);
             soundService.setMuted(muted);
         };
     }

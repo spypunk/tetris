@@ -8,7 +8,7 @@
 
 package spypunk.tetris.ui.view;
 
-public interface TetrisView extends View {
+public interface TetrisMainView extends View {
 
     void show();
 

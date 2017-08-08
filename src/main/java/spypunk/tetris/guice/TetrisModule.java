@@ -49,8 +49,8 @@ import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
 import spypunk.tetris.ui.factory.TetrisControllerCommandFactoryImpl;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.font.cache.FontCacheImpl;
-import spypunk.tetris.ui.view.TetrisView;
-import spypunk.tetris.ui.view.TetrisViewImpl;
+import spypunk.tetris.ui.view.TetrisMainView;
+import spypunk.tetris.ui.view.TetrisMainViewImpl;
 
 public class TetrisModule extends AbstractModule {
 
@@ -100,7 +100,7 @@ public class TetrisModule extends AbstractModule {
         bind(TetrisControllerInputHandler.class).to(TetrisControllerInputHandlerImpl.class);
         bind(TetrisControllerTetrisEventHandler.class).to(TetrisControllerTetrisEventHandlerImpl.class);
         bind(TetrisControllerGameLoop.class).to(TetrisControllerGameLoopImpl.class);
-        bind(TetrisView.class).to(TetrisViewImpl.class);
+        bind(TetrisMainView.class).to(TetrisMainViewImpl.class);
     }
 
     @Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD })
