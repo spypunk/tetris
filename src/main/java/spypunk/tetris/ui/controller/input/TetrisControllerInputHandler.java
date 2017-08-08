@@ -10,15 +10,6 @@ package spypunk.tetris.ui.controller.input;
 
 public interface TetrisControllerInputHandler {
 
-    enum InputType {
-        MOVEMENT,
-        PAUSE,
-        NEW_GAME,
-        MUTE,
-        INCREASE_VOLUME,
-        DECREASE_VOLUME
-    }
-
     void onKeyPressed(int keyCode);
 
     void onKeyReleased(int keyCode);
