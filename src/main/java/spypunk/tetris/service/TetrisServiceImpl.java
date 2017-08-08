@@ -12,6 +12,7 @@ import static spypunk.tetris.constants.TetrisConstants.HEIGHT;
 import static spypunk.tetris.constants.TetrisConstants.WIDTH;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,6 +25,7 @@ import javax.inject.Singleton;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
+import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Movement;
@@ -45,6 +47,8 @@ public class TetrisServiceImpl implements TetrisService {
     private final Map<Integer, Integer> scorePerRows = ImmutableMap.of(1, 40, 2, 100, 3, 300, 4, 1200);
 
     private final Map<Integer, Integer> levelSpeeds = createLevelSpeeds();
+
+    private final Rectangle gridRectangle = new Rectangle(0, 0, TetrisConstants.WIDTH, TetrisConstants.HEIGHT);
 
     private final Tetris tetris;
 
@@ -291,17 +295,11 @@ public class TetrisServiceImpl implements TetrisService {
         final Shape currentShape = tetris.getCurrentShape();
         final Shape newShape = movement.apply(currentShape);
 
-        return newShape.getBlocks().stream().allMatch(this::canBlockMove);
+        return newShape.getBlocks().stream().map(Block::getLocation).allMatch(this::canBlockMove);
     }
 
-    private boolean canBlockMove(final Block block) {
-        final Point location = block.getLocation();
-
-        if (location.x < 0 || location.x == WIDTH || location.y < 0 || location.y == HEIGHT) {
-            return false;
-        }
-
-        return !tetris.getBlocks().containsKey(location);
+    private boolean canBlockMove(final Point location) {
+        return gridRectangle.contains(location) && !tetris.getBlocks().containsKey(location);
     }
 
     private boolean isTetrisRunning() {
