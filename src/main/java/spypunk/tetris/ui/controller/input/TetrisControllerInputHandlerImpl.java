@@ -67,6 +67,10 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
 
     @Override
     public void handleInputs() {
+        if (triggeredCommands.isEmpty()) {
+            return;
+        }
+
         triggeredCommands.stream()
                 .map(tetrisControllerCommandCache::getTetrisControllerCommand)
                 .forEach(TetrisControllerCommand::execute);

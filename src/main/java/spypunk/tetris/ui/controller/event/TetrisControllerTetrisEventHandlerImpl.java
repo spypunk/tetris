@@ -49,6 +49,10 @@ public class TetrisControllerTetrisEventHandlerImpl implements TetrisControllerT
     public void handleEvents() {
         final List<TetrisEvent> tetrisEvents = tetris.getTetrisEvents();
 
+        if (tetrisEvents.isEmpty()) {
+            return;
+        }
+
         tetrisEvents.stream()
                 .map(tetrisControllerCommandTypes::get)
                 .map(tetrisControllerCommandCache::getTetrisControllerCommand)
