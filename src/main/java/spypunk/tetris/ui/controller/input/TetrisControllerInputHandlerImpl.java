@@ -76,7 +76,7 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
             tetrisControllerCommandFactory.createMoveCommand(Movement.RIGHT));
 
         tetrisControllerCommands.put(CommandType.ROTATE,
-            tetrisControllerCommandFactory.createMoveCommand(Movement.ROTATE_CW));
+            tetrisControllerCommandFactory.createMoveCommand(Movement.ROTATE));
 
         tetrisControllerCommands.put(CommandType.DOWN, tetrisControllerCommandFactory.createMoveCommand(Movement.DOWN));
 

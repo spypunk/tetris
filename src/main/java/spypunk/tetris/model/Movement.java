@@ -35,7 +35,7 @@ public enum Movement {
             return new Point(location.x, location.y + 1);
         }
     },
-    ROTATE_CW {
+    ROTATE {
         @Override
         public Shape apply(final Shape shape) {
             final Rectangle boundingBox = shape.getBoundingBox();
