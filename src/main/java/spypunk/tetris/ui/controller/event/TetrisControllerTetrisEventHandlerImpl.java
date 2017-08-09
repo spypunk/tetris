@@ -20,37 +20,39 @@ import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.TetrisEvent;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
-import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
+import spypunk.tetris.ui.controller.command.cache.TetrisControllerCommandCache;
+import spypunk.tetris.ui.controller.command.cache.TetrisControllerCommandCache.TetrisControllerCommandType;
 
 @Singleton
 public class TetrisControllerTetrisEventHandlerImpl implements TetrisControllerTetrisEventHandler {
 
-    private final Map<TetrisEvent, TetrisControllerCommand> tetrisControllerCommands = Maps
+    private final Map<TetrisEvent, TetrisControllerCommandType> tetrisControllerCommandTypes = Maps
             .newHashMap();
 
     private final Tetris tetris;
 
+    private final TetrisControllerCommandCache tetrisControllerCommandCache;
+
     @Inject
-    public TetrisControllerTetrisEventHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory,
+    public TetrisControllerTetrisEventHandlerImpl(final TetrisControllerCommandCache tetrisControllerCommandCache,
             @TetrisProvider final Tetris tetris) {
 
         this.tetris = tetris;
+        this.tetrisControllerCommandCache = tetrisControllerCommandCache;
 
-        tetrisControllerCommands.put(TetrisEvent.SHAPE_LOCKED,
-            tetrisControllerCommandFactory.createShapeLockedCommand());
-
-        tetrisControllerCommands.put(TetrisEvent.GAME_OVER,
-            tetrisControllerCommandFactory.createGameOverCommand());
-
-        tetrisControllerCommands.put(TetrisEvent.ROWS_COMPLETED,
-            tetrisControllerCommandFactory.createRowsCompletedCommand());
+        tetrisControllerCommandTypes.put(TetrisEvent.SHAPE_LOCKED, TetrisControllerCommandType.SHAPE_LOCKED);
+        tetrisControllerCommandTypes.put(TetrisEvent.GAME_OVER, TetrisControllerCommandType.GAME_OVER);
+        tetrisControllerCommandTypes.put(TetrisEvent.ROWS_COMPLETED, TetrisControllerCommandType.ROWS_COMPLETED);
     }
 
     @Override
     public void handleEvents() {
         final List<TetrisEvent> tetrisEvents = tetris.getTetrisEvents();
 
-        tetrisEvents.stream().map(tetrisControllerCommands::get).forEach(TetrisControllerCommand::execute);
+        tetrisEvents.stream()
+                .map(tetrisControllerCommandTypes::get)
+                .map(tetrisControllerCommandCache::getTetrisControllerCommand)
+                .forEach(TetrisControllerCommand::execute);
 
         tetrisEvents.clear();
     }

@@ -18,116 +18,67 @@ import javax.inject.Singleton;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
-import spypunk.tetris.model.Movement;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
-import spypunk.tetris.ui.factory.TetrisControllerCommandFactory;
+import spypunk.tetris.ui.controller.command.cache.TetrisControllerCommandCache;
+import spypunk.tetris.ui.controller.command.cache.TetrisControllerCommandCache.TetrisControllerCommandType;
 
 @Singleton
 public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHandler {
 
-    private final Set<CommandType> triggeredCommands = Sets.newConcurrentHashSet();
+    private final Set<TetrisControllerCommandType> triggeredCommands = Sets.newConcurrentHashSet();
 
-    private final Map<Integer, CommandType> keyEventCommandTypes = Maps.newHashMap();
+    private final Map<Integer, TetrisControllerCommandType> pressedKeyEventCommandTypes = Maps.newHashMap();
 
-    private final Map<CommandType, TetrisControllerCommand> tetrisControllerCommands = Maps.newHashMap();
+    private final Map<Integer, TetrisControllerCommandType> releasedKeyEventCommandTypes = Maps.newHashMap();
 
-    private enum InputType {
-        KEY_PRESSED,
-        KEY_RELEASED,
-        MOUSE_CLICKED
-    }
-
-    private enum CommandType {
-        LEFT(InputType.KEY_PRESSED),
-        RIGHT(InputType.KEY_PRESSED),
-        DOWN(InputType.KEY_PRESSED),
-        ROTATE(InputType.KEY_RELEASED),
-        NEW_GAME(InputType.KEY_RELEASED),
-        PAUSE(InputType.KEY_RELEASED),
-        MUTE(InputType.KEY_RELEASED),
-        DECREASE_VOLUME(InputType.KEY_RELEASED),
-        INCREASE_VOLUME(InputType.KEY_RELEASED),
-        HARD_DROP(InputType.KEY_RELEASED),
-        OPEN_PROJECT_URL(InputType.MOUSE_CLICKED);
-
-        private final InputType inputType;
-
-        private CommandType(final InputType inputType) {
-            this.inputType = inputType;
-        }
-    }
+    private final TetrisControllerCommandCache tetrisControllerCommandCache;
 
     @Inject
-    public TetrisControllerInputHandlerImpl(final TetrisControllerCommandFactory tetrisControllerCommandFactory) {
-        keyEventCommandTypes.put(KeyEvent.VK_LEFT, CommandType.LEFT);
-        keyEventCommandTypes.put(KeyEvent.VK_RIGHT, CommandType.RIGHT);
-        keyEventCommandTypes.put(KeyEvent.VK_UP, CommandType.ROTATE);
-        keyEventCommandTypes.put(KeyEvent.VK_DOWN, CommandType.DOWN);
-        keyEventCommandTypes.put(KeyEvent.VK_SPACE, CommandType.NEW_GAME);
-        keyEventCommandTypes.put(KeyEvent.VK_P, CommandType.PAUSE);
-        keyEventCommandTypes.put(KeyEvent.VK_M, CommandType.MUTE);
-        keyEventCommandTypes.put(KeyEvent.VK_PAGE_UP, CommandType.INCREASE_VOLUME);
-        keyEventCommandTypes.put(KeyEvent.VK_PAGE_DOWN, CommandType.DECREASE_VOLUME);
-        keyEventCommandTypes.put(KeyEvent.VK_CONTROL, CommandType.HARD_DROP);
+    public TetrisControllerInputHandlerImpl(final TetrisControllerCommandCache tetrisControllerCommandCache) {
+        this.tetrisControllerCommandCache = tetrisControllerCommandCache;
 
-        tetrisControllerCommands.put(CommandType.LEFT, tetrisControllerCommandFactory.createMoveCommand(Movement.LEFT));
+        pressedKeyEventCommandTypes.put(KeyEvent.VK_LEFT, TetrisControllerCommandType.LEFT);
+        pressedKeyEventCommandTypes.put(KeyEvent.VK_RIGHT, TetrisControllerCommandType.RIGHT);
+        pressedKeyEventCommandTypes.put(KeyEvent.VK_DOWN, TetrisControllerCommandType.DOWN);
 
-        tetrisControllerCommands.put(CommandType.RIGHT,
-            tetrisControllerCommandFactory.createMoveCommand(Movement.RIGHT));
-
-        tetrisControllerCommands.put(CommandType.ROTATE,
-            tetrisControllerCommandFactory.createMoveCommand(Movement.ROTATE));
-
-        tetrisControllerCommands.put(CommandType.DOWN, tetrisControllerCommandFactory.createMoveCommand(Movement.DOWN));
-
-        tetrisControllerCommands.put(CommandType.NEW_GAME, tetrisControllerCommandFactory.createNewGameCommand());
-
-        tetrisControllerCommands.put(CommandType.PAUSE, tetrisControllerCommandFactory.createPauseCommand());
-
-        tetrisControllerCommands.put(CommandType.MUTE, tetrisControllerCommandFactory.createMuteCommand());
-
-        tetrisControllerCommands.put(CommandType.INCREASE_VOLUME,
-            tetrisControllerCommandFactory.createIncreaseVolumeCommand());
-
-        tetrisControllerCommands.put(CommandType.DECREASE_VOLUME,
-            tetrisControllerCommandFactory.createDecreaseVolumeCommand());
-
-        tetrisControllerCommands.put(CommandType.HARD_DROP, tetrisControllerCommandFactory.createHardDropCommand());
-
-        tetrisControllerCommands.put(CommandType.OPEN_PROJECT_URL,
-            tetrisControllerCommandFactory.createOpenProjectURLCommand());
+        releasedKeyEventCommandTypes.put(KeyEvent.VK_UP, TetrisControllerCommandType.ROTATE);
+        releasedKeyEventCommandTypes.put(KeyEvent.VK_SPACE, TetrisControllerCommandType.NEW_GAME);
+        releasedKeyEventCommandTypes.put(KeyEvent.VK_P, TetrisControllerCommandType.PAUSE);
+        releasedKeyEventCommandTypes.put(KeyEvent.VK_M, TetrisControllerCommandType.MUTE);
+        releasedKeyEventCommandTypes.put(KeyEvent.VK_PAGE_UP, TetrisControllerCommandType.INCREASE_VOLUME);
+        releasedKeyEventCommandTypes.put(KeyEvent.VK_PAGE_DOWN, TetrisControllerCommandType.DECREASE_VOLUME);
+        releasedKeyEventCommandTypes.put(KeyEvent.VK_CONTROL, TetrisControllerCommandType.HARD_DROP);
     }
 
     @Override
     public void onKeyPressed(final int keyCode) {
-        onKey(keyCode, InputType.KEY_PRESSED);
+        onKey(keyCode, pressedKeyEventCommandTypes);
     }
 
     @Override
     public void onKeyReleased(final int keyCode) {
-        onKey(keyCode, InputType.KEY_RELEASED);
+        onKey(keyCode, releasedKeyEventCommandTypes);
     }
 
     @Override
     public void onProjectURLClicked() {
-        triggeredCommands.add(CommandType.OPEN_PROJECT_URL);
+        triggeredCommands.add(TetrisControllerCommandType.OPEN_PROJECT_URL);
     }
 
     @Override
     public void handleInputs() {
-        triggeredCommands.stream().map(tetrisControllerCommands::get).forEach(TetrisControllerCommand::execute);
+        triggeredCommands.stream()
+                .map(tetrisControllerCommandCache::getTetrisControllerCommand)
+                .forEach(TetrisControllerCommand::execute);
 
         triggeredCommands.clear();
     }
 
-    private void onKey(final int keyCode, final InputType inputType) {
+    private void onKey(final int keyCode, final Map<Integer, TetrisControllerCommandType> keyEventCommandTypes) {
         if (keyEventCommandTypes.containsKey(keyCode)) {
+            final TetrisControllerCommandType commandType = keyEventCommandTypes.get(keyCode);
 
-            final CommandType commandType = keyEventCommandTypes.get(keyCode);
-
-            if (inputType.equals(commandType.inputType)) {
-                triggeredCommands.add(commandType);
-            }
+            triggeredCommands.add(commandType);
         }
     }
 }
