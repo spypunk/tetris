@@ -41,7 +41,7 @@ public class TetrisControllerInputHandlerImpl implements TetrisControllerInputHa
         LEFT(InputType.KEY_PRESSED),
         RIGHT(InputType.KEY_PRESSED),
         DOWN(InputType.KEY_PRESSED),
-        ROTATE(InputType.KEY_PRESSED),
+        ROTATE(InputType.KEY_RELEASED),
         NEW_GAME(InputType.KEY_RELEASED),
         PAUSE(InputType.KEY_RELEASED),
         MUTE(InputType.KEY_RELEASED),
