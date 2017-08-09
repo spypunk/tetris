@@ -19,6 +19,7 @@ import spypunk.tetris.service.TetrisService;
 import spypunk.tetris.sound.Sound;
 import spypunk.tetris.sound.service.SoundService;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
+import spypunk.tetris.ui.util.SwingUtils;
 import spypunk.tetris.ui.view.TetrisMainView;
 
 @Singleton
@@ -111,5 +112,10 @@ public class TetrisControllerCommandFactoryImpl implements TetrisControllerComma
     @Override
     public TetrisControllerCommand createHardDropCommand() {
         return tetrisService::hardDrop;
+    }
+
+    @Override
+    public TetrisControllerCommand createOpenProjectURLCommand() {
+        return () -> SwingUtils.openURI(tetris.getProjectURI());
     }
 }

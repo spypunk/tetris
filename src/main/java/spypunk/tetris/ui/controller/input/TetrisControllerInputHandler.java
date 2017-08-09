@@ -14,5 +14,7 @@ public interface TetrisControllerInputHandler {
 
     void onKeyReleased(int keyCode);
 
+    void onProjectURLClicked();
+
     void handleInputs();
 }

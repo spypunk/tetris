@@ -106,7 +106,7 @@ public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
 
         @Override
         public void mouseClicked(final MouseEvent e) {
-            tetrisController.onURLOpen();
+            tetrisController.onProjectURLClicked();
         }
 
         @Override

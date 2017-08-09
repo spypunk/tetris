@@ -32,4 +32,6 @@ public interface TetrisControllerCommandFactory {
     TetrisControllerCommand createDecreaseVolumeCommand();
 
     TetrisControllerCommand createHardDropCommand();
+
+    TetrisControllerCommand createOpenProjectURLCommand();
 }

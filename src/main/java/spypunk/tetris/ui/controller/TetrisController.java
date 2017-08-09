@@ -16,7 +16,7 @@ public interface TetrisController {
 
     void onWindowClosed();
 
-    void onURLOpen();
+    void onProjectURLClicked();
 
     void onKeyPressed(int keyCode);
 
