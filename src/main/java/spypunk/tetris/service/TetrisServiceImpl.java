@@ -25,7 +25,6 @@ import javax.inject.Singleton;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 
-import spypunk.tetris.constants.TetrisConstants;
 import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.guice.TetrisModule.TetrisProvider;
 import spypunk.tetris.model.Movement;
@@ -48,7 +47,7 @@ public class TetrisServiceImpl implements TetrisService {
 
     private final Map<Integer, Integer> levelSpeeds = createLevelSpeeds();
 
-    private final Rectangle gridRectangle = new Rectangle(0, 0, TetrisConstants.WIDTH, TetrisConstants.HEIGHT);
+    private final Rectangle gridRectangle = new Rectangle(0, 0, WIDTH, HEIGHT);
 
     private final Tetris tetris;
 
