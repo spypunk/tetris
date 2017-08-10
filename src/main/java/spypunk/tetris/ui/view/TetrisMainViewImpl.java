@@ -67,11 +67,6 @@ public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
         public void windowClosed(final WindowEvent e) {
             tetrisController.onWindowClosed();
         }
-
-        @Override
-        public void windowOpened(final WindowEvent e) {
-            tetrisController.onWindowOpened();
-        }
     }
 
     private static final class TetrisViewKeyAdapter extends KeyAdapter {
@@ -179,9 +174,12 @@ public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
 
     @Override
     public void show() {
-        update();
+        setVisible(true);
+    }
 
-        SwingUtils.doInAWTThread(() -> frame.setVisible(true));
+    @Override
+    public void hide() {
+        setVisible(false);
     }
 
     @Override
@@ -194,5 +192,9 @@ public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
     @Override
     public void setMuted(final boolean muted) {
         SwingUtils.doInAWTThread(() -> muteLabel.setIcon(muted ? muteImageIcon : unmuteImageIcon));
+    }
+
+    private void setVisible(final boolean visible) {
+        SwingUtils.doInAWTThread(() -> frame.setVisible(visible));
     }
 }

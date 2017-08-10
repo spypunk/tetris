@@ -13,7 +13,6 @@ import javax.inject.Singleton;
 
 import spypunk.tetris.ui.controller.gameloop.TetrisControllerGameLoop;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
-import spypunk.tetris.ui.view.TetrisMainView;
 
 @Singleton
 public class TetrisControllerImpl implements TetrisController {
@@ -22,25 +21,16 @@ public class TetrisControllerImpl implements TetrisController {
 
     private final TetrisControllerInputHandler tetrisControllerInputHandler;
 
-    private final TetrisMainView tetrisMainView;
-
     @Inject
     public TetrisControllerImpl(final TetrisControllerGameLoop tetrisControllerGameLoop,
-            final TetrisControllerInputHandler tetrisControllerInputHandler,
-            final TetrisMainView tetrisMainView) {
+            final TetrisControllerInputHandler tetrisControllerInputHandler) {
 
         this.tetrisControllerGameLoop = tetrisControllerGameLoop;
         this.tetrisControllerInputHandler = tetrisControllerInputHandler;
-        this.tetrisMainView = tetrisMainView;
     }
 
     @Override
     public void start() {
-        tetrisMainView.show();
-    }
-
-    @Override
-    public void onWindowOpened() {
         tetrisControllerGameLoop.start();
     }
 
