@@ -43,12 +43,6 @@ public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
 
     private final JFrame frame;
 
-    private final TetrisStatisticsView tetrisStatisticsView;
-
-    private final TetrisInfoView tetrisInfoView;
-
-    private final TetrisGridView tetrisGridView;
-
     private final JLabel muteLabel;
 
     private final ImageIcon muteImageIcon;
@@ -122,9 +116,9 @@ public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
             final @TetrisProvider Tetris tetris) {
         super(fontCache, imageCache, tetris);
 
-        tetrisStatisticsView = new TetrisStatisticsView(fontCache, imageCache, tetris);
-        tetrisInfoView = new TetrisInfoView(fontCache, imageCache, tetris);
-        tetrisGridView = new TetrisGridView(fontCache, imageCache, tetris);
+        final TetrisStatisticsView tetrisStatisticsView = new TetrisStatisticsView(fontCache, imageCache, tetris);
+        final TetrisInfoView tetrisInfoView = new TetrisInfoView(fontCache, imageCache, tetris);
+        final TetrisGridView tetrisGridView = new TetrisGridView(fontCache, imageCache, tetris);
 
         muteImageIcon = new ImageIcon(imageCache.getIcon(Icon.MUTE));
         unmuteImageIcon = new ImageIcon(imageCache.getIcon(Icon.UNMUTE));
