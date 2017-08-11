@@ -164,6 +164,7 @@ public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
         frame.addWindowListener(new TetrisViewWindowListener(tetrisController));
         frame.addKeyListener(new TetrisViewKeyAdapter(tetrisController));
         frame.setIconImage(imageCache.getIcon(Icon.ICON));
+        frame.setIgnoreRepaint(true);
 
         frame.add(centerPanel, BorderLayout.CENTER);
         frame.add(bottomPanel, BorderLayout.SOUTH);
@@ -184,9 +185,7 @@ public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
 
     @Override
     public void update() {
-        tetrisGridView.update();
-        tetrisStatisticsView.update();
-        tetrisInfoView.update();
+        frame.repaint();
     }
 
     @Override

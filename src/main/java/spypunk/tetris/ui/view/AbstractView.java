@@ -12,7 +12,7 @@ import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.cache.FontCache;
 
-public abstract class AbstractView implements View {
+public abstract class AbstractView {
 
     protected final FontCache fontCache;
 

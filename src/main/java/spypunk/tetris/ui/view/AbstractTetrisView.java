@@ -8,57 +8,59 @@
 
 package spypunk.tetris.ui.view;
 
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
+import java.awt.RenderingHints;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.ui.cache.ImageCache;
-import spypunk.tetris.ui.constants.TetrisUIConstants;
 import spypunk.tetris.ui.font.cache.FontCache;
-import spypunk.tetris.ui.util.SwingUtils;
 
 public abstract class AbstractTetrisView extends AbstractView {
 
-    protected JLabel component;
+    private final TetrisViewComponent tetrisViewComponent = new TetrisViewComponent();
+
+    protected final class TetrisViewComponent extends JLabel {
+
+        private static final long serialVersionUID = 7092310215094716291L;
+
+        @Override
+        protected void paintComponent(final Graphics graphics) {
+            super.paintComponent(graphics);
+
+            final Graphics2D graphics2d = (Graphics2D) graphics;
+
+            graphics2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+            doPaint(graphics2d);
+        }
+    }
 
     protected AbstractTetrisView(final FontCache fontCache, final ImageCache imageCache, final Tetris tetris) {
         super(fontCache, imageCache, tetris);
     }
 
-    protected void initializeComponent(final int width, final int height, final boolean withBorders) {
-        component = new JLabel();
-
-        final BufferedImage image = new BufferedImage(width, height,
-                BufferedImage.TYPE_INT_ARGB);
-
-        component.setIcon(new ImageIcon(image));
-
-        if (withBorders) {
-            component.setBorder(BorderFactory.createLineBorder(TetrisUIConstants.DEFAULT_BORDER_COLOR));
-        }
-    }
-
     protected void initializeComponent(final int width, final int height) {
-        initializeComponent(width, height, false);
+        tetrisViewComponent.setPreferredSize(new Dimension(width, height));
     }
 
-    @Override
-    public void update() {
-        final BufferedImage image = (BufferedImage) ((ImageIcon) component.getIcon()).getImage();
+    protected void initializeComponentWithBorders(final int width, final int height) {
+        initializeComponent(width, height);
 
-        SwingUtils.doInGraphics(image, this::doUpdate);
-
-        component.repaint();
+        tetrisViewComponent.setBorder(BorderFactory.createLineBorder(Color.GRAY));
     }
 
     public Component getComponent() {
-        return component;
+        return tetrisViewComponent;
     }
 
-    protected abstract void doUpdate(final Graphics2D graphics);
+    protected abstract void doPaint(final Graphics2D graphics);
 }

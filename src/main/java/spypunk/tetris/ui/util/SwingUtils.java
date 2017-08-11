@@ -18,15 +18,12 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
-import java.util.function.Consumer;
 
 import javax.swing.SwingUtilities;
 
@@ -131,19 +128,6 @@ public final class SwingUtils {
         final Rectangle textRectangle = SwingUtils.getCenteredTextRectangle(graphics, rectangle, text);
 
         graphics.drawString(text.value, textRectangle.x, textRectangle.y);
-    }
-
-    public static void doInGraphics(final BufferedImage image, final Consumer<Graphics2D> consumer) {
-        final Graphics2D graphics = image.createGraphics();
-
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        graphics.setColor(Color.BLACK);
-        graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-
-        consumer.accept(graphics);
-
-        graphics.dispose();
     }
 
     public static void drawRectangleWithTitle(final Graphics2D graphics, final Rectangle rectangle, final Text text) {

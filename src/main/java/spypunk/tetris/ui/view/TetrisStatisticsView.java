@@ -68,7 +68,7 @@ public class TetrisStatisticsView extends AbstractTetrisView {
             final ImageCache imageCache, final Tetris tetris) {
         super(fontCache, imageCache, tetris);
 
-        statisticsRectangle = new Rectangle(0, BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE * 15);
+        statisticsRectangle = new Rectangle(0, 3 * BLOCK_SIZE, BLOCK_SIZE * 6, BLOCK_SIZE * 15);
 
         tetrisStatistics = Arrays.asList(ShapeType.values())
                 .stream()
@@ -98,7 +98,7 @@ public class TetrisStatisticsView extends AbstractTetrisView {
     }
 
     @Override
-    protected void doUpdate(final Graphics2D graphics) {
+    protected void doPaint(final Graphics2D graphics) {
         SwingUtils.drawRectangleWithTitle(graphics, statisticsRectangle, statisticsTitleText);
 
         tetrisStatistics.forEach(tetrisStatistic -> tetrisStatistic.render(graphics));

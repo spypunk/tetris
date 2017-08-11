@@ -56,11 +56,11 @@ public class TetrisGridView extends AbstractTetrisView {
         tetrisGameOverText = new Text(GAME_OVER, fontCache.getBiggerFont());
         tetrisPausedText = new Text(PAUSE, fontCache.getBiggerFont());
 
-        initializeComponent(gridRectangle.width, gridRectangle.height, true);
+        initializeComponentWithBorders(gridRectangle.width, gridRectangle.height);
     }
 
     @Override
-    protected void doUpdate(final Graphics2D graphics) {
+    protected void doPaint(final Graphics2D graphics) {
         final State tetrisState = tetris.getState();
 
         if (tetrisState.equals(State.STOPPED)) {
