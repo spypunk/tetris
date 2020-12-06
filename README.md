@@ -19,10 +19,14 @@ You will need a Java JDK 8+ and maven 3+.
 Execute **mvn clean package assembly:single** to build the release package.
 
 # How to run it ?
+```
+mvn clean
 
-**mvn clean**
-**mvn package**
-**mvn exec:java**
+mvn package
+
+mvn exec:java
+
+```
 
 ## How to play ?
 
