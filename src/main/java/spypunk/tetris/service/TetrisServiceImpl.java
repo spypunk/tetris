@@ -193,7 +193,33 @@ public class TetrisServiceImpl implements TetrisService {
         final Integer count = statistics.get(shapeType);
 
         statistics.put(shapeType, count + 1);
+
+        achievement_score10();
+        achievement_row1();
         updateAchievements();
+    }
+
+    private void updateAchievements() {
+
+        if (!tetris.getAchievementUnlocked_SCORE() && tetris.isScoreAboveN()) {
+            updateAchievementCount();
+            tetris.addAchievement("YOU REACHED SCORE " + tetris.getNForScore());
+            tetris.setAchievementUnlocked_SCORE();
+        }
+        if (!tetris.getAchievementUnlocked_ROW() && tetris.isRowAboveN()) {
+            updateAchievementCount();
+            tetris.addAchievement("YOU HAVE DESTROYED " + tetris.getNForRow() + " ROWS!");
+            tetris.setAchievementUnlocked_ROW();
+        }
+    }
+
+    // instance achievements
+    private void achievement_score10() {
+        tetris.setNForScore(10);
+    }
+
+    private void achievement_row1() {
+        tetris.setNForRow(1);
     }
 
     private boolean isGameOver() {
@@ -258,24 +284,6 @@ public class TetrisServiceImpl implements TetrisService {
 
         blocksToMoveDown.forEach(block -> clearBlockAt(block.getLocation()));
         blocksToMoveDown.forEach(this::moveBlockDown);
-    }
-
-    private void updateAchievements() {
-        int currentScore = tetris.getScore(),
-            currentRow = tetris.getCompletedRows();
-        boolean scoreIsAbove1000 = false,
-                rowsIsAbove50 = false;
-
-        if (!tetris.isScoreAbove1000() && currentScore >= 1000) {
-            updateAchievementCount();
-            tetris.addAchievement("YOU REACHED SCORE 1000!");
-            tetris.setScoreAbove1000();
-        }
-        if (!tetris.isRowAbove25() && currentRow >= 25) {
-            updateAchievementCount();
-            tetris.addAchievement("YOU HAVE DESTROYED 25 ROWS!");
-            tetris.setRowAbove25();
-        }
     }
 
     private void updateAchievementCount() {

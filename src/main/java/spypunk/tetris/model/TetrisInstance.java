@@ -44,10 +44,15 @@ public class TetrisInstance {
     private int achievementCount;
 
     private ArrayList<String> achievements = new ArrayList<>();
+    private boolean rowAboveN = false;
+    private int nForRow;
+    private boolean scoreAboveN = false;
+    private int nForScore;
 
-    private boolean rowAbove25 = false;
-
-    private boolean scoreAbove1000 = false;
+    // I need extra booleans in order for the game loop does
+    // not update the achievements when they are unlocked once.
+    private boolean achievementUnlocked_ROW = false;
+    private boolean achievementUnlocked_SCORE = false;
 
     private int speed;
 
@@ -116,20 +121,54 @@ public class TetrisInstance {
         this.achievementCount = achievementCount;
     }
 
-    public boolean IsRowAbove25() {
-        return rowAbove25;
-    }
-    public void setRowAbove25() {
-        this.rowAbove25 = !this.rowAbove25;
+    public boolean IsRowAboveN() {
+        return getNForRow() <= getCompletedRows();
     }
 
-    public boolean IsScoreAbove1000() {
-        return scoreAbove1000;
+    public void setRowAboveN() {
+        this.rowAboveN = !this.rowAboveN;
     }
 
-    public void setScoreAbove1000() {
-        this.scoreAbove1000 = !this.scoreAbove1000;
+    public boolean IsScoreAboveN() {
+        return getNForScore() <= getScore();
     }
+
+    public void setScoreAboveN() {
+        this.scoreAboveN = !this.scoreAboveN;
+    }
+
+    public int getNForRow() {
+        return nForRow;
+    }
+
+    public void setNForRow(int n) {
+        this.nForRow = n;
+    }
+
+    public int getNForScore() {
+        return nForScore;
+    }
+
+    public void setNForScore(int n) {
+        this.nForScore = n;
+    }
+
+    public boolean isAchievementUnlocked_ROW() {
+        return achievementUnlocked_ROW;
+    }
+
+    public void setAchievementUnlocked_ROW() {
+        achievementUnlocked_ROW = !achievementUnlocked_ROW;
+    }
+
+    public boolean isAchievementUnlocked_SCORE() {
+        return achievementUnlocked_SCORE;
+    }
+
+    public void setAchievementUnlocked_SCORE() {
+        achievementUnlocked_SCORE = !achievementUnlocked_SCORE;
+    }
+
 
     public ArrayList<String> getAchievements() {
         return achievements;

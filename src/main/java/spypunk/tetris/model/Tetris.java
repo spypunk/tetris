@@ -154,20 +154,52 @@ public class Tetris {
         tetrisInstance.addAchievement(achievement);
     }
 
-    public boolean isRowAbove25() {
-        return tetrisInstance.IsRowAbove25();
+    public boolean isRowAboveN() {
+        return tetrisInstance.IsRowAboveN();
     }
 
-    public void setRowAbove25() {
-        tetrisInstance.setRowAbove25();
+    public void setRowAboveN() {
+        tetrisInstance.setRowAboveN();
     }
 
-    public boolean isScoreAbove1000() {
-        return tetrisInstance.IsScoreAbove1000();
+    public boolean isScoreAboveN() {
+        return tetrisInstance.IsScoreAboveN();
     }
 
-    public void setScoreAbove1000() {
-        tetrisInstance.setScoreAbove1000();
+    public void setScoreAboveN() {
+        tetrisInstance.setScoreAboveN();
+    }
+
+    public int getNForRow() {
+        return tetrisInstance.getNForRow();
+    }
+
+    public void setNForRow(int n) {
+        tetrisInstance.setNForRow(n);
+    }
+
+    public int getNForScore() {
+        return tetrisInstance.getNForScore();
+    }
+
+    public void setNForScore(int n) {
+        tetrisInstance.setNForScore(n);
+    }
+
+    public boolean getAchievementUnlocked_ROW() {
+        return tetrisInstance.isAchievementUnlocked_ROW();
+    }
+
+    public void setAchievementUnlocked_ROW() {
+        tetrisInstance.setAchievementUnlocked_ROW();
+    }
+
+    public boolean getAchievementUnlocked_SCORE() {
+        return tetrisInstance.isAchievementUnlocked_SCORE();
+    }
+
+    public void setAchievementUnlocked_SCORE() {
+        tetrisInstance.setAchievementUnlocked_SCORE();
     }
 
     public int getSpeed() {
