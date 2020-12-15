@@ -10,6 +10,7 @@ package spypunk.tetris.model;
 
 import java.awt.Point;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -135,6 +136,38 @@ public class Tetris {
 
     public void setCompletedRows(final int completedRows) {
         tetrisInstance.setCompletedRows(completedRows);
+    }
+
+    public int getAchievementCount() {
+        return tetrisInstance.getAchievementCount();
+    }
+
+    public void setAchievementCount(final int achievementCount) {
+        tetrisInstance.setAchievementCount(achievementCount);
+    }
+
+    public ArrayList<String> getAchievements() {
+        return tetrisInstance.getAchievements();
+    }
+
+    public void addAchievement(String achievement) {
+        tetrisInstance.addAchievement(achievement);
+    }
+
+    public boolean isRowAbove25() {
+        return tetrisInstance.IsRowAbove25();
+    }
+
+    public void setRowAbove25() {
+        tetrisInstance.setRowAbove25();
+    }
+
+    public boolean isScoreAbove1000() {
+        return tetrisInstance.IsScoreAbove1000();
+    }
+
+    public void setScoreAbove1000() {
+        tetrisInstance.setScoreAbove1000();
     }
 
     public int getSpeed() {

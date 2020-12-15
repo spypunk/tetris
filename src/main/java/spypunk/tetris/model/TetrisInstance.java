@@ -9,10 +9,7 @@
 package spypunk.tetris.model;
 
 import java.awt.Point;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -43,6 +40,14 @@ public class TetrisInstance {
     private int score;
 
     private int completedRows;
+
+    private int achievementCount;
+
+    private ArrayList<String> achievements = new ArrayList<>();
+
+    private boolean rowAbove25 = false;
+
+    private boolean scoreAbove1000 = false;
 
     private int speed;
 
@@ -101,6 +106,37 @@ public class TetrisInstance {
 
     public int getScore() {
         return score;
+    }
+
+    public int getAchievementCount() {
+        return achievementCount;
+    }
+
+    public void setAchievementCount(int achievementCount) {
+        this.achievementCount = achievementCount;
+    }
+
+    public boolean IsRowAbove25() {
+        return rowAbove25;
+    }
+    public void setRowAbove25() {
+        this.rowAbove25 = !this.rowAbove25;
+    }
+
+    public boolean IsScoreAbove1000() {
+        return scoreAbove1000;
+    }
+
+    public void setScoreAbove1000() {
+        this.scoreAbove1000 = !this.scoreAbove1000;
+    }
+
+    public ArrayList<String> getAchievements() {
+        return achievements;
+    }
+
+    public void addAchievement(String achievement) {
+        this.achievements.add(achievement);
     }
 
     public void setScore(final int score) {
