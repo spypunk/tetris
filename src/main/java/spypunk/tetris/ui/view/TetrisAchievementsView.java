@@ -27,13 +27,10 @@ import spypunk.tetris.ui.util.SwingUtils.Text;
 public class TetrisAchievementsView extends AbstractTetrisView {
 
     private static final String ACHOEVEMENTS = "ACHIEVEMENTS";
-
     private final Rectangle AchievementsRectangle;
-
     private final Text AchievementsTitleText;
 
     private class TetrisAchievement {
-
         private final Rectangle textRectangle;
 
         TetrisAchievement(Rectangle textRectangle) {
@@ -42,34 +39,26 @@ public class TetrisAchievementsView extends AbstractTetrisView {
         }
 
         public void render(final Graphics2D graphics) {
-
             String value = "";
             for (String s: tetris.getAchievements()) {
                 value += s + "\n";
             }
-
             Text AchievementText = new Text(value, fontCache.getDefaultFont());
-
             SwingUtils.renderCenteredText(graphics, textRectangle, AchievementText);
         }
     }
 
     public TetrisAchievementsView(final FontCache fontCache,
-                                final ImageCache imageCache, final Tetris tetris) {
+                                  final ImageCache imageCache,
+                                  final Tetris tetris) {
         super(fontCache, imageCache, tetris);
-
         AchievementsRectangle = new Rectangle(0,  BLOCK_SIZE, BLOCK_SIZE*24, BLOCK_SIZE*2);
-
         AchievementsTitleText = new Text(ACHOEVEMENTS, fontCache.getDefaultFont());
-
         initializeComponent(AchievementsRectangle.width + 1, AchievementsRectangle.height + BLOCK_SIZE + 1);
     }
 
     private TetrisAchievement createTetrisAchievement() {
-
-        final Rectangle textRectangle = new Rectangle(
-                BLOCK_SIZE*12, BLOCK_SIZE + 10, 10, 10);
-
+        final Rectangle textRectangle = new Rectangle(BLOCK_SIZE*12, BLOCK_SIZE + 10, 10, 10);
         return new TetrisAchievement(textRectangle);
     }
 
