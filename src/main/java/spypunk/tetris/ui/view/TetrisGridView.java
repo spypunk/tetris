@@ -46,6 +46,8 @@ public class TetrisGridView extends AbstractTetrisView {
 
     private final Text tetrisPausedText;
 
+    private final Text tetrisAchievementsText;
+
     public TetrisGridView(final FontCache fontCache,
             final ImageCache imageCache,
             final Tetris tetris) {
