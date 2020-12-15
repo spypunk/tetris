@@ -36,6 +36,8 @@ public class TetrisInfoView extends AbstractTetrisView {
 
     private static final String SCORE = "SCORE";
 
+    private static final String HIGHSCORE = "HIGH SCORE";
+
     private static final String LEVEL = "LEVEL";
 
     private static final String NEXT_SHAPE = "NEXT";
@@ -45,6 +47,8 @@ public class TetrisInfoView extends AbstractTetrisView {
     private final ValueTetrisInfo rowsTetrisInfo;
 
     private final ValueTetrisInfo scoreTetrisInfo;
+
+    private final ValueTetrisInfo highScoreTetrisInfo;
 
     private final ValueTetrisInfo levelTetrisInfo;
 
@@ -87,7 +91,7 @@ public class TetrisInfoView extends AbstractTetrisView {
         private final Map<ShapeType, Pair<Image, Rectangle>> shapeTypeImageRectangles;
 
         NextShapeTetrisInfo() {
-            super(new Rectangle(0, BLOCK_SIZE * 12, BLOCK_SIZE * 6, BLOCK_SIZE * 6), NEXT_SHAPE);
+            super(new Rectangle(0, BLOCK_SIZE * 15, BLOCK_SIZE * 6, BLOCK_SIZE * 6), NEXT_SHAPE);
 
             shapeTypeImageRectangles = Arrays.asList(ShapeType.values())
                     .stream()
@@ -123,11 +127,13 @@ public class TetrisInfoView extends AbstractTetrisView {
 
         final Rectangle levelRectangle = new Rectangle(0, BLOCK_SIZE * 3, BLOCK_SIZE * 6, BLOCK_SIZE);
         final Rectangle scoreRectangle = new Rectangle(0, BLOCK_SIZE * 6, BLOCK_SIZE * 6, BLOCK_SIZE);
-        final Rectangle rowsRectangle = new Rectangle(0, BLOCK_SIZE * 9, BLOCK_SIZE * 6, BLOCK_SIZE);
+        final Rectangle highScoreRectangle = new Rectangle(0, BLOCK_SIZE * 9, BLOCK_SIZE * 6, BLOCK_SIZE);
+        final Rectangle rowsRectangle = new Rectangle(0, BLOCK_SIZE * 12, BLOCK_SIZE * 6, BLOCK_SIZE);
 
         rowsTetrisInfo = new ValueTetrisInfo(rowsRectangle, ROWS);
         scoreTetrisInfo = new ValueTetrisInfo(scoreRectangle, SCORE);
         levelTetrisInfo = new ValueTetrisInfo(levelRectangle, LEVEL);
+        highScoreTetrisInfo = new ValueTetrisInfo(highScoreRectangle, HIGHSCORE);
         nextShapeTetrisInfo = new NextShapeTetrisInfo();
 
         initializeComponent(VIEW_WIDTH, VIEW_HEIGHT);
@@ -138,6 +144,7 @@ public class TetrisInfoView extends AbstractTetrisView {
         levelTetrisInfo.render(graphics, tetris.getLevel());
         scoreTetrisInfo.render(graphics, tetris.getScore());
         rowsTetrisInfo.render(graphics, tetris.getCompletedRows());
+        highScoreTetrisInfo.render(graphics, tetris.getHighScore());
         nextShapeTetrisInfo.render(graphics);
     }
 }

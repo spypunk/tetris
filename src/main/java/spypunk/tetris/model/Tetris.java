@@ -129,6 +129,11 @@ public class Tetris {
         tetrisInstance.setScore(score);
     }
 
+    public int getHighScore() { return tetrisInstance.getHighScore(); }
+
+    public void setHighScore(final int highScore) { tetrisInstance.setHighScore(highScore); }
+
+
     public int getCompletedRows() {
         return tetrisInstance.getCompletedRows();
     }

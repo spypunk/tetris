@@ -13,9 +13,12 @@ import static spypunk.tetris.constants.TetrisConstants.WIDTH;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -35,6 +38,9 @@ import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
 import spypunk.tetris.model.TetrisEvent;
 import spypunk.tetris.model.TetrisInstance;
+import spypunk.tetris.ui.view.GameEntry;
+import spypunk.tetris.ui.view.Scores;
+import spypunk.tetris.ui.view.TetrisUserNameInputView;
 
 @Singleton
 public class TetrisServiceImpl implements TetrisService {
@@ -51,10 +57,15 @@ public class TetrisServiceImpl implements TetrisService {
 
     private final Tetris tetris;
 
+    final Scores s = new Scores();
+
     @Inject
     public TetrisServiceImpl(final ShapeFactory shapeFactory, @TetrisProvider final Tetris tetris) {
         this.shapeFactory = shapeFactory;
         this.tetris = tetris;
+
+        s.updateEntries();
+        tetris.setHighScore(s.highestScore().getScore());
     }
 
     @Override
@@ -65,6 +76,8 @@ public class TetrisServiceImpl implements TetrisService {
         tetris.setSpeed(speed);
         tetris.setNextShape(shapeFactory.createRandomShape());
         tetris.setState(State.RUNNING);
+
+        tetris.setHighScore(s.highestScore().getScore());
 
         generateNextShape();
     }
@@ -169,6 +182,24 @@ public class TetrisServiceImpl implements TetrisService {
         if (isGameOver()) {
             tetris.setState(State.GAME_OVER);
             tetris.getTetrisEvents().add(TetrisEvent.GAME_OVER);
+
+            final Integer playerScore = tetris.getScore();
+
+            if(s.lowestScore() == null || playerScore >= s.lowestScore().getScore()){
+                TetrisUserNameInputView tetrisUserNameInputView = new TetrisUserNameInputView();
+
+                String playerName = "";
+
+                while(!tetrisUserNameInputView.playerNameGiven){
+                    playerName = tetrisUserNameInputView.getPlayerName();
+                    if(tetrisUserNameInputView.playerNameGiven)
+                        break;
+                }
+
+                tetrisUserNameInputView.closeView();
+                s.add(new GameEntry(playerName, playerScore));
+                tetris.setHighScore(s.highestScore().getScore());
+            }
         } else {
             tetris.getTetrisEvents().add(TetrisEvent.SHAPE_LOCKED);
             tetris.setCurrentShapeLocked(true);

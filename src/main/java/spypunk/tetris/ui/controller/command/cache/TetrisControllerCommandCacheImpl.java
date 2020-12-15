@@ -24,6 +24,7 @@ import spypunk.tetris.sound.Sound;
 import spypunk.tetris.sound.service.SoundService;
 import spypunk.tetris.ui.controller.command.TetrisControllerCommand;
 import spypunk.tetris.ui.util.SwingUtils;
+import spypunk.tetris.ui.view.TetrisHighScoreView;
 import spypunk.tetris.ui.view.TetrisMainView;
 
 @Singleton
@@ -36,6 +37,8 @@ public class TetrisControllerCommandCacheImpl implements TetrisControllerCommand
     private final Tetris tetris;
 
     private final TetrisMainView tetrisMainView;
+
+    private TetrisHighScoreView tetrisHighScoreView;
 
     private final Map<TetrisControllerCommandType, TetrisControllerCommand> tetrisControllerCommands = Maps
             .newHashMap();
@@ -58,6 +61,7 @@ public class TetrisControllerCommandCacheImpl implements TetrisControllerCommand
         tetrisControllerCommands.put(TetrisControllerCommandType.DECREASE_VOLUME, createDecreaseVolumeCommand());
         tetrisControllerCommands.put(TetrisControllerCommandType.INCREASE_VOLUME, createIncreaseVolumeCommand());
         tetrisControllerCommands.put(TetrisControllerCommandType.MUTE, createMuteCommand());
+        tetrisControllerCommands.put(TetrisControllerCommandType.SCORE, showScorePage());
         tetrisControllerCommands.put(TetrisControllerCommandType.NEW_GAME, createNewGameCommand());
         tetrisControllerCommands.put(TetrisControllerCommandType.OPEN_PROJECT_URL, createOpenProjectURLCommand());
         tetrisControllerCommands.put(TetrisControllerCommandType.PAUSE, createPauseCommand());
@@ -110,6 +114,12 @@ public class TetrisControllerCommandCacheImpl implements TetrisControllerCommand
 
             tetrisMainView.setMuted(muted);
             soundService.setMuted(muted);
+        };
+    }
+
+    private TetrisControllerCommand showScorePage() {
+        return () -> {
+            tetrisHighScoreView = new TetrisHighScoreView();
         };
     }
 

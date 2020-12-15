@@ -42,6 +42,8 @@ public class TetrisInstance {
 
     private int score;
 
+    private int highScore;
+
     private int completedRows;
 
     private int speed;
@@ -106,6 +108,11 @@ public class TetrisInstance {
     public void setScore(final int score) {
         this.score = score;
     }
+
+    public int getHighScore() { return highScore; }
+
+    public void setHighScore(final int highScore) { this.highScore = highScore; }
+
 
     public int getCompletedRows() {
         return completedRows;

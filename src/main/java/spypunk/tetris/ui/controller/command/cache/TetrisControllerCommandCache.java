@@ -20,6 +20,7 @@ public interface TetrisControllerCommandCache {
         NEW_GAME,
         PAUSE,
         MUTE,
+        SCORE,
         DECREASE_VOLUME,
         INCREASE_VOLUME,
         HARD_DROP,
