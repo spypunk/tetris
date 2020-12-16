@@ -169,7 +169,6 @@ public class TetrisInstance {
         achievementUnlocked_SCORE = !achievementUnlocked_SCORE;
     }
 
-
     public ArrayList<String> getAchievements() {
         return achievements;
     }
