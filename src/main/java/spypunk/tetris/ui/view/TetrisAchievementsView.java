@@ -19,12 +19,15 @@ import java.util.stream.Collectors;
 
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
+import spypunk.tetris.model.TetrisAchievement;
+import spypunk.tetris.model.TetrisAchievementChecker;
 import spypunk.tetris.ui.cache.ImageCache;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.util.SwingUtils;
 import spypunk.tetris.ui.util.SwingUtils.Text;
 
 public class TetrisAchievementsView extends AbstractTetrisView {
+
 
     private static final String ACHOEVEMENTS = "ACHIEVEMENTS";
     private final Rectangle AchievementsRectangle;
@@ -40,8 +43,8 @@ public class TetrisAchievementsView extends AbstractTetrisView {
 
         public void render(final Graphics2D graphics) {
             String value = "";
-            for (String s: tetris.getAchievements()) {
-                value += s + "\n";
+            for (spypunk.tetris.model.TetrisAchievement ta: tetris.getAchievements()) {
+                value += ta.getMessage() + "\n";
             }
             Text AchievementText = new Text(value, fontCache.getDefaultFont());
             SwingUtils.renderCenteredText(graphics, textRectangle, AchievementText);

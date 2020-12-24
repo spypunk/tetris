@@ -146,12 +146,12 @@ public class Tetris {
         tetrisInstance.setAchievementCount(achievementCount);
     }
 
-    public ArrayList<String> getAchievements() {
+    public ArrayList<TetrisAchievement> getAchievements() {
         return tetrisInstance.getAchievements();
     }
 
-    public void addAchievement(String achievement) {
-        tetrisInstance.addAchievement(achievement);
+    public void addAchievement(TetrisAchievement ta) {
+        tetrisInstance.addAchievement(ta);
     }
 
     public boolean isRowAboveN() {

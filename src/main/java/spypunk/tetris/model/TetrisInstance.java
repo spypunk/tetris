@@ -43,7 +43,7 @@ public class TetrisInstance {
 
     private int achievementCount;
 
-    private ArrayList<String> achievements = new ArrayList<>();
+    private ArrayList<TetrisAchievement> achievements = new ArrayList<>();
     private boolean rowAboveN = false;
     private int nForRow;
     private boolean scoreAboveN = false;
@@ -169,12 +169,12 @@ public class TetrisInstance {
         achievementUnlocked_SCORE = !achievementUnlocked_SCORE;
     }
 
-    public ArrayList<String> getAchievements() {
+    public ArrayList<TetrisAchievement> getAchievements() {
         return achievements;
     }
 
-    public void addAchievement(String achievement) {
-        this.achievements.add(achievement);
+    public void addAchievement(TetrisAchievement ta) {
+        this.achievements.add(ta);
     }
 
     public void setScore(final int score) {

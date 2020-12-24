@@ -27,14 +27,10 @@ import com.google.common.collect.Maps;
 
 import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.guice.TetrisModule.TetrisProvider;
-import spypunk.tetris.model.Movement;
-import spypunk.tetris.model.Shape;
+import spypunk.tetris.model.*;
 import spypunk.tetris.model.Shape.Block;
-import spypunk.tetris.model.ShapeType;
-import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
-import spypunk.tetris.model.TetrisEvent;
-import spypunk.tetris.model.TetrisInstance;
+import spypunk.tetris.ui.view.TetrisAchievementsView;
 
 @Singleton
 public class TetrisServiceImpl implements TetrisService {
@@ -196,11 +192,11 @@ public class TetrisServiceImpl implements TetrisService {
 
         achievement_score10();
         achievement_row1();
-        updateAchievements();
     }
 
     private void updateAchievements() {
 
+        /*
         if (!tetris.getAchievementUnlocked_SCORE() && tetris.isScoreAboveN()) {
             updateAchievementCount();
             tetris.addAchievement("YOU REACHED SCORE " + tetris.getNForScore());
@@ -211,6 +207,7 @@ public class TetrisServiceImpl implements TetrisService {
             tetris.addAchievement("YOU HAVE DESTROYED " + tetris.getNForRow() + " ROWS!");
             tetris.setAchievementUnlocked_ROW();
         }
+        */
     }
 
     // instance achievements
@@ -220,6 +217,18 @@ public class TetrisServiceImpl implements TetrisService {
 
     private void achievement_row1() {
         tetris.setNForRow(1);
+    }
+
+    // an instance achievement after implementing TetrisAchievement class
+    private void achievementIHaveUsed100LShapes() {
+        TetrisAchievement ta = new TetrisAchievement(
+                "L destroyer",
+                "You have used 100 L-shaped blocks!",
+                ShapeType.L,
+                100
+        );
+
+        TetrisAchievementChecker tac = new TetrisAchievementChecker(ta);
     }
 
     private boolean isGameOver() {
