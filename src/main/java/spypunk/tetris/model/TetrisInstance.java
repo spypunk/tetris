@@ -9,10 +9,7 @@
 package spypunk.tetris.model;
 
 import java.awt.Point;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -43,6 +40,19 @@ public class TetrisInstance {
     private int score;
 
     private int completedRows;
+
+    private int achievementCount;
+
+    private ArrayList<TetrisAchievement> achievements = new ArrayList<>();
+    private boolean rowAboveN = false;
+    private int nForRow;
+    private boolean scoreAboveN = false;
+    private int nForScore;
+
+    // I need extra booleans in order for the game loop does
+    // not update the achievements when they are unlocked once.
+    private boolean achievementUnlocked_ROW = false;
+    private boolean achievementUnlocked_SCORE = false;
 
     private int speed;
 
@@ -101,6 +111,70 @@ public class TetrisInstance {
 
     public int getScore() {
         return score;
+    }
+
+    public int getAchievementCount() {
+        return achievementCount;
+    }
+
+    public void setAchievementCount(int achievementCount) {
+        this.achievementCount = achievementCount;
+    }
+
+    public boolean IsRowAboveN() {
+        return getNForRow() <= getCompletedRows();
+    }
+
+    public void setRowAboveN() {
+        this.rowAboveN = !this.rowAboveN;
+    }
+
+    public boolean IsScoreAboveN() {
+        return getNForScore() <= getScore();
+    }
+
+    public void setScoreAboveN() {
+        this.scoreAboveN = !this.scoreAboveN;
+    }
+
+    public int getNForRow() {
+        return nForRow;
+    }
+
+    public void setNForRow(int n) {
+        this.nForRow = n;
+    }
+
+    public int getNForScore() {
+        return nForScore;
+    }
+
+    public void setNForScore(int n) {
+        this.nForScore = n;
+    }
+
+    public boolean isAchievementUnlocked_ROW() {
+        return achievementUnlocked_ROW;
+    }
+
+    public void setAchievementUnlocked_ROW() {
+        achievementUnlocked_ROW = !achievementUnlocked_ROW;
+    }
+
+    public boolean isAchievementUnlocked_SCORE() {
+        return achievementUnlocked_SCORE;
+    }
+
+    public void setAchievementUnlocked_SCORE() {
+        achievementUnlocked_SCORE = !achievementUnlocked_SCORE;
+    }
+
+    public ArrayList<TetrisAchievement> getAchievements() {
+        return achievements;
+    }
+
+    public void addAchievement(TetrisAchievement ta) {
+        this.achievements.add(ta);
     }
 
     public void setScore(final int score) {

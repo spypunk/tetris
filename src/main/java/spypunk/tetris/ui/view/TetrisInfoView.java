@@ -42,6 +42,8 @@ public class TetrisInfoView extends AbstractTetrisView {
 
     private static final String ROWS = "ROWS";
 
+    private static final String ACHIEVEMENTS = "ACHIEVEMENTS";
+
     private final ValueTetrisInfo rowsTetrisInfo;
 
     private final ValueTetrisInfo scoreTetrisInfo;
@@ -49,6 +51,8 @@ public class TetrisInfoView extends AbstractTetrisView {
     private final ValueTetrisInfo levelTetrisInfo;
 
     private final NextShapeTetrisInfo nextShapeTetrisInfo;
+
+    private final ValueTetrisInfo achievementsTetrisInfo;
 
     private abstract class TetrisInfo {
 
@@ -121,13 +125,15 @@ public class TetrisInfoView extends AbstractTetrisView {
             final ImageCache imageCache, final Tetris tetris) {
         super(fontCache, imageCache, tetris);
 
-        final Rectangle levelRectangle = new Rectangle(0, BLOCK_SIZE * 3, BLOCK_SIZE * 6, BLOCK_SIZE);
-        final Rectangle scoreRectangle = new Rectangle(0, BLOCK_SIZE * 6, BLOCK_SIZE * 6, BLOCK_SIZE);
-        final Rectangle rowsRectangle = new Rectangle(0, BLOCK_SIZE * 9, BLOCK_SIZE * 6, BLOCK_SIZE);
+        final Rectangle levelRectangle = new Rectangle(0, BLOCK_SIZE * 2, BLOCK_SIZE * 6, BLOCK_SIZE);
+        final Rectangle scoreRectangle = new Rectangle(0, BLOCK_SIZE * 4, BLOCK_SIZE * 6, BLOCK_SIZE);
+        final Rectangle rowsRectangle = new Rectangle(0, BLOCK_SIZE * 6, BLOCK_SIZE * 6, BLOCK_SIZE);
+        final Rectangle achievementsRectangle = new Rectangle(0, BLOCK_SIZE * 9, BLOCK_SIZE * 6, BLOCK_SIZE);
 
         rowsTetrisInfo = new ValueTetrisInfo(rowsRectangle, ROWS);
         scoreTetrisInfo = new ValueTetrisInfo(scoreRectangle, SCORE);
         levelTetrisInfo = new ValueTetrisInfo(levelRectangle, LEVEL);
+        achievementsTetrisInfo = new ValueTetrisInfo(achievementsRectangle, ACHIEVEMENTS);
         nextShapeTetrisInfo = new NextShapeTetrisInfo();
 
         initializeComponent(VIEW_WIDTH, VIEW_HEIGHT);
@@ -138,6 +144,7 @@ public class TetrisInfoView extends AbstractTetrisView {
         levelTetrisInfo.render(graphics, tetris.getLevel());
         scoreTetrisInfo.render(graphics, tetris.getScore());
         rowsTetrisInfo.render(graphics, tetris.getCompletedRows());
+        achievementsTetrisInfo.render(graphics, tetris.getAchievementCount());
         nextShapeTetrisInfo.render(graphics);
     }
 }

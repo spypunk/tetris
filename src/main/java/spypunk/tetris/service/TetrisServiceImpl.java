@@ -27,14 +27,10 @@ import com.google.common.collect.Maps;
 
 import spypunk.tetris.factory.ShapeFactory;
 import spypunk.tetris.guice.TetrisModule.TetrisProvider;
-import spypunk.tetris.model.Movement;
-import spypunk.tetris.model.Shape;
+import spypunk.tetris.model.*;
 import spypunk.tetris.model.Shape.Block;
-import spypunk.tetris.model.ShapeType;
-import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
-import spypunk.tetris.model.TetrisEvent;
-import spypunk.tetris.model.TetrisInstance;
+import spypunk.tetris.ui.view.TetrisAchievementsView;
 
 @Singleton
 public class TetrisServiceImpl implements TetrisService {
@@ -193,6 +189,46 @@ public class TetrisServiceImpl implements TetrisService {
         final Integer count = statistics.get(shapeType);
 
         statistics.put(shapeType, count + 1);
+
+        achievement_score10();
+        achievement_row1();
+    }
+
+    private void updateAchievements() {
+
+        /*
+        if (!tetris.getAchievementUnlocked_SCORE() && tetris.isScoreAboveN()) {
+            updateAchievementCount();
+            tetris.addAchievement("YOU REACHED SCORE " + tetris.getNForScore());
+            tetris.setAchievementUnlocked_SCORE();
+        }
+        if (!tetris.getAchievementUnlocked_ROW() && tetris.isRowAboveN()) {
+            updateAchievementCount();
+            tetris.addAchievement("YOU HAVE DESTROYED " + tetris.getNForRow() + " ROWS!");
+            tetris.setAchievementUnlocked_ROW();
+        }
+        */
+    }
+
+    // instance achievements
+    private void achievement_score10() {
+        tetris.setNForScore(10);
+    }
+
+    private void achievement_row1() {
+        tetris.setNForRow(1);
+    }
+
+    // an instance achievement after implementing TetrisAchievement class
+    private void achievementIHaveUsed100LShapes() {
+        TetrisAchievement ta = new TetrisAchievement(
+                "L destroyer",
+                "You have used 100 L-shaped blocks!",
+                ShapeType.L,
+                100
+        );
+
+        TetrisAchievementChecker tac = new TetrisAchievementChecker(ta);
     }
 
     private boolean isGameOver() {
@@ -257,6 +293,10 @@ public class TetrisServiceImpl implements TetrisService {
 
         blocksToMoveDown.forEach(block -> clearBlockAt(block.getLocation()));
         blocksToMoveDown.forEach(this::moveBlockDown);
+    }
+
+    private void updateAchievementCount() {
+        tetris.setAchievementCount(tetris.getAchievementCount() + 1);
     }
 
     private void clearBlockAt(final Point location) {
