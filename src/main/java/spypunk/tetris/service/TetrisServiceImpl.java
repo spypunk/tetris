@@ -80,12 +80,19 @@ public class TetrisServiceImpl implements TetrisService {
     public void pause() {
         tetris.setState(tetris.getState().onPause());
     }
+    JFrame frame=new JFrame("High scores");
     @Override
     public void showScores() {
-        tetris.setState(tetris.getState().onPause());
-        JFrame frame =new JFrame();
-        frame.setVisible(true);
+        if(tetris.getState().equals(State.RUNNING)){
+            tetris.setState(tetris.getState().onPause());
+            frame.setBounds(500, 500, 500, 500);
+            if(frame.isVisible())
+                frame.setVisible(false);
+            else
+                frame.setVisible(true);
+        }
         
+
     }
     @Override
     public void move(final Movement movement) {
