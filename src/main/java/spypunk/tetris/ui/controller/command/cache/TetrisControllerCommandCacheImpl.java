@@ -97,7 +97,7 @@ public class TetrisControllerCommandCacheImpl implements TetrisControllerCommand
     }
     private TetrisControllerCommand createShowScoresCommand() {
         return () -> {
-            tetrisService.pause();
+            tetrisService.showScores();
 
             final State state = tetris.getState();
 

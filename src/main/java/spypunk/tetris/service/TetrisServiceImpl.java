@@ -21,6 +21,7 @@ import java.util.stream.IntStream;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.swing.JFrame;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -81,7 +82,9 @@ public class TetrisServiceImpl implements TetrisService {
     }
     @Override
     public void showScores() {
-        
+        tetris.setState(tetris.getState().onPause());
+        JFrame frame =new JFrame();
+        frame.setVisible(true);
         
     }
     @Override
