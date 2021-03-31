@@ -79,7 +79,11 @@ public class TetrisServiceImpl implements TetrisService {
     public void pause() {
         tetris.setState(tetris.getState().onPause());
     }
-
+    @Override
+    public void openTable() {
+        
+        
+    }
     @Override
     public void move(final Movement movement) {
         if (isMovementAllowed()) {
