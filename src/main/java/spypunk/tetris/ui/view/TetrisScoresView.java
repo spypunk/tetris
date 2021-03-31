@@ -14,5 +14,6 @@ public class TetrisScoresView {
         frame.setPreferredSize(new Dimension(400, 300));
         frame.pack();
         frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }
