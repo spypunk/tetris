@@ -8,12 +8,12 @@ public class TetrisScoresView {
     JFrame frame;
     public TetrisScoresView(){
         frame=new JFrame("High scores");
-    }
-    public void show(){
         frame.getContentPane().setBackground(Color.BLACK);
         frame.setPreferredSize(new Dimension(400, 300));
         frame.pack();
         frame.setLocationRelativeTo(null);
+    }
+    public void show(){
         frame.setVisible(true);
     }
 }
