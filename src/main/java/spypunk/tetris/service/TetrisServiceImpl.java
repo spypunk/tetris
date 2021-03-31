@@ -11,6 +11,7 @@ package spypunk.tetris.service;
 import static spypunk.tetris.constants.TetrisConstants.HEIGHT;
 import static spypunk.tetris.constants.TetrisConstants.WIDTH;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
@@ -85,12 +86,12 @@ public class TetrisServiceImpl implements TetrisService {
     public void showScores() {
         if(tetris.getState().equals(State.RUNNING)){
             tetris.setState(tetris.getState().onPause());
+        }
             frame.setBounds(500, 500, 500, 500);
             if(frame.isVisible())
                 frame.setVisible(false);
             else
                 frame.setVisible(true);
-        }
         
 
     }
