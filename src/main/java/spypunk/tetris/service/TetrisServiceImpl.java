@@ -11,8 +11,6 @@ package spypunk.tetris.service;
 import static spypunk.tetris.constants.TetrisConstants.HEIGHT;
 import static spypunk.tetris.constants.TetrisConstants.WIDTH;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
@@ -23,7 +21,6 @@ import java.util.stream.IntStream;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.swing.JFrame;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -36,6 +33,7 @@ import spypunk.tetris.model.Shape.Block;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
+import spypunk.tetris.ui.view.TetrisScoresView;
 import spypunk.tetris.model.TetrisEvent;
 import spypunk.tetris.model.TetrisInstance;
 
@@ -82,22 +80,14 @@ public class TetrisServiceImpl implements TetrisService {
     public void pause() {
         tetris.setState(tetris.getState().onPause());
     }
-    JFrame frame=new JFrame("High scores");
+    
+    TetrisScoresView tetrisScoresView=new TetrisScoresView();
     @Override
     public void showScores() {
         if(tetris.getState().equals(State.RUNNING)){
             tetris.setState(tetris.getState().onPause());
         }
-            frame.getContentPane().setBackground(Color.BLACK);
-            frame.setPreferredSize(new Dimension(400, 300));
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            if(frame.isVisible())
-                frame.setVisible(false);
-            else
-                frame.setVisible(true);
-        
-
+        tetrisScoresView.show();   
     }
     @Override
     public void move(final Movement movement) {
