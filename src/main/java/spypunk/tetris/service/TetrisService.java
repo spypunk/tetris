@@ -24,5 +24,5 @@ public interface TetrisService {
 
     void mute();
 
-    void openTable();
+    void showScores();
 }

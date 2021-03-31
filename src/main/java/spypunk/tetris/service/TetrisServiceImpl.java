@@ -80,7 +80,7 @@ public class TetrisServiceImpl implements TetrisService {
         tetris.setState(tetris.getState().onPause());
     }
     @Override
-    public void openTable() {
+    public void showScores() {
         
         
     }
