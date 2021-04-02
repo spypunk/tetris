@@ -5,14 +5,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.JLabel;
 
+import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 
 public class TetrisScoresView{
 
     JFrame frame;
-
     public TetrisScoresView(){
         frame=new JFrame("High scores");
-        frame.getContentPane().setBackground(Color.WHITE);
+        frame.getContentPane().setBackground(Color.BLACK);
         frame.setPreferredSize(new Dimension(400, 300));
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -24,7 +24,7 @@ public class TetrisScoresView{
     }
     public void print(){
         final JLabel firstLabel = new JLabel("Test");
-        firstLabel.setForeground(Color.BLACK);
+        firstLabel.setForeground(DEFAULT_FONT_COLOR);
         frame.add(firstLabel);
     }
 }
