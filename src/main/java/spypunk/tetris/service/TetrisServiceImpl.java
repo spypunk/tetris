@@ -81,14 +81,6 @@ public class TetrisServiceImpl implements TetrisService {
         tetris.setState(tetris.getState().onPause());
     }
     
-    TetrisScoresView tetrisScoresView=new TetrisScoresView();
-    @Override
-    public void showScores() {
-        if(tetris.getState().equals(State.RUNNING)){
-            tetris.setState(tetris.getState().onPause());
-        }
-        tetrisScoresView.show();   
-    }
     @Override
     public void move(final Movement movement) {
         if (isMovementAllowed()) {
@@ -342,8 +334,17 @@ public class TetrisServiceImpl implements TetrisService {
         return isTetrisRunning() && !isCurrentShapeLocked();
     }
 
+    TetrisScoresView tetrisScoresView=new TetrisScoresView();
+    @Override
+    public void showScores() {
+        if(tetris.getState().equals(State.RUNNING)){
+            tetris.setState(tetris.getState().onPause());
+        }
+        tetrisScoresView.show();   
+    }
+
     @Override
     public void takeName() {
-        
+
     }
 }
