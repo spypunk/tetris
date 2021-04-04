@@ -129,7 +129,10 @@ public class TetrisControllerCommandCacheImpl implements TetrisControllerCommand
     }
 
     private TetrisControllerCommand createGameOverCommand() {
-        return () -> soundService.playMusic(Sound.GAME_OVER);
+        return () -> {
+            soundService.playMusic(Sound.GAME_OVER);
+            System.out.println("Game is over.");
+        };
     }
 
     private TetrisControllerCommand createRowsCompletedCommand() {
