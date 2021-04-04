@@ -38,7 +38,7 @@ public class TetrisScoresView{
         frame.pack();
         frame.setLocationRelativeTo(null);
         
-        readScores();
+        readFile();
         
     }
     public void show(){
@@ -67,7 +67,7 @@ public class TetrisScoresView{
         
         
     }
-    public void readScores(){
+    public void readFile(){
         try {
             File myObj = new File("score_table.txt");
             Scanner myReader = new Scanner(myObj);
@@ -98,5 +98,9 @@ public class TetrisScoresView{
             temp.put(aa.getKey(),aa.getValue());
         }
         return temp;
+    }
+    public Integer getMinScore(){
+        Integer min = Collections.min(hm.values());
+        return min;
     }
 }
