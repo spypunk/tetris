@@ -10,11 +10,14 @@ import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Map.Entry;
+
 import javax.swing.JTextArea;
 
 
@@ -102,5 +105,19 @@ public class TetrisScoresView{
     public Integer getMinScore(){
         Integer min = Collections.min(hm.values());
         return min;
+    }
+    public void putScoreAndName(String name,Integer score){
+        removeMinScoreElement();
+        hm.put(name, score);
+        hm=sort(hm);
+    }
+    public void removeMinScoreElement(){
+        Iterator<Entry<String, Integer>> itr = hm.entrySet().iterator();
+
+        while(itr.hasNext()) {
+            itr.next();
+        }
+        itr.remove(); 
+            
     }
 }
