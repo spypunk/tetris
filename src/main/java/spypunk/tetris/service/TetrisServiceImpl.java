@@ -346,6 +346,7 @@ public class TetrisServiceImpl implements TetrisService {
     TetrisNameInputView tetrisNameInputView=new TetrisNameInputView();
     @Override
     public void takeName() {
-        tetrisNameInputView.show();
+        if(tetris.getScore()>tetrisScoresView.getMinScore())
+            tetrisNameInputView.show();
     }
 }
