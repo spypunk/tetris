@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.event.ActionEvent;
@@ -24,17 +25,19 @@ public class TetrisNameInputView{
     private final JPanel firstPanel;
     private final JButton submitButton;
     private final JTextField textField;
-    private final JLabel label;
+    private final JTextArea textArea;
 
     private final FontCacheImpl fontCache;
     private final Font font;
+
+    private int score;
 
     public TetrisNameInputView(){
 
         frame=new JFrame();
         contentPane=frame.getContentPane();
         contentPane.setBackground(Color.BLACK);
-        frame.setPreferredSize(new Dimension(350, 100));
+        frame.setPreferredSize(new Dimension(370, 150));
         frame.setLayout(new BorderLayout());
         frame.setResizable(false);
         frame.pack();
@@ -43,7 +46,7 @@ public class TetrisNameInputView{
         firstPanel=new JPanel();
         textField = new JTextField(10);
         submitButton = new JButton("SUBMIT");
-        label=new JLabel();
+        textArea=new JTextArea();
 
         fontCache=new FontCacheImpl();
         font=fontCache.getDefaultFont();
@@ -71,15 +74,22 @@ public class TetrisNameInputView{
         textField.setForeground(DEFAULT_FONT_COLOR);
         textField.setFont(font);
 
-        label.setForeground(DEFAULT_FONT_COLOR);
-        label.setFont(font);
-        label.setText("PLEASE ENTER\nYOUR NAME");
+        textArea.setBackground(Color.BLACK);
+        textArea.setForeground(DEFAULT_FONT_COLOR);
+        textArea.setFont(font);
+        
+        textArea.setText("\n  YOUR SCORE IS "+score+"\n   PLEASE ENTER\n     YOUR NAME");
+        textArea.setEditable(false);
+
         firstPanel.setBackground(Color.BLACK);
         firstPanel.add(textField);
         firstPanel.add(submitButton);
         
         frame.add(firstPanel,BorderLayout.CENTER);
-        frame.add(label,BorderLayout.NORTH);
+        frame.add(textArea,BorderLayout.NORTH);
+    }
+    public void setScore(int score){
+        this.score=score;
     }
    
 }
