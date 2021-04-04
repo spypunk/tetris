@@ -1,8 +1,6 @@
 package spypunk.tetris.ui.view;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -31,6 +29,7 @@ public class TetrisNameInputView{
     private final Font font;
 
     private int score;
+    private String name;
 
     public TetrisNameInputView(){
 
@@ -62,7 +61,8 @@ public class TetrisNameInputView{
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(textField.getText());
+                name=textField.getText();
+                frame.setVisible(false);
             }
         });
 
@@ -73,6 +73,7 @@ public class TetrisNameInputView{
         textField.setBackground(Color.BLACK);
         textField.setForeground(DEFAULT_FONT_COLOR);
         textField.setFont(font);
+        textField.setText("");
 
         textArea.setBackground(Color.BLACK);
         textArea.setForeground(DEFAULT_FONT_COLOR);
@@ -90,6 +91,9 @@ public class TetrisNameInputView{
     }
     public void setScore(int score){
         this.score=score;
+    }
+    public String getName(){
+        return name;
     }
    
 }
