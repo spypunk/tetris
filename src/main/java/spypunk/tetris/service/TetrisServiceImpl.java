@@ -341,4 +341,9 @@ public class TetrisServiceImpl implements TetrisService {
     private boolean isMovementAllowed() {
         return isTetrisRunning() && !isCurrentShapeLocked();
     }
+
+    @Override
+    public void takeName() {
+        
+    }
 }

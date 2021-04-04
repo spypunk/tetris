@@ -25,4 +25,7 @@ public interface TetrisService {
     void mute();
 
     void showScores();
+
+    void takeName();
+    
 }
