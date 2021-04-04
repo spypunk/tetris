@@ -33,6 +33,7 @@ import spypunk.tetris.model.Shape.Block;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
+import spypunk.tetris.ui.view.TetrisNameInputView;
 import spypunk.tetris.ui.view.TetrisScoresView;
 import spypunk.tetris.model.TetrisEvent;
 import spypunk.tetris.model.TetrisInstance;
@@ -342,9 +343,9 @@ public class TetrisServiceImpl implements TetrisService {
         }
         tetrisScoresView.show();   
     }
-
+    TetrisNameInputView tetrisNameInputView=new TetrisNameInputView();
     @Override
     public void takeName() {
-
+        tetrisNameInputView.show();
     }
 }
