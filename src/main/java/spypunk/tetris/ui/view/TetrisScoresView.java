@@ -30,9 +30,8 @@ public class TetrisScoresView{
     public TetrisScoresView(){
         hm=new HashMap<>();
 
-        frame=new JFrame("High scores");
+        frame=new JFrame();
         contentPane=frame.getContentPane();
-
         contentPane.setBackground(Color.BLACK);
         frame.setPreferredSize(new Dimension(300, 300));
         frame.setResizable(false);
@@ -49,19 +48,19 @@ public class TetrisScoresView{
     public void print(){
         hm=sort(hm);
         int counter=1;
-        String s="";
+        String s="  HIGH SCORES\n";
         for ( String key : hm.keySet() ) {
             s+="\n  "+counter+") "+key+" "+hm.get(key);
             counter++;
         }
-        final JTextArea textArea = new JTextArea(s);
+        JTextArea textArea = new JTextArea(s);
         textArea.setBackground(Color.BLACK);
         textArea.setForeground(DEFAULT_FONT_COLOR);
         textArea.setEditable(false);
         
-        FontCacheImpl obj=new FontCacheImpl();
+        FontCacheImpl fontCache=new FontCacheImpl();
         
-        Font font=obj.getDefaultFont();
+        Font font=fontCache.getDefaultFont();
         float size=font.getSize()+8.0f;
         textArea.setFont(font.deriveFont(size));
         frame.add(textArea);
@@ -91,7 +90,7 @@ public class TetrisScoresView{
                 
                 @Override
                 public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-                    return o1.getValue().compareTo(o2.getValue());
+                    return o2.getValue().compareTo(o1.getValue());
                 }
         });
         HashMap<String,Integer> temp=new LinkedHashMap<>();
