@@ -28,8 +28,7 @@ public class TetrisNameInputView{
     private final FontCacheImpl fontCache;
     private final Font font;
 
-    private int score;
-    private String name;
+    private String name="";
 
     public TetrisNameInputView(){
 
@@ -51,12 +50,12 @@ public class TetrisNameInputView{
         font=fontCache.getDefaultFont();
     }
 
-    public void show(){
-        print();
+    public void show(int score){
+        print(score);
         frame.setVisible(true);
     }
 
-    public void print(){
+    public void print(int score){
 
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -88,9 +87,6 @@ public class TetrisNameInputView{
         
         frame.add(firstPanel,BorderLayout.CENTER);
         frame.add(textArea,BorderLayout.NORTH);
-    }
-    public void setScore(int score){
-        this.score=score;
     }
     public String getName(){
         return name;
