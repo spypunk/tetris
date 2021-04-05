@@ -29,6 +29,7 @@ public class TetrisScoresView{
     JFrame frame;
     HashMap<String,Integer> hm;
     Container contentPane;
+    JTextArea textArea;
 
     public TetrisScoresView(){
         hm=new HashMap<>();
@@ -40,7 +41,7 @@ public class TetrisScoresView{
         frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);
-        
+        textArea = new JTextArea();
         readFile();
         
     }
@@ -56,7 +57,7 @@ public class TetrisScoresView{
             s+="\n  "+counter+") "+key+" "+hm.get(key);
             counter++;
         }
-        JTextArea textArea = new JTextArea(s);
+        textArea.setText(s);
         textArea.setBackground(Color.BLACK);
         textArea.setForeground(DEFAULT_FONT_COLOR);
         textArea.setEditable(false);
@@ -69,6 +70,17 @@ public class TetrisScoresView{
         frame.add(textArea);
         
         
+    }
+    public void update(){
+
+        int counter=1;
+        String s="  HIGH SCORES\n";
+        for ( String key : hm.keySet() ) {
+            s+="\n  "+counter+") "+key+" "+hm.get(key);
+            counter++;
+        }
+
+        textArea.setText(s);
     }
     public void readFile(){
         try {
@@ -91,10 +103,10 @@ public class TetrisScoresView{
         List<Map.Entry<String,Integer>>list=new LinkedList<Map.Entry<String,Integer>>(hashMap.entrySet());
         Collections.sort(list,new Comparator<Map.Entry<String,Integer>>(){
                 
-                @Override
-                public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
-                    return o2.getValue().compareTo(o1.getValue());
-                }
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return o2.getValue().compareTo(o1.getValue());
+            }
         });
         HashMap<String,Integer> temp=new LinkedHashMap<>();
         for(Map.Entry<String,Integer > aa:list){
@@ -109,7 +121,7 @@ public class TetrisScoresView{
     public void putScoreAndName(String name,Integer score){
         removeMinScoreElement();
         hm.put(name, score);
-        hm=sort(hm);
+        update();
     }
     public void removeMinScoreElement(){
         Iterator<Entry<String, Integer>> itr = hm.entrySet().iterator();
