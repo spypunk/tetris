@@ -109,7 +109,7 @@ public class TetrisScoresView{
             FileWriter fileWriter = new FileWriter("score_table.txt");
             String str="";
             for ( String key : hashMap.keySet() ) {
-                str+=key+" "+hashMap.get(key);
+                str+=key+" "+hashMap.get(key)+"\n";
             }
             fileWriter.write(str);
             fileWriter.close();
@@ -163,7 +163,7 @@ public class TetrisScoresView{
         }
           
     }
-    
+
     public boolean isFull(){
         return hashMap.size()==SIZE;
     }
