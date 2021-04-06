@@ -341,14 +341,20 @@ public class TetrisServiceImpl implements TetrisService {
         if(tetris.getState().equals(State.RUNNING)){
             tetris.setState(tetris.getState().onPause());
         }
-        tetrisScoresView.show();   
+        if(tetrisNameInputView.isAdded==false && !tetrisNameInputView.getName().equals("")){
+            String name=tetrisNameInputView.getName();
+            Integer score=tetris.getScore();
+            tetrisScoresView.putScoreAndName(name, score);
+            tetrisNameInputView.isAdded=true;
+        }
+        tetrisScoresView.show();  
     }
+    
     TetrisNameInputView tetrisNameInputView=new TetrisNameInputView();
     @Override
     public void takeName() {
         if(tetris.getScore()>tetrisScoresView.getMinScore()){
-            tetrisNameInputView.setScore(tetris.getScore());
-            tetrisNameInputView.show();
+            tetrisNameInputView.show(tetris.getScore());
         }
     }
 }
