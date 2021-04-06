@@ -119,7 +119,14 @@ public class TetrisScoresView{
     }
 
     public Integer getMinScore(){
-        return Collections.min(hashMap.values());
+       
+        try {
+            return Collections.min(hashMap.values());
+        } catch (Exception e) {
+            return 0;
+        }
+        
+        
     }
 
     public void putScoreAndName(String name,Integer score){
@@ -129,10 +136,15 @@ public class TetrisScoresView{
     }
 
     private void removeMinScoreElement(){
-        Iterator<Entry<String, Integer>> itr = hashMap.entrySet().iterator();
-        while(itr.hasNext())
-            itr.next();
-    
-        itr.remove();   
+        try {
+            Iterator<Entry<String, Integer>> itr = hashMap.entrySet().iterator();
+            while(itr.hasNext())
+                itr.next();
+
+            itr.remove(); 
+        } catch (Exception e) {
+            System.err.println("Empty hashmap error");
+        }
+          
     }
 }
