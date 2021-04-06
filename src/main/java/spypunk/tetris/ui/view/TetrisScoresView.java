@@ -30,6 +30,7 @@ public class TetrisScoresView{
     private final JTextArea textArea;
     private final FontCacheImpl fontCache;
     private final Font font ;
+    private final int SIZE=5;
 
     public TetrisScoresView(){
         frame=new JFrame();
@@ -119,18 +120,17 @@ public class TetrisScoresView{
     }
 
     public Integer getMinScore(){
-       
         try {
             return Collections.min(hashMap.values());
         } catch (Exception e) {
             return 0;
         }
         
-        
     }
 
     public void putScoreAndName(String name,Integer score){
-        removeMinScoreElement();
+        if(hashMap.size()+1>SIZE)
+            removeMinScoreElement();
         hashMap.put(name, score);
         update();
     }
@@ -140,7 +140,6 @@ public class TetrisScoresView{
             Iterator<Entry<String, Integer>> itr = hashMap.entrySet().iterator();
             while(itr.hasNext())
                 itr.next();
-
             itr.remove(); 
         } catch (Exception e) {
             System.err.println("Empty hashmap error");
