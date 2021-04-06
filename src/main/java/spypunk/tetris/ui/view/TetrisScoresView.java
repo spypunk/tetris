@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -87,17 +89,31 @@ public class TetrisScoresView{
 
     private void readFile(){
         try {
-            File myObj = new File("score_table.txt");
-            Scanner myReader = new Scanner(myObj);
-            while (myReader.hasNextLine()) {
-              String data = myReader.nextLine();
+            File file = new File("score_table.txt");
+            Scanner fileScanner= new Scanner(file);
+            while (fileScanner.hasNextLine()) {
+              String data = fileScanner.nextLine();
               String name=data.substring(0,data.indexOf(" "));
               String score_s=data.substring(data.indexOf(" ")+1);
               Integer score=Integer.parseInt(score_s);
               hashMap.put(name, score);
             }
-            myReader.close();
+            fileScanner.close();
           } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+          }
+    }
+    private void writeFile(){
+        try {
+            FileWriter fileWriter = new FileWriter("score_table.txt");
+            String str="";
+            for ( String key : hashMap.keySet() ) {
+                str+=key+" "+hashMap.get(key);
+            }
+            fileWriter.write(str);
+            fileWriter.close();
+          } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
           }
@@ -133,6 +149,7 @@ public class TetrisScoresView{
             removeMinScoreElement();
         hashMap.put(name, score);
         update();
+        writeFile();
     }
 
     private void removeMinScoreElement(){
