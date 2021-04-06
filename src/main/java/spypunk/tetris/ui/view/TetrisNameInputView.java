@@ -29,6 +29,7 @@ public class TetrisNameInputView{
     private final Font font;
 
     private String name="";
+    public boolean isAdded=false;;
 
     public TetrisNameInputView(){
 
@@ -55,12 +56,14 @@ public class TetrisNameInputView{
         frame.setVisible(true);
     }
 
-    public void print(int score){
+    private void print(int score){
 
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 name=textField.getText();
+                if(isAdded)
+                    isAdded=false;
                 frame.setVisible(false);
             }
         });
