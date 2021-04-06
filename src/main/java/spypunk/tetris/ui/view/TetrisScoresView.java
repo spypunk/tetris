@@ -17,44 +17,50 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Map.Entry;
-
 import javax.swing.JTextArea;
-
 
 import static spypunk.tetris.ui.constants.TetrisUIConstants.DEFAULT_FONT_COLOR;
 import spypunk.tetris.ui.font.cache.FontCacheImpl;
 
 public class TetrisScoresView{
 
-    JFrame frame;
-    HashMap<String,Integer> hm;
-    Container contentPane;
-    JTextArea textArea;
+    private final JFrame frame;
+    private HashMap<String,Integer> hashMap;
+    private final Container contentPane;
+    private final JTextArea textArea;
+    private final FontCacheImpl fontCache;
+    private final Font font ;
 
     public TetrisScoresView(){
-        hm=new HashMap<>();
-
         frame=new JFrame();
+        hashMap=new HashMap<>();
+
         contentPane=frame.getContentPane();
         contentPane.setBackground(Color.BLACK);
+
         frame.setPreferredSize(new Dimension(300, 300));
         frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);
+
         textArea = new JTextArea();
+        fontCache=new FontCacheImpl();
+        font=fontCache.getDefaultFont();
+
         readFile();
-        
     }
+
     public void show(){
         print();
         frame.setVisible(true);
     }
-    public void print(){
-        hm=sort(hm);
+
+    private void print(){
+        hashMap=sort(hashMap);
         int counter=1;
         String s="  HIGH SCORES\n";
-        for ( String key : hm.keySet() ) {
-            s+="\n  "+counter+") "+key+" "+hm.get(key);
+        for ( String key : hashMap.keySet() ) {
+            s+="\n  "+counter+") "+key+" "+hashMap.get(key);
             counter++;
         }
         textArea.setText(s);
@@ -62,27 +68,23 @@ public class TetrisScoresView{
         textArea.setForeground(DEFAULT_FONT_COLOR);
         textArea.setEditable(false);
         
-        FontCacheImpl fontCache=new FontCacheImpl();
-        
-        Font font=fontCache.getDefaultFont();
         float size=font.getSize()+8.0f;
         textArea.setFont(font.deriveFont(size));
         frame.add(textArea);
-        
-        
     }
-    public void update(){
 
+    private void update(){
+        hashMap=sort(hashMap);
         int counter=1;
         String s="  HIGH SCORES\n";
-        for ( String key : hm.keySet() ) {
-            s+="\n  "+counter+") "+key+" "+hm.get(key);
+        for ( String key : hashMap.keySet() ) {
+            s+="\n  "+counter+") "+key+" "+hashMap.get(key);
             counter++;
         }
-
         textArea.setText(s);
     }
-    public void readFile(){
+
+    private void readFile(){
         try {
             File myObj = new File("score_table.txt");
             Scanner myReader = new Scanner(myObj);
@@ -91,7 +93,7 @@ public class TetrisScoresView{
               String name=data.substring(0,data.indexOf(" "));
               String score_s=data.substring(data.indexOf(" ")+1);
               Integer score=Integer.parseInt(score_s);
-              hm.put(name, score);
+              hashMap.put(name, score);
             }
             myReader.close();
           } catch (FileNotFoundException e) {
@@ -99,7 +101,8 @@ public class TetrisScoresView{
             e.printStackTrace();
           }
     }
-    public HashMap<String,Integer> sort(HashMap<String,Integer> hashMap){
+
+    private HashMap<String,Integer> sort(HashMap<String,Integer> hashMap){
         List<Map.Entry<String,Integer>>list=new LinkedList<Map.Entry<String,Integer>>(hashMap.entrySet());
         Collections.sort(list,new Comparator<Map.Entry<String,Integer>>(){
                 
@@ -109,27 +112,27 @@ public class TetrisScoresView{
             }
         });
         HashMap<String,Integer> temp=new LinkedHashMap<>();
-        for(Map.Entry<String,Integer > aa:list){
-            temp.put(aa.getKey(),aa.getValue());
+        for(Map.Entry<String,Integer > e:list){
+            temp.put(e.getKey(),e.getValue());
         }
         return temp;
     }
+
     public Integer getMinScore(){
-        Integer min = Collections.min(hm.values());
-        return min;
+        return Collections.min(hashMap.values());
     }
+
     public void putScoreAndName(String name,Integer score){
         removeMinScoreElement();
-        hm.put(name, score);
+        hashMap.put(name, score);
         update();
     }
-    public void removeMinScoreElement(){
-        Iterator<Entry<String, Integer>> itr = hm.entrySet().iterator();
 
-        while(itr.hasNext()) {
+    private void removeMinScoreElement(){
+        Iterator<Entry<String, Integer>> itr = hashMap.entrySet().iterator();
+        while(itr.hasNext())
             itr.next();
-        }
-        itr.remove(); 
-            
+    
+        itr.remove();   
     }
 }
