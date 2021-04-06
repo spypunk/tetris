@@ -163,4 +163,8 @@ public class TetrisScoresView{
         }
           
     }
+    
+    public boolean isFull(){
+        return hashMap.size()==SIZE;
+    }
 }
