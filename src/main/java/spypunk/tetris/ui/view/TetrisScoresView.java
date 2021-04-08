@@ -27,7 +27,7 @@ import spypunk.tetris.ui.font.cache.FontCacheImpl;
 public class TetrisScoresView{
 
     private final JFrame frame;
-    private HashMap<String,Integer> hashMap;
+    public HashMap<String,Integer> hashMap;
     private final Container contentPane;
     private final JTextArea textArea;
     private final FontCacheImpl fontCache;
@@ -41,7 +41,7 @@ public class TetrisScoresView{
         contentPane=frame.getContentPane();
         contentPane.setBackground(Color.BLACK);
 
-        frame.setPreferredSize(new Dimension(300, 300));
+        frame.setPreferredSize(new Dimension(350, 300));
         frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -61,9 +61,9 @@ public class TetrisScoresView{
     private void print(){
         hashMap=sort(hashMap);
         int counter=1;
-        String s="  HIGH SCORES\n";
+        String s="\n   HIGH SCORES\n";
         for ( String key : hashMap.keySet() ) {
-            s+="\n  "+counter+") "+key+" "+hashMap.get(key);
+            s+="\n   "+counter+") "+key+"     "+hashMap.get(key);
             counter++;
         }
         textArea.setText(s);
@@ -71,7 +71,7 @@ public class TetrisScoresView{
         textArea.setForeground(DEFAULT_FONT_COLOR);
         textArea.setEditable(false);
         
-        float size=font.getSize()+8.0f;
+        float size=font.getSize()+10.0f;
         textArea.setFont(font.deriveFont(size));
         frame.add(textArea);
     }
@@ -128,11 +128,11 @@ public class TetrisScoresView{
                 return o2.getValue().compareTo(o1.getValue());
             }
         });
-        HashMap<String,Integer> temp=new LinkedHashMap<>();
+        HashMap<String,Integer> sorted=new LinkedHashMap<>();
         for(Map.Entry<String,Integer > e:list){
-            temp.put(e.getKey(),e.getValue());
+            sorted.put(e.getKey(),e.getValue());
         }
-        return temp;
+        return sorted;
     }
 
     public Integer getMinScore(){
@@ -152,7 +152,7 @@ public class TetrisScoresView{
         writeFile();
     }
 
-    private void removeMinScoreElement(){
+    public void removeMinScoreElement(){
         try {
             Iterator<Entry<String, Integer>> itr = hashMap.entrySet().iterator();
             while(itr.hasNext())
