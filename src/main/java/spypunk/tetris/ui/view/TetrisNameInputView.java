@@ -63,8 +63,9 @@ public class TetrisNameInputView{
             public void actionPerformed(ActionEvent e) {
                 name=textField.getText();
                 if(!name.equals("")){
-                    if(isAdded)
+                    if(isAdded){
                         isAdded=false;
+                    }
                     frame.setVisible(false);
                 }
             }
