@@ -35,6 +35,7 @@ public class TetrisScoresView{
     private final int SIZE=5;
 
     public TetrisScoresView(){
+        //Initilizations.
         frame=new JFrame();
         hashMap=new HashMap<>();
 
@@ -54,6 +55,7 @@ public class TetrisScoresView{
     }
 
     public void show(){
+        //Set visibility true.
         print();
         frame.setVisible(true);
     }
@@ -77,6 +79,7 @@ public class TetrisScoresView{
     }
 
     private void update(){
+        //When new element is added, sort the list and update the textArea.
         hashMap=sort(hashMap);
         int counter=1;
         String s="  HIGH SCORES\n";
@@ -88,6 +91,7 @@ public class TetrisScoresView{
     }
 
     private void readFile(){
+        //Reads from file, separates name and score and add to list.
         try {
             File file = new File("score_table.txt");
             Scanner fileScanner= new Scanner(file);
@@ -105,6 +109,7 @@ public class TetrisScoresView{
           }
     }
     private void writeFile(){
+        //Writes to file.
         try {
             FileWriter fileWriter = new FileWriter("score_table.txt");
             String str="";
@@ -120,6 +125,7 @@ public class TetrisScoresView{
     }
 
     private HashMap<String,Integer> sort(HashMap<String,Integer> hashMap){
+        //Sorts the list by using a new comparator.
         List<Map.Entry<String,Integer>>list=new LinkedList<Map.Entry<String,Integer>>(hashMap.entrySet());
         Collections.sort(list,new Comparator<Map.Entry<String,Integer>>(){
                 
@@ -136,6 +142,7 @@ public class TetrisScoresView{
     }
 
     public Integer getMinScore(){
+        //If list is empty then return 0.
         try {
             return Collections.min(hashMap.values());
         } catch (Exception e) {
@@ -145,6 +152,7 @@ public class TetrisScoresView{
     }
 
     public void putScoreAndName(String name,Integer score){
+        //If list is full then remove element has minimum score.
         if(hashMap.size()+1>SIZE)
             removeMinScoreElement();
         hashMap.put(name, score);
@@ -153,6 +161,7 @@ public class TetrisScoresView{
     }
 
     public void removeMinScoreElement(){
+        //Since the list is sorted when this is called, it removes the last element of the list. 
         try {
             Iterator<Entry<String, Integer>> itr = hashMap.entrySet().iterator();
             while(itr.hasNext())
