@@ -36,7 +36,7 @@ public class TetrisNameInputView{
         frame=new JFrame();
         contentPane=frame.getContentPane();
         contentPane.setBackground(Color.BLACK);
-        frame.setPreferredSize(new Dimension(370, 150));
+        frame.setPreferredSize(new Dimension(400, 200));
         frame.setLayout(new BorderLayout());
         frame.setResizable(false);
         frame.pack();
@@ -84,7 +84,7 @@ public class TetrisNameInputView{
         textArea.setForeground(DEFAULT_FONT_COLOR);
         textArea.setFont(font);
         
-        textArea.setText("\n  YOUR SCORE IS "+score+"\n   PLEASE ENTER\n     YOUR NAME");
+        textArea.setText("\n     YOU ARE IN TOP 5 !\n\n       SCORE : "+score+"\n\n  PLEASE ENTER YOUR NAME\n");
         textArea.setEditable(false);
 
         firstPanel.setBackground(Color.BLACK);

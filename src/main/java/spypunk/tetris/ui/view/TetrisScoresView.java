@@ -42,7 +42,7 @@ public class TetrisScoresView{
         contentPane=frame.getContentPane();
         contentPane.setBackground(Color.BLACK);
 
-        frame.setPreferredSize(new Dimension(350, 300));
+        frame.setPreferredSize(new Dimension(400, 300));
         frame.setResizable(false);
         frame.pack();
         frame.setLocationRelativeTo(null);
