@@ -33,6 +33,8 @@ import spypunk.tetris.model.Shape.Block;
 import spypunk.tetris.model.ShapeType;
 import spypunk.tetris.model.Tetris;
 import spypunk.tetris.model.Tetris.State;
+import spypunk.tetris.ui.view.TetrisNameInputView;
+import spypunk.tetris.ui.view.TetrisScoresView;
 import spypunk.tetris.model.TetrisEvent;
 import spypunk.tetris.model.TetrisInstance;
 
@@ -79,7 +81,7 @@ public class TetrisServiceImpl implements TetrisService {
     public void pause() {
         tetris.setState(tetris.getState().onPause());
     }
-
+    
     @Override
     public void move(final Movement movement) {
         if (isMovementAllowed()) {
@@ -331,5 +333,34 @@ public class TetrisServiceImpl implements TetrisService {
 
     private boolean isMovementAllowed() {
         return isTetrisRunning() && !isCurrentShapeLocked();
+    }
+
+    TetrisScoresView tetrisScoresView=new TetrisScoresView();
+    @Override
+    public void showScores() {
+        if(tetris.getState().equals(State.RUNNING)){
+            tetris.setState(tetris.getState().onPause());
+        }
+        if(tetrisNameInputView.isAdded==false && !tetrisNameInputView.getName().equals("")){
+            String name=tetrisNameInputView.getName();
+            Integer score=tetris.getScore();
+            tetrisScoresView.putScoreAndName(name, score);
+            tetrisNameInputView.isAdded=true;
+        }
+        tetrisScoresView.show();  
+    }
+    
+    TetrisNameInputView tetrisNameInputView=new TetrisNameInputView();
+    @Override
+    public void takeName() {
+        if(tetrisScoresView.isFull()){
+            if(tetris.getScore()>tetrisScoresView.getMinScore()){
+                tetrisNameInputView.show(tetris.getScore());
+            }
+        }
+        else{
+            tetrisNameInputView.show(tetris.getScore());
+        }
+        
     }
 }

@@ -163,7 +163,6 @@ public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
         frame.add(centerPanel, BorderLayout.CENTER);
         frame.add(bottomPanel, BorderLayout.SOUTH);
         frame.pack();
-
         frame.setLocationRelativeTo(null);
     }
 

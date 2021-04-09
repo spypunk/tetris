@@ -64,6 +64,8 @@ public class TetrisControllerCommandCacheImpl implements TetrisControllerCommand
         tetrisControllerCommands.put(TetrisControllerCommandType.SHAPE_LOCKED, createShapeLockedCommand());
         tetrisControllerCommands.put(TetrisControllerCommandType.GAME_OVER, createGameOverCommand());
         tetrisControllerCommands.put(TetrisControllerCommandType.ROWS_COMPLETED, createRowsCompletedCommand());
+        tetrisControllerCommands.put(TetrisControllerCommandType.SHOW_SCORES, createShowScoresCommand());
+        
     }
 
     @Override
@@ -83,6 +85,19 @@ public class TetrisControllerCommandCacheImpl implements TetrisControllerCommand
     private TetrisControllerCommand createPauseCommand() {
         return () -> {
             tetrisService.pause();
+
+            final State state = tetris.getState();
+
+            if (State.PAUSED.equals(state)) {
+                soundService.pauseMusic();
+            } else if (State.RUNNING.equals(state)) {
+                soundService.resumeMusic();
+            }
+        };
+    }
+    private TetrisControllerCommand createShowScoresCommand() {
+        return () -> {
+            tetrisService.showScores();
 
             final State state = tetris.getState();
 
@@ -114,7 +129,10 @@ public class TetrisControllerCommandCacheImpl implements TetrisControllerCommand
     }
 
     private TetrisControllerCommand createGameOverCommand() {
-        return () -> soundService.playMusic(Sound.GAME_OVER);
+        return () -> {
+            soundService.playMusic(Sound.GAME_OVER);
+            tetrisService.takeName();
+        };
     }
 
     private TetrisControllerCommand createRowsCompletedCommand() {
