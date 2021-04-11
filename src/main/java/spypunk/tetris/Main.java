@@ -8,9 +8,12 @@
 
 package spypunk.tetris;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +47,8 @@ public final class Main {
 
     public static void main(final String[] args) {
         try {
-            final Injector injector = Guice.createInjector(new TetrisModule());
-            injector.getInstance(TetrisController.class).start();
+            new PlayerChoosingScreen();
+
         } catch (CreationException | ConfigurationException | ProvisionException e) {
             LOGGER.error(e.getMessage(), e);
             SwingUtils.doInAWTThread(Main::showErrorDialog);
@@ -57,5 +60,46 @@ public final class Main {
             ERROR_MESSAGE,
             ERROR_TITLE,
             JOptionPane.ERROR_MESSAGE);
+    }
+
+    private static class PlayerChoosingScreen{
+        public PlayerChoosingScreen() {
+            JFrame mainFrame = new JFrame("Select Player Number");
+            mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            mainFrame.setSize(400,200);
+
+            mainFrame.getContentPane().setLayout(new FlowLayout());
+            //todo debug etmek icin maven sekmesini ac ordan exec:java yı debug et!
+            JButton onePlayer = new JButton("One Player");
+            onePlayer.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    final Injector injector = Guice.createInjector(new TetrisModule());
+                    injector.getInstance(TetrisController.class).start();
+                    mainFrame.dispose();
+                }
+            });
+            JButton twoPlayers = new JButton("Two Players");
+            twoPlayers.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    final Injector injector = Guice.createInjector(new TetrisModule());
+                    injector.getInstance(TetrisController.class).start();
+                    //new KeyConfigScreen();
+                    mainFrame.dispose();
+
+                }
+            });
+
+            mainFrame.add(onePlayer);
+            mainFrame.add(twoPlayers);
+
+            mainFrame.setLocationRelativeTo(null);
+            mainFrame.setVisible(true);
+        }
+
+
+
+
     }
 }

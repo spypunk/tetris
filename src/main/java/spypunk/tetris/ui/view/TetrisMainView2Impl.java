@@ -39,7 +39,7 @@ import spypunk.tetris.ui.icon.Icon;
 import spypunk.tetris.ui.util.SwingUtils;
 
 @Singleton
-public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
+public class TetrisMainView2Impl extends AbstractView implements TetrisMainView {
 
     private final JFrame frame;
 
@@ -49,7 +49,7 @@ public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
 
     private final ImageIcon unmuteImageIcon;
 
-    private final class TetrisViewWindowListener extends WindowAdapter {
+    public static final class TetrisViewWindowListener extends WindowAdapter {
 
         private final TetrisController tetrisController;
 
@@ -63,7 +63,7 @@ public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
         }
     }
 
-    private static final class TetrisViewKeyAdapter extends KeyAdapter {
+    public static final class TetrisViewKeyAdapter extends KeyAdapter {
 
         private final TetrisController tetrisController;
 
@@ -110,10 +110,10 @@ public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
     }
 
     @Inject
-    public TetrisMainViewImpl(final TetrisController tetrisController,
-            final FontCache fontCache,
-            final ImageCache imageCache,
-            final @TetrisProvider Tetris tetris) {
+    public TetrisMainView2Impl(final TetrisController tetrisController,
+                              final FontCache fontCache,
+                              final ImageCache imageCache,
+                              final @TetrisProvider Tetris tetris) {
         super(fontCache, imageCache, tetris);
 
         final TetrisStatisticsView tetrisStatisticsView = new TetrisStatisticsView(fontCache, imageCache, tetris);

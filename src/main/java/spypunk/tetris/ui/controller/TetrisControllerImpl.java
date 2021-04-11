@@ -10,9 +10,11 @@ package spypunk.tetris.ui.controller;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.swing.*;
 
 import spypunk.tetris.ui.controller.gameloop.TetrisControllerGameLoop;
 import spypunk.tetris.ui.controller.input.TetrisControllerInputHandler;
+import spypunk.tetris.ui.view.TetrisMainView;
 
 @Singleton
 public class TetrisControllerImpl implements TetrisController {
@@ -21,12 +23,17 @@ public class TetrisControllerImpl implements TetrisController {
 
     private final TetrisControllerInputHandler tetrisControllerInputHandler;
 
+    private TetrisMainView mainView;
+
     @Inject
     public TetrisControllerImpl(final TetrisControllerGameLoop tetrisControllerGameLoop,
-            final TetrisControllerInputHandler tetrisControllerInputHandler) {
+            final TetrisControllerInputHandler tetrisControllerInputHandler,
+                                final TetrisMainView mainView) {
 
         this.tetrisControllerGameLoop = tetrisControllerGameLoop;
         this.tetrisControllerInputHandler = tetrisControllerInputHandler;
+        this.mainView = mainView;
+
     }
 
     @Override
@@ -53,4 +60,10 @@ public class TetrisControllerImpl implements TetrisController {
     public void onKeyReleased(final int keyCode) {
         tetrisControllerInputHandler.onKeyReleased(keyCode);
     }
+
+    @Override
+    public JPanel getJPanel() {
+        return this.mainView.getJPanel();
+    }
+
 }

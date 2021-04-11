@@ -53,7 +53,7 @@ import spypunk.tetris.ui.view.TetrisMainView;
 import spypunk.tetris.ui.view.TetrisMainView2Impl;
 import spypunk.tetris.ui.view.TetrisMainViewImpl;
 
-public class TetrisModule extends AbstractModule {
+public class TetrisModule2 extends AbstractModule {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
@@ -68,7 +68,7 @@ public class TetrisModule extends AbstractModule {
     private final Tetris tetris;
 
 
-    public TetrisModule() {
+    public TetrisModule2() {
         String name;
         String version;
         URI uri;
@@ -103,7 +103,7 @@ public class TetrisModule extends AbstractModule {
         bind(TetrisControllerInputHandler.class).to(TetrisControllerInputHandlerImpl.class);
         bind(TetrisControllerTetrisEventHandler.class).to(TetrisControllerTetrisEventHandlerImpl.class);
         bind(TetrisControllerGameLoop.class).to(TetrisControllerGameLoopImpl.class);
-        bind(TetrisMainView.class).to(TetrisMainViewImpl.class);
+        bind(TetrisMainView.class).to(TetrisMainView2Impl.class);
     }
 
     @Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD })
