@@ -190,4 +190,8 @@ public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
     private void setVisible(final boolean visible) {
         SwingUtils.doInAWTThread(() -> frame.setVisible(visible));
     }
+
+    public JPanel getJPanel() {
+        return null;
+    }
 }

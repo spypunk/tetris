@@ -8,6 +8,8 @@
 
 package spypunk.tetris.ui.controller;
 
+import javax.swing.*;
+
 public interface TetrisController {
 
     void start();
@@ -19,4 +21,6 @@ public interface TetrisController {
     void onKeyPressed(int keyCode);
 
     void onKeyReleased(int keyCode);
+
+    JPanel getJPanel();
 }

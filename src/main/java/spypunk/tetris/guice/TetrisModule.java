@@ -50,6 +50,7 @@ import spypunk.tetris.ui.controller.input.TetrisControllerInputHandlerImpl;
 import spypunk.tetris.ui.font.cache.FontCache;
 import spypunk.tetris.ui.font.cache.FontCacheImpl;
 import spypunk.tetris.ui.view.TetrisMainView;
+import spypunk.tetris.ui.view.TetrisMainView2Impl;
 import spypunk.tetris.ui.view.TetrisMainViewImpl;
 
 public class TetrisModule extends AbstractModule {
@@ -65,6 +66,7 @@ public class TetrisModule extends AbstractModule {
     private static final String TETRIS_PROPERTIES = "/tetris.properties";
 
     private final Tetris tetris;
+
 
     public TetrisModule() {
         String name;
@@ -85,6 +87,7 @@ public class TetrisModule extends AbstractModule {
         }
 
         tetris = new Tetris(name, version, uri);
+
     }
 
     @Override

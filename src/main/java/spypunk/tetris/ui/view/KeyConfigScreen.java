@@ -2,6 +2,10 @@ package spypunk.tetris.ui.view;
 
 //import sun.text.resources.cldr.ext.FormatData_ia;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import spypunk.tetris.guice.TetrisModule2;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -98,8 +102,8 @@ public class KeyConfigScreen {
                     keysForPlayer2 = keys2;
 
                     //tetrisControllerInputHandler classinda key bindingleri.
-                    //todo key configlerini yap.
-                    //todo 2 kisilik oyunu ac.
+                    final Injector injector = Guice.createInjector(new TetrisModule2());
+                    injector.getInstance(Tetris2PlayerView.class);
                     mainFrame.dispose();
                 }
                 else {
