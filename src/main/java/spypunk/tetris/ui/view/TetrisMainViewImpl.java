@@ -119,6 +119,7 @@ public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
         final TetrisStatisticsView tetrisStatisticsView = new TetrisStatisticsView(fontCache, imageCache, tetris);
         final TetrisInfoView tetrisInfoView = new TetrisInfoView(fontCache, imageCache, tetris);
         final TetrisGridView tetrisGridView = new TetrisGridView(fontCache, imageCache, tetris);
+        final TetrisAchievementsView tetrisAchievementsView = new TetrisAchievementsView(fontCache, imageCache, tetris);
 
         muteImageIcon = new ImageIcon(imageCache.getIcon(Icon.MUTE));
         unmuteImageIcon = new ImageIcon(imageCache.getIcon(Icon.UNMUTE));
@@ -149,6 +150,7 @@ public class TetrisMainViewImpl extends AbstractView implements TetrisMainView {
         centerPanel.add(tetrisGridView.getComponent(), BorderLayout.CENTER);
         centerPanel.add(tetrisStatisticsView.getComponent(), BorderLayout.WEST);
         centerPanel.add(tetrisInfoView.getComponent(), BorderLayout.EAST);
+        centerPanel.add(tetrisAchievementsView.getComponent(), BorderLayout.SOUTH);
 
         frame = new JFrame(tetris.getName() + " " + tetris.getVersion());
 

@@ -36,6 +36,8 @@ public class TetrisGridView extends AbstractTetrisView {
 
     private static final String PRESS_SPACE = "PRESS SPACE";
 
+    private static String ACHIEVEMENTS = "ACHIEVEMENTS";
+
     private final Rectangle gridRectangle;
 
     private final Text tetrisStoppedText;
@@ -43,6 +45,8 @@ public class TetrisGridView extends AbstractTetrisView {
     private final Text tetrisGameOverText;
 
     private final Text tetrisPausedText;
+
+    private final Text tetrisAchievementsText;
 
     public TetrisGridView(final FontCache fontCache,
             final ImageCache imageCache,
@@ -55,6 +59,7 @@ public class TetrisGridView extends AbstractTetrisView {
         tetrisStoppedText = new Text(PRESS_SPACE, fontCache.getBiggerFont());
         tetrisGameOverText = new Text(GAME_OVER, fontCache.getBiggerFont());
         tetrisPausedText = new Text(PAUSE, fontCache.getBiggerFont());
+        tetrisAchievementsText = new Text(ACHIEVEMENTS, fontCache.getDefaultFont());
 
         initializeComponentWithBorders(gridRectangle.width, gridRectangle.height);
     }

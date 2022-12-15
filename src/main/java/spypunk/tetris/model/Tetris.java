@@ -10,6 +10,7 @@ package spypunk.tetris.model;
 
 import java.awt.Point;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -135,6 +136,70 @@ public class Tetris {
 
     public void setCompletedRows(final int completedRows) {
         tetrisInstance.setCompletedRows(completedRows);
+    }
+
+    public int getAchievementCount() {
+        return tetrisInstance.getAchievementCount();
+    }
+
+    public void setAchievementCount(final int achievementCount) {
+        tetrisInstance.setAchievementCount(achievementCount);
+    }
+
+    public ArrayList<TetrisAchievement> getAchievements() {
+        return tetrisInstance.getAchievements();
+    }
+
+    public void addAchievement(TetrisAchievement ta) {
+        tetrisInstance.addAchievement(ta);
+    }
+
+    public boolean isRowAboveN() {
+        return tetrisInstance.IsRowAboveN();
+    }
+
+    public void setRowAboveN() {
+        tetrisInstance.setRowAboveN();
+    }
+
+    public boolean isScoreAboveN() {
+        return tetrisInstance.IsScoreAboveN();
+    }
+
+    public void setScoreAboveN() {
+        tetrisInstance.setScoreAboveN();
+    }
+
+    public int getNForRow() {
+        return tetrisInstance.getNForRow();
+    }
+
+    public void setNForRow(int n) {
+        tetrisInstance.setNForRow(n);
+    }
+
+    public int getNForScore() {
+        return tetrisInstance.getNForScore();
+    }
+
+    public void setNForScore(int n) {
+        tetrisInstance.setNForScore(n);
+    }
+
+    public boolean getAchievementUnlocked_ROW() {
+        return tetrisInstance.isAchievementUnlocked_ROW();
+    }
+
+    public void setAchievementUnlocked_ROW() {
+        tetrisInstance.setAchievementUnlocked_ROW();
+    }
+
+    public boolean getAchievementUnlocked_SCORE() {
+        return tetrisInstance.isAchievementUnlocked_SCORE();
+    }
+
+    public void setAchievementUnlocked_SCORE() {
+        tetrisInstance.setAchievementUnlocked_SCORE();
     }
 
     public int getSpeed() {
