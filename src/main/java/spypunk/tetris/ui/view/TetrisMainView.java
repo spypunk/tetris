@@ -8,6 +8,8 @@
 
 package spypunk.tetris.ui.view;
 
+import javax.swing.*;
+
 public interface TetrisMainView {
 
     void show();
@@ -17,4 +19,6 @@ public interface TetrisMainView {
     void update();
 
     void setMuted(boolean muted);
+
+    JPanel getJPanel();
 }
