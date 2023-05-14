@@ -12,11 +12,25 @@
 
 ![alt tag](img/screenshot_gameover.png)
 
+![alt tag](img/screenshot_name_input.png)
+
+![alt tag](img/screenshot_score_table.png)
+
 ## How to build it ?
 
 You will need a Java JDK 8+ and maven 3+.
 
 Execute **mvn clean package assembly:single** to build the release package.
+
+# How to run it ?
+```
+mvn clean
+
+mvn package
+
+mvn exec:java
+
+```
 
 ## How to play ?
 
@@ -33,6 +47,8 @@ Execute **mvn clean package assembly:single** to build the release package.
 - CTRL - "Hard drop" current shape
 
 - P - Pause the current game
+
+- H - Show the high scores
 
 - M - Mute sound
 
